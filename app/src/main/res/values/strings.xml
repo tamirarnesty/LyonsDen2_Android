@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">LyonsDen2_Android</string>
+    <string name="app_name">Lyon\'s Den</string>
+
+    <!-- Home Screen Strings -->
+    <string name="HomeScreenTitle">Home</string>
+    <string name="todayIsDay">Today is day</string>
+    <string name="dayLabelDefault">1</string>
+    <string name="courseCodeDefault">Course Code</string>
+    <string name="courseNameDefault">Course Name</string>
+    <string name="teacherNameDefault">Teacher Name</string>
+    <string name="roomNumberDefault">Room Number</string>
+
+    <!-- Contact Screen Strings -->
+    <string name="ContactScreenTitle">Contact</string>
+    <string name="getInTouchWithMac">Get in touch with Mac!</string>
+    <string name="announcementButton">Propose Announcement</string>
+    <string name="radioButton">Propose Song for Radio</string>
+    <string name="teacherButton">Contact a Teacher</string>
+    <string name="emergencyButton">Emergency Hotline</string>
 </resources>

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/backgroundColor"
+    tools:context=".HomeActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:nestedScrollingEnabled="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id = "@+id/contentView">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:id = "@+id/topViews"
+                android:background="#033e93">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todayIsDay"
+                    android:id="@+id/todayIsDay"
+                    android:textSize="24sp"
+                    android:textColor="@color/accentColor"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dayLabelDefault"
+                    android:id="@+id/dayLabel"
+                    android:layout_below="@+id/todayIsDay"
+                    android:textColor="@color/accentColor"
+                    android:textSize="150dp"
+                    android:gravity="center" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/courseContainer"
+                    android:layout_below="@+id/dayLabel">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/period0"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_toLeftOf="@+id/period1"
+                        android:layout_toStartOf="@+id/period1"
+                        android:layout_alignBottom="@+id/period1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/courseCodeDefault"
+                            android:id="@+id/courseCode0"
+                            android:textColor="@color/accentColor"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/courseNameDefault"
+                            android:id="@+id/courseName0"
+                            android:textColor="@color/accentColor"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:layout_below="@+id/courseCode0"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/teacherNameDefault"
+                            android:id="@+id/teacherName0"
+                            android:textColor="@color/accentColor"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:layout_below="@+id/courseName0"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/roomNumberDefault"
+                            android:id="@+id/roomNumber0"
+                            android:textColor="@color/accentColor"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:layout_below="@+id/teacherName0"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="5dp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toLeftOf="@+id/period2"
+                        android:layout_toStartOf="@+id/period2"
+                        android:id="@+id/period1" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/courseCodeDefault"
+                            android:id="@+id/courseCode1"
+                            android:textColor="@color/accentColor"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/courseNameDefault"
+                            android:id="@+id/courseName1"
+                            android:textColor="@color/accentColor"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:layout_below="@+id/courseCode1"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/teacherNameDefault"
+                            android:id="@+id/teacherName1"
+                            android:textColor="@color/accentColor"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:layout_below="@+id/courseName1"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/roomNumberDefault"
+                            android:id="@+id/roomNumber1"
+                            android:textColor="@color/accentColor"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:layout_below="@+id/teacherName1"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="5dp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toLeftOf="@+id/period3"
+                        android:layout_toStartOf="@+id/period3"
+                        android:id="@+id/period2"
+                        android:layout_alignBottom="@+id/period1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/courseCodeDefault"
+                            android:id="@+id/courseCode2"
+                            android:textColor="@color/accentColor"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/courseNameDefault"
+                            android:id="@+id/courseName2"
+                            android:textColor="@color/accentColor"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:layout_below="@+id/courseCode2"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/teacherNameDefault"
+                            android:id="@+id/teacherName2"
+                            android:textColor="@color/accentColor"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:layout_below="@+id/courseName2"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/roomNumberDefault"
+                            android:id="@+id/roomNumber2"
+                            android:textColor="@color/accentColor"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:layout_below="@+id/teacherName2"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="5dp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/period3"
+                        android:layout_alignBottom="@+id/period2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/courseCodeDefault"
+                            android:id="@+id/courseCode3"
+                            android:textColor="@color/accentColor"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/courseNameDefault"
+                            android:id="@+id/courseName3"
+                            android:textColor="@color/accentColor"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:layout_below="@+id/courseCode3"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/teacherNameDefault"
+                            android:id="@+id/teacherName3"
+                            android:textColor="@color/accentColor"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:layout_below="@+id/courseName3"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/roomNumberDefault"
+                            android:id="@+id/roomNumber3"
+                            android:textColor="@color/accentColor"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:layout_below="@+id/teacherName3"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="5dp" />
+                    </RelativeLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/topViews"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/homeScreenList"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/foregroundColor"
+                android:divider="@color/accentColor"
+                android:dividerHeight="1dp"
+                android:overScrollFooter="@color/backgroundColor"
+                android:overScrollHeader="@color/backgroundColor"
+                android:layout_marginTop="1dp" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
