@@ -26,6 +26,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:id="@+id/announcementButton"
+        android:onClick="proposeAnnouncement"
         android:background="@color/foregroundColor"
         android:text="@string/announcementButton"
         android:textColor="@color/accentColor" />
@@ -39,6 +40,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:id="@+id/radioButton"
+        android:onClick="proposeRadio"
         android:background="@color/foregroundColor"
         android:text="@string/radioButton"
         android:textColor="@color/accentColor" />
@@ -52,6 +54,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:id="@+id/teacherButton"
+        android:onClick="requestTeacherList"
         android:background="@color/foregroundColor"
         android:text="@string/teacherButton"
         android:textColor="@color/accentColor" />
@@ -65,6 +68,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:id="@+id/emergencyButton"
+        android:onClick="emergency"
         android:background="@color/foregroundColor"
         android:text="@string/emergencyButton"
         android:textColor="@color/accentColor" />

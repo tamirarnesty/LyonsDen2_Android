@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/foregroundColor"
+    tools:context="com.wlmac.lyonsden2_android.AnnouncementActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/APSTitle"
+        android:textSize="21sp"
+        android:textColor="@color/accentColor"
+        android:id="@+id/titleLabel" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/titleLabel"
+        android:layout_toEndOf="@id/titleLabel"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:maxLines="1"
+        android:textSize="21sp"
+        android:textColor="@color/accentColor"
+        android:id="@+id/titleField"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/APSDescription"
+        android:textSize="21sp"
+        android:textColor="@color/accentColor"
+        android:id="@+id/descriptionLabel"/>
+    
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/APS_description_field_height"
+        android:layout_below="@id/descriptionLabel"
+        android:layout_marginTop="8dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:scrollHorizontally="false"
+        android:textSize="21sp"
+        android:textColor="@color/accentColor"
+        android:id = "@+id/descriptionField"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/descriptionField"
+        android:layout_marginTop="8dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:text="@string/APSTeacher"
+        android:textSize="21sp"
+        android:textColor="@color/accentColor"
+        android:id="@+id/teacherLabel"/>
+
+    <EditText
+        android:layout_width="@dimen/APS_teacher_login_width"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/teacherLabel"
+        android:layout_marginTop="8dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:inputType="numberPassword"
+        android:textColor="@color/accentColor"
+        android:id="@+id/teacherLogin"/>
+
+    <EditText
+        android:layout_width="@dimen/APS_teacher_login_width"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/teacherLogin"
+        android:layout_marginTop="8dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:inputType="textPassword"
+        android:textColor="@color/accentColor"
+        android:id="@+id/teacherPass"/>
+</RelativeLayout>

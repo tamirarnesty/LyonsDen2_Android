@@ -12,13 +12,17 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".HomeActivity"
-            android:label="@string/HomeScreenTitle">
+            android:label="Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ContactActivity"></activity>
+        <activity android:name=".ContactActivity" android:label="Contact"/>
+        <activity android:name=".ListActivity" android:label="Events"/>
+        <activity android:name=".AnnouncementActivity" />
+        <activity android:name=".ListViewerActivity" android:label="Teachers"/>
     </application>
+
 </manifest>

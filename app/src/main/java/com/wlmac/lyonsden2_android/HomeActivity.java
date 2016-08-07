@@ -20,43 +20,56 @@ public class HomeActivity extends AppCompatActivity {
     private TextView dayLabel;
     /** Declared merely because it must be set to a custom font */
     private TextView todayIsDay;
-    /** The custom font used with most TextViews, this is where it should always be called from. */
+    /** The custom font used with most TextViews, this is where it should always be accessed from. */
     public static Typeface hapnaMonoLight;
     /** An array of 4 RelativeLayout each of which represent a period in the timetable*/
     private RelativeLayout[] periods;
-
+    /** The ListView that contains the announcements */
     private ListView listView;
-
+    /** The contents of the announcement ListView */
     private ArrayList<String> announcements = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Super call
         super.onCreate(savedInstanceState);
+        // Declare the associated xml layout file
         setContentView(R.layout.home_activity);
-
-        dayLabel = (TextView) findViewById(R.id.dayLabel);
-        todayIsDay = (TextView) findViewById(R.id.todayIsDay);
+        // Instantiate all UI components
+        this.instantiateComponents();
+        // Create and resize each period on the timetable to fit the screen
         periods = createPeriods();
-
-        listView = (ListView) findViewById(R.id.homeScreenList);
+        // Resize the announcement ListView to fit the screen. DOES NOT WORK ATM!!!
         listView.setMinimumHeight(getScreenSize().y);
-
-        hapnaMonoLight = Typeface.createFromAsset(getAssets(), "fonts/HapnaMono-Light.otf");
+        // Set the custom font of the TextLabels
         dayLabel.setTypeface(hapnaMonoLight);
         todayIsDay.setTypeface(hapnaMonoLight);
 
+        // TEMPORARY!!!
         for (int h = 0; h < 50; h ++) {
             announcements.add("Title " + (h+1));
         }
+        // Declare and set the ArrayAdapter for filling the ListView with content
+        //          Type of content                      |Source|Type of ListView layout            | Data source array
+        //                                               |Object|                                   |
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, announcements);
         listView.setAdapter(adapter);
 
+        // Declare a listener for whenever an item has been clicked in the ListVew
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
+            @Override//             |The ListView        |The item  |The item's   |The item's
+            //                      |                    |clicked   |position     |ID
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 segueIntoContact();
             }
         });
+    }
+
+    private void instantiateComponents () {
+        dayLabel = (TextView) findViewById(R.id.dayLabel);
+        todayIsDay = (TextView) findViewById(R.id.todayIsDay);
+        listView = (ListView) findViewById(R.id.homeScreenList);
+        hapnaMonoLight = Typeface.createFromAsset(getAssets(), "fonts/HapnaMono-Light.otf");
     }
 
     private void segueIntoContact () {
@@ -64,10 +77,12 @@ public class HomeActivity extends AppCompatActivity {
         this.startActivity(intent);
         // For passing data
 //      intent.putExtra("key", value); //Optional parameters
-
     }
 
-    /** Creates the period instances and resizes them to fit on the screen. */
+    /**
+     * Creates the period instances and resizes them to fit on the screen.
+     * @return An array of RelativeLayout objects representing periods on the timetable.
+     */
     private RelativeLayout[] createPeriods () {
         // TODO: Must figure out a way to scale font size depending on screen size
 
@@ -86,6 +101,10 @@ public class HomeActivity extends AppCompatActivity {
         return output;
     }
 
+    /**
+     * Retrieves the current screen size from the system and returns it as a Point.
+     * @return A Point representing the current screen size.
+     */
     public Point getScreenSize () {
         // Declare the display object of the current device
         Display display = getWindowManager().getDefaultDisplay();

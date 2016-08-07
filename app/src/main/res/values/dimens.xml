@@ -5,4 +5,6 @@
 
     <dimen name="list_view_title_text_size">21sp</dimen>
     <dimen name="list_view_subtitle_text_size">16sp</dimen>
+    <dimen name="APS_description_field_height">297dp</dimen>
+    <dimen name="APS_teacher_login_width">233dp</dimen>
 </resources>

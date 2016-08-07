@@ -2,7 +2,6 @@
     <string name="app_name">Lyon\'s Den</string>
 
     <!-- Home Screen Strings -->
-    <string name="HomeScreenTitle">Home</string>
     <string name="todayIsDay">Today is day</string>
     <string name="dayLabelDefault">1</string>
     <string name="courseCodeDefault">Course Code</string>
@@ -11,10 +10,14 @@
     <string name="roomNumberDefault">Room Number</string>
 
     <!-- Contact Screen Strings -->
-    <string name="ContactScreenTitle">Contact</string>
     <string name="getInTouchWithMac">Get in touch with Mac!</string>
     <string name="announcementButton">Propose Announcement</string>
     <string name="radioButton">Propose Song for Radio</string>
     <string name="teacherButton">Contact a Teacher</string>
     <string name="emergencyButton">Emergency Hotline</string>
+
+    <!-- Announcement Proposal Screen Strings -->
+    <string name="APSTitle">Title:</string>
+    <string name="APSDescription">Description:</string>
+    <string name="APSTeacher">Teacher Approval Login:</string>
 </resources>
