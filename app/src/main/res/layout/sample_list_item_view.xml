@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.wlmac.lyonsden2_android.ListItemView
+    <com.wlmac.lyonsden2_android.resourceActivities.ListItemView
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="@dimen/defaultCellSize"
         android:background="@color/foregroundColor"
         android:layout_gravity="left"
         android:paddingLeft="4dp"
@@ -14,6 +14,6 @@
         android:paddingBottom="4dp"
 
         app:textColor="@color/accentColor"
-        app:titleTextSize="17sp"
-        app:infoTextSize="14sp" />
+        app:titleTextSize="@dimen/LIVTitleTextSize"
+        app:infoTextSize="@dimen/LIVSubtitleTextSize"/>
 </FrameLayout>

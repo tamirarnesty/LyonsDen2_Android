@@ -1,10 +1,13 @@
-package com.wlmac.lyonsden2_android;
+package com.wlmac.lyonsden2_android.contactActivities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.wlmac.lyonsden2_android.HomeActivity;
+import com.wlmac.lyonsden2_android.R;
 
 public class AnnouncementActivity extends AppCompatActivity {
     private EditText titleField;
@@ -23,15 +26,15 @@ public class AnnouncementActivity extends AppCompatActivity {
 
     /** Instantiates all GUI components */
     private void instantiateComponents () {
-        titleField = (EditText) findViewById(R.id.titleField);
-        descriptionField = (EditText) findViewById(R.id.descriptionField);
-        teacherLogin = (EditText) findViewById(R.id.teacherLogin);
-        teacherPass = (EditText) findViewById(R.id.teacherPass);
+        titleField = (EditText) findViewById(R.id.APSTitleField);
+        descriptionField = (EditText) findViewById(R.id.APSDescriptionField);
+        teacherLogin = (EditText) findViewById(R.id.APSTeacherLogin);
+        teacherPass = (EditText) findViewById(R.id.APSTeacherPass);
     }
 
     /** Sets the appropriate font for each text label on this screen */
     private void setFonts () {
-        TextView[] labels = {(TextView) findViewById(R.id.titleLabel), (TextView) findViewById(R.id.descriptionLabel), (TextView) findViewById(R.id.teacherLabel)};
+        TextView[] labels = {(TextView) findViewById(R.id.APSTitleLabel), (TextView) findViewById(R.id.APSDescriptionLabel), (TextView) findViewById(R.id.APSTeacherLabel)};
         for (int h = 0; h < labels.length; h ++) {
             labels[0].setTypeface(HomeActivity.hapnaMonoLight);
         }

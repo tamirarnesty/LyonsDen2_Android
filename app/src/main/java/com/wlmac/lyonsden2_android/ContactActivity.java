@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.wlmac.lyonsden2_android.contactActivities.AnnouncementActivity;
+
 public class ContactActivity extends AppCompatActivity {
 
     @Override
@@ -28,6 +30,15 @@ public class ContactActivity extends AppCompatActivity {
     // Called when Contact a Teacher button is pressed
     public void requestTeacherList (View view) {
         // TODO: Implement a teacher list
+
+        for (int j = 0; j < 50; j ++) {
+            ListActivity.content[0].add("I'm a title");
+            ListActivity.content[1].add("I'm a description");
+            ListActivity.content[2].add("I'm a time");
+            ListActivity.content[3].add("I'm a locaiton");
+        }
+        Intent intent = new Intent(this, ListActivity.class);
+        startActivity(intent);
     }
 
     // Called when Emergency Hotline button is pressed

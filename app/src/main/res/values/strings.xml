@@ -2,22 +2,28 @@
     <string name="app_name">Lyon\'s Den</string>
 
     <!-- Home Screen Strings -->
-    <string name="todayIsDay">Today is day</string>
-    <string name="dayLabelDefault">1</string>
-    <string name="courseCodeDefault">Course Code</string>
-    <string name="courseNameDefault">Course Name</string>
-    <string name="teacherNameDefault">Teacher Name</string>
-    <string name="roomNumberDefault">Room Number</string>
+    <string name="HSTodayIsDay">Today is day</string>
+    <string name="HSDayLabelDefault">1</string>
+    <string name="HSCourseCodeDefault">Course Code</string>
+    <string name="HSCourseNameDefault">Course Name</string>
+    <string name="HSTeacherNameDefault">Teacher Name</string>
+    <string name="HSRoomNumberDefault">Room Number</string>
 
     <!-- Contact Screen Strings -->
-    <string name="getInTouchWithMac">Get in touch with Mac!</string>
-    <string name="announcementButton">Propose Announcement</string>
-    <string name="radioButton">Propose Song for Radio</string>
-    <string name="teacherButton">Contact a Teacher</string>
-    <string name="emergencyButton">Emergency Hotline</string>
+    <string name="CSGetInTouchWithMac">Get in touch with Mac!</string>
+    <string name="CSAnnouncementButton">Propose Announcement</string>
+    <string name="CSRadioButton">Propose Song for Radio</string>
+    <string name="CSTeacherButton">Contact a Teacher</string>
+    <string name="CSEmergencyButton">Emergency Hotline</string>
 
     <!-- Announcement Proposal Screen Strings -->
     <string name="APSTitle">Title:</string>
     <string name="APSDescription">Description:</string>
     <string name="APSTeacher">Teacher Approval Login:</string>
+
+    <!-- Info Screen Strings -->
+    <string name="ISTitleDefault">Title goes here</string>
+    <string name="ISDescriptionDefault">Description goes here</string>
+    <string name="ISTimeDefault">Time goes here</string>
+    <string name="ISLocationDefault">Location goes here</string>
 </resources>

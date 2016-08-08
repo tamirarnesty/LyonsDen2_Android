@@ -66,9 +66,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void instantiateComponents () {
-        dayLabel = (TextView) findViewById(R.id.dayLabel);
-        todayIsDay = (TextView) findViewById(R.id.todayIsDay);
-        listView = (ListView) findViewById(R.id.homeScreenList);
+        dayLabel = (TextView) findViewById(R.id.HSDayLabel);
+        todayIsDay = (TextView) findViewById(R.id.HSTodayIsDay);
+        listView = (ListView) findViewById(R.id.HSList);
         hapnaMonoLight = Typeface.createFromAsset(getAssets(), "fonts/HapnaMono-Light.otf");
     }
 
@@ -87,8 +87,8 @@ public class HomeActivity extends AppCompatActivity {
         // TODO: Must figure out a way to scale font size depending on screen size
 
         // Declare the periods place holder
-        RelativeLayout[] output = {(RelativeLayout) findViewById(R.id.period0), (RelativeLayout) findViewById(R.id.period1),
-                                   (RelativeLayout) findViewById(R.id.period2), (RelativeLayout) findViewById(R.id.period3)};
+        RelativeLayout[] output = {(RelativeLayout) findViewById(R.id.HSPeriod0), (RelativeLayout) findViewById(R.id.HSPeriod1),
+                                   (RelativeLayout) findViewById(R.id.HSPeriod2), (RelativeLayout) findViewById(R.id.HSPeriod3)};
         // Declare the instance of the size of the display
         Point size = getScreenSize();
         // Resize each 'period'
@@ -105,7 +105,7 @@ public class HomeActivity extends AppCompatActivity {
      * Retrieves the current screen size from the system and returns it as a Point.
      * @return A Point representing the current screen size.
      */
-    public Point getScreenSize () {
+    private Point getScreenSize () {
         // Declare the display object of the current device
         Display display = getWindowManager().getDefaultDisplay();
         // Declare the instance of the size of the display

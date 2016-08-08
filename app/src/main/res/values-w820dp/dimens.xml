@@ -4,7 +4,18 @@
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
     <dimen name="activity_horizontal_margin">64dp</dimen>
 
-    <dimen name="list_view_title_text_size">21sp</dimen>
-    <dimen name="list_view_subtitle_text_size">16sp</dimen>
+    <dimen name="defaultCellSize">44dp</dimen>
+    <dimen name="largeCellSize">100dp</dimen>
+
+    <dimen name="LIVTitleTextSize">17sp</dimen>
+    <dimen name="LIVSubtitleTextSize">14sp</dimen>
+
     <dimen name="APS_description_field_height">297dp</dimen>
+    <dimen name="APS_teacher_login_width">233dp</dimen>
+
+    <dimen name="ISImageViewWidth">176dp</dimen>
+    <dimen name="ISImageViewHeight">134dp</dimen>
+    <dimen name="ISDescriptionHeight">290dp</dimen>
+    <dimen name="ISTitleTextSize">24sp</dimen>
+    <dimen name="ISTextSize">20sp</dimen>
 </resources>

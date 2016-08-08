@@ -9,8 +9,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/getInTouchWithMac"
-        android:id="@+id/textView"
+        android:text="@string/CSGetInTouchWithMac"
+        android:id="@+id/CSTextView"
         android:layout_marginTop="21dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -20,56 +20,55 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/CSTextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="59dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:id="@+id/announcementButton"
+        android:id="@+id/CSAnnouncementButton"
         android:onClick="proposeAnnouncement"
         android:background="@color/foregroundColor"
-        android:text="@string/announcementButton"
+        android:text="@string/CSAnnouncementButton"
         android:textColor="@color/accentColor" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/announcementButton"
+        android:layout_below="@+id/CSAnnouncementButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:id="@+id/radioButton"
+        android:id="@+id/CSRadioButton"
         android:onClick="proposeRadio"
         android:background="@color/foregroundColor"
-        android:text="@string/radioButton"
+        android:text="@string/CSRadioButton"
         android:textColor="@color/accentColor" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/radioButton"
+        android:layout_below="@+id/CSRadioButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:id="@+id/teacherButton"
+        android:id="@+id/CSTeacherButton"
         android:onClick="requestTeacherList"
         android:background="@color/foregroundColor"
-        android:text="@string/teacherButton"
+        android:text="@string/CSTeacherButton"
         android:textColor="@color/accentColor" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/teacherButton"
+        android:layout_below="@+id/CSTeacherButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:id="@+id/emergencyButton"
         android:onClick="emergency"
         android:background="@color/foregroundColor"
-        android:text="@string/emergencyButton"
+        android:text="@string/CSEmergencyButton"
         android:textColor="@color/accentColor" />
 </RelativeLayout>

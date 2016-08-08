@@ -19,10 +19,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ContactActivity" android:label="Contact"/>
-        <activity android:name=".ListActivity" android:label="Events"/>
-        <activity android:name=".AnnouncementActivity" />
-        <activity android:name=".ListViewerActivity" android:label="Teachers"/>
+        <activity
+            android:name=".ContactActivity"
+            android:label="Contact" />
+        <activity
+            android:name=".ListActivity"
+            android:label="Events" />
+        <activity android:name=".contactActivities.AnnouncementActivity" />
+        <activity
+            android:name=".resourceActivities.ListViewerActivity"
+            android:label="Teachers" />
+        <activity android:name=".CalendarActivity" />
+        <activity android:name=".resourceActivities.InfoActivity"></activity>
     </application>
 
 </manifest>

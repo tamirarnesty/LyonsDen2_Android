@@ -1,4 +1,4 @@
-package com.wlmac.lyonsden2_android;
+package com.wlmac.lyonsden2_android.resourceActivities;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,6 +10,9 @@ import android.support.annotation.Nullable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.wlmac.lyonsden2_android.HomeActivity;
+import com.wlmac.lyonsden2_android.R;
 
 /**
  * TODO: document your custom view class.
@@ -27,8 +30,8 @@ public class ListItemView extends View {
     private float infoTextHeight;
     private TextPaint infoTextPainter;
 
-    private int textColor = Color.GRAY;
-    private Drawable image = getResources().getDrawable(R.drawable.inal);
+    private int textColor = Color.YELLOW;
+    private Drawable image;
     // The preset padding used in during the drawing cycles.
     private int paddingLeft = getPaddingLeft(), paddingTop = getPaddingTop(), paddingRight = getPaddingRight(), paddingBottom = getPaddingBottom();
 
