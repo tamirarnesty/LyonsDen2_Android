@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/backgroundColor"
-    tools:context=".HomeActivity">
+    android:id="@+id/HDLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <ScrollView
+    <!-- Home screen -->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/HSScrollView">
-
+        android:background="@color/backgroundColor"
+        tools:context=".HomeActivity">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,9 +65,9 @@
                         android:layout_alignParentStart="true"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
-                        android:layout_toLeftOf="@+id/period1"
-                        android:layout_toStartOf="@+id/period1"
-                        android:layout_alignBottom="@+id/period1">
+                        android:layout_toLeftOf="@+id/HSPeriod1"
+                        android:layout_toStartOf="@+id/HSPeriod1"
+                        android:layout_alignBottom="@+id/HSPeriod1">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -124,8 +126,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:layout_toLeftOf="@+id/period2"
-                        android:layout_toStartOf="@+id/period2"
+                        android:layout_toLeftOf="@+id/HSPeriod2"
+                        android:layout_toStartOf="@+id/HSPeriod2"
                         android:id="@+id/HSPeriod1" >
 
                         <TextView
@@ -185,8 +187,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:layout_toLeftOf="@+id/period3"
-                        android:layout_toStartOf="@+id/period3"
+                        android:layout_toLeftOf="@+id/HSPeriod3"
+                        android:layout_toStartOf="@+id/HSPeriod3"
                         android:id="@+id/HSPeriod2"
                         android:layout_alignBottom="@+id/HSPeriod1">
 
@@ -325,5 +327,16 @@
                 android:overScrollHeader="@color/backgroundColor"
                 android:layout_marginTop="1dp" />
         </RelativeLayout>
-    </ScrollView>
-</RelativeLayout>
+    </RelativeLayout>
+
+    <!-- Navigation drawer -->
+    <ListView
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left|start"
+        android:choiceMode="singleChoice"
+        android:divider="@color/accentColor"
+        android:dividerHeight="1dp"
+        android:background="@color/backgroundColor"
+        android:id="@+id/HDList"/>
+</android.support.v4.widget.DrawerLayout>

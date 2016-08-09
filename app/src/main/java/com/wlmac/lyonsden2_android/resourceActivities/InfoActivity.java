@@ -13,12 +13,25 @@ import android.widget.TextView;
 
 import com.wlmac.lyonsden2_android.R;
 
+/** This activity is used for viewing an announcement or an event.
+ * The data that should be passed to this activity is: a title with key 'title',
+ * description with key 'info', a date&time with key 'date' and a locaiton with
+ * key 'location'. The*/
 public class InfoActivity extends AppCompatActivity {
+    /**
+     * The drawable that is used in the ImageView of this Activity.
+     * If null, all component will be reposition appropriately
+     */
     public static Drawable image = null;
+    /** An instance of the ImageView of this activity. */
     private ImageView imageView;
+    /** An instance of the title TextView of this activity. */
     private TextView titleLabel;
+    /** An instance of the description TextView of this activity. */
     private TextView infoLabel;
+    /** An instance of the date&time TextView of this activity. */
     private TextView dateLabel;
+    /** An instance of the location TextView of this activity. */
     private TextView locationLabel;
 
     @Override
@@ -31,6 +44,7 @@ public class InfoActivity extends AppCompatActivity {
         resizeComponents();
     }
 
+    /** Initializes all the GUI components in this activity. */
     private void initializeComponents () {
         imageView = (ImageView) findViewById(R.id.ISImageView);
         titleLabel = (TextView) findViewById(R.id.ISTitleLabel);
@@ -39,6 +53,7 @@ public class InfoActivity extends AppCompatActivity {
         locationLabel = (TextView) findViewById(R.id.ISLocationLabel);
     }
 
+    /** Retrieves and assigns all the information that was passed to this activity. */
     private void parseIntentData () {
         Intent intent = getIntent();
         imageView.setImageDrawable(image);
@@ -48,23 +63,26 @@ public class InfoActivity extends AppCompatActivity {
         locationLabel.setText(intent.getStringExtra("location"));
     }
 
+    /** Re-sizes and repositions the GUI component as needed. */
     private void resizeComponents () {
+        // Create an instance of a screen size
         Point size = getScreenSize();
+        // Declare the content view of this activity
         RelativeLayout contentView = (RelativeLayout) findViewById(R.id.ISContentView);
-
+        // If there is no image to display
         if (imageView.getDrawable() == null) {
-            ViewGroup.LayoutParams titleSize = titleLabel.getLayoutParams();
-            titleSize.width = (size.x/2) - contentView.getPaddingLeft() - contentView.getPaddingRight();
-            titleSize.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            titleLabel.setLayoutParams(titleSize);
+            ViewGroup.LayoutParams titleSize = titleLabel.getLayoutParams();    // Create an instance of the titleLabel attributes size
+            titleSize.width = (size.x/2) - contentView.getPaddingLeft() - contentView.getPaddingRight();    // Resize its width
+            titleSize.height = ViewGroup.LayoutParams.WRAP_CONTENT;     // Resize its height
+            titleLabel.setLayoutParams(titleSize);                      // Apply the new size attributes
         }
-
+        // Create an instance of the dateLabel's and locationLabel's size attributes
         ViewGroup.LayoutParams dateSize = dateLabel.getLayoutParams();
         ViewGroup.LayoutParams locationSize = locationLabel.getLayoutParams();
-
+        // Resize them to be equal
         dateSize.width = (size.x/2) - contentView.getPaddingLeft() - 4;
         locationSize.width = (size.x/2) - contentView.getPaddingRight() - 4;
-
+        // Apply the new size attributes
         dateLabel.setLayoutParams(dateSize);
         locationLabel.setLayoutParams(locationSize);
     }

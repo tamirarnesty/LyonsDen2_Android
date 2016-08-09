@@ -3,11 +3,13 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="defaultCellSize">44dp</dimen>
+    <dimen name="defaultCellSize">52dp</dimen>
     <dimen name="largeCellSize">100dp</dimen>
 
-    <dimen name="LIVTitleTextSize">17sp</dimen>
-    <dimen name="LIVSubtitleTextSize">14sp</dimen>
+    <dimen name="LITitleTextSize">17sp</dimen>
+    <dimen name="LISubtitleTextSize">14sp</dimen>
+    <dimen name="LIDefaultImageViewSize">44dp</dimen>
+    <dimen name="LILargeImageViewSize">92dp</dimen>
 
     <dimen name="APS_description_field_height">297dp</dimen>
     <dimen name="APS_teacher_login_width">233dp</dimen>

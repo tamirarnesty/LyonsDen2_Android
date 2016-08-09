@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Lyon\'s Den</string>
+    <string name="drawerOpen">Navigation Drawer Open</string>
+    <string name="drawerClose">Navigation Drawer Close</string>
 
     <!-- Home Screen Strings -->
     <string name="HSTodayIsDay">Today is day</string>

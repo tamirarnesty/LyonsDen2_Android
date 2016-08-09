@@ -1,74 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/foregroundColor"
-    tools:context=".ContactActivity">
+    android:id="@+id/ConDLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/CSGetInTouchWithMac"
-        android:id="@+id/CSTextView"
-        android:layout_marginTop="21dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/accentColor"
-        android:textSize="23sp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/CSTextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="59dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:id="@+id/CSAnnouncementButton"
-        android:onClick="proposeAnnouncement"
+    <!-- Contact screen -->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:background="@color/foregroundColor"
-        android:text="@string/CSAnnouncementButton"
-        android:textColor="@color/accentColor" />
+        tools:context=".ContactActivity">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/CSAnnouncementButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:id="@+id/CSRadioButton"
-        android:onClick="proposeRadio"
-        android:background="@color/foregroundColor"
-        android:text="@string/CSRadioButton"
-        android:textColor="@color/accentColor" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/CSGetInTouchWithMac"
+            android:id="@+id/CSTextView"
+            android:layout_marginTop="21dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/accentColor"
+            android:textSize="23sp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/CSRadioButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:id="@+id/CSTeacherButton"
-        android:onClick="requestTeacherList"
-        android:background="@color/foregroundColor"
-        android:text="@string/CSTeacherButton"
-        android:textColor="@color/accentColor" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/CSTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="59dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:id="@+id/CSAnnouncementButton"
+            android:onClick="proposeAnnouncement"
+            android:background="@color/foregroundColor"
+            android:text="@string/CSAnnouncementButton"
+            android:textColor="@color/accentColor" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/CSTeacherButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:onClick="emergency"
-        android:background="@color/foregroundColor"
-        android:text="@string/CSEmergencyButton"
-        android:textColor="@color/accentColor" />
-</RelativeLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/CSAnnouncementButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:id="@+id/CSRadioButton"
+            android:onClick="proposeRadio"
+            android:background="@color/foregroundColor"
+            android:text="@string/CSRadioButton"
+            android:textColor="@color/accentColor" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/CSRadioButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:id="@+id/CSTeacherButton"
+            android:onClick="requestTeacherList"
+            android:background="@color/foregroundColor"
+            android:text="@string/CSTeacherButton"
+            android:textColor="@color/accentColor" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/CSTeacherButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:onClick="emergency"
+            android:background="@color/foregroundColor"
+            android:text="@string/CSEmergencyButton"
+            android:textColor="@color/accentColor" />
+    </RelativeLayout>
+
+    <!-- Navigation drawer -->
+    <ListView
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left|start"
+        android:choiceMode="singleChoice"
+        android:divider="@color/accentColor"
+        android:dividerHeight="1dp"
+        android:background="@color/backgroundColor"
+        android:id="@+id/ConDList"/>
+</android.support.v4.widget.DrawerLayout>
+
