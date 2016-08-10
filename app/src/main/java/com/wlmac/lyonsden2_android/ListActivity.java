@@ -1,6 +1,8 @@
 package com.wlmac.lyonsden2_android;
 
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.wlmac.lyonsden2_android.otherClasses.ListAdapter;
+import com.wlmac.lyonsden2_android.resourceActivities.InfoActivity;
 
 import java.util.ArrayList;
 
@@ -50,12 +53,21 @@ public class ListActivity extends AppCompatActivity {
         ListAdapter adapter = new ListAdapter (this, content[0], content[1], null, true);
         list.setAdapter(adapter);
         // Set the click listener of this activity's list
-        this.list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // TODO: Do something here, (onItemClickListener)
                 // TODO: TEMPORARY OnItemClickListener
-                Toast.makeText(ListActivity.this, "BAH BAH", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(parent.getContext(), InfoActivity.class);
+                intent.putExtra("title", ListActivity.content[0].get(position));
+                intent.putExtra("info", ListActivity.content[1].get(position));
+                intent.putExtra("date", ListActivity.content[2].get(position));
+                intent.putExtra("location", ListActivity.content[3].get(position));
+                if (position == 4) {
+//                    InfoActivity.image = BitmapDrawable.createFromResourceStream()
+                } else
+                    InfoActivity.image = null;
+                startActivity(intent);
             }
         });
     }

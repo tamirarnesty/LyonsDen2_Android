@@ -2,9 +2,11 @@ package com.wlmac.lyonsden2_android.resourceActivities;
 
 import android.content.Intent;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,6 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wlmac.lyonsden2_android.R;
+
+import java.util.Arrays;
 
 /** This activity is used for viewing an announcement or an event.
  * The data that should be passed to this activity is: a title with key 'title',
@@ -38,7 +42,6 @@ public class InfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_activity);
-
         initializeComponents();
         parseIntentData();
         resizeComponents();
@@ -71,9 +74,12 @@ public class InfoActivity extends AppCompatActivity {
         RelativeLayout contentView = (RelativeLayout) findViewById(R.id.ISContentView);
         // If there is no image to display
         if (imageView.getDrawable() == null) {
-            ViewGroup.LayoutParams titleSize = titleLabel.getLayoutParams();    // Create an instance of the titleLabel attributes size
-            titleSize.width = (size.x/2) - contentView.getPaddingLeft() - contentView.getPaddingRight();    // Resize its width
-            titleSize.height = ViewGroup.LayoutParams.WRAP_CONTENT;     // Resize its height
+            imageView.setEnabled(false);
+            RelativeLayout.LayoutParams titleSize = (RelativeLayout.LayoutParams) titleLabel.getLayoutParams();    // Create an instance of the titleLabel attributes size
+            titleSize.width = RelativeLayout.LayoutParams.MATCH_PARENT;    // Resize its width
+            titleSize.height = RelativeLayout.LayoutParams.WRAP_CONTENT;     // Resize its height
+            titleSize.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            Log.i ("Rules", "" + titleSize.debug("Rules and what not"));
             titleLabel.setLayoutParams(titleSize);                      // Apply the new size attributes
         }
         // Create an instance of the dateLabel's and locationLabel's size attributes

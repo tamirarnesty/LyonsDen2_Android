@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.wlmac.lyonsden2_android.contactActivities.AnnouncementActivity;
+import com.wlmac.lyonsden2_android.contactActivities.MusicActivity;
+import com.wlmac.lyonsden2_android.resourceActivities.ListViewerActivity;
 
 /**
  * The activity used to display the methods for contacting the school.
@@ -46,7 +48,8 @@ public class ContactActivity extends AppCompatActivity {
 
     /** Called when the Propose sont for Radio button is pressed. */
     public void proposeRadio (View view) {
-        // TODO: Create a song proposal activity
+        Intent intent = new Intent(this, MusicActivity.class);
+        startActivity(intent);
     }
 
     /** Called when Contact a Teacher button is pressed. */
@@ -54,14 +57,20 @@ public class ContactActivity extends AppCompatActivity {
         // TODO: Implement a teacher list
 
         // TODO: TEMPORARY TEACHER LIST FILL
-        for (int j = 0; j < 50; j ++) {
-            ListActivity.content[0].add("I'm a title");
-            ListActivity.content[1].add("I'm a description");
-            ListActivity.content[2].add("I'm a time");
-            ListActivity.content[3].add("I'm a locaiton");
+        for (int h = 0; h < 50; h ++) {
+            ListActivity.content[0].add("I'm a title" + h);
+            ListActivity.content[1].add("I'm a description" + h);
+            ListActivity.content[2].add("I'm a time" + h);
+            ListActivity.content[3].add("I'm a locaiton" + h);
         }
         // Segue into a teacher list.
         Intent intent = new Intent(this, ListActivity.class);
+//        for (int h = 0; h < 50; h ++) {
+//            ListViewerActivity.content[0].add("I'm a title" + h);
+//            ListViewerActivity.content[1].add("I'm a description" + h);
+//        }
+//        // Segue into a teacher list.
+//        Intent intent = new Intent(this, ListViewerActivity.class);
         startActivity(intent);
     }
 

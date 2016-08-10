@@ -11,8 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".HomeActivity"
-            android:label="Home">
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,17 +20,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ContactActivity"
-            android:label="Contact" />
+            android:name=".LoginActivity"
+            android:label="Login/Sign Up" />
+        <activity
+            android:name=".HomeActivity"
+            android:label="Home" />
+        <activity
+            android:name=".CalendarActivity"
+            android:label="Calendar" />
         <activity
             android:name=".ListActivity"
             android:label="Events" />
-        <activity android:name=".contactActivities.AnnouncementActivity" />
+        <activity
+            android:name=".ContactActivity"
+            android:label="Contact" />
+        <activity
+            android:name=".contactActivities.AnnouncementActivity"
+            android:label="Propose Announcement" />
         <activity
             android:name=".resourceActivities.ListViewerActivity"
             android:label="Teachers" />
-        <activity android:name=".CalendarActivity" />
-        <activity android:name=".resourceActivities.InfoActivity"></activity>
+        <activity
+            android:name=".resourceActivities.InfoActivity"
+            android:label="Information" />
+        <activity android:name=".contactActivities.MusicActivity"></activity>
     </application>
 
 </manifest>

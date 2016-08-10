@@ -3,6 +3,10 @@
     <string name="drawerOpen">Navigation Drawer Open</string>
     <string name="drawerClose">Navigation Drawer Close</string>
 
+    <!-- Login Screen Strings -->
+    <string name="LSLoginHint">Enter e-mail here</string>
+    <string name="LSPassHint">Enter password here</string>
+
     <!-- Home Screen Strings -->
     <string name="HSTodayIsDay">Today is day</string>
     <string name="HSDayLabelDefault">1</string>
