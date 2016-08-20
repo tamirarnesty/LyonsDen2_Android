@@ -48,26 +48,22 @@
                     android:textSize="150dp"
                     android:gravity="center" />
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentStart="true"
-                    android:id="@+id/HSCourseContainer"
-                    android:layout_below="@+id/HSDayLabel">
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/HSDayLabel"
+                    android:id="@+id/HSCourseContainer">
 
                     <RelativeLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/HSPeriod0"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_toLeftOf="@+id/HSPeriod1"
-                        android:layout_toStartOf="@+id/HSPeriod1"
-                        android:layout_alignBottom="@+id/HSPeriod1">
+                        android:layout_weight="1"
+                        android:id="@+id/HSPeriod0" >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -123,11 +119,9 @@
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_toLeftOf="@+id/HSPeriod2"
-                        android:layout_toStartOf="@+id/HSPeriod2"
+                        android:layout_weight="1"
                         android:id="@+id/HSPeriod1" >
 
                         <TextView
@@ -184,13 +178,10 @@
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_toLeftOf="@+id/HSPeriod3"
-                        android:layout_toStartOf="@+id/HSPeriod3"
-                        android:id="@+id/HSPeriod2"
-                        android:layout_alignBottom="@+id/HSPeriod1">
+                        android:layout_weight="1"
+                        android:id="@+id/HSPeriod2" >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -246,13 +237,10 @@
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true"
-                        android:id="@+id/HSPeriod3"
-                        android:layout_alignBottom="@+id/HSPeriod2">
+                        android:layout_weight="1"
+                        android:id="@+id/HSPeriod3" >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -306,7 +294,7 @@
                             android:layout_marginRight="5dp"
                             android:layout_marginBottom="5dp" />
                     </RelativeLayout>
-                </RelativeLayout>
+                </LinearLayout>
             </RelativeLayout>
 
             <ListView
@@ -335,7 +323,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="left|start"
         android:choiceMode="singleChoice"
-        android:divider="@color/accentColor"
+        android:divider="@color/skyBlueColor"
         android:dividerHeight="1dp"
         android:background="@color/backgroundColor"
         android:id="@+id/HDList"/>

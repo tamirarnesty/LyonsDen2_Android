@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/EVHeight"
+    android:padding="16dp"
+    android:background="@color/foregroundColor">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="8dp"
+        android:singleLine="true"
+        android:textColor="@color/accentColor"
+        android:textSize="@dimen/EVTitleInfoTextSize"
+        android:id="@+id/EVTitleLabel"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/EVInfoHeight"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/EVTitleLabel"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/accentColor"
+        android:textSize="@dimen/EVTitleInfoTextSize"
+        android:id="@+id/EVInfoLabel"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/EVInfoLabel"
+        android:showDividers="none">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:textColor="@color/accentColor"
+            android:textSize="@dimen/EVDateLocationTextSize"
+            android:id="@+id/EVDateLabel"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:textColor="@color/accentColor"
+            android:textSize="@dimen/EVDateLocationTextSize"
+            android:id="@+id/EVLocationLabel"/>
+    </LinearLayout>
+</RelativeLayout>

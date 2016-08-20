@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -37,7 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     /** The custom font used with most TextViews, this is where it should always be accessed from. */
     public static Typeface hapnaMonoLight;
     /** An array of 4 RelativeLayout each of which represent a period in the timetable*/
-    private RelativeLayout[] periods;
+    private RelativeLayout[] periods = new RelativeLayout[4];
     /** The ListView that contains the announcements */
     private ListView listView;
     /** The contents of the announcement ListView */
@@ -62,8 +63,6 @@ public class HomeActivity extends AppCompatActivity {
 
         setupDrawer(this, drawerList, rootLayout, drawerToggle);
 
-        // Create and resize each period on the timetable to fit the screen
-        periods = createPeriods();
         // Resize the announcement ListView to fit the screen. DOES NOT WORK ATM!!!
         listView.setMinimumHeight(getScreenSize().y);
         // Set the custom font of the TextLabels
@@ -99,7 +98,14 @@ public class HomeActivity extends AppCompatActivity {
      */
     public static void setupDrawer (AppCompatActivity initiator, ListView drawerList, DrawerLayout rootLayout, ActionBarDrawerToggle drawerToggle) {
         // Declare the drawer list adapter, to fill the drawer list
-        drawerList.setAdapter(new ArrayAdapter<String>(initiator, android.R.layout.simple_selectable_list_item, HomeActivity.drawerContent));
+        drawerList.setAdapter(new ArrayAdapter<String>(initiator, android.R.layout.simple_selectable_list_item, HomeActivity.drawerContent) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view =super.getView(position, convertView, parent);
+                ((TextView) view.findViewById(android.R.id.text1)).setTextColor(parent.getResources().getColor(R.color.accentColor));
+                return view;
+            }
+        });
         // Set the drawer list's item click listener
         drawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
@@ -151,6 +157,11 @@ public class HomeActivity extends AppCompatActivity {
         rootLayout = (DrawerLayout) findViewById(R.id.HDLayout);
         drawerList = (ListView) findViewById(R.id.HDList);
         drawerToggle = initializeDrawerToggle(this, rootLayout);
+
+        periods[0] = (RelativeLayout) findViewById(R.id.HSPeriod0);
+        periods[1] = (RelativeLayout) findViewById(R.id.HSPeriod1);
+        periods[2] = (RelativeLayout) findViewById(R.id.HSPeriod2);
+        periods[3] = (RelativeLayout) findViewById(R.id.HSPeriod3);
     }
 
     public static void performDrawerSegue (Context initiator, int activity) {
@@ -170,28 +181,6 @@ public class HomeActivity extends AppCompatActivity {
         }
         Intent intent = new Intent (initiator, target);
         initiator.startActivity(intent);
-    }
-
-    /**
-     * Creates the period instances and resizes them to fit on the screen.
-     * @return An array of RelativeLayout objects representing periods on the timetable.
-     */
-    private RelativeLayout[] createPeriods () {
-        // TODO: Must figure out a way to scale font size depending on screen size
-
-        // Declare the periods place holder
-        RelativeLayout[] output = {(RelativeLayout) findViewById(R.id.HSPeriod0), (RelativeLayout) findViewById(R.id.HSPeriod1),
-                                   (RelativeLayout) findViewById(R.id.HSPeriod2), (RelativeLayout) findViewById(R.id.HSPeriod3)};
-        // Declare the instance of the size of the display
-        Point size = getScreenSize();
-        // Resize each 'period'
-        for (int h = 0; h < output.length; h ++) {
-            RelativeLayout.LayoutParams periodSize = (RelativeLayout.LayoutParams) output[h].getLayoutParams();
-            periodSize.width = size.x/4;
-            output[h].setLayoutParams(periodSize);
-        }
-        // Return the created periods
-        return output;
     }
 
     /**

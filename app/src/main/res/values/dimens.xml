@@ -6,6 +6,14 @@
     <dimen name="defaultCellSize">52dp</dimen>
     <dimen name="largeCellSize">100dp</dimen>
 
+    <dimen name="EVHeight">286dp</dimen>
+    <dimen name="EVInfoHeight">193dp</dimen>
+    <dimen name="EVTitleInfoTextSize">21sp</dimen>
+    <dimen name="EVDateLocationTextSize">17sp</dimen>
+
+    <dimen name="CalSDayTextSize">17sp</dimen>
+    <dimen name="CalSWeekTextSize">20sp</dimen>
+
     <dimen name="LITitleTextSize">17sp</dimen>
     <dimen name="LISubtitleTextSize">14sp</dimen>
     <dimen name="LIDefaultImageViewSize">44dp</dimen>

@@ -36,7 +36,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="left|start"
         android:choiceMode="singleChoice"
-        android:divider="@color/accentColor"
+        android:divider="@color/skyBlueColor"
         android:dividerHeight="1dp"
         android:background="@color/backgroundColor"
         android:id="@+id/LDList"/>

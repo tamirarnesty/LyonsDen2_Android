@@ -1,15 +1,66 @@
 <resources>
 
-    <!-- Base application theme. -->
+    <!-- Base application theme -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <!-- Customizations will go here -->
         <item name="colorPrimary">@color/navigationBarColor</item>
         <item name="colorPrimaryDark">@color/navigationBarDarkColor</item>
         <item name="colorAccent">@color/accentColor</item>
     </style>
 
+    <!-- SplashScreen Theme, must be a theme to be a splash -->
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
+    <!-- Calendar Theme -->
+    <style name="LyonsCalendar" parent="CaldroidDefault">
+        <item name="styleCaldroidViewLayout">@style/LyonsCalendarViewLayout</item>
+        <item name="styleCaldroidMonthName">@style/LyonsMonthName</item>
+        <item name="styleCaldroidNormalCell">@style/LyonsNormalCell</item>
+        <item name="styleCaldroidSquareCell">@style/LyonsSquareCell</item>
+        <item name="styleCaldroidGridView">@style/LyonsGridView</item>
+        <item name="styleCaldroidLeftArrow">@style/LyonsLeftButton</item>
+        <item name="styleCaldroidRightArrow">@style/LyonsRightButton</item>
+        <item name="styleCaldroidWeekdayView">@style/LyonsWeekday</item>
+    </style>
+
+    <style name="LyonsCalendarViewLayout"> <item name="android:background">@color/foregroundColor</item> </style>
+
+    <style name="LyonsMonthName" parent="CaldroidDefaultMonthName"> <item name="android:textColor">@color/accentColor</item> </style>
+
+    <style name="LyonsGridView" parent="CaldroidDefaultGridView">
+        <item name="android:horizontalSpacing">2dp</item>
+        <item name="android:adjustViewBounds">false</item>
+        <item name="android:background">@color/foregroundColor</item>
+        <item name="android:choiceMode">singleChoice</item>
+        <item name="android:listSelector">@drawable/calendar_cell_selector</item>
+    </style>
+
+    <style name="LyonsCell" parent="CaldroidDefaultCell">
+        <item name="android:textColor">@color/accentColor</item>
+        <item name="android:background">@drawable/calendar_cell</item>
+    </style>
+
+    <style name="LyonsNormalCell" parent="LyonsCell"> <item name="android:padding">5dp</item> </style>
+
+    <style name="LyonsSquareCell" parent="LyonsCell" />
+
+    <style name="LyonsArrowButton">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
+    <style name="LyonsRightButton" parent="LyonsArrowButton">
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:background">@drawable/right_arrow</item>
+    </style>
+
+    <style name="LyonsLeftButton" parent="LyonsArrowButton">
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:background">@drawable/left_arrow</item>
+    </style>
+
+    <style name="LyonsWeekday" parent="CaldroidDefaultWeekday"> <item name="android:textColor">@color/accentColor</item> </style>
 </resources>

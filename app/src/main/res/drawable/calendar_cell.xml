@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Default Cell -->
+    <item android:maxLevel="0">
+        <shape>
+            <solid android:color="@color/CalSDefaultCellColor"/>
+            <corners android:radius="5dp"/>
+            <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
+            <stroke android:color="@android:color/transparent"/>
+        </shape>
+    </item>
+
+    <!-- Default Cell Event -->
+    <item android:maxLevel="1">
+        <shape>
+            <gradient android:startColor="@color/CalSDefaultCellColor" android:centerColor="@color/CalSDefaultCellColor" android:endColor="@color/CalSEventCellColor" android:type="linear" android:angle="270" android:centerY=".7"/>
+            <corners android:radius="5dp"/>
+            <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
+            <stroke android:color="@android:color/transparent"/>
+        </shape>
+    </item>
+
+    <!-- Default Cell Selected -->
+    <item android:maxLevel="2">
+        <shape>
+            <solid android:color="@color/CalSDefaultCellColor"/>
+            <corners android:radius="5dp"/>
+            <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
+            <stroke android:color="@color/accentColor" android:width="3dp"/>
+        </shape>
+    </item>
+
+    <!-- Default Cell Event Selected -->
+    <item android:maxLevel="3">
+        <shape>
+            <gradient android:startColor="@color/CalSDefaultCellColor" android:centerColor="@color/CalSDefaultCellColor" android:endColor="@color/CalSEventCellColor" android:type="linear" android:angle="270" android:centerY=".7"/>
+            <corners android:radius="5dp"/>
+            <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
+            <stroke android:color="@color/accentColor" android:width="3dp"/>
+        </shape>
+    </item>
+
+    <!-- Today Cell -->
+    <item android:maxLevel="4">
+        <shape>
+            <solid android:color="@color/backgroundColor"/>
+            <corners android:radius="5dp"/>
+            <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
+            <stroke android:color="@android:color/transparent"/>
+        </shape>
+    </item>
+
+    <!-- Today Cell Event -->
+    <item android:maxLevel="5">
+        <shape>
+            <gradient android:startColor="@color/backgroundColor" android:centerColor="@color/CalSDefaultCellColor" android:endColor="@color/CalSEventCellColor" android:type="linear" android:angle="270" android:centerY=".7"/>
+            <corners android:radius="5dp"/>
+            <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
+            <stroke android:color="@android:color/transparent"/>
+        </shape>
+    </item>
+
+    <!-- Today Cell Selected -->
+    <item android:maxLevel="6">
+        <shape>
+            <solid android:color="@color/backgroundColor"/>
+            <corners android:radius="5dp"/>
+            <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
+            <stroke android:color="@color/accentColor" android:width="3dp"/>
+        </shape>
+    </item>
+
+    <!-- Today Cell Event Selected -->
+    <item android:maxLevel="7">
+        <shape>
+            <gradient android:startColor="@color/backgroundColor" android:centerColor="@color/CalSDefaultCellColor" android:endColor="@color/CalSEventCellColor" android:type="linear" android:angle="270" android:centerY=".7"/>
+            <corners android:radius="5dp"/>
+            <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
+            <stroke android:color="@color/accentColor" android:width="3dp"/>
+        </shape>
+    </item>
+
+</level-list>
