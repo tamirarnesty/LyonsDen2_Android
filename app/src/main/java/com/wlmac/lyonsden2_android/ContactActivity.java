@@ -15,6 +15,8 @@ import com.wlmac.lyonsden2_android.contactActivities.AnnouncementActivity;
 import com.wlmac.lyonsden2_android.contactActivities.MusicActivity;
 import com.wlmac.lyonsden2_android.resourceActivities.ListViewerActivity;
 
+import java.util.ArrayList;
+
 /**
  * The activity used to display the methods for contacting the school.
  *
@@ -56,21 +58,19 @@ public class ContactActivity extends AppCompatActivity {
     public void requestTeacherList (View view) {
         // TODO: Implement a teacher list
 
-        // TODO: TEMPORARY TEACHER LIST FILL
+        ArrayList<String> titles = new ArrayList<>();
+        ArrayList<String> subTitles = new ArrayList<>();
+
+        // TODO: TEMPORARY TEACHIR LIST FILL
+        // Segue into a teacher list.
         for (int h = 0; h < 50; h ++) {
-            ListActivity.content[0].add("I'm a title" + h);
-            ListActivity.content[1].add("I'm a description" + h);
-            ListActivity.content[2].add("I'm a time" + h);
-            ListActivity.content[3].add("I'm a locaiton" + h);
+            titles.add("I'm a title" + h);
+            subTitles.add("I'm a description" + h);
         }
         // Segue into a teacher list.
-        Intent intent = new Intent(this, ListActivity.class);
-//        for (int h = 0; h < 50; h ++) {
-//            ListViewerActivity.content[0].add("I'm a title" + h);
-//            ListViewerActivity.content[1].add("I'm a description" + h);
-//        }
-//        // Segue into a teacher list.
-//        Intent intent = new Intent(this, ListViewerActivity.class);
+        Intent intent = new Intent(this, ListViewerActivity.class);
+        intent.putStringArrayListExtra("titles", titles);
+        intent.putStringArrayListExtra("subtitles", subTitles);
         startActivity(intent);
     }
 

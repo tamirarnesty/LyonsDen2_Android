@@ -170,12 +170,17 @@ public class HomeActivity extends AppCompatActivity {
             target = HomeActivity.class;
         } else if (activity == 2) {
             target = CalendarActivity.class;
-        } else if (activity == 3) {
-            ListActivity.showingClubs = true;
+        } else if (activity == 3 || activity == 4) {
+            ListActivity.showingClubs = (activity == 3);
             target = ListActivity.class;
-        } else if (activity == 4) {
-            ListActivity.showingClubs = false;
-            target = ListActivity.class;
+
+//            // TODO: TEMPORARY LIST FILL
+//            for (int h = 0; h < 50; h ++) {
+//                ListActivity.content[0].add("I'm a title" + h);
+//                ListActivity.content[1].add("I'm a description" + h);
+//                ListActivity.content[2].add("I'm a time" + h);
+//                ListActivity.content[3].add("I'm a locaiton" + h);
+//            }
         } else if (activity == 5) {
             target = ContactActivity.class;
         }

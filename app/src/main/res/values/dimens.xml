@@ -27,4 +27,10 @@
     <dimen name="ISDescriptionHeight">290dp</dimen>
     <dimen name="ISTitleTextSize">24sp</dimen>
     <dimen name="ISTextSize">20sp</dimen>
+
+    <dimen name="ClubSTitleTextSize">24sp</dimen>
+    <dimen name="ClubSDescriptionTextSize">17sp</dimen>
+    <dimen name="ClubSMemberTextSize">18sp</dimen>
+    <dimen name="ClubSButtonTextSize">19sp</dimen>
+    <dimen name="ClubSDescriptionHeight">88dp</dimen>
 </resources>

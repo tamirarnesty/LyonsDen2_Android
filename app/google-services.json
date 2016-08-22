@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "439458941706",
+    "firebase_url": "https://lyons-den.firebaseio.com",
+    "project_id": "lyons-den",
+    "storage_bucket": "lyons-den.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439458941706:android:ddb6bff9a58c79f5",
+        "android_client_info": {
+          "package_name": "com.wlmac.lyonsden2_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "439458941706-sohvfl810l5phm9m2dv4rmkgo29jqv30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9YU3yPiw0ow4qiFD-4Ld93BJUw_b_5nQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

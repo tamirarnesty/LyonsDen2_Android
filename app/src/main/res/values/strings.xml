@@ -32,4 +32,8 @@
     <string name="ISDescriptionDefault">Description goes here</string>
     <string name="ISTimeDefault">Time goes here</string>
     <string name="ISLocationDefault">Location goes here</string>
+    <string name="ISImageContentDescription">A picture of the event</string>
+
+    <!-- Club Info Screen Strings -->
+    <string name="ClubSMemberButton">Members</string>
 </resources>

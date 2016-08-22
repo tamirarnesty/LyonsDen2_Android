@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/foregroundColor"
+    tools:context="com.wlmac.lyonsden2_android.resourceActivities.ClubActivity">
+
+    <!-- Title, Description & Image Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:clipChildren="true"
+        android:id="@+id/ClubSTopSection">
+
+        <!-- Image -->
+        <ImageView
+            android:layout_width="@dimen/ISImageViewWidth"
+            android:layout_height="@dimen/ISImageViewHeight"
+            android:contentDescription="@string/ISImageContentDescription"
+            android:id="@+id/ClubSImageView"/>
+
+        <!-- Title & Description Container -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical">
+
+            <!-- Title Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:textColor="@color/accentColor"
+                android:textSize="@dimen/ClubSTitleTextSize"
+                android:id="@+id/ClubSTitleLabel"/>
+
+            <!-- Description Label -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/ClubSDescriptionHeight"
+                android:layout_weight="2"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/accentColor"
+                android:textSize="@dimen/ClubSDescriptionTextSize"
+                android:id="@+id/ClubSDescriptionLabel"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Leader List & Members Button Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ClubSTopSection"
+        android:layout_marginTop="8dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:id="@+id/ClubSMiddleSection">
+
+        <!-- Leaders List Label -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
+            android:maxLines="1"
+            android:textColor="@color/accentColor"
+            android:textSize="@dimen/ClubSMemberTextSize"
+            android:id="@+id/ClubSLeaderList"/>
+
+        <!-- Member List Button -->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/foregroundColor"
+            android:textColor="@color/accentColor"
+            android:textSize="@dimen/ClubSButtonTextSize"
+            android:text="@string/ClubSMemberButton"
+            android:onClick="displayMembers"/>
+    </LinearLayout>
+
+    <!-- Clubs Announcements List -->
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/ClubSMiddleSection"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@color/backgroundColor"
+        android:divider="@color/skyBlueColor"
+        android:dividerHeight="1dp"
+        android:id="@+id/ClubSAnnouncements"/>
+</RelativeLayout>
