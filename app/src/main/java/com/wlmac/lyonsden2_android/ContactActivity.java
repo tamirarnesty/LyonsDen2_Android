@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.wlmac.lyonsden2_android.contactActivities.AnnouncementActivity;
 import com.wlmac.lyonsden2_android.contactActivities.MusicActivity;
@@ -35,6 +36,10 @@ public class ContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_activity);
+        if (getIntent().getBooleanExtra("afterProposal", false)) {
+            Toast.makeText(this, "Submitted!", Toast.LENGTH_SHORT).show();
+        }
+
         rootLayout = (DrawerLayout) findViewById(R.id.ConDLayout);
         drawerList = (ListView) findViewById(R.id.ConDList);
         drawerToggle = HomeActivity.initializeDrawerToggle(this, rootLayout);

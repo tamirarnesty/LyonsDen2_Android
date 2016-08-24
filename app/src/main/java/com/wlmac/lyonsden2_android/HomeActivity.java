@@ -44,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
     /** The contents of the announcement ListView */
     private ArrayList<String> announcements = new ArrayList<>();
     /** A list of item that will be displayed in the every drawer list of this program. */
-    private static String[] drawerContent = {"Home", "Announcements", "Calendar", "Clubs", "Events", "Contact"};
+    private static String[] drawerContent = {"Home", "Calendar", "Announcements", "Events", "Clubs", "Contact", "Me"};  // Just trying things out :)
     /** An instance of the root layout of this activity. */
     private DrawerLayout rootLayout;
     /** An instance of the ListView used in this activity's navigation drawer. */
@@ -168,21 +168,15 @@ public class HomeActivity extends AppCompatActivity {
         Class target = null;
         if (activity == 0) {
             target = HomeActivity.class;
-        } else if (activity == 2) {
+        } else if (activity == 1) {
             target = CalendarActivity.class;
-        } else if (activity == 3 || activity == 4) {
-            ListActivity.showingClubs = (activity == 3);
+        } else if (activity == 2 || activity == 3 || activity == 4) {
+            ListActivity.displayContent = activity - 1;
             target = ListActivity.class;
-
-//            // TODO: TEMPORARY LIST FILL
-//            for (int h = 0; h < 50; h ++) {
-//                ListActivity.content[0].add("I'm a title" + h);
-//                ListActivity.content[1].add("I'm a description" + h);
-//                ListActivity.content[2].add("I'm a time" + h);
-//                ListActivity.content[3].add("I'm a locaiton" + h);
-//            }
         } else if (activity == 5) {
             target = ContactActivity.class;
+        } else {    // This is where you add entry for user
+            return;
         }
         Intent intent = new Intent (initiator, target);
         initiator.startActivity(intent);

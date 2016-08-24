@@ -54,7 +54,12 @@ public class InfoActivity extends AppCompatActivity {
 
         // An instance of the date&time TextView of this activity
         TextView dateLabel = (TextView) findViewById(R.id.ISDateLabel);
-        dateLabel.setText(intent.getStringExtra("date"));
+
+        // 20160906240000
+        String dateTime = intent.getStringExtra("date").substring(8, 12);
+        dateTime = dateTime.substring(0, 2) + ":" + dateTime.substring(2);
+        if (dateTime.equals("24:00")) dateTime = "All day";
+        dateLabel.setText(dateTime);
 
         // An instance of the location TextView of this activity
         TextView locationLabel = (TextView) findViewById(R.id.ISLocationLabel);

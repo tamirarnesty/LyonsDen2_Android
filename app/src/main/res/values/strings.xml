@@ -25,7 +25,13 @@
     <!-- Announcement Proposal Screen Strings -->
     <string name="APSTitle">Title:</string>
     <string name="APSDescription">Description:</string>
+    <string name="APSLocation">Location:</string>
     <string name="APSTeacher">Teacher Approval Login:</string>
+    <string name="APSRequiredHint">Required</string>
+    <string name="APSOptionalHint">Optional</string>
+    <string name="APSDateButtonText">Pick a Date</string>
+    <string name="APSTimeButtonText">Pick a Time</string>
+    <string name="APSSubmitButtonText">Submit</string>
 
     <!-- Info Screen Strings -->
     <string name="ISTitleDefault">Title goes here</string>

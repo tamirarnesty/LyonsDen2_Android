@@ -32,7 +32,7 @@ import java.util.ArrayList;
  * @version 1, 2016/08/05
  */
 public class ListActivity extends AppCompatActivity {
-    public static boolean showingClubs = false;
+    public static int displayContent = 0;
     /** An ArrayList of ArrayLists each of which represents a data field for each of the list's cells. */
     private ArrayList<String>[] content = new ArrayList[]{new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>()};
     /** An instance of the list of this activity. */
@@ -59,10 +59,11 @@ public class ListActivity extends AppCompatActivity {
         ListAdapter adapter = new ListAdapter (this, content[0], content[1], null, true);
         list.setAdapter(adapter);
 
-        if (showingClubs)
+
+        if (displayContent == 3)
             parseForClubs(adapter);
         else
-            parseForEvents(adapter, content, FirebaseDatabase.getInstance().getReference("events"));
+            parseForEvents(adapter, content, FirebaseDatabase.getInstance().getReference((displayContent == 1) ? "announcements" : "events"));
 
         // Set the click listener of this activity's list
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -71,10 +72,10 @@ public class ListActivity extends AppCompatActivity {
                 // Event keys: title, info, date, location
                 // Clubs keys: title, info, leader, (pass link to members)
 
-                Intent intent = new Intent(parent.getContext(), (showingClubs) ? ClubActivity.class : InfoActivity.class);
+                Intent intent = new Intent(parent.getContext(), (displayContent == 3) ? ClubActivity.class : InfoActivity.class);
                 intent.putExtra("title", content[0].get(position));
                 intent.putExtra("info", content[1].get(position));
-                if (showingClubs) {
+                if (displayContent == 3) {
                     intent.putExtra("leaders", content[2].get(position));
                     Bundle args = new Bundle();
 //                    args.put
@@ -84,7 +85,7 @@ public class ListActivity extends AppCompatActivity {
                     intent.putExtra("location", content[3].get(position));
                 }
 
-                if (showingClubs)
+                if (displayContent == 3)
                     ClubActivity.image = null;
                 else
                     InfoActivity.image = null;
@@ -147,10 +148,8 @@ public class ListActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (showingClubs)
-            this.setTitle("Clubs");
-        else
-            this.setTitle("Event");
+        String[] titles = {"Announcements", "Events", "Clubs"};
+        this.setTitle(titles[displayContent-1]);
     }
 
     @Override

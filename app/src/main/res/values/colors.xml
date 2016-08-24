@@ -2,10 +2,11 @@
 <resources>
     <color name="navigationBarColor">#064CB2</color>
     <color name="navigationBarDarkColor">#064CA1</color>
+    <color name="redStroke">#7fff002f</color>
     <color name="foregroundColor">#033e93</color>
     <color name="backgroundColor">#022a64</color>
     <color name="skyBlueColor">#a3bee5</color>
+    <color name="accentColor">#fec637</color>
     <color name="CalSEventCellColor">#7fa3bee5</color>
     <color name="CalSDefaultCellColor">#7f022a64</color>
-    <color name="accentColor">#fec637</color>
 </resources>

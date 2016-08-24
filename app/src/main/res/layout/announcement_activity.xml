@@ -10,93 +10,194 @@
     android:background="@color/foregroundColor"
     tools:context=".contactActivities.AnnouncementActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="@string/APSTitle"
-        android:textSize="21sp"
-        android:textColor="@color/accentColor"
-        android:id="@+id/APSTitleLabel" />
-
-    <EditText
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/APSTitleLabel"
-        android:layout_toEndOf="@id/APSTitleLabel"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:maxLines="1"
-        android:textSize="21sp"
-        android:textColor="@color/accentColor"
-        android:id="@+id/APSTitleField"/>
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/APSTitleLabel"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="16dp"
-        android:text="@string/APSDescription"
-        android:textSize="21sp"
-        android:textColor="@color/accentColor"
-        android:id="@+id/APSDescriptionLabel"/>
-    
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/APS_description_field_height"
-        android:layout_below="@id/APSDescriptionLabel"
-        android:layout_marginTop="8dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:scrollHorizontally="false"
-        android:textSize="21sp"
-        android:textColor="@color/accentColor"
-        android:id="@+id/APSDescriptionField"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/APSDescriptionField"
-        android:layout_marginTop="8dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:text="@string/APSTeacher"
-        android:textSize="21sp"
-        android:textColor="@color/accentColor"
-        android:id="@+id/APSTeacherLabel"/>
+            <!-- Title Label & Field Container -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <EditText
-        android:layout_width="@dimen/APS_teacher_login_width"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/APSTeacherLabel"
-        android:layout_marginTop="8dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:inputType="numberPassword"
-        android:textColor="@color/accentColor"
-        android:id="@+id/APSTeacherLogin"/>
+                <!-- Title Label -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/APSTitle"
+                    android:textSize="21sp"
+                    android:textColor="@color/accentColor"
+                    android:id="@+id/APSTitleLabel" />
 
-    <EditText
-        android:layout_width="@dimen/APS_teacher_login_width"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/APSTeacherLogin"
-        android:layout_marginTop="8dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:inputType="textPassword"
-        android:textColor="@color/accentColor"
-        android:id="@+id/APSTeacherPass"/>
+                <!-- Title Field -->
+                <EditText
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_toRightOf="@id/APSTitleLabel"
+                    android:layout_toEndOf="@id/APSTitleLabel"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:hint="@string/APSRequiredHint"
+                    android:maxLines="1"
+                    android:id="@+id/APSTitleField"/>
+            </RelativeLayout>
+
+            <!-- Description Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/APSDescription"
+                android:textSize="21sp"
+                android:textColor="@color/accentColor"
+                android:id="@+id/APSDescriptionLabel"/>
+
+            <!-- Description Field -->
+            <EditText
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/APS_description_field_height"
+                android:layout_marginTop="8dp"
+                android:gravity="top"
+                android:hint="@string/APSRequiredHint"
+                android:inputType="text|textMultiLine|textCapSentences"
+                android:scrollHorizontally="false"
+                android:id="@+id/APSDescriptionField"/>
+
+            <!-- Date Button & Field Container -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <!-- Date Field -->
+                <TextView
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:onClick="pickDate"
+                    android:id="@+id/APSDateField"/>
+
+                <!-- Date Button -->
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@color/backgroundColor"
+                    android:textColor="@color/accentColor"
+                    android:onClick="pickDate"
+                    android:text="@string/APSDateButtonText"/>
+            </LinearLayout>
+
+            <!-- Time Button & Field Container -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <!-- Time Field -->
+                <TextView
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:onClick="pickTime"
+                    android:id="@+id/APSTimeField"/>
+
+                <!-- Time Button -->
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@color/backgroundColor"
+                    android:textColor="@color/accentColor"
+                    android:onClick="pickTime"
+                    android:text="@string/APSTimeButtonText"/>
+            </LinearLayout>
+
+            <!-- Location Label & Field Container -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <!-- Location Label -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/APSLocation"
+                    android:textSize="21sp"
+                    android:textColor="@color/accentColor"
+                    android:id="@+id/APSLocationLabel" />
+
+                <!-- Location Field -->
+                <EditText
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_toRightOf="@id/APSLocationLabel"
+                    android:layout_toEndOf="@id/APSLocationLabel"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:hint="@string/APSOptionalHint"
+                    android:maxLines="1"
+                    android:id="@+id/APSLocationField"/>
+            </RelativeLayout>
+
+            <!-- Teacher Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/APSTeacher"
+                android:textSize="21sp"
+                android:textColor="@color/accentColor"
+                android:id="@+id/APSTeacherLabel"/>
+
+            <!-- Teacher Field -->
+            <EditText
+                style="@style/EditTextStyle"
+                android:layout_width="@dimen/APS_teacher_login_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/APSRequiredHint"
+                android:inputType="textPassword"
+                android:id="@+id/APSTeacherLogin"/>
+
+            <!-- Submission Button -->
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/backgroundColor"
+                android:textColor="@color/accentColor"
+                android:onClick="submitAnnouncement"
+                android:text="@string/APSSubmitButtonText"
+                android:id="@+id/APSApproveButton"/>
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
