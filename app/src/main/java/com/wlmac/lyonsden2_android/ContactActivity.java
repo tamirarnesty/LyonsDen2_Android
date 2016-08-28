@@ -76,6 +76,7 @@ public class ContactActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ListViewerActivity.class);
         intent.putStringArrayListExtra("titles", titles);
         intent.putStringArrayListExtra("subtitles", subTitles);
+        intent.putExtra("title", "Teachers");
         startActivity(intent);
     }
 

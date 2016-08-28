@@ -25,6 +25,9 @@ import com.wlmac.lyonsden2_android.resourceActivities.InfoActivity;
 
 import java.util.ArrayList;
 
+// TODO: FIGURE OUT ERROR HANDLING. LIKE NO INTERNET
+// TODO: CREATE A LOADING INDICATOR FOR WHEN UPDATING
+
 /**
  * The activity that will be used to download and display the list of events or clubs.
  *
@@ -33,6 +36,8 @@ import java.util.ArrayList;
  */
 public class ListActivity extends AppCompatActivity {
     public static int displayContent = 0;
+    public static boolean contentChanged = false;
+    private ArrayList<String> clubKeys = new ArrayList<>();
     /** An ArrayList of ArrayLists each of which represents a data field for each of the list's cells. */
     private ArrayList<String>[] content = new ArrayList[]{new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>()};
     /** An instance of the list of this activity. */
@@ -77,9 +82,7 @@ public class ListActivity extends AppCompatActivity {
                 intent.putExtra("info", content[1].get(position));
                 if (displayContent == 3) {
                     intent.putExtra("leaders", content[2].get(position));
-                    Bundle args = new Bundle();
-//                    args.put
-
+                    intent.putExtra("clubKey", clubKeys.get(position));
                 } else {
                     intent.putExtra("date", content[2].get(position));
                     intent.putExtra("location", content[3].get(position));
@@ -94,8 +97,6 @@ public class ListActivity extends AppCompatActivity {
             }
         });
     }
-
-    // TODO: FIGURE OUT ERROR HANDLING. LIKE NO INTERNET
 
     public static void parseForEvents(final ListAdapter adapter, final ArrayList<String>[] content, DatabaseReference ref) {
         final String[] keys = {"title", "description", "dateTime", "location"};
@@ -133,8 +134,9 @@ public class ListActivity extends AppCompatActivity {
                     for (int h = 0; h < keys.length; h ++) {
                         content[h].add(club.child(keys[h]).getValue(String.class));
                     }
+                    clubKeys.add(club.child("key").getValue(String.class));
                 }
-                Log.d("Key:", dataSnapshot.getKey());
+                Log.d("Club Keys:", clubKeys.toString());
                 adapter.notifyDataSetChanged();
             }
 

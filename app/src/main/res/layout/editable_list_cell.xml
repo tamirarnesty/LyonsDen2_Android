@@ -15,6 +15,7 @@
         android:layout_height="@dimen/LIDefaultImageViewSize"
         android:layout_marginRight="4dp"
         android:layout_marginEnd="4dp"
+        android:background="@color/accentColor"
         android:scaleType="fitCenter"
         android:id="@+id/LIDImageView"/>
 
@@ -28,6 +29,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/accentColor"
             android:lines="1"
             android:textColor="@color/accentColor"
             android:textSize="@dimen/LITitleTextSize"
@@ -37,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:background="@color/accentColor"
             android:lines="1"
             android:textColor="@color/accentColor"
             android:textSize="@dimen/LISubtitleTextSize"
@@ -51,6 +54,5 @@
         android:layout_gravity="right|end"
         android:background="@color/deleteRed"
         android:text="@string/deleteButton"
-        android:visibility="gone"
         android:id="@+id/LIDDeleteButton"/>
 </LinearLayout>

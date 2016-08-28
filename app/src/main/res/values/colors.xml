@@ -9,4 +9,5 @@
     <color name="accentColor">#fec637</color>
     <color name="CalSEventCellColor">#7fa3bee5</color>
     <color name="CalSDefaultCellColor">#7f022a64</color>
+    <color name="deleteRed">#ac0028</color>
 </resources>

@@ -2,6 +2,9 @@
     <string name="app_name">Lyon\'s Den</string>
     <string name="drawerOpen">Navigation Drawer Open</string>
     <string name="drawerClose">Navigation Drawer Close</string>
+    <string name="editAction">Edit</string>
+    <string name="addAction">Add</string>
+    <string name="deleteButton">Delete</string>
 
     <!-- Login Screen Strings -->
     <string name="LSLoginHint">Enter e-mail here</string>
@@ -42,4 +45,7 @@
 
     <!-- Club Info Screen Strings -->
     <string name="ClubSMemberButton">Members</string>
+
+    <!-- User Screen Strings -->
+    <string name="USLeaderButtonText">Become Club Leader</string>
 </resources>

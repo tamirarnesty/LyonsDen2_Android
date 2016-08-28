@@ -45,6 +45,7 @@
             android:label="Information" />
         <activity android:name=".contactActivities.MusicActivity" />
         <activity android:name=".resourceActivities.ClubActivity" />
+        <activity android:name=".UserActivity"></activity>
     </application>
 
 </manifest>

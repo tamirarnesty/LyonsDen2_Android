@@ -3,8 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="defaultCellSize">52dp</dimen>
-    <dimen name="largeCellSize">100dp</dimen>
+    <dimen name="defaultCellSize">56dp</dimen>
+    <dimen name="largeCellSize">104dp</dimen>
 
     <dimen name="EVHeight">286dp</dimen>
     <dimen name="EVInfoHeight">193dp</dimen>

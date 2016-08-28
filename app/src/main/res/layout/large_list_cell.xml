@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/largeCellSize"
     android:background="@color/foregroundColor"
     android:layout_gravity="start"
+    android:orientation="horizontal"
     android:paddingLeft="4dp"
     android:paddingTop="8dp"
     android:paddingRight="4dp"
@@ -13,36 +14,44 @@
         android:layout_width="@dimen/LILargeImageViewSize"
         android:layout_height="@dimen/LILargeImageViewSize"
         android:layout_marginRight="4dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="4dp"
         android:scaleType="fitCenter"
-        android:id="@+id/LILImageView"/>
+        android:id="@+id/LIDImageView"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/LILImageView"
-        android:layout_toEndOf="@id/LILImageView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:lines="1"
-        android:textColor="@color/accentColor"
-        android:textSize="@dimen/LITitleTextSize"
-        android:id="@+id/LILTitleLabel"/>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/LILTitleLabel"
-        android:layout_toRightOf="@id/LILImageView"
-        android:layout_toEndOf="@id/LILImageView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:textColor="@color/accentColor"
-        android:textSize="@dimen/LISubtitleTextSize"
-        android:id="@+id/LILInfoLabel"/>
-</RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:textColor="@color/accentColor"
+            android:textSize="@dimen/LITitleTextSize"
+            android:id="@+id/LIDTitleLabel"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="4dp"
+            android:lines="1"
+            android:textColor="@color/accentColor"
+            android:textSize="@dimen/LISubtitleTextSize"
+            android:id="@+id/LIDInfoLabel"/>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_gravity="right|end"
+        android:background="@color/deleteRed"
+        android:text="@string/deleteButton"
+        android:visibility="gone"
+        android:id="@+id/LIDDeleteButton"/>
+</LinearLayout>

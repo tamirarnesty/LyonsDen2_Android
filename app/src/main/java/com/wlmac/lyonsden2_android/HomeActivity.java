@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+// TODO: IMPLEMENT ANDROID PROGRESS INDICATORS WHERE NEEDED
+
 /**
  * The activity that will be used to display the home screen. The home screen consists of a label for
  * today's day, a timetable that highlights the current period and a list of the most recent announcements.
@@ -110,8 +112,7 @@ public class HomeActivity extends AppCompatActivity {
         drawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position != 1)  // If its not 'Announcements' that is selected then
-                    HomeActivity.performDrawerSegue(parent.getContext(), position); // Segue into the appropriate Activity
+                HomeActivity.performDrawerSegue(parent.getContext(), position); // Segue into the appropriate Activity
             }
         });
         // Display the drawer indicator
@@ -175,8 +176,8 @@ public class HomeActivity extends AppCompatActivity {
             target = ListActivity.class;
         } else if (activity == 5) {
             target = ContactActivity.class;
-        } else {    // This is where you add entry for user
-            return;
+        } else if (activity == 6) {
+            target = UserActivity.class;
         }
         Intent intent = new Intent (initiator, target);
         initiator.startActivity(intent);
