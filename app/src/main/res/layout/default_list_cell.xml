@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/defaultCellSize"
-    android:background="@color/foregroundColor"
+    android:background="@color/listCellBackground"
     android:layout_gravity="start"
     android:orientation="horizontal"
     android:paddingLeft="4dp"
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lines="1"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/whiteText"
             android:textSize="@dimen/LITitleTextSize"
             android:id="@+id/LIDTitleLabel"/>
 
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:lines="1"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/whiteText"
             android:textSize="@dimen/LISubtitleTextSize"
             android:id="@+id/LIDInfoLabel"/>
     </LinearLayout>

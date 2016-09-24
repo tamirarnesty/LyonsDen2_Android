@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/foregroundColor"
+    android:background="@color/background"
     tools:context="com.wlmac.lyonsden2_android.resourceActivities.ClubActivity">
 
     <!-- Title, Description & Image Container -->
@@ -13,7 +13,7 @@
         android:paddingTop="5dp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:background="@color/foregroundColor"
+        android:background="@color/background"
         android:orientation="horizontal"
         android:clipChildren="true"
         android:id="@+id/ClubSTopSection">
@@ -40,7 +40,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:textColor="@color/accentColor"
+                android:textColor="@color/accent"
                 android:textSize="@dimen/ClubSTitleTextSize"
                 android:id="@+id/ClubSTitleLabel"/>
 
@@ -50,7 +50,7 @@
                 android:layout_height="@dimen/ClubSDescriptionHeight"
                 android:layout_weight="2"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/accentColor"
+                android:textColor="@color/accent"
                 android:textSize="@dimen/ClubSDescriptionTextSize"
                 android:id="@+id/ClubSDescriptionLabel"/>
         </LinearLayout>
@@ -66,7 +66,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:paddingTop="8dp"
-        android:background="@color/foregroundColor"
+        android:background="@color/background"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:orientation="horizontal"
@@ -80,7 +80,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginEnd="8dp"
             android:maxLines="1"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/accent"
             android:textSize="@dimen/ClubSMemberTextSize"
             android:id="@+id/ClubSLeaderList"/>
 
@@ -88,8 +88,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/foregroundColor"
-            android:textColor="@color/accentColor"
+            android:background="@color/accent"
+            android:textColor="@color/whiteText"
             android:textSize="@dimen/ClubSButtonTextSize"
             android:text="@string/ClubSMemberButton"
             android:onClick="displayMembers"/>
@@ -105,8 +105,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:background="@color/backgroundColor"
-        android:divider="@color/skyBlueColor"
+        android:background="@color/listCellBackground"
+        android:divider="@color/listDivider"
         android:dividerHeight="1dp"
         android:id="@+id/ClubSAnnouncements"/>
 </RelativeLayout>

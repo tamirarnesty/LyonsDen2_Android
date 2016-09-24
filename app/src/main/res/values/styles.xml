@@ -4,13 +4,13 @@
     <!-- Base application theme -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customizations will go here -->
-        <item name="colorPrimary">@color/navigationBarColor</item>
-        <item name="colorPrimaryDark">@color/navigationBarDarkColor</item>
-        <item name="colorAccent">@color/accentColor</item>
+        <item name="colorPrimary">@color/navigationBar</item>
+        <item name="colorPrimaryDark">@color/navigationBar</item>
+        <item name="colorAccent">@color/navigationBar</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="android:color">@color/accentColor</item>
+        <item name="android:color">@color/navigationBarText</item>
     </style>
 
     <!-- SplashScreen Theme, must be a theme to be a splash -->
@@ -33,19 +33,19 @@
     <style name="LyonsCalendarViewLayout"> <item name="android:background">@color/foregroundColor</item> </style>
 
     <style name="LyonsMonthName" parent="CaldroidDefaultMonthName">
-        <item name="android:textColor">@color/accentColor</item>
+        <item name="android:textColor">@color/navigationBarText</item>
     </style>
 
     <style name="LyonsGridView" parent="CaldroidDefaultGridView">
         <item name="android:horizontalSpacing">2dp</item>
         <item name="android:adjustViewBounds">false</item>
-        <item name="android:background">@color/foregroundColor</item>
+        <item name="android:background">@color/background</item>
         <item name="android:choiceMode">singleChoice</item>
         <item name="android:listSelector">@drawable/calendar_cell_selector</item>
     </style>
 
     <style name="LyonsCell" parent="CaldroidDefaultCell">
-        <item name="android:textColor">@color/accentColor</item>
+        <item name="android:textColor">@color/navigationBarText</item>
         <item name="android:background">@drawable/calendar_cell</item>
     </style>
 
@@ -72,7 +72,60 @@
     </style>
 
     <style name="LyonsWeekday" parent="CaldroidDefaultWeekday">
-        <item name="android:textColor">@color/accentColor</item>
+        <item name="android:textColor">@color/navigationBarText</item>
+    </style>
+
+    <!-- Home Screen Themes -->
+    <style name="TimeTablePeriodContainer">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:onClick">periodClicked</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@color/textFieldBackground</item>
+    </style>
+
+    <style name="TimeTablePeriodParameter">
+        <item name="android:textColor">@color/whiteText</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+    <!-- User Screen Themes -->
+    <style name="UserParameterLabel">
+        <item name="android:layout_width">@dimen/USTextLabelWidth</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">end</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="UserParameterField">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:cursorVisible">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:enabled">false</item>
+        <item name="android:clickable">false</item>
+        <item name="android:inputType">none</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/whiteText</item>
+        <item name="android:background">@color/textFieldBackground</item>
+    </style>
+
+    <style name="UserButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:background">@color/accent</item>
+        <item name="android:textColor">@color/whiteText</item>
+        <item name="android:onClick">editAccount</item>
     </style>
 
     <!-- Announcement Proposal Themes -->
@@ -81,7 +134,7 @@
         <item name="android:inputType">text</item>
         <item name="android:padding">5dp</item>
         <item name="android:textSize">21sp</item>
-        <item name="android:textColor">@color/accentColor</item>
+        <item name="android:textColor">@color/whiteText</item>
     </style>
 
     <style name="DatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">

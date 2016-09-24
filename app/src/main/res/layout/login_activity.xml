@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/foregroundColor"
+    android:background="@color/background"
     tools:context="com.wlmac.lyonsden2_android.LoginActivity">
 
     <ImageView
@@ -23,9 +23,9 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true"
-        android:background="@color/backgroundColor"
+        android:background="@color/accent"
         android:text="@string/LSLoginButton"
-        android:textColor="@color/accentColor"
+        android:textColor="@color/whiteText"
         android:onClick="logIn"
         android:id="@+id/LSLogin" />
 
@@ -45,7 +45,7 @@
             android:padding="0dp"
             android:background="@drawable/segmented_button"
             android:text="@string/LSSignUpButton"
-            android:textColor="@color/backgroundColor"
+            android:textColor="@color/segmentedButtonUnselected"
             android:textSize="12sp"
             android:textAllCaps="false"
             android:tag="signup"
@@ -64,7 +64,7 @@
             android:padding="0dp"
             android:background="@drawable/segmented_button"
             android:text="@string/LSLoginButton"
-            android:textColor="@color/backgroundColor"
+            android:textColor="@color/segmentedButtonUnselected"
             android:textSize="12sp"
             android:textAllCaps="false"
             android:tag="login"
@@ -84,32 +84,35 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/textFieldBackground"
             android:inputType="textEmailAddress"
             android:ems="10"
             android:id="@+id/LSEmailField"
             android:maxLines="1"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/whiteText"
             android:hint="@string/LSLoginHint" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/textFieldBackground"
             android:inputType="textPassword"
             android:ems="10"
             android:maxLines="1"
             android:hint="@string/LSPassHint"
             android:fontFamily="sans-serif"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/whiteText"
             android:id="@+id/LSPassField" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/textFieldBackground"
             android:inputType="text"
             android:ems="10"
             android:maxLines="1"
             android:hint="@string/LSCodeHint"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/whiteText"
             android:id="@+id/LSCodeField"/>
     </LinearLayout>
 </RelativeLayout>

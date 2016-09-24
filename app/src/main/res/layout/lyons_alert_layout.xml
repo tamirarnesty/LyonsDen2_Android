@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/foregroundColor"
+    android:background="@color/accent"
     android:orientation="vertical">
 
     <TextView
@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/accentColor"
+        android:textColor="@color/accent"
         android:textSize="17sp"
         android:id="@+id/LATitle"/>
 
@@ -19,16 +19,17 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/accentColor"
+        android:textColor="@color/accent"
         android:textSize="14sp"
         android:id="@+id/LASubtitle"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/textFieldBackground"
         android:layout_margin="10dp"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/accentColor"
+        android:textColor="@color/whiteText"
         android:textSize="14sp"
         android:id="@+id/LAInput"/>
 
@@ -44,8 +45,8 @@
             android:layout_marginStart="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@android:color/transparent"
-            android:textColor="@color/accentColor"
+            android:background="@color/accent"
+            android:textColor="@color/whiteText"
             android:id="@+id/LAButtonLeft"/>
 
         <Button
@@ -55,8 +56,8 @@
             android:layout_marginStart="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@android:color/transparent"
-            android:textColor="@color/accentColor"
+            android:background="@color/accent"
+            android:textColor="@color/whiteText"
             android:id="@+id/LAButtonRight"/>
     </LinearLayout>
 </LinearLayout>

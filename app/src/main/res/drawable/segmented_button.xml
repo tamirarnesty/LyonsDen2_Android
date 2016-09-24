@@ -5,7 +5,7 @@
         <shape>
             <solid android:color="@android:color/transparent"/>
             <corners android:radius="5dp" />
-            <stroke android:width="2dp" android:color="@color/backgroundColor"/>
+            <stroke android:width="2dp" android:color="@color/segmentedButtonUnselected"/>
         </shape>
     </item>
 
@@ -14,7 +14,7 @@
         <shape>
             <solid android:color="@android:color/transparent"/>
             <corners android:radius="5dp" />
-            <stroke android:width="2dp" android:color="@color/accentColor"/>
+            <stroke android:width="2dp" android:color="@color/accent"/>
         </shape>
     </item>
 </level-list>

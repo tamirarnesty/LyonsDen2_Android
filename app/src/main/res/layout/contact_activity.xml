@@ -11,7 +11,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/foregroundColor"
+        android:background="@color/background"
         tools:context=".ContactActivity">
 
         <TextView
@@ -22,7 +22,7 @@
             android:layout_marginTop="21dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/accent"
             android:textSize="23sp" />
 
         <Button
@@ -35,9 +35,9 @@
             android:paddingRight="10dp"
             android:id="@+id/CSAnnouncementButton"
             android:onClick="proposeAnnouncement"
-            android:background="@color/foregroundColor"
+            android:background="@color/background"
             android:text="@string/CSAnnouncementButton"
-            android:textColor="@color/accentColor" />
+            android:textColor="@color/accent" />
 
         <Button
             android:layout_width="wrap_content"
@@ -49,9 +49,9 @@
             android:paddingRight="10dp"
             android:id="@+id/CSRadioButton"
             android:onClick="proposeRadio"
-            android:background="@color/foregroundColor"
+            android:background="@color/background"
             android:text="@string/CSRadioButton"
-            android:textColor="@color/accentColor" />
+            android:textColor="@color/accent" />
 
         <Button
             android:layout_width="wrap_content"
@@ -63,9 +63,9 @@
             android:paddingRight="10dp"
             android:id="@+id/CSTeacherButton"
             android:onClick="requestTeacherList"
-            android:background="@color/foregroundColor"
+            android:background="@color/background"
             android:text="@string/CSTeacherButton"
-            android:textColor="@color/accentColor" />
+            android:textColor="@color/accent" />
 
         <Button
             android:layout_width="wrap_content"
@@ -76,9 +76,9 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:onClick="emergency"
-            android:background="@color/foregroundColor"
+            android:background="@color/background"
             android:text="@string/CSEmergencyButton"
-            android:textColor="@color/accentColor" />
+            android:textColor="@color/accent" />
     </RelativeLayout>
 
     <!-- Navigation drawer -->
@@ -87,9 +87,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="left|start"
         android:choiceMode="singleChoice"
-        android:divider="@color/skyBlueColor"
+        android:divider="@color/listDivider"
         android:dividerHeight="1dp"
-        android:background="@color/backgroundColor"
+        android:background="@color/listCellBackground"
         android:id="@+id/ConDList"/>
 </android.support.v4.widget.DrawerLayout>
 

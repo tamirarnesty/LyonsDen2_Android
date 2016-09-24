@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/foregroundColor"
+    android:background="@color/background"
     tools:context="com.wlmac.lyonsden2_android.resourceActivities.CourseActvity">
 
     <!-- Period Label -->
@@ -19,7 +19,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
         android:maxLines="1"
-        android:textColor="@color/accentColor"
+        android:textColor="@color/navigationBarText"
         android:textSize="17sp"
         android:id="@+id/CourseSPeriodLabel"/>
 
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:gravity="end"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/accent"
             android:textSize="16sp"
             android:text="@string/CourseSCode"/>
 
@@ -49,8 +49,9 @@
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSCodeHint"
+            android:background="@color/textFieldBackground"
             android:textSize="16sp"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/whiteText"
             android:id="@+id/CourseSCodeField"/>
     </LinearLayout>
 
@@ -69,7 +70,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:gravity="end"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/accent"
             android:textSize="16sp"
             android:text="@string/CourseSName"/>
 
@@ -80,8 +81,9 @@
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSNameHint"
+            android:background="@color/textFieldBackground"
             android:textSize="16sp"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/whiteText"
             android:id="@+id/CourseSNameField"/>
     </LinearLayout>
 
@@ -100,7 +102,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:gravity="end"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/accent"
             android:textSize="16sp"
             android:text="@string/CourseSTeacher"/>
 
@@ -111,8 +113,9 @@
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSTeacherHint"
+            android:background="@color/textFieldBackground"
             android:textSize="16sp"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/whiteText"
             android:id="@+id/CourseSTeacherField"/>
     </LinearLayout>
 
@@ -131,7 +134,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:gravity="end"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/accent"
             android:textSize="16sp"
             android:text="@string/CourseSRoom"/>
 
@@ -142,8 +145,9 @@
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSRoomHint"
+            android:background="@color/textFieldBackground"
             android:textSize="16sp"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/whiteText"
             android:id="@+id/CourseSRoomField"/>
     </LinearLayout>
 
@@ -155,9 +159,9 @@
         android:layout_marginTop="15dp"
         android:layout_centerHorizontal="true"
         android:padding="5dp"
-        android:background="@android:color/transparent"
+        android:background="@color/accent"
         android:text="@string/CourseSSubmitButtonText"
-        android:textColor="@color/accentColor"
+        android:textColor="@color/whiteText"
         android:onClick="submitChanges"
         android:id="@+id/USUpdate"/>
 
@@ -169,6 +173,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:text="@string/CourseSDisclaimer"
-        android:textColor="@color/accentColor"
+        android:textColor="@color/accent"
         android:textSize="12sp"/>
 </RelativeLayout>

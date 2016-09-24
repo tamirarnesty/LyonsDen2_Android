@@ -1,13 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="navigationBarColor">#064CB2</color>
+    <color name="navigationBarColor">#F1C40F</color>
     <color name="navigationBarDarkColor">#064CA1</color>
     <color name="redStroke">#7fff002f</color>
-    <color name="foregroundColor">#033e93</color>
+    <color name="foregroundColor">#ECF0F1</color>
     <color name="backgroundColor">#022a64</color>
     <color name="skyBlueColor">#a3bee5</color>
     <color name="accentColor">#fec637</color>
     <color name="CalSEventCellColor">#7fa3bee5</color>
     <color name="CalSDefaultCellColor">#7f022a64</color>
     <color name="deleteRed">#ac0028</color>
+
+    <!-- New Color Scheme -->
+    <color name="background">#ECF0F1</color>
+    <color name="textFieldBackground">#2980B9</color>
+    <color name="whiteText">#FFFFFF</color>
+    <color name="navigationBar">#F1C40F</color>
+    <color name="navigationBarText">#95A5A6</color>
+    <color name="accent">#3646A0</color>
+    <color name="listDivider">#607D8B</color>
+    <color name="calendarCellBackground">#3498DB</color>
+    <color name="listCellBackground">#3F51B5</color>
+    <color name="timetableDividers">#43555E</color>
+    
+    <color name="segmentedButtonUnselected">#a3a3a3</color>
 </resources>
+
+<!-- New Color Scheme
+
+MainScreenBackground - ECF0F1
+TextFieldBackground - 2980B9 (Except Announcement proposal)
+    - When this is aplied, TextColor - FFFFFF
+NavBar - F1C40F
+NavBarText - 95A5A6
+Labels - 3646A0 (only in: HS (but not timetable), Announcement Proposals, contact, Any list, any info, course, user)
+ButtonsBackground - Labels (3646A0)  (Only in: user, courses,
+    - When this is applied, TextColor - FFFFFF
+ListDividers - 607D8B
+
+Calendar:
+    TextColor - NavBarText (95A5A6)
+    DayCellBackground - EventViewBackground (3498DB)
+    EventViewBackground - 3498DB
+    EventViewText - FFFFFF
+
+Course:
+    PeriodLabel - NavBarText (95A5A6)
+
+Any List Activity: A bit of uncertainty
+    CellBackground - 3F51B5
+    TextColor - FFFFFF
+
+Contact:
+    Icon Text = TextFieldBackground (2980B9)
+    Button Text = Labels (3646A0)
+
+Announcement Proposal:
+    TextColor - Labels (3646A0)
+
+Home Screen:
+    TimeTableDividers - 43555E
+    TimeTableBackground - TextFieldBackground (2980B9)
+    TimeTableText - FFFFFF
+    DayLabel - ListDivider (607D8B)
+
+
+
+ECF0F1
+2980B9
+F1C40F
+95A5A6
+3646A0
+607D8B
+3498DB
+3F51B5
+43555E
+-->

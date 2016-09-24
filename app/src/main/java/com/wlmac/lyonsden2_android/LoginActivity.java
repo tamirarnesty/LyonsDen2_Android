@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         try {
             signUp.setLevel(1);
             segmentedButtons[0].setBackgroundDrawable(signUp);
-            segmentedButtons[0].setTextColor(getResources().getColor(R.color.accentColor));
+            segmentedButtons[0].setTextColor(getResources().getColor(R.color.accent));
         } catch (NullPointerException e) {
             Log.d("Login Activity:", "The segmented_button.xml file seems to missing or corrupted.");
         }
@@ -81,10 +81,10 @@ public class LoginActivity extends AppCompatActivity {
         try {
             signUp.setLevel((signUpSelected) ? 1 : 0);
             segmentedButtons[0].setBackgroundDrawable(signUp);
-            segmentedButtons[0].setTextColor(getResources().getColor((signUpSelected) ? R.color.accentColor : R.color.backgroundColor));
+            segmentedButtons[0].setTextColor(getResources().getColor((signUpSelected) ? R.color.accent : R.color.segmentedButtonUnselected));
             login.setLevel((!signUpSelected) ? 1 : 0);
             segmentedButtons[1].setBackgroundDrawable(login);
-            segmentedButtons[1].setTextColor(getResources().getColor((!signUpSelected) ? R.color.accentColor : R.color.backgroundColor));
+            segmentedButtons[1].setTextColor(getResources().getColor((!signUpSelected) ? R.color.accent : R.color.segmentedButtonUnselected));
         } catch (NullPointerException e) {
             Log.d("Login Activity:", "The segmented_button.xml file seems to missing or corrupted.");
         }

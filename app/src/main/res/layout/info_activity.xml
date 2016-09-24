@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/backgroundColor"
+    android:background="@color/background"
     android:id="@+id/ISContentView"
     tools:context="com.wlmac.lyonsden2_android.resourceActivities.InfoActivity">
 
@@ -33,7 +33,7 @@
             android:layout_marginStart="8dp"
             android:gravity="start"
             android:text="@string/ISTitleDefault"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/accent"
             android:textSize="@dimen/ISTitleTextSize"
             android:id="@+id/ISTitleLabel"/>
     </LinearLayout>
@@ -48,7 +48,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:text="@string/ISDescriptionDefault"
-        android:textColor="@color/accentColor"
+        android:textColor="@color/accent"
         android:textSize="@dimen/ISTextSize"
         android:id="@+id/ISDescriptionLabel"/>
 
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/ISTimeDefault"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/accent"
             android:textSize="@dimen/ISTextSize"
             android:id="@+id/ISDateLabel"/>
 
@@ -81,7 +81,7 @@
             android:layout_marginStart="8dp"
             android:gravity="right|end"
             android:text="@string/ISLocationDefault"
-            android:textColor="@color/accentColor"
+            android:textColor="@color/accent"
             android:textSize="@dimen/ISTextSize"
             android:id="@+id/ISLocationLabel"/>
     </LinearLayout>

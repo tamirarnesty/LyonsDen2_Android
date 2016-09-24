@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
+    android:background="@color/background"
     tools:context=".resourceActivities.ListViewerActivity">
 
     <ListView
@@ -16,8 +16,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
-        android:background="@color/foregroundColor"
-        android:divider="@color/accentColor"
+        android:background="@color/background"
+        android:divider="@color/listDivider"
         android:dividerHeight="1dp"
         android:id="@+id/LVSList"/>
 </RelativeLayout>

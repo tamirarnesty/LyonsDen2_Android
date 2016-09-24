@@ -36,5 +36,5 @@
     <dimen name="ClubSButtonTextSize">19sp</dimen>
     <dimen name="ClubSDescriptionHeight">88dp</dimen>
 
-    <dimen name="USTextLabelWidth">210px</dimen>
+    <dimen name="USTextLabelWidth">103dp</dimen>
 </resources>
