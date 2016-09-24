@@ -18,6 +18,131 @@
         android:background="@color/foregroundColor"
         tools:context="com.wlmac.lyonsden2_android.UserActivity">
 
+        <!-- Display Name Area -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:id="@+id/USDisplayName">
+
+            <!-- Display Name Label -->
+            <TextView
+                android:layout_width="@dimen/USTextLabelWidth"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:gravity="end"
+                android:textColor="@color/accentColor"
+                android:textSize="16sp"
+                android:text="@string/USName"/>
+
+            <!-- Display Name Field -->
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                android:focusable="false"
+                android:enabled="false"
+                android:clickable="false"
+                android:inputType="none"
+                android:hint="@string/USNameHint"
+                android:textSize="16sp"
+                android:textColor="@color/accentColor"
+                android:id="@+id/USNameField"/>
+        </LinearLayout>
+
+        <!-- Email Area -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/USDisplayName"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:id="@+id/USEmail">
+
+            <!-- Email Label -->
+            <TextView
+                android:layout_width="@dimen/USTextLabelWidth"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:gravity="end"
+                android:textColor="@color/accentColor"
+                android:textSize="16sp"
+                android:text="@string/USEmail"/>
+
+            <!-- Email Field -->
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                android:focusable="false"
+                android:enabled="false"
+                android:clickable="false"
+                android:inputType="none"
+                android:hint="@string/USEmailHint"
+                android:textSize="16sp"
+                android:textColor="@color/accentColor"
+                android:id="@+id/USEmailField"/>
+        </LinearLayout>
+
+        <!-- Access Area -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/USEmail"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:id="@+id/USAccess">
+
+            <!-- Access Label -->
+            <TextView
+                android:layout_width="@dimen/USTextLabelWidth"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:gravity="end"
+                android:textColor="@color/accentColor"
+                android:textSize="16sp"
+                android:text="@string/USAccess"/>
+
+            <!-- Access Field -->
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                android:focusable="false"
+                android:enabled="false"
+                android:clickable="false"
+                android:inputType="none"
+                android:hint="@string/USAccessHint"
+                android:textSize="16sp"
+                android:textColor="@color/accentColor"
+                android:id="@+id/USAccessField"/>
+        </LinearLayout>
+
+        <!-- Update Info Button -->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/USAccess"
+            android:layout_marginTop="15dp"
+            android:layout_centerHorizontal="true"
+            android:padding="5dp"
+            android:background="@android:color/transparent"
+            android:text="@string/USUpdateButtonText"
+            android:textColor="@color/accentColor"
+            android:onClick="editAccount"
+            android:id="@+id/USUpdate"/>
+
+        <!-- Become Leader Button -->
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,6 +153,50 @@
             android:textColor="@color/accentColor"
             android:onClick="clubLeadershipApplication"
             android:id="@+id/USLeaderButton"/>
+
+        <!-- Delete Account Button -->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:padding="5dp"
+            android:background="@android:color/transparent"
+            android:text="@string/USDeleteButtonText"
+            android:textColor="@color/accentColor"
+            android:textSize="12sp"
+            android:onClick="editAccount"
+            android:id="@+id/USDelete"/>
+
+        <!-- Sign out Button -->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:padding="5dp"
+            android:background="@android:color/transparent"
+            android:text="@string/USSignOutButtonText"
+            android:textColor="@color/accentColor"
+            android:textSize="12sp"
+            android:onClick="editAccount"
+            android:id="@+id/USSignOut"/>
+
+        <!-- Reset Password Button -->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:padding="5dp"
+            android:background="@android:color/transparent"
+            android:text="@string/USResetPassButtonText"
+            android:textColor="@color/accentColor"
+            android:textSize="12sp"
+            android:onClick="editAccount"
+            android:id="@+id/USReset"/>
     </RelativeLayout>
 
     <!-- Navigation drawer -->

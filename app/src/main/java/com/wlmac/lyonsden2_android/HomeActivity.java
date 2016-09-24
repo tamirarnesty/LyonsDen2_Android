@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.wlmac.lyonsden2_android.resourceActivities.CourseActvity;
 
 import java.util.ArrayList;
 
@@ -54,6 +57,8 @@ public class HomeActivity extends AppCompatActivity {
     /** The drawer toggler used this activity. */
     private ActionBarDrawerToggle drawerToggle;
 
+    private String[][] timeTable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Super call
@@ -62,6 +67,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.home_activity);
         // Instantiate all UI components
         initializeComponents();
+        timeTable = assembleTimeTable();
 
         setupDrawer(this, drawerList, rootLayout, drawerToggle);
 
@@ -149,22 +155,6 @@ public class HomeActivity extends AppCompatActivity {
         return  drawerToggle;
     }
 
-    /** Instantiates all GUI components */
-    private void initializeComponents () {
-        hapnaMonoLight = Typeface.createFromAsset(getAssets(), "fonts/HapnaMono-Light.otf");
-        dayLabel = (TextView) findViewById(R.id.HSDayLabel);
-        todayIsDay = (TextView) findViewById(R.id.HSTodayIsDay);
-        listView = (ListView) findViewById(R.id.HSList);
-        rootLayout = (DrawerLayout) findViewById(R.id.HDLayout);
-        drawerList = (ListView) findViewById(R.id.HDList);
-        drawerToggle = initializeDrawerToggle(this, rootLayout);
-
-        periods[0] = (RelativeLayout) findViewById(R.id.HSPeriod0);
-        periods[1] = (RelativeLayout) findViewById(R.id.HSPeriod1);
-        periods[2] = (RelativeLayout) findViewById(R.id.HSPeriod2);
-        periods[3] = (RelativeLayout) findViewById(R.id.HSPeriod3);
-    }
-
     public static void performDrawerSegue (Context initiator, int activity) {
         Class target = null;
         if (activity == 0) {
@@ -183,6 +173,45 @@ public class HomeActivity extends AppCompatActivity {
         initiator.startActivity(intent);
     }
 
+    /** Instantiates all GUI components */
+    private void initializeComponents () {
+        hapnaMonoLight = Typeface.createFromAsset(getAssets(), "fonts/HapnaMono-Light.otf");
+        dayLabel = (TextView) findViewById(R.id.HSDayLabel);
+        todayIsDay = (TextView) findViewById(R.id.HSTodayIsDay);
+        listView = (ListView) findViewById(R.id.HSList);
+        rootLayout = (DrawerLayout) findViewById(R.id.HDLayout);
+        drawerList = (ListView) findViewById(R.id.HDList);
+        drawerToggle = initializeDrawerToggle(this, rootLayout);
+
+        periods[0] = (RelativeLayout) findViewById(R.id.HSPeriod0);
+        periods[1] = (RelativeLayout) findViewById(R.id.HSPeriod1);
+        periods[2] = (RelativeLayout) findViewById(R.id.HSPeriod2);
+        periods[3] = (RelativeLayout) findViewById(R.id.HSPeriod3);
+    }
+
+    // You will probably want to change this to set the time table to whatever it retrieved from permanent storage
+    private String[][] assembleTimeTable() {
+        // An instance of the time table that will be returned and assigned to a global variable
+        String[][] timeTable = new String[4][4];
+        // A bank of IDs each refering to an individual piece of the timetable
+        int[][] idBank = {{R.id.HSCourseCode0, R.id.HSCourseName0, R.id.HSTeacherName0, R.id.HSRoomNumber0},    // Period 1
+                          {R.id.HSCourseCode1, R.id.HSCourseName1, R.id.HSTeacherName1, R.id.HSRoomNumber1},    // Period 2
+                          {R.id.HSCourseCode2, R.id.HSCourseName2, R.id.HSTeacherName2, R.id.HSRoomNumber2},    // Period 3
+                          {R.id.HSCourseCode3, R.id.HSCourseName3, R.id.HSTeacherName3, R.id.HSRoomNumber3}};   // Period 4
+        // A nested loop that will fill up the timetable
+        for (int h = 0; h < timeTable.length; h ++) {
+            for (int j = 0; j < timeTable[h].length; j ++) {
+                                // A instance of a timetable peice (made without assigning to a variable)
+                //                                                       You might use set text here to set to data from
+                //                                                       permanent storage
+                timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
+                //                                                                  toString because it return an Editable type
+            }
+        }
+        return timeTable;
+        // P.S. I have no clue how permanent storage works in android :)
+    }
+
     /**
      * Retrieves the current screen size from the system and returns it as a Point.
      * @return A Point representing the current screen size.
@@ -195,6 +224,20 @@ public class HomeActivity extends AppCompatActivity {
         // Instantiate the size instance
         display.getSize(size);
         return size;
+    }
+
+    public void periodClicked (View view) {
+        Intent intent = new Intent (this, CourseActvity.class);
+
+        // Each view container has a tag representing its index
+        int index = Integer.parseInt(view.getTag().toString());
+        String[] periodData = new String[5];
+        periodData[0] = "" + (index + 1);
+        for (int h = 0; h < timeTable[index].length; h++)
+            periodData[h+1] = timeTable[index][h];
+
+        intent.putExtra("periodData", periodData);
+        startActivity(intent);
     }
 
     @Override

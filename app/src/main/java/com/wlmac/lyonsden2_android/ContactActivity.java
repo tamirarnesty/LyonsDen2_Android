@@ -61,21 +61,8 @@ public class ContactActivity extends AppCompatActivity {
 
     /** Called when Contact a Teacher button is pressed. */
     public void requestTeacherList (View view) {
-        // TODO: Implement a teacher list
-
-        ArrayList<String> titles = new ArrayList<>();
-        ArrayList<String> subTitles = new ArrayList<>();
-
-        // TODO: TEMPORARY TEACHIR LIST FILL
-        // Segue into a teacher list.
-        for (int h = 0; h < 50; h ++) {
-            titles.add("I'm a title" + h);
-            subTitles.add("I'm a description" + h);
-        }
         // Segue into a teacher list.
         Intent intent = new Intent(this, ListViewerActivity.class);
-        intent.putStringArrayListExtra("titles", titles);
-        intent.putStringArrayListExtra("subtitles", subTitles);
         intent.putExtra("title", "Teachers");
         startActivity(intent);
     }

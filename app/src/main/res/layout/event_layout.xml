@@ -14,7 +14,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="8dp"
-        android:singleLine="true"
+        android:maxLines="1"
         android:textColor="@color/accentColor"
         android:textSize="@dimen/EVTitleInfoTextSize"
         android:id="@+id/EVTitleLabel"/>

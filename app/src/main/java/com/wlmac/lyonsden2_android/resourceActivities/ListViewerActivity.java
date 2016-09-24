@@ -1,6 +1,5 @@
 package com.wlmac.lyonsden2_android.resourceActivities;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,12 +7,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.wlmac.lyonsden2_android.R;
 import com.wlmac.lyonsden2_android.otherClasses.ListAdapter;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+// TODO: TEST FINALIZE EDITING OUT!
 
 /**
  * This activity is used for displaying a list of items. The rows of this list are not clickable, therefore
@@ -31,10 +40,13 @@ import java.util.ArrayList;
 public class ListViewerActivity extends AppCompatActivity {
     /** The content of this list viewer to display. */
     private ArrayList<String>[] content = new ArrayList[]{new ArrayList<String>(), new ArrayList<String>()};
+    private ArrayList<String>[] oldContent = new ArrayList[]{new ArrayList(), new ArrayList()};
     /** The list of this list viewer */
     private ListView list;
 
-    public static ListAdapter adapter;
+    public static DatabaseReference listRef;
+
+    private ListAdapter adapter;
 
     private MenuItem addItem;
     private boolean editing = false;
@@ -46,7 +58,8 @@ public class ListViewerActivity extends AppCompatActivity {
 
         this.setTitle(getIntent().getStringExtra("title"));
 
-        parseIntentDate();
+        if (this.getTitle().equals("Members")) { parseForMemeber(); } else { parseForTeachers(); }
+
         // Initialize the list
         list = (ListView) findViewById(R.id.LVSList);
         // Create and set the adapter for this activity's list
@@ -55,7 +68,7 @@ public class ListViewerActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Log.d("ListViewer", "Deleting at index " + v.getTag());
-                    removeItemAtIndex((int) v.getTag());
+                    removeItemAtIndex((int) ((View) v.getParent()).getTag());
                 }
             });
         else
@@ -70,10 +83,59 @@ public class ListViewerActivity extends AppCompatActivity {
 
         addItem.setVisible(editing);
         adapter.setEditing(editing);
+
+        if (!editing) { finalizeEditing(); } else { oldContent = new ArrayList[]{new ArrayList(content[0]), new ArrayList(content[1])}; }
     }
 
+    // TODO: TEST FINALIZE EDITING OUT!
     private void finalizeEditing () {
+        listRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    ArrayList<DataSnapshot> snapshots = new ArrayList<DataSnapshot>((Collection) dataSnapshot.getChildren());
 
+                    if (snapshots == null || snapshots.isEmpty()) {
+                        Log.d("Finalization of Editing", "Failed to retrieve list from the web");
+                        throw new RuntimeException("This is a crash!");
+                    }
+
+                    for (int h = 0; h < snapshots.size(); h ++) {
+                        if (!content[0].contains(snapshots.get(h).getValue(String.class))) {
+                            snapshots.get(h).getRef().removeValue();
+                            oldContent[0].remove(h);
+                            oldContent[1].remove(h);
+                        }
+                    }
+                    checkForNewMembers();
+                }
+            }
+
+            private void checkForNewMembers () {
+                Map<String, Object> childrenToUpdate = new HashMap<String, Object>();
+
+                if (oldContent[0].size() < content[0].size())
+                    for (int h = oldContent[0].size(); h < content[0].size(); h ++)
+                        childrenToUpdate.put(listRef.push().getKey(), content[0].get(h));
+
+                listRef.updateChildren(childrenToUpdate, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        String toastMessage = "Update Success!";
+                        if (databaseError != null) {
+                            toastMessage = "Update Failed!";
+                        }
+                        Toast.makeText(ListViewerActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("WebEvents Parser", "Failed to load club list from the web", databaseError.toException());
+                Toast.makeText(ListViewerActivity.this, "Update Failed!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void addMemberInitiated () {
@@ -99,7 +161,6 @@ public class ListViewerActivity extends AppCompatActivity {
 
         alertDialog.show(getSupportFragmentManager(), "ClubCodeDialog");
         Log.d("ListViewer", "Displaying Add Dialog");
-//        adapter.setEditing(editing);
     }
 
     private void addMember (String name) {
@@ -107,7 +168,6 @@ public class ListViewerActivity extends AppCompatActivity {
         content[0].add(name);
         content[1].add("");
         adapter.notifyDataSetChanged();
-//        adapter.setEditing(editing);
     }
 
     private void removeItemAtIndex (int index) {
@@ -116,17 +176,45 @@ public class ListViewerActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    private void parseIntentDate () {
-        Intent intent = getIntent();
-        content[0] = intent.getStringArrayListExtra("titles");
-        content[1] = intent.getStringArrayListExtra("subtitles");
+    private void parseForMemeber () {
+        listRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot member : dataSnapshot.getChildren()) {
+                    content[0].add(member.getValue(String.class));
+                    content[0].add("");
+                }
+            }
 
-        if (content[0] == null || content[1] == null) {
-            content[0] = new ArrayList<>();
-            content[0].add("There has been an error while retrieving the data,");
-            content[1] = new ArrayList<>();
-            content[1].add ("Please report this bug.");
-        }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("WebEvents Parser", "Failed to load member list from the web", databaseError.toException());
+                content[0].add("Web Parser Failure!");
+                content[1].add("Failed to load complete member list from the web");
+            }
+        });
+    }
+
+    private void parseForTeachers () {
+        listRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot teacher: dataSnapshot.getChildren()) {
+                        content[0].add(teacher.child("name").getValue(String.class));
+                        content[1].add(teacher.child("department").getValue(String.class) + " " + teacher.child("email").getValue(String.class));
+                    }
+                } else {
+                    Log.d("Teacher List Retriever", "There has been an error!");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("Teacher List Retriever", "There has been an error!");
+                throw databaseError.toException();
+            }
+        });
     }
 
     @Override

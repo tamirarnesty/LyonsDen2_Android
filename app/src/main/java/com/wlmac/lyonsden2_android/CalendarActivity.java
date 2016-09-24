@@ -23,6 +23,8 @@ import com.roomorama.caldroid.CaldroidListener;
 import java.util.Calendar;
 import java.util.Date;
 
+// TODO: HANDLE NETWORK ERRORS
+
 /**
  * The activity to that will display the calendar and its events.
  * Display a scrollable GridVIew of dates. If a date is selected then the list

@@ -9,6 +9,9 @@
     <!-- Login Screen Strings -->
     <string name="LSLoginHint">Enter e-mail here</string>
     <string name="LSPassHint">Enter password here</string>
+    <string name="LSCodeHint">Enter sign-up code here</string>
+    <string name="LSLoginButton">Login</string>
+    <string name="LSSignUpButton">Sign Up</string>
 
     <!-- Home Screen Strings -->
     <string name="HSTodayIsDay">Today is day</string>
@@ -47,5 +50,27 @@
     <string name="ClubSMemberButton">Members</string>
 
     <!-- User Screen Strings -->
+    <string name="USName">Display Name:</string>
+    <string name="USNameHint">eg. John Stevenson</string>
+    <string name="USEmail">E-Mail:</string>
+    <string name="USEmailHint">eg. john.steve@example.com</string>
+    <string name="USAccess">Access Level:</string>
+    <string name="USAccessHint">eg. Student</string>
+    <string name="USUpdateButtonText">Update Info</string>
     <string name="USLeaderButtonText">Become Club Leader</string>
+    <string name="USDeleteButtonText">Delete Account</string>
+    <string name="USSignOutButtonText">Sign Out</string>
+    <string name="USResetPassButtonText">Reset Password</string>
+
+    <!-- Course Screen Strings -->
+    <string name="CourseSCode">Course Code</string>
+    <string name="CourseSCodeHint">eg. ENG4U1</string>
+    <string name="CourseSName">Course Name</string>
+    <string name="CourseSNameHint">eg. English</string>
+    <string name="CourseSTeacher">Teacher Name</string>
+    <string name="CourseSTeacherHint">eg. Mr. Englishmen</string>
+    <string name="CourseSRoom">Room Number</string>
+    <string name="CourseSRoomHint">eg. Rm 201</string>
+    <string name="CourseSSubmitButtonText">Submit</string>
+    <string name="CourseSDisclaimer">The information you provide for each course is for your benefit only. Whether the information you input is correct or not is up to you. The system will function as designed, regardless of your input.</string>
 </resources>

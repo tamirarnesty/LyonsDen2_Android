@@ -158,24 +158,9 @@ public class ClubActivity extends AppCompatActivity {
     }
 
     public void displayMembers (View view ) {
-        clubRef.child("members").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<String> titles = new ArrayList<>();
-                ArrayList<String> subTitles = new ArrayList<>();
-
-                for (DataSnapshot member : dataSnapshot.getChildren()) {
-                    titles.add(member.getValue(String.class));
-                    subTitles.add("");
-                }
-                segueIntoMemberList(titles, subTitles);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("WebEvents Parser", "Failed to load member list from the web", databaseError.toException());
-            }
-        });
+        ListViewerActivity.listRef = clubRef.child("members");
+        Intent intent = new Intent (this, ListViewerActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -194,17 +179,5 @@ public class ClubActivity extends AppCompatActivity {
         } else {
             return super.onCreateOptionsMenu(menu);
         }
-    }
-
-    private void segueIntoMemberList(ArrayList<String> titles, ArrayList<String> subTitles) {
-        // Create intent
-        Intent intent = new Intent(this, ListViewerActivity.class);
-        // Insert data into intent
-        intent.putStringArrayListExtra("titles", titles);
-        intent.putStringArrayListExtra("subtitles", subTitles);
-        intent.putExtra("title", "Members");
-        intent.putExtra("userIsLead", userIsLead);
-        // Display list
-        startActivity(intent);
     }
 }

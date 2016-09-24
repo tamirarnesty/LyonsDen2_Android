@@ -10,44 +10,106 @@
     android:background="@color/foregroundColor"
     tools:context="com.wlmac.lyonsden2_android.LoginActivity">
 
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/LSEmailField"
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/LSLogoImageHeight"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="179dp"
-        android:singleLine="true"
-        android:textColor="@color/accentColor"
-        android:hint="@string/LSLoginHint" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/LSEmailField"
-        android:layout_marginTop="8dp"
-        android:layout_centerHorizontal="true"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:singleLine="true"
-        android:hint="@string/LSPassHint"
-        android:textColor="@color/accentColor"
-        android:id="@+id/LSPassField" />
+        android:src="@drawable/den_logo"
+        android:id="@+id/LSLogoImage"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/LSPassField"
-        android:layout_marginTop="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true"
         android:background="@color/backgroundColor"
-        android:text="Log in"
+        android:text="@string/LSLoginButton"
         android:textColor="@color/accentColor"
         android:onClick="logIn"
-        android:id="@+id/LSLoginButton" />
+        android:id="@+id/LSLogin" />
+
+    <RelativeLayout
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:padding="0dp"
+            android:background="@drawable/segmented_button"
+            android:text="@string/LSSignUpButton"
+            android:textColor="@color/backgroundColor"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            android:tag="signup"
+            android:onClick="toggleSegmentedControl"
+            android:id="@+id/LSSignUpButton"/>
+
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_toRightOf="@id/LSSignUpButton"
+            android:layout_toEndOf="@id/LSSignUpButton"
+            android:padding="0dp"
+            android:background="@drawable/segmented_button"
+            android:text="@string/LSLoginButton"
+            android:textColor="@color/backgroundColor"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            android:tag="login"
+            android:onClick="toggleSegmentedControl"
+            android:id="@+id/LSLoginButton"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/LSLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:orientation="vertical">
 
 
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/LSEmailField"
+            android:maxLines="1"
+            android:textColor="@color/accentColor"
+            android:hint="@string/LSLoginHint" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:maxLines="1"
+            android:hint="@string/LSPassHint"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/accentColor"
+            android:id="@+id/LSPassField" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:ems="10"
+            android:maxLines="1"
+            android:hint="@string/LSCodeHint"
+            android:textColor="@color/accentColor"
+            android:id="@+id/LSCodeField"/>
+    </LinearLayout>
 </RelativeLayout>

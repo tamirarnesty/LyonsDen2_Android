@@ -90,6 +90,16 @@ public class ListAdapter extends ArrayAdapter {
         }
     }
 
+    /**
+     * The default constructor of this List adapter, creates the adapter and initializes all of
+     * its GUI components.
+     * @param context The context that this adapter's list belongs to.
+     * @param titles The ArrayList which will contain the title for each cell.
+     * @param infos The ArrayList which will contain the subtitle for each cell.
+     * @param images The ArrayList which will contain the image for each cell.
+     * @param isLarge If true, then the height for each cell will be @dimen/largeCellSize, otherwise it will be @dimen/defaultCellSize.
+     * @param onClick The onItemClickListener to apply to the each row item. (To retrieve the list position of the cell, use the tag of the parent view of the button)
+     */
     public ListAdapter (Context context, ArrayList<String> titles, ArrayList<String> infos, @Nullable ArrayList<Drawable> images, boolean isLarge, View.OnClickListener onClick) {
         super (context, -1, titles);    // Super call
         this.context = context;
@@ -114,17 +124,6 @@ public class ListAdapter extends ArrayAdapter {
         }
     }
 
-    // TODO: FIGURE OUT WHY IT DOES NOT KEEP THE BUTTONS VISIBLE< AFTER ADDING A MEMBER
-
-
-
-    // TODO: FOR SOME REASON AFTER ADDING A MEMBER, RUNS THROUGH GET VIEW DOUBLE THE TIMES, WITH THE SECOND SET NOT HAVING ANY TAGS
-
-
-
-
-    // TODO: FINALIZE CHANGES IN LISTVIEWER
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Create an instance of the cell, from the XML cell layout file.
@@ -140,13 +139,9 @@ public class ListAdapter extends ArrayAdapter {
         }
 
         if (deleteID != -1) {
-//            int visibility = (editing) ? View.VISIBLE : View.GONE;
             buttons.add((Button) rowView.findViewById(deleteID));
             buttons.get(position).setOnClickListener(onClick);
-            buttons.get(position).setTag(position);
-            int max = 0;
-            Log.d("Printing Stuff", "Stuff");
-//            buttons.get(position).setVisibility(visibility);
+            rowView.setTag(position);
         }
 
         if (editing)

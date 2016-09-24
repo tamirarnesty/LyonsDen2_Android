@@ -63,6 +63,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:clickable="true"
+                        android:onClick="periodClicked"
+                        android:tag="0"
                         android:id="@+id/HSPeriod0" >
 
                         <TextView
@@ -122,6 +125,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:clickable="true"
+                        android:onClick="periodClicked"
+                        android:tag="1"
                         android:id="@+id/HSPeriod1" >
 
                         <TextView
@@ -181,6 +187,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:clickable="true"
+                        android:onClick="periodClicked"
+                        android:tag="2"
                         android:id="@+id/HSPeriod2" >
 
                         <TextView
@@ -240,6 +249,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:clickable="true"
+                        android:onClick="periodClicked"
+                        android:tag="3"
                         android:id="@+id/HSPeriod3" >
 
                         <TextView
