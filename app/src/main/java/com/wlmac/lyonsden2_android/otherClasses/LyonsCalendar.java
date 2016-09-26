@@ -35,7 +35,7 @@ public class LyonsCalendar extends CaldroidFragment {
     /** A HashMap of Events, each linked to its Date key. */
     private HashMap<Date, ArrayList<Event>> eventBank = new HashMap<>();
     /** The web address from which to download the calendar file */
-    private final String calendarURL = "https://calendar.google.com/calendar/ical/yusuftazim204%40gmail.com/private-f2b3e6f282204329e487a76f4478cb33/basic.ics";
+    private final String calendarURL = "https://calendar.google.com/calendar/ical/wlmacci%40gmail.com/public/basic.ics";
 
     /**
      * Loads the events into the calendar database.

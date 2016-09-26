@@ -1,6 +1,7 @@
 package com.wlmac.lyonsden2_android;
 
 import android.content.res.Configuration;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,6 +15,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 
 // TODO: IMPLEMENT CLUB CODE CHECKER
@@ -79,11 +83,26 @@ public class UserActivity extends AppCompatActivity {
 
     public void editAccount (View view) {
         if (view.getId() == R.id.USUpdate) {
+
             Log.d("User Activity", "Let's pretend that i'm actually updating your info");
         } else if (view.getId() == R.id.USDelete) {
-            Log.d("User Activity", "Let's pretend that i'm actually deleting your account");
+            try {FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Log.d("User Activity", "User account deleted.");
+                    }
+                }
+            }); }
+            catch (NullPointerException e) {
+                Log.d("User Activity", "No user exists");
+            }
         } else if (view.getId() == R.id.USSignOut) {
-            Log.d("User Activity", "Let's pretend that i'm actually signing you out");
+            FirebaseAuth.getInstance().signOut();
+            try {Log.d("User Activity", "Signed out " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName()); }
+            catch (NullPointerException e) {
+                Log.d("User Activity", "No signed in user because it returned null");
+            }
         } else {
             Log.d("User Activity", "Let's pretend that i'm actually resetting your password");
         }
