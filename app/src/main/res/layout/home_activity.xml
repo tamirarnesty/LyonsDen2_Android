@@ -68,22 +68,22 @@
                         style="@style/TimeTablePeriodContainer"
                         android:tag="0"
                         android:id="@+id/HSPeriod0" >
-
-                        <TextView
-                            style="@style/TimeTablePeriodParameter"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/HSCourseCodeDefault"
-                            android:id="@+id/HSCourseCode0" />
-
+                        <!-- Name -->
                         <TextView
                             style="@style/TimeTablePeriodParameter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/HSCourseNameDefault"
-                            android:id="@+id/HSCourseName0"
-                            android:layout_below="@+id/HSCourseCode0" />
-
+                            android:id="@+id/HSCourseName0" />
+                        <!-- Code -->
+                        <TextView
+                            style="@style/TimeTablePeriodParameter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/HSCourseCodeDefault"
+                            android:id="@+id/HSCourseCode0"
+                            android:layout_below="@+id/HSCourseName0" />
+                        <!-- Teacher -->
                         <TextView
                             style="@style/TimeTablePeriodParameter"
                             android:layout_width="wrap_content"
@@ -91,7 +91,7 @@
                             android:text="@string/HSTeacherNameDefault"
                             android:id="@+id/HSTeacherName0"
                             android:layout_below="@+id/HSCourseName0" />
-
+                        <!-- Room -->
                         <TextView
                             style="@style/TimeTablePeriodParameter"
                             android:layout_width="wrap_content"
@@ -107,22 +107,22 @@
                         style="@style/TimeTablePeriodContainer"
                         android:tag="1"
                         android:id="@+id/HSPeriod1" >
-
-                        <TextView
-                            style="@style/TimeTablePeriodParameter"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/HSCourseCodeDefault"
-                            android:id="@+id/HSCourseCode1" />
-
+                        <!-- Name -->
                         <TextView
                             style="@style/TimeTablePeriodParameter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/HSCourseNameDefault"
-                            android:id="@+id/HSCourseName1"
-                            android:layout_below="@+id/HSCourseCode1" />
-
+                            android:id="@+id/HSCourseName1" />
+                        <!-- Code -->
+                        <TextView
+                            style="@style/TimeTablePeriodParameter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/HSCourseCodeDefault"
+                            android:id="@+id/HSCourseCode1"
+                            android:layout_below="@+id/HSCourseName1" />
+                        <!-- Teacher -->
                         <TextView
                             style="@style/TimeTablePeriodParameter"
                             android:layout_width="wrap_content"
@@ -130,7 +130,7 @@
                             android:text="@string/HSTeacherNameDefault"
                             android:id="@+id/HSTeacherName1"
                             android:layout_below="@+id/HSCourseName1" />
-
+                        <!-- Room -->
                         <TextView
                             style="@style/TimeTablePeriodParameter"
                             android:layout_width="wrap_content"
@@ -146,22 +146,22 @@
                         style="@style/TimeTablePeriodContainer"
                         android:tag="2"
                         android:id="@+id/HSPeriod2" >
-
-                        <TextView
-                            style="@style/TimeTablePeriodParameter"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/HSCourseCodeDefault"
-                            android:id="@+id/HSCourseCode2" />
-
+                        <!-- Name -->
                         <TextView
                             style="@style/TimeTablePeriodParameter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/HSCourseNameDefault"
-                            android:id="@+id/HSCourseName2"
-                            android:layout_below="@+id/HSCourseCode2" />
-
+                            android:id="@+id/HSCourseName2" />
+                        <!-- Code -->
+                        <TextView
+                            style="@style/TimeTablePeriodParameter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/HSCourseCodeDefault"
+                            android:id="@+id/HSCourseCode2"
+                            android:layout_below="@+id/HSCourseName2" />
+                        <!-- Teacher -->
                         <TextView
                             style="@style/TimeTablePeriodParameter"
                             android:layout_width="wrap_content"
@@ -169,7 +169,7 @@
                             android:text="@string/HSTeacherNameDefault"
                             android:id="@+id/HSTeacherName2"
                             android:layout_below="@+id/HSCourseName2" />
-
+                        <!-- Room -->
                         <TextView
                             style="@style/TimeTablePeriodParameter"
                             android:layout_width="wrap_content"
@@ -185,22 +185,22 @@
                         style="@style/TimeTablePeriodContainer"
                         android:tag="3"
                         android:id="@+id/HSPeriod3" >
-
-                        <TextView
-                            style="@style/TimeTablePeriodParameter"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/HSCourseCodeDefault"
-                            android:id="@+id/HSCourseCode3" />
-
+                        <!-- Name -->
                         <TextView
                             style="@style/TimeTablePeriodParameter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/HSCourseNameDefault"
-                            android:id="@+id/HSCourseName3"
-                            android:layout_below="@+id/HSCourseCode3" />
-
+                            android:id="@+id/HSCourseName3" />
+                        <!-- Code -->
+                        <TextView
+                            style="@style/TimeTablePeriodParameter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/HSCourseCodeDefault"
+                            android:id="@+id/HSCourseCode3"
+                            android:layout_below="@+id/HSCourseName3" />
+                        <!-- Teacher -->
                         <TextView
                             style="@style/TimeTablePeriodParameter"
                             android:layout_width="wrap_content"
@@ -208,7 +208,7 @@
                             android:text="@string/HSTeacherNameDefault"
                             android:id="@+id/HSTeacherName3"
                             android:layout_below="@+id/HSCourseName3" />
-
+                        <!-- Room -->
                         <TextView
                             style="@style/TimeTablePeriodParameter"
                             android:layout_width="wrap_content"
@@ -244,12 +244,6 @@
 
     <!-- Navigation drawer -->
     <ListView
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="left|start"
-        android:choiceMode="singleChoice"
-        android:divider="@color/listDivider"
-        android:dividerHeight="1dp"
-        android:background="@color/listCellBackground"
+        style="@style/DrawerListStyle"
         android:id="@+id/HDList"/>
 </android.support.v4.widget.DrawerLayout>

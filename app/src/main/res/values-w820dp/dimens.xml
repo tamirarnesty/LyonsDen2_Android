@@ -7,8 +7,9 @@
     <dimen name="defaultCellSize">56dp</dimen>
     <dimen name="largeCellSize">104dp</dimen>
 
-    <dimen name="EVHeight">214dp</dimen>
-    <dimen name="EVInfoHeight">193dp</dimen>
+    <dimen name="EVHeight">185dp</dimen>
+    <dimen name="EVInfoHeight">100dp</dimen>
+    <dimen name="EVTitleHeight">66dp</dimen>
     <dimen name="EVTitleInfoTextSize">21sp</dimen>
     <dimen name="EVDateLocationTextSize">17sp</dimen>
 

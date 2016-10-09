@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/course_view_background"
+    android:orientation="vertical" >
+
+    <!-- Period Number Label -->
+    <TextView
+        style="@style/CourseViewLabel"
+        android:textAlignment="center"
+        android:text="@string/CourseVTopLabel"/>
+
+    <!-- Course Name Label -->
+    <TextView
+        style="@style/CourseViewLabel"
+        android:textAlignment="center"
+        android:text="@string/CourseSName"/>
+
+    <!-- Course Name Label -->
+    <EditText
+        style="@style/CourseViewField"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/CourseSNameHint"
+        android:id="@+id/CourseVNameField"/>
+
+    <!-- Code Label -->
+    <TextView
+        style="@style/CourseViewLabel"
+        android:textAlignment="center"
+        android:text="@string/CourseSCode"/>
+
+    <!-- Code Field -->
+    <EditText
+        style="@style/CourseViewField"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/CourseSCodeHint"
+        android:id="@+id/CourseVCodeField"/>
+
+    <!-- Teacher Label -->
+    <TextView
+        style="@style/CourseViewLabel"
+        android:textAlignment="center"
+        android:text="@string/CourseSTeacher"/>
+
+    <!-- Teacher Field -->
+    <EditText
+        style="@style/CourseViewField"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/CourseSTeacherHint"
+        android:id="@+id/CourseVTeacherField"/>
+
+    <!-- Room Label -->
+    <TextView
+        style="@style/CourseViewLabel"
+        android:textAlignment="center"
+        android:text="@string/CourseSRoom"/>
+
+    <!-- Room Field -->
+    <EditText
+        style="@style/CourseViewField"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/CourseSRoomHint"
+        android:id="@+id/CourseVRoomField"/>
+
+    <!-- Done Button -->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        android:background="@color/background"
+        android:textColor="@color/accent"
+        android:text="@string/CourseVButton"
+        android:id="@+id/CourseVButton"/>
+</LinearLayout>

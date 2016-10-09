@@ -14,82 +14,75 @@
         android:background="@color/background"
         tools:context=".ContactActivity">
 
+        <!-- "Get in touch with Mac" Label -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/CSGetInTouchWithMac"
             android:id="@+id/CSTextView"
-            android:layout_marginTop="21dp"
+            android:layout_marginTop="11dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:textColor="@color/accent"
             android:textSize="23sp" />
 
+        <!-- Announcement Proposal Button -->
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/CSTextView"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="59dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:id="@+id/CSAnnouncementButton"
+            style="@style/ContactButtonStyle"
+            android:layout_below="@id/CSTextView"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
             android:onClick="proposeAnnouncement"
-            android:background="@color/background"
             android:text="@string/CSAnnouncementButton"
-            android:textColor="@color/accent" />
+            android:id="@+id/CSAnnouncementButton"/>
 
+        <!-- Teacher List Button -->
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/ContactButtonStyle"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
             android:layout_below="@+id/CSAnnouncementButton"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:id="@+id/CSRadioButton"
-            android:onClick="proposeRadio"
-            android:background="@color/background"
-            android:text="@string/CSRadioButton"
-            android:textColor="@color/accent" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/CSRadioButton"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:id="@+id/CSTeacherButton"
             android:onClick="requestTeacherList"
-            android:background="@color/background"
             android:text="@string/CSTeacherButton"
-            android:textColor="@color/accent" />
+            android:id="@+id/CSTeacherButton" />
 
+        <!-- Musical Button Button -->
+        <Button
+            style="@style/ContactButtonStyle"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_below="@+id/CSTeacherButton"
+            android:onClick="proposeRadio"
+            android:text="@string/CSRadioButton"
+            android:id="@+id/CSRadioButton" />
+
+        <!-- Emergency Hotline Button -->
+        <Button
+            style="@style/ContactButtonStyle"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_below="@+id/CSRadioButton"
+            android:onClick="emergency"
+            android:text="@string/CSEmergencyButton" />
+
+        <!-- Report Bug Button -->
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/CSTeacherButton"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:paddingLeft="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:paddingRight="10dp"
-            android:onClick="emergency"
+            android:paddingLeft="10dp"
+            android:onClick="reportBug"
             android:background="@color/background"
-            android:text="@string/CSEmergencyButton"
-            android:textColor="@color/accent" />
+            android:textColor="@color/accent"
+            android:text="@string/CSReport" />
     </RelativeLayout>
 
     <!-- Navigation drawer -->
     <ListView
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="left|start"
-        android:choiceMode="singleChoice"
-        android:divider="@color/listDivider"
-        android:dividerHeight="1dp"
-        android:background="@color/listCellBackground"
+        style="@style/DrawerListStyle"
         android:id="@+id/ConDList"/>
 </android.support.v4.widget.DrawerLayout>
 

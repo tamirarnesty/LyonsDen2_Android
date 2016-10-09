@@ -16,8 +16,6 @@ import com.wlmac.lyonsden2_android.contactActivities.AnnouncementActivity;
 import com.wlmac.lyonsden2_android.contactActivities.MusicActivity;
 import com.wlmac.lyonsden2_android.resourceActivities.ListViewerActivity;
 
-import java.util.ArrayList;
-
 /**
  * The activity used to display the methods for contacting the school.
  *
@@ -69,7 +67,16 @@ public class ContactActivity extends AppCompatActivity {
 
     /** Called when Emergency Hotline button is pressed. */
     public void emergency (View view) {
-        // TODO: Implement the emergency hotline
+        // TODO: Implement emergency hotline
+    }
+
+    public void reportBug (View view) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_EMAIL, "TheLyonsKeeper@gmail.com");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Hey Keeper, I found a bug!");
+        intent.putExtra(Intent.EXTRA_TEXT, "Before the bug occurred I did this:");
+        startActivity(Intent.createChooser(intent, "Send Mail"));
     }
 
     @Override

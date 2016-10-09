@@ -3,14 +3,30 @@
 
     <!-- Base application theme -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customizations will go here -->
         <item name="colorPrimary">@color/navigationBar</item>
         <item name="colorPrimaryDark">@color/navigationBar</item>
         <item name="colorAccent">@color/navigationBar</item>
+        <!-- Set Action Bar Text Color -->
+        <item name="actionBarTheme">@style/AppTheme.ActionBarTheme</item>
     </style>
 
-    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="android:color">@color/navigationBarText</item>
+    <!-- Set Action Bar Text Color -->
+    <style name="AppTheme.ActionBarTheme" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/navigationBarText</item>
+    </style>
+
+    <!--<style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">-->
+        <!--<item name="android:color">@color/navigationBarText</item>-->
+    <!--</style>-->
+
+    <style name="DrawerListStyle">
+        <item name="android:layout_width">240dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">left|start</item>
+        <item name="android:choiceMode">singleChoice</item>
+        <item name="android:divider">@color/listDivider</item>
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:background">@color/background</item>
     </style>
 
     <!-- SplashScreen Theme, must be a theme to be a splash -->
@@ -30,14 +46,15 @@
         <item name="styleCaldroidWeekdayView">@style/LyonsWeekday</item>
     </style>
 
-    <style name="LyonsCalendarViewLayout"> <item name="android:background">@color/foregroundColor</item> </style>
+    <style name="LyonsCalendarViewLayout"> <item name="android:background">@color/background</item> </style>
 
     <style name="LyonsMonthName" parent="CaldroidDefaultMonthName">
         <item name="android:textColor">@color/navigationBarText</item>
     </style>
 
     <style name="LyonsGridView" parent="CaldroidDefaultGridView">
-        <item name="android:horizontalSpacing">2dp</item>
+        <item name="android:horizontalSpacing">5dp</item>
+        <item name="android:verticalSpacing">5dp</item>
         <item name="android:adjustViewBounds">false</item>
         <item name="android:background">@color/background</item>
         <item name="android:choiceMode">singleChoice</item>
@@ -45,7 +62,7 @@
     </style>
 
     <style name="LyonsCell" parent="CaldroidDefaultCell">
-        <item name="android:textColor">@color/navigationBarText</item>
+        <item name="android:textColor">@color/whiteText</item>
         <item name="android:background">@drawable/calendar_cell</item>
     </style>
 
@@ -58,17 +75,19 @@
     <style name="LyonsArrowButton">
         <item name="android:layout_width">30dp</item>
         <item name="android:layout_height">30dp</item>
-        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_margin">12dp</item>
     </style>
 
     <style name="LyonsRightButton" parent="LyonsArrowButton">
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:background">@drawable/right_arrow</item>
+        <item name="android:tint">@color/navigationBarText</item>
     </style>
 
     <style name="LyonsLeftButton" parent="LyonsArrowButton">
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:background">@drawable/left_arrow</item>
+        <item name="android:tint">@color/navigationBarText</item>
     </style>
 
     <style name="LyonsWeekday" parent="CaldroidDefaultWeekday">
@@ -184,5 +203,40 @@
         <!--<item name="popupPromptView">@layout/simple_dropdown_hint</item>-->
         <!--<item name="gravity">center</item>-->
         <!--</style>-->
+    </style>
+    
+    <!-- Contact Screen Themes -->
+    <style name="ContactButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginLeft">40dp</item>
+        <item name="android:layout_marginRight">40dp</item>
+        <item name="android:background">@color/accent</item>
+        <item name="android:textColor">@color/whiteText</item>
+    </style>
+
+    <!-- Course View Themes -->
+    <style name="CourseViewLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="CourseViewField">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:inputType">text</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ems">10</item>
     </style>
 </resources>

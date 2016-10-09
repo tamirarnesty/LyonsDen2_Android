@@ -46,7 +46,11 @@
         <activity android:name=".contactActivities.MusicActivity" />
         <activity android:name=".resourceActivities.ClubActivity" />
         <activity android:name=".UserActivity" />
-        <activity android:name=".resourceActivities.CourseActvity"></activity>
+        <activity android:name=".resourceActivities.CourseActvity" />
+
+        <service
+            android:name=".otherClasses.WebCalendar"
+            android:exported="false"></service>
     </application>
 
 </manifest>

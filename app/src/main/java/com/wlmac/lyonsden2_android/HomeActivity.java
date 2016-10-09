@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,6 +26,9 @@ import android.widget.Toast;
 
 import com.wlmac.lyonsden2_android.resourceActivities.CourseActvity;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 // TODO: IMPLEMENT ANDROID PROGRESS INDICATORS WHERE NEEDED
@@ -36,6 +41,8 @@ import java.util.ArrayList;
  * @version 1, 2016/07/30
  */
 public class HomeActivity extends AppCompatActivity {
+    public static String sharedPreferencesName = "LyonsPrefs";
+
     /** Holds the current day's value (1 or 2) */
     private TextView dayLabel;
     /** Declared merely because it must be set to a custom font */

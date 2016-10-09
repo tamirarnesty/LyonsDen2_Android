@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/EVHeight"
-    android:padding="16dp"
-    android:background="@color/calendarCellBackground">
+    android:padding="8dp"
+    android:orientation="vertical"
+    android:background="@drawable/calendar_event_background">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
         android:layout_marginBottom="8dp"
         android:maxLines="1"
+        android:text="Some Text"
         android:textColor="@color/whiteText"
         android:textSize="@dimen/EVTitleInfoTextSize"
         android:id="@+id/EVTitleLabel"/>
@@ -22,27 +19,18 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/EVInfoHeight"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@id/EVTitleLabel"
         android:layout_marginBottom="8dp"
+        android:text="Some Text"
         android:textColor="@color/whiteText"
-        android:textSize="@dimen/EVTitleInfoTextSize"
+        android:textSize="@dimen/EVDescriptionTextSize"
         android:id="@+id/EVInfoLabel"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@id/EVInfoLabel"
-        android:showDividers="none">
+        android:showDividers="none"
+        android:id="@+id/EVBottomLabels">
 
         <TextView
             android:layout_width="0dp"
@@ -50,6 +38,7 @@
             android:layout_marginRight="4dp"
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
+            android:text="Some Text"
             android:textColor="@color/whiteText"
             android:textSize="@dimen/EVDateLocationTextSize"
             android:id="@+id/EVDateLabel"/>
@@ -60,8 +49,9 @@
             android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
             android:layout_weight="1"
+            android:text="Some Text"
             android:textColor="@color/whiteText"
             android:textSize="@dimen/EVDateLocationTextSize"
             android:id="@+id/EVLocationLabel"/>
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

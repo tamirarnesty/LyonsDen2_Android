@@ -14,11 +14,13 @@
         android:background="@color/background"
         tools:context="com.wlmac.lyonsden2_android.CalendarActivity">
 
+        <!-- Calendar Place Holder -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/CalSCalendar"/>
 
+        <!-- Date Label -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,9 +28,10 @@
             android:gravity="center_horizontal"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:textColor="@color/navigationBarText"
+            android:textColor="@color/cellEvent"
             android:id="@+id/CalSDateLabel"/>
 
+        <!-- Event List -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,12 +41,15 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true">
-
+            <!-- Event List Container -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="8dp"
                 android:orientation="vertical"
                 android:background="@color/background"
+                android:divider="@color/background"
+                android:dividerPadding="6dp"
                 android:id="@+id/CalSEventList"/>
         </ScrollView>
 
@@ -51,12 +57,6 @@
 
     <!-- Navigation drawer -->
     <ListView
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="left|start"
-        android:choiceMode="singleChoice"
-        android:divider="@color/listDivider"
-        android:dividerHeight="1dp"
-        android:background="@color/listCellBackground"
+        style="@style/DrawerListStyle"
         android:id="@+id/CalDList"/>
 </android.support.v4.widget.DrawerLayout>

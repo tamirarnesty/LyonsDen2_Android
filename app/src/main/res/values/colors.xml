@@ -22,7 +22,14 @@
     <color name="calendarCellBackground">#3498DB</color>
     <color name="listCellBackground">#3F51B5</color>
     <color name="timetableDividers">#43555E</color>
-    
+
+    <color name="eventViewBackground">#022A64</color>
+    <color name="cellDefault">#80022a64</color>
+    <color name="cellTodayBorder">#3498DB</color>
+    <color name="cellEvent">#d9022a64</color>
+
+    <color name="courseViewBackground">#e5ecf0f1</color>
+
     <color name="segmentedButtonUnselected">#a3a3a3</color>
 </resources>
 

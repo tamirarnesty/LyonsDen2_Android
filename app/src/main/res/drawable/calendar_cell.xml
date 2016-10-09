@@ -2,9 +2,8 @@
 <level-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Default Cell -->
     <item android:maxLevel="0">
-        <shape>
-            <solid android:color="@color/calendarCellBackground"/>
-            <corners android:radius="5dp"/>
+        <shape android:shape="oval">
+            <solid android:color="@color/cellDefault"/>
             <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
             <stroke android:color="@android:color/transparent"/>
         </shape>
@@ -12,9 +11,8 @@
 
     <!-- Default Cell Event -->
     <item android:maxLevel="1">
-        <shape>
-            <gradient android:startColor="@color/calendarCellBackground" android:centerColor="@color/calendarCellBackground" android:endColor="@color/navigationBar" android:type="linear" android:angle="270" android:centerY=".7"/>
-            <corners android:radius="5dp"/>
+        <shape android:shape="oval">
+            <solid android:color="@color/cellEvent"/>
             <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
             <stroke android:color="@android:color/transparent"/>
         </shape>
@@ -22,9 +20,8 @@
 
     <!-- Default Cell Selected -->
     <item android:maxLevel="2">
-        <shape>
-            <solid android:color="@color/calendarCellBackground"/>
-            <corners android:radius="5dp"/>
+        <shape android:shape="oval">
+            <solid android:color="@color/cellDefault"/>
             <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
             <stroke android:color="@color/navigationBar" android:width="3dp"/>
         </shape>
@@ -32,9 +29,8 @@
 
     <!-- Default Cell Event Selected -->
     <item android:maxLevel="3">
-        <shape>
-            <gradient android:startColor="@color/calendarCellBackground" android:centerColor="@color/calendarCellBackground" android:endColor="@color/navigationBar" android:type="linear" android:angle="270" android:centerY=".7"/>
-            <corners android:radius="5dp"/>
+        <shape android:shape="oval">
+            <solid android:color="@color/cellEvent"/>
             <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
             <stroke android:color="@color/navigationBar" android:width="3dp"/>
         </shape>
@@ -42,42 +38,44 @@
 
     <!-- Today Cell -->
     <item android:maxLevel="4">
-        <shape>
-            <solid android:color="@color/accent"/>
-            <corners android:radius="5dp"/>
+        <shape android:shape="oval">
+            <solid android:color="@color/cellDefault"/>
             <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
-            <stroke android:color="@android:color/transparent"/>
+            <stroke android:color="@color/cellTodayBorder" android:width="2dp"/>
         </shape>
     </item>
 
     <!-- Today Cell Event -->
     <item android:maxLevel="5">
-        <shape>
-            <gradient android:startColor="@color/accent" android:centerColor="@color/calendarCellBackground" android:endColor="@color/navigationBar" android:type="linear" android:angle="270" android:centerY=".7"/>
-            <corners android:radius="5dp"/>
+        <shape android:shape="oval">
+            <solid android:color="@color/cellEvent"/>
             <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
-            <stroke android:color="@android:color/transparent"/>
+            <stroke android:color="@color/cellTodayBorder" android:width="2dp"/>
         </shape>
     </item>
 
     <!-- Today Cell Selected -->
     <item android:maxLevel="6">
-        <shape>
-            <solid android:color="@color/accent"/>
-            <corners android:radius="5dp"/>
+        <shape android:shape="oval">
+            <solid android:color="@color/cellDefault"/>
             <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
-            <stroke android:color="@color/navigationBar" android:width="3dp"/>
+            <stroke android:color="@color/cellTodayBorder" android:width="3dp"/>
         </shape>
     </item>
 
     <!-- Today Cell Event Selected -->
     <item android:maxLevel="7">
-        <shape>
-            <gradient android:startColor="@color/accent" android:centerColor="@color/calendarCellBackground" android:endColor="@color/navigationBar" android:type="linear" android:angle="270" android:centerY=".7"/>
-            <corners android:radius="5dp"/>
+        <shape android:shape="oval">
+            <solid android:color="@color/cellEvent"/>
             <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
-            <stroke android:color="@color/navigationBar" android:width="3dp"/>
+            <stroke android:color="@color/cellTodayBorder" android:width="3dp"/>
         </shape>
     </item>
 
 </level-list>
+
+    <!--let colorCellDefault = colorEventViewBackground.withAlphaComponent(0.5)-->
+    <!--let colorCellEvent = colorEventViewBackground.withAlphaComponent(0.85)-->
+    <!--let colorTodayDot = colorWhiteText-->
+    <!--let colorBorder = colorNavigationBar-->
+    <!--let colorCellText = colorWhiteText-->

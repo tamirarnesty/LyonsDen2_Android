@@ -24,9 +24,10 @@
     <!-- Contact Screen Strings -->
     <string name="CSGetInTouchWithMac">Get in touch with Mac!</string>
     <string name="CSAnnouncementButton">Propose Announcement</string>
-    <string name="CSRadioButton">Propose Song for Radio</string>
+    <string name="CSRadioButton">Secret... Coming Soon!</string>
     <string name="CSTeacherButton">Contact a Teacher</string>
     <string name="CSEmergencyButton">Emergency Hotline</string>
+    <string name="CSReport">Report a Bug</string>
 
     <!-- Announcement Proposal Screen Strings -->
     <string name="APSTitle">Title:</string>
@@ -73,4 +74,8 @@
     <string name="CourseSRoomHint">eg. Rm 201</string>
     <string name="CourseSSubmitButtonText">Submit</string>
     <string name="CourseSDisclaimer">The information you provide for each course is for your benefit only. Whether the information you input is correct or not is up to you. The system will function as designed, regardless of your input.</string>
+
+    <!-- Course View Strings -->
+    <string name="CourseVTopLabel">Period Number</string>
+    <string name="CourseVButton">Done</string>
 </resources>
