@@ -7,12 +7,12 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +30,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-
+import java.util.Calendar;
+import java.util.Date;
 // TODO: IMPLEMENT ANDROID PROGRESS INDICATORS WHERE NEEDED
 
 /**
@@ -76,6 +77,14 @@ public class HomeActivity extends AppCompatActivity {
         initializeComponents();
         timeTable = assembleTimeTable();
 
+        final Handler periodUpdater = new Handler();
+        periodUpdater.postDelayed(new Runnable(){
+
+            @Override
+            public void run() {
+                updatePeriods();
+            }
+        }, 60000);
         setupDrawer(this, drawerList, rootLayout, drawerToggle);
 
         // Resize the announcement ListView to fit the screen. DOES NOT WORK ATM!!!
@@ -102,6 +111,15 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(parent.getContext(), "BAH BAH", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void updatePeriods () {
+        Calendar lyonsCalendar = Calendar.getInstance();
+//        Calendar periodOne = Calendar.getInstance().set(lyonsCalendar.YEAR, lyonsCalendar.MONTH, lyonsCalendar.DAY_OF_WEEK, 08, 45);
+//        Calendar periodTwo = Calendar.getInstance().set(lyonsCalendar.YEAR, lyonsCalendar.MONTH, lyonsCalendar.DAY_OF_WEEK, 10, 10);
+//        Calendar periodThree = Calendar.getInstance().set(lyonsCalendar.YEAR, lyonsCalendar.MONTH, lyonsCalendar.DAY_OF_WEEK, 12, 30);
+//        Calendar periodFour = Calendar.getInstance().set(lyonsCalendar.YEAR, lyonsCalendar.MONTH, lyonsCalendar.DAY_OF_WEEK, 13, 50);
+
     }
 
     /**
