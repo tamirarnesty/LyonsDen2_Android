@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
     tools:context="com.wlmac.lyonsden2_android.resourceActivities.ClubActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:titleTextColor="@color/accent"
+        app:title="@string/ClubSTitle"
+        android:id="@+id/toolbar">
+    </android.support.v7.widget.Toolbar>
+
     <!-- Title, Description & Image Container -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
         android:paddingTop="5dp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -22,7 +39,6 @@
         <ImageView
             android:layout_width="@dimen/ISImageViewWidth"
             android:layout_height="@dimen/ISImageViewHeight"
-            android:contentDescription="@string/ISImageContentDescription"
             android:id="@+id/ClubSImageView"/>
 
         <!-- Title & Description Container -->
@@ -56,8 +72,8 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Leader List & Members Button Container -->
-    <LinearLayout
+    <!-- Leaders List Label -->
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ClubSTopSection"
@@ -65,47 +81,23 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:paddingTop="8dp"
-        android:background="@color/background"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal"
-        android:id="@+id/ClubSMiddleSection">
-
-        <!-- Leaders List Label -->
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginRight="8dp"
-            android:layout_marginEnd="8dp"
-            android:maxLines="1"
-            android:textColor="@color/accent"
-            android:textSize="@dimen/ClubSMemberTextSize"
-            android:id="@+id/ClubSLeaderList"/>
-
-        <!-- Member List Button -->
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/accent"
-            android:textColor="@color/whiteText"
-            android:textSize="@dimen/ClubSButtonTextSize"
-            android:text="@string/ClubSMemberButton"
-            android:onClick="displayMembers"/>
-    </LinearLayout>
+        android:layout_marginTop="8dp"
+        android:maxLines="1"
+        android:textColor="@color/accent"
+        android:textSize="@dimen/ClubSMemberTextSize"
+        android:id="@+id/ClubSLeaderList"/>
 
     <!-- Clubs Announcements List -->
-    <ListView
+    <ExpandableListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/ClubSMiddleSection"
+        android:layout_below="@id/ClubSLeaderList"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:background="@color/listCellBackground"
+        android:background="@color/listViewBackground"
         android:divider="@color/listDivider"
         android:dividerHeight="1dp"
         android:id="@+id/ClubSAnnouncements"/>

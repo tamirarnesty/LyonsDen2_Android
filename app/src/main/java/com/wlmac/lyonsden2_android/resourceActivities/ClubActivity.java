@@ -4,28 +4,27 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.wlmac.lyonsden2_android.ListActivity;
 import com.wlmac.lyonsden2_android.R;
-import com.wlmac.lyonsden2_android.otherClasses.ListAdapter;
+import com.wlmac.lyonsden2_android.lyonsLists.ExpandableListAdapter;
+import com.wlmac.lyonsden2_android.lyonsLists.ListViewerActivity;
+import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,13 +32,14 @@ import java.util.Map;
 
 public class ClubActivity extends AppCompatActivity {
     public static Drawable image;
-    /** An ArrayList of ArrayLists each of which represents a data field for each of the announcement list's cells. */
-    private ArrayList<String>[] content = new ArrayList[]{new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>()};
+
+    private String[][] content = new String [0][0];
 
     private DatabaseReference clubRef;
 
     private String oldTitle = "";
     private String oldInfo = "";
+    private ExpandableListAdapter adapter;
 
     private TextView titleView;
     private TextView infoView;
@@ -50,6 +50,8 @@ public class ClubActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.club_activity);
+
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         checkUserForLeadership();
 
@@ -76,25 +78,37 @@ public class ClubActivity extends AppCompatActivity {
         TextView leaderView = (TextView) findViewById(R.id.ClubSLeaderList);
         leaderView.setText(intent.getStringExtra("leaders"));
 
-        ListView clubsEvents = (ListView) findViewById(R.id.ClubSAnnouncements);
+        ExpandableListView clubsEvents = (ExpandableListView) findViewById(R.id.ClubSAnnouncements);
 
         // The list adapter
-        ListAdapter adapter = new ListAdapter(this, content[0], content[1], null, false);
+//        ListAdapter adapter = new ListAdapter(this, content[0], content[1], null, false);
+        adapter = new ExpandableListAdapter(this, content);
         clubsEvents.setAdapter(adapter);
 
-        ListActivity.parseForEvents(adapter, content, clubRef.child("announcements"));
+//        EventList.parseForEvents(adapter, content, clubRef.child("announcements"), null, null);
+        Retrieve.eventData(clubRef.child("announcements"), new Retrieve.EventDataHandler() {
+            @Override
+            public void handle(String[][] eventData) {
+                onEventsLoaded(eventData);
+            }
+        });
 
         clubsEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(parent.getContext(), InfoActivity.class);
-                intent.putExtra("title", content[0].get(position));
-                intent.putExtra("info", content[1].get(position));
-                intent.putExtra("date", content[2].get(position));
-                intent.putExtra("location", content[3].get(position));
+                intent.putExtra("title", content[position][0]);
+                intent.putExtra("info", content[position][1]);
+                intent.putExtra("date", content[position][2]);
+                intent.putExtra("location", content[position][3]);
                 startActivity(intent);
             }
         });
+    }
+
+    private void onEventsLoaded (String[][] eventData) {
+        this.content = eventData;
+        adapter.updateDataSet(content);
     }
 
     private void checkUserForLeadership () {
@@ -151,7 +165,7 @@ public class ClubActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                     Toast.makeText(getApplicationContext(), "Changes Applied!", Toast.LENGTH_SHORT).show();
-                    ListActivity.contentChanged = true;
+//                    ClubList.contentChanged = true;
                 }
             });
         }

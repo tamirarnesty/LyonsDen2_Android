@@ -1,8 +1,6 @@
 <resources>
-    <!-- TODO: CLEAN THIS UP, AFTER DATE PICKER VISUALIZATION -->
-
     <!-- Base application theme -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/navigationBar</item>
         <item name="colorPrimaryDark">@color/navigationBar</item>
         <item name="colorAccent">@color/navigationBar</item>
@@ -10,14 +8,14 @@
         <item name="actionBarTheme">@style/AppTheme.ActionBarTheme</item>
     </style>
 
-    <!-- Set Action Bar Text Color -->
-    <style name="AppTheme.ActionBarTheme" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:textColorPrimary">@color/navigationBarText</item>
+    <style name="LyonsLoader" parent="Theme.AppCompat.Dialog">
+        <item name="android:divider">@android:color/transparent</item>
     </style>
 
-    <!--<style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">-->
-        <!--<item name="android:color">@color/navigationBarText</item>-->
-    <!--</style>-->
+    <!-- Set Action Bar Text Color -->
+    <style name="AppTheme.ActionBarTheme" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/accent</item>
+    </style>
 
     <style name="DrawerListStyle">
         <item name="android:layout_width">240dp</item>
@@ -26,7 +24,16 @@
         <item name="android:choiceMode">singleChoice</item>
         <item name="android:divider">@color/listDivider</item>
         <item name="android:dividerHeight">1dp</item>
-        <item name="android:background">@color/background</item>
+        <item name="android:background">@color/cellEvent</item>
+    </style>
+
+    <style name="LyonsButtonStyle">
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@color/accent</item>
     </style>
 
     <!-- SplashScreen Theme, must be a theme to be a splash -->
@@ -49,7 +56,7 @@
     <style name="LyonsCalendarViewLayout"> <item name="android:background">@color/background</item> </style>
 
     <style name="LyonsMonthName" parent="CaldroidDefaultMonthName">
-        <item name="android:textColor">@color/navigationBarText</item>
+        <item name="android:textColor">@color/accent</item>
     </style>
 
     <style name="LyonsGridView" parent="CaldroidDefaultGridView">
@@ -81,27 +88,28 @@
     <style name="LyonsRightButton" parent="LyonsArrowButton">
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:background">@drawable/right_arrow</item>
-        <item name="android:tint">@color/navigationBarText</item>
+        <item name="android:tint">@color/accent</item>
     </style>
 
     <style name="LyonsLeftButton" parent="LyonsArrowButton">
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:background">@drawable/left_arrow</item>
-        <item name="android:tint">@color/navigationBarText</item>
+        <item name="android:tint">@color/accent</item>
     </style>
 
     <style name="LyonsWeekday" parent="CaldroidDefaultWeekday">
-        <item name="android:textColor">@color/navigationBarText</item>
+        <item name="android:textColor">@color/accent</item>
     </style>
 
     <!-- Home Screen Themes -->
     <style name="TimeTablePeriodContainer">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">0dp</item>
+        <item name="android:orientation">vertical</item>
         <item name="android:clickable">true</item>
         <item name="android:onClick">periodClicked</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:background">@color/textFieldBackground</item>
+        <item name="android:background">@color/timeTableBackground</item>
     </style>
 
     <style name="TimeTablePeriodParameter">
@@ -135,7 +143,6 @@
         <item name="android:inputType">none</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/whiteText</item>
-        <item name="android:background">@color/textFieldBackground</item>
     </style>
 
     <style name="UserButton">
@@ -152,59 +159,10 @@
         <item name="android:background">@drawable/input_field_default</item>
         <item name="android:inputType">text</item>
         <item name="android:padding">5dp</item>
-        <item name="android:textSize">21sp</item>
+        <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/whiteText</item>
     </style>
 
-    <style name="DatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorPrimary">@color/navigationBarColor</item>
-        <item name="colorPrimaryDark">@color/navigationBarDarkColor</item>
-        <item name="colorAccent">@color/accentColor</item>
-
-
-        <!--<item name="android:actionMenuTextColor">@color/accentColor</item>-->
-        <!--<item name="android:windowBackground">@drawable/date_picker_background</item>-->
-        <!--<item name="android:datePickerStyle">@android:style/Widget.DatePicker</item>-->
-
-        <!--<item name="android:textColorPrimary">@color/accentColor</item>-->
-        <!--<item name="android:colorBackground">@color/foregroundColor</item>-->
-        <!--<item name="android:windowFrame">@null</item>-->
-        <!--<item name="android:spinnerStyle">@style/Spinner</item>-->
-
-
-        <!--<item name="android:buttonBarStyle">@style/Widget.AppCompat.ButtonBar.AlertDialog</item>-->
-        <!--<item name="android:borderlessButtonStyle">@style/Widget.AppCompat.Button.Borderless</item>-->
-        <!--<item name="android:windowCloseOnTouchOutside">@bool/abc_config_closeDialogWhenTouchOutside</item>-->
-
-    </style>
-
-    <style name="CustomTheme" parent="@android:style/Theme.Holo.Light">
-        <!--<item name="android:actionBarStyle">@style/MyActionBar</item>-->
-        <!--<item name="android:actionBarTabStyle">@style/MyActionBarTabStyle</item>-->
-        <!--<item name="android:actionBarTabTextStyle">@style/MyActionBarTabText</item>-->
-        <!--<item name="android:actionButtonStyle">@style/MyActionBarButtonStyle</item>-->
-
-    </style>
-
-    <style name="Spinner" parent="Widget.AppCompat.Spinner">
-        <item name="android:background">@color/backgroundColor</item>
-        <item name="android:popupBackground">@color/foregroundColor</item>
-
-        <!--<style name="Widget.Spinner">-->
-        <!--<item name="background">@drawable/btn_dropdown</item>-->
-        <!--<item name="clickable">true</item>-->
-        <!--<item name="spinnerMode">dialog</item>-->
-
-        <!--<item name="dropDownSelector">@drawable/list_selector_background</item>-->
-        <!--<item name="popupBackground">@drawable/spinner_dropdown_background</item>-->
-        <!--<item name="dropDownVerticalOffset">-10dip</item>-->
-        <!--<item name="dropDownHorizontalOffset">0dip</item>-->
-        <!--<item name="dropDownWidth">wrap_content</item>-->
-        <!--<item name="popupPromptView">@layout/simple_dropdown_hint</item>-->
-        <!--<item name="gravity">center</item>-->
-        <!--</style>-->
-    </style>
-    
     <!-- Contact Screen Themes -->
     <style name="ContactButtonStyle">
         <item name="android:layout_width">match_parent</item>

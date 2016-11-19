@@ -6,6 +6,19 @@
     <string name="addAction">Add</string>
     <string name="deleteButton">Delete</string>
 
+    <!-- Screen Titles -->
+    <string name="HSTitle">Home</string>
+    <string name="CalSTitle">Calendar</string>
+    <string name="ConSTitle">Contact</string>
+    <string name="USTitle">User</string>
+    <string name="APSTitle">Propose Announcement</string>
+    <string name="TSTitle">Teachers</string>
+    <string name="MSTitle">Members</string>
+    <string name="ClubSTitle">Club</string>
+    <string name="ISTitle">Announcement</string>
+    <string name="LSTitleEvents">Announcements</string>
+    <string name="LSTitleClubs">Clubs</string>
+
     <!-- Login Screen Strings -->
     <string name="LSLoginHint">Enter e-mail here</string>
     <string name="LSPassHint">Enter password here</string>
@@ -30,22 +43,17 @@
     <string name="CSReport">Report a Bug</string>
 
     <!-- Announcement Proposal Screen Strings -->
-    <string name="APSTitle">Title:</string>
-    <string name="APSDescription">Description:</string>
-    <string name="APSLocation">Location:</string>
-    <string name="APSTeacher">Teacher Approval Login:</string>
+    <string name="APSTitleLabel">Title:</string>
+    <string name="APSDescriptionLabel">Description:</string>
+    <string name="APSLocationLabel">Location:</string>
+    <string name="APSTeacherLabel">Teacher Approval Login:</string>
     <string name="APSRequiredHint">Required</string>
     <string name="APSOptionalHint">Optional</string>
     <string name="APSDateButtonText">Pick a Date</string>
     <string name="APSTimeButtonText">Pick a Time</string>
     <string name="APSSubmitButtonText">Submit</string>
-
-    <!-- Info Screen Strings -->
-    <string name="ISTitleDefault">Title goes here</string>
-    <string name="ISDescriptionDefault">Description goes here</string>
-    <string name="ISTimeDefault">Time goes here</string>
-    <string name="ISLocationDefault">Location goes here</string>
-    <string name="ISImageContentDescription">A picture of the event</string>
+    <string name="APSApproveButtonText">Approve</string>
+    <string name="APSUnlockButtonText">Unlock</string>
 
     <!-- Club Info Screen Strings -->
     <string name="ClubSMemberButton">Members</string>

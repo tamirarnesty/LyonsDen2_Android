@@ -1,9 +1,7 @@
-package com.wlmac.lyonsden2_android.otherClasses;
+package com.wlmac.lyonsden2_android.lyonsLists;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,19 +24,8 @@ import java.util.ArrayList;
 public class ListAdapter extends ArrayAdapter {
     /** The context (usually activity) that this adapter's list will belong to. */
     private final Context context;
-    /**
-     * An ArrayList of titles to be displayed in the list.
-     * Must be indexed appropriately with first item of the list going top to bottom, being at index 0. */
-    private final ArrayList<String> titles;
-    /**
-     * An ArrayList of subtitles to be displayed in the list.
-     * Must be indexed appropriately with first item of the list going top to bottom, being at index 0. */
-    private final ArrayList<String> infos;
-    /**
-     * An ArrayList of Drawables to be inserted into the list.
-     * Must be indexed appropriately with first item of the list going top to bottom, being at index 0. */
-    private final ArrayList<Drawable> images;
-
+    private ArrayList<String[]> content;
+    private Drawable[] images;
     private ArrayList<Button> buttons = new ArrayList<>();
 
     private final View.OnClickListener onClick;
@@ -56,8 +43,6 @@ public class ListAdapter extends ArrayAdapter {
     private boolean canEdit = false;
     private boolean editing = false;
 
-    // TODO: FIGURE OUT WHY CANT CALL CONSTRUCTOR FROM ANOTHER CONSTRUCTOR
-
     /**
      * The default constructor of this List adapter, creates the adapter and initializes all of
      * its GUI components.
@@ -67,12 +52,11 @@ public class ListAdapter extends ArrayAdapter {
      * @param images The ArrayList which will contain the image for each cell.
      * @param isLarge If true, then the height for each cell will be @dimen/largeCellSize, otherwise it will be @dimen/defaultCellSize.
      */
-    public ListAdapter (Context context, ArrayList<String> titles, ArrayList<String> infos, @Nullable ArrayList<Drawable> images, boolean isLarge) {
-        super (context, -1, titles);    // Super call
+    public ListAdapter (Context context, ArrayList<String[]> content, boolean isLarge) {
+        super (context, -1, content);    // Super call
         this.context = context;
-        this.titles = titles;
-        this.infos = infos;
-        this.images = images;
+        this.content = content;
+        this.images = null;
         this.onClick = null;
 
         if (isLarge) {
@@ -100,12 +84,11 @@ public class ListAdapter extends ArrayAdapter {
      * @param isLarge If true, then the height for each cell will be @dimen/largeCellSize, otherwise it will be @dimen/defaultCellSize.
      * @param onClick The onItemClickListener to apply to the each row item. (To retrieve the list position of the cell, use the tag of the parent view of the button)
      */
-    public ListAdapter (Context context, ArrayList<String> titles, ArrayList<String> infos, @Nullable ArrayList<Drawable> images, boolean isLarge, View.OnClickListener onClick) {
-        super (context, -1, titles);    // Super call
+    public ListAdapter (Context context, ArrayList<String[]> content, boolean isLarge, View.OnClickListener onClick) {
+        super (context, -1, content);    // Super call
         this.context = context;
-        this.titles = titles;
-        this.infos = infos;
-        this.images = images;
+        this.content = content;
+        this.images = null;
         this.onClick = onClick;
         this.canEdit = true;
 
@@ -129,11 +112,11 @@ public class ListAdapter extends ArrayAdapter {
         // Create an instance of the cell, from the XML cell layout file.
         View rowView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(layout, parent, false);
         // Declare instance of all required GUI components in the cell.
-        ((TextView) rowView.findViewById(titleID)).setText(titles.get(position));
-        ((TextView) rowView.findViewById(infoID)).setText(infos.get(position));
+        ((TextView) rowView.findViewById(titleID)).setText(content.get(position)[0]);
+        ((TextView) rowView.findViewById(infoID)).setText(content.get(position)[1]);
 
-        if (images != null && images.get(position) != null) {   // If there is an image, then
-            ((ImageView) rowView.findViewById(imageID)).setImageDrawable(images.get(position));     // Set the image
+        if (images != null && images[position] != null) {   // If there is an image, then
+            ((ImageView) rowView.findViewById(imageID)).setImageDrawable(images[position]);     // Set the image
         } else {                                                // Otherwise
             rowView.findViewById(imageID).setVisibility(View.GONE);                                 // Hide the ImageView.
         }
@@ -169,5 +152,10 @@ public class ListAdapter extends ArrayAdapter {
                 button.setVisibility(visibility);
             }
         }
+    }
+
+    public void updateDataSet (String[][] newDataSet) {
+//        this.content = newDataSet;
+        this.notifyDataSetChanged();
     }
 }

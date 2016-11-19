@@ -1,4 +1,4 @@
-package com.wlmac.lyonsden2_android.resourceActivities;
+package com.wlmac.lyonsden2_android.lyonsLists;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.wlmac.lyonsden2_android.R;
-import com.wlmac.lyonsden2_android.otherClasses.ListAdapter;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 
 import java.util.ArrayList;
@@ -63,16 +62,16 @@ public class ListViewerActivity extends AppCompatActivity {
         // Initialize the list
         list = (ListView) findViewById(R.id.LVSList);
         // Create and set the adapter for this activity's list
-        if (this.getTitle().equals("Members"))
-            adapter = new ListAdapter(this, content[0], content[1], null, false, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("ListViewer", "Deleting at index " + v.getTag());
-                    removeItemAtIndex((int) ((View) v.getParent()).getTag());
-                }
-            });
-        else
-            adapter = new ListAdapter(this, content[0], content[1], null, false);
+//        if (this.getTitle().equals("Members"))
+//            adapter = new ListAdapter(this, content, false, new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Log.d("ListViewer", "Deleting at index " + v.getTag());
+//                    removeItemAtIndex((int) ((View) v.getParent()).getTag());
+//                }
+//            });
+//        else
+//            adapter = new ListAdapter(this, content, false);
         list.setAdapter(adapter);
         // Make this activity's list un-clickable
         list.setClickable(false);

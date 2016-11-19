@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,13 +32,18 @@ public class LoginActivity extends AppCompatActivity {
     private boolean signUpSelected = true;
     private Button[] segmentedButtons = new Button[2];
     /** Store data permanently on device */
-    SharedPreferences sharedPreferences = this.getSharedPreferences("com.wlmac.lyonsden2_android", Context.MODE_PRIVATE);
+    SharedPreferences sharedPreferences;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
+        sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
+
         emailField = (EditText) findViewById(R.id.LSEmailField);
         passField = (EditText) findViewById(R.id.LSPassField);
         signUpKeyField = (EditText) findViewById(R.id.LSCodeField);

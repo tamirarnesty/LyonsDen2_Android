@@ -95,8 +95,6 @@ public class LyonsCalendar extends CaldroidFragment {
      * @param events The events containing the {@link Date} to update.
      */
     private void updateEventUI (Event[] events) {
-        // TODO: Change this to have only date, checking each event is inefficient.
-
         // For as many times as there are events
         for (int h = 0; h < events.length; h ++) {
             // Create the cell image

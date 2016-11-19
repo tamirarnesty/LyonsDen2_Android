@@ -13,23 +13,34 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Display;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.FirebaseDatabase;
+import com.wlmac.lyonsden2_android.lyonsLists.ClubList;
+import com.wlmac.lyonsden2_android.lyonsLists.EventList;
+import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 import com.wlmac.lyonsden2_android.resourceActivities.CourseActvity;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 // TODO: IMPLEMENT ANDROID PROGRESS INDICATORS WHERE NEEDED
@@ -42,7 +53,7 @@ import java.util.Date;
  * @version 1, 2016/07/30
  */
 public class HomeActivity extends AppCompatActivity {
-    public static String sharedPreferencesName = "LyonsPrefs";
+    public static String sharedPreferencesName = "com.wlmac.lyonsden2_android";
 
     /** Holds the current day's value (1 or 2) */
     private TextView dayLabel;
@@ -51,13 +62,13 @@ public class HomeActivity extends AppCompatActivity {
     /** The custom font used with most TextViews, this is where it should always be accessed from. */
     public static Typeface hapnaMonoLight;
     /** An array of 4 RelativeLayout each of which represent a period in the timetable*/
-    private RelativeLayout[] periods = new RelativeLayout[4];
+    private LinearLayout[] periods = new LinearLayout[4];
     /** The ListView that contains the announcements */
     private ListView listView;
     /** The contents of the announcement ListView */
     private ArrayList<String> announcements = new ArrayList<>();
     /** A list of item that will be displayed in the every drawer list of this program. */
-    private static String[] drawerContent = {"Home", "Calendar", "Announcements", "Events", "Clubs", "Contact", "Me"};  // Just trying things out :)
+    private static String[] drawerContent = {"Home", "Calendar", "Announcements", "Clubs", "Contact", "Me"};  // Just trying things out :)
     /** An instance of the root layout of this activity. */
     private DrawerLayout rootLayout;
     /** An instance of the ListView used in this activity's navigation drawer. */
@@ -73,6 +84,11 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Declare the associated xml layout file
         setContentView(R.layout.home_activity);
+
+//        initializeContent();
+
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
         // Instantiate all UI components
         initializeComponents();
         timeTable = assembleTimeTable();
@@ -113,6 +129,14 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+//    private void initializeContent () {
+//        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+//        recyclerView.setLayoutManager(manager);
+//
+//
+//    }
+
     private void updatePeriods () {
         Calendar lyonsCalendar = Calendar.getInstance();
 //        Calendar periodOne = Calendar.getInstance().set(lyonsCalendar.YEAR, lyonsCalendar.MONTH, lyonsCalendar.DAY_OF_WEEK, 08, 45);
@@ -135,7 +159,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view =super.getView(position, convertView, parent);
-                ((TextView) view.findViewById(android.R.id.text1)).setTextColor(parent.getResources().getColor(R.color.accentColor));
+                ((TextView) view.findViewById(android.R.id.text1)).setTextColor(parent.getResources().getColor(R.color.whiteText));
                 return view;
             }
         });
@@ -186,12 +210,13 @@ public class HomeActivity extends AppCompatActivity {
             target = HomeActivity.class;
         } else if (activity == 1) {
             target = CalendarActivity.class;
-        } else if (activity == 2 || activity == 3 || activity == 4) {
-            ListActivity.displayContent = activity - 1;
-            target = ListActivity.class;
-        } else if (activity == 5) {
+        } else if (activity == 2) {
+            target = EventList.class;
+        } else if ( activity == 3) {
+            target = ClubList.class;
+        } else if (activity == 4) {
             target = ContactActivity.class;
-        } else if (activity == 6) {
+        } else if (activity == 5) {
             target = UserActivity.class;
         }
         Intent intent = new Intent (initiator, target);
@@ -208,10 +233,10 @@ public class HomeActivity extends AppCompatActivity {
         drawerList = (ListView) findViewById(R.id.HDList);
         drawerToggle = initializeDrawerToggle(this, rootLayout);
 
-        periods[0] = (RelativeLayout) findViewById(R.id.HSPeriod0);
-        periods[1] = (RelativeLayout) findViewById(R.id.HSPeriod1);
-        periods[2] = (RelativeLayout) findViewById(R.id.HSPeriod2);
-        periods[3] = (RelativeLayout) findViewById(R.id.HSPeriod3);
+        periods[0] = (LinearLayout) findViewById(R.id.HSPeriod0);
+        periods[1] = (LinearLayout) findViewById(R.id.HSPeriod1);
+        periods[2] = (LinearLayout) findViewById(R.id.HSPeriod2);
+        periods[3] = (LinearLayout) findViewById(R.id.HSPeriod3);
     }
 
     // You will probably want to change this to set the time table to whatever it retrieved from permanent storage
@@ -263,6 +288,11 @@ public class HomeActivity extends AppCompatActivity {
 
         intent.putExtra("periodData", periodData);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

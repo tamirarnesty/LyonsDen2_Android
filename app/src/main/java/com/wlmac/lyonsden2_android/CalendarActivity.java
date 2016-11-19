@@ -1,6 +1,5 @@
 package com.wlmac.lyonsden2_android;
 
-import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
@@ -9,27 +8,29 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.wlmac.lyonsden2_android.otherClasses.Check;
 import com.wlmac.lyonsden2_android.otherClasses.Event;
+import com.wlmac.lyonsden2_android.otherClasses.LoadingLabel;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsCalendar;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
+import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 import com.wlmac.lyonsden2_android.otherClasses.WebCalendar;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
 // First time launch
 // Calendar shows, hidden
@@ -205,8 +206,9 @@ public class CalendarActivity extends AppCompatActivity {
             return eventView;
         }
     };
-    /** An instance holder for the {@link ProgressDialog} of this activity. */
-    private ProgressDialog dialog;
+    private LoadingLabel loadingLabel;
+    private ProgressBar loadingCircle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,6 +216,8 @@ public class CalendarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Associate the appropriate layout file with this activity
         setContentView(R.layout.calendar_activity);
+
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
     // MARK: CALENDAR VIEW INITIALIZATION
 
@@ -254,25 +258,20 @@ public class CalendarActivity extends AppCompatActivity {
 
     // MARK: CALENDAR INITIALIZATION
         // Check for internet availability
-        boolean internetAvailable = false;
-        try {
-            internetAvailable = new Check().execute(this).get();
-        } catch (InterruptedException | ExecutionException e) {}
-
-        if (internetAvailable) {  // Speaks for it self
+        if (Retrieve.isInternetAvailable(this)) {  // Speaks for it self
             // Download action may be different, depending on circumstances
             WebCalendar.downloadInto(calendarView, getApplicationContext(), downloadAction);
-            dialog = ProgressDialog.show(CalendarActivity.this, "The Calendar is loading", "Yes it really is loading, don't worry!");
+            showLoadingComponents();
+
         } else {                // If internet is not available then
             String toastText = "Unable to connect to calendar"; // Will display this message if offline and no cache
             // If a Cached Calendar exists then use that and tell the user about it
             if (getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyCalendarCache, null) != null) {
                 calendarView.setOffline(true);
-                dialog = ProgressDialog.show(CalendarActivity.this, "The Calendar is loading", "Yes it really is loading, don't you worry!");
+                showLoadingComponents();
                 toastText += "\nLoading last cached version";   // Will display that plus this message if offline but with cache
             } else {    // If not then too bad so sad
                 calendarView.setEmpty(true);
-                dialog = null;
             }
             Toast.makeText(this, toastText, Toast.LENGTH_LONG).show();
         }
@@ -306,13 +305,15 @@ public class CalendarActivity extends AppCompatActivity {
 
     /** Called when the events are loaded into the calendar. */
     public void onEventsLoaded () {
-        if (dialog != null)     // If there is a dialog then hide it
-            dialog.dismiss();
-
         // Display all components of this activity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if (loadingLabel != null && loadingCircle != null) {
+                    loadingLabel.dismiss();
+                    loadingCircle.setVisibility(View.GONE);
+                }
+
                 try {
                     calendarView.getView().setVisibility(View.VISIBLE);
                 } catch (NullPointerException e) {
@@ -331,6 +332,12 @@ public class CalendarActivity extends AppCompatActivity {
         Drawable drawable = getResources().getDrawable(R.drawable.calendar_cell);
         try { drawable.setLevel(cellCode); } catch (NullPointerException e) { Log.d("Calendar Activity:", "The calendar_cell.xml file seems to missing or corrupted."); }
         calendarView.setBackgroundDrawableForDate(drawable, date);
+    }
+
+    private void showLoadingComponents () {
+        loadingLabel = new LoadingLabel(((TextView) findViewById(R.id.CalSLoadingLabel)), this);
+        loadingLabel.startCycling();
+        loadingCircle = (ProgressBar) findViewById(R.id.CalSLoadingWheel);
     }
 
     /**

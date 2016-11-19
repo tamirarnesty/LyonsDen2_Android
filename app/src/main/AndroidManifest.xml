@@ -29,8 +29,11 @@
             android:name=".CalendarActivity"
             android:label="Calendar" />
         <activity
-            android:name=".ListActivity"
-            android:label="Events" />
+            android:name=".lyonsLists.ClubList"
+            android:label="Clubs" />
+        <activity
+            android:name=".lyonsLists.EventList"
+            android:label="Announcements" />
         <activity
             android:name=".ContactActivity"
             android:label="Contact" />
@@ -38,7 +41,7 @@
             android:name=".contactActivities.AnnouncementActivity"
             android:label="Propose Announcement" />
         <activity
-            android:name=".resourceActivities.ListViewerActivity"
+            android:name=".lyonsLists.ListViewerActivity"
             android:label="Teachers" />
         <activity
             android:name=".resourceActivities.InfoActivity"
@@ -50,7 +53,7 @@
 
         <service
             android:name=".otherClasses.WebCalendar"
-            android:exported="false"></service>
+            android:exported="false"/>
     </application>
 
 </manifest>

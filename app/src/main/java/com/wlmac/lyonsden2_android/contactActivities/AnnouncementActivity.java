@@ -3,36 +3,36 @@ package com.wlmac.lyonsden2_android.contactActivities;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.ValueEventListener;
 import com.wlmac.lyonsden2_android.ContactActivity;
 import com.wlmac.lyonsden2_android.R;
+import com.wlmac.lyonsden2_android.otherClasses.LoadingLabel;
+import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
+import com.wlmac.lyonsden2_android.otherClasses.ToastView;
 
-import java.math.BigInteger;
 import java.util.Calendar;
-import java.util.HashMap;
-
-// I know the submission system is a bit overcomplicated, but in my defense I had bigger plans for it
-// and I'm still planning on implementing them, just a bit later.
 
 // TODO: CREATE LOADING WHEEL FOR WHEN APPROVING AND SUBMITTING THE ANNOUNCEMENT
-// TODO: VISUALIZE THE DATE PICKERS, ANY WAY POSSIBLE
-// TODO: FIGURE OUT ERROR HANDLING. LIKE NO INTERNET
-// TODO: FIX AUTO GENERATED DATE/TIME FORMATTING (IN DATE/TIME FIELDS)
 
 /**
  * The activity to that will be used for constructing, approving and uploading announcemnt to the
@@ -54,17 +54,23 @@ public class AnnouncementActivity extends AppCompatActivity {
     private EditText locationField;
     /** An instance of the teacher login input field. */
     private EditText teacherLogin;
-    /** States whether the proposal has been validated. */
-    private boolean proposalValidated = false;
-    /** Hold a cache of the teacher's IDs for more efficient internet usage. (Download only once) */
-    private HashMap<String, String> teacherIDCache = null;
-    /** Holds an instance of the database that is used with this activity. */
-    private FirebaseDatabase database;
+
+    private Button approveButton;
+
+    private Button submitButton;
+
+    private LinearLayout contentView;
+
+    private boolean isProposalLocked = false;
+
+    private ToastView loadingToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.announcement_activity);
+
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         instantiateComponents();
 //        setFonts();
@@ -85,12 +91,12 @@ public class AnnouncementActivity extends AppCompatActivity {
         int curDay = cal.get(Calendar.DAY_OF_MONTH);
 
         // Create date picker, set to the current date
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,// R.style.DatePickerDialogTheme,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         // Set the the date field to the current date
-                        String date = year + "-" + monthOfYear + "-" + dayOfMonth;
+                        String date = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
                         dateField.setText(date);
                     }
                 }, curYear, curMonth, curDay);
@@ -130,6 +136,19 @@ public class AnnouncementActivity extends AppCompatActivity {
         descriptionField = (EditText) findViewById(R.id.APSDescriptionField);
         locationField = (EditText) findViewById(R.id.APSLocationField);
         teacherLogin = (EditText) findViewById(R.id.APSTeacherLogin);
+        approveButton = (Button) findViewById(R.id.APSApproveButton);
+        submitButton = (Button) findViewById(R.id.APSSubmitButton);
+//        loadingCircle = (ProgressBar) findViewById(R.id.APSLoadingWheel);
+//        loadingLabel = new LoadingLabel(((TextView) findViewById(R.id.APSLoadingLabel)), this);
+        loadingToast = new ToastView(this);
+        contentView = (LinearLayout) findViewById(R.id.APSContentView);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.CENTER;
+        contentView.addView(loadingToast.getView(), params);
+
+//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+//        contentView.addView(loadingToast.getView(), params);
 
         final Calendar cal = Calendar.getInstance();
         // An Array of fields that should be formatted
@@ -155,27 +174,81 @@ public class AnnouncementActivity extends AppCompatActivity {
         timeField.setText(time);
     }
 
-//    /** Sets the appropriate font for each text label on this screen. */
-//    private void setFonts () {
-//        // Create instances of all labels on screen
-//        TextView[] labels = {(TextView) findViewById(R.id.APSTitleLabel), (TextView) findViewById(R.id.APSDescriptionLabel), (TextView) findViewById(R.id.APSTeacherLabel)};
-//        // Set their typefaces
-//        for (int h = 0; h < labels.length; h ++) {
-//            labels[0].setTypeface(HomeActivity.hapnaMonoLight);
-//        }
-//    }
+    private void toggleLoadingComponents () {
+        if (loadingToast.isVisible()) {
+            loadingToast.hide();
+
+            Log.d("AnnouncementActivity", "Hiding Toast!");
+        } else {
+            loadingToast.show();
+            Log.d("AnnouncementActivity", "Displaying Toast!");
+        }
+    }
 
     public void submitAnnouncement (View view) {
-        Toast.makeText(this, "The real method is missing! 8(", Toast.LENGTH_LONG).show();
+        toggleLoadingComponents();
+
+        if (Retrieve.isInternetAvailable(this)) {
+            DatabaseReference announcement = FirebaseDatabase.getInstance().getReference("announcements").push();
+            String dateTime = dateField.getText().toString().replaceAll("-", "") + timeField.getText().toString().replaceAll(":", "") + "00";
+
+//            announcement.child("title").setValue(titleField.getText().toString());
+//            announcement.child("description").setValue(descriptionField.getText().toString());
+//            announcement.child("dateTime").setValue(dateTime);
+//            announcement.child("location").setValue(locationField.getText().toString());
+
+            // Notify User about success!
+            Intent intent = new Intent(this, ContactActivity.class);
+            intent.putExtra("afterProposal", true);
+            startActivity(intent);
+        } else {    // No Internet
+            Toast.makeText(getApplicationContext(), "Submission Failed!\nNo Internet!", Toast.LENGTH_LONG).show();
+        }
+        toggleLoadingComponents();
+    }
+
+    private void lockUnlockProposal() {
+        titleField.setEnabled(!isProposalLocked);
+        descriptionField.setEnabled(!isProposalLocked);
+        ((Button) findViewById(R.id.APSDateButton)).setEnabled(!isProposalLocked);
+        ((Button) findViewById(R.id.APSTimeButton)).setEnabled(!isProposalLocked);
+        locationField.setEnabled(!isProposalLocked);
+        teacherLogin.setEnabled(!isProposalLocked);
+
+        submitButton.setVisibility((isProposalLocked) ? View.VISIBLE : View.GONE );
+        approveButton.setText((isProposalLocked) ? "Unlock" : "Approve");
     }
 
     /** Called whenever the teacher credential has been validated and the submission process should begin. */
-    private void approveProposal () {
-        proposalValidated = true;
-        // Notify the user about approval success
-        Toast.makeText(this, "Approved!", Toast.LENGTH_SHORT).show();
-        // Continue to submission
-//        submitAnnouncement(null);
+    public void approveProposal (View view) {
+        // If unlocking proposal
+        if (isProposalLocked) { lockUnlockProposal(); }
+//        // If fields are invalid
+//        if (fieldsAreInvalid()) { return; }
+
+        toggleLoadingComponents();
+        // Perform internet check
+        boolean internetAvailable = Retrieve.isInternetAvailable(this);
+
+        if (internetAvailable) {
+            Retrieve.teacherApproval(teacherLogin.getText().toString(), new Retrieve.StatusHandler() {
+                @Override
+                public void handle(boolean status) {
+                    isProposalLocked = status;
+                    if (isProposalLocked) {
+                        Toast.makeText(getApplicationContext(), "Approval Success!", Toast.LENGTH_LONG).show();
+                        lockUnlockProposal();
+                        toggleLoadingComponents();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Approval Failed!\nWrong Key!", Toast.LENGTH_LONG).show();
+                        toggleLoadingComponents();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), "Approval Failed!\nNo Internet!", Toast.LENGTH_LONG).show();
+            toggleLoadingComponents();
+        }
     }
 
     /**

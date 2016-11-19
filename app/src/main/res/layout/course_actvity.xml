@@ -19,7 +19,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
         android:maxLines="1"
-        android:textColor="@color/navigationBarText"
+        android:textColor="@color/accent"
         android:textSize="17sp"
         android:id="@+id/CourseSPeriodLabel"/>
 
@@ -49,7 +49,6 @@
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSCodeHint"
-            android:background="@color/textFieldBackground"
             android:textSize="16sp"
             android:textColor="@color/whiteText"
             android:id="@+id/CourseSCodeField"/>
@@ -81,7 +80,6 @@
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSNameHint"
-            android:background="@color/textFieldBackground"
             android:textSize="16sp"
             android:textColor="@color/whiteText"
             android:id="@+id/CourseSNameField"/>
@@ -113,7 +111,6 @@
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSTeacherHint"
-            android:background="@color/textFieldBackground"
             android:textSize="16sp"
             android:textColor="@color/whiteText"
             android:id="@+id/CourseSTeacherField"/>
@@ -145,7 +142,6 @@
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSRoomHint"
-            android:background="@color/textFieldBackground"
             android:textSize="16sp"
             android:textColor="@color/whiteText"
             android:id="@+id/CourseSRoomField"/>

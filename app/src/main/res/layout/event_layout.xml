@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:maxLines="1"
-        android:text="Some Text"
         android:textColor="@color/whiteText"
         android:textSize="@dimen/EVTitleInfoTextSize"
         android:id="@+id/EVTitleLabel"/>
@@ -20,7 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/EVInfoHeight"
         android:layout_marginBottom="8dp"
-        android:text="Some Text"
         android:textColor="@color/whiteText"
         android:textSize="@dimen/EVDescriptionTextSize"
         android:id="@+id/EVInfoLabel"/>
@@ -38,7 +36,6 @@
             android:layout_marginRight="4dp"
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
-            android:text="Some Text"
             android:textColor="@color/whiteText"
             android:textSize="@dimen/EVDateLocationTextSize"
             android:id="@+id/EVDateLabel"/>
@@ -49,7 +46,6 @@
             android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
             android:layout_weight="1"
-            android:text="Some Text"
             android:textColor="@color/whiteText"
             android:textSize="@dimen/EVDateLocationTextSize"
             android:id="@+id/EVLocationLabel"/>

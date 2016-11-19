@@ -9,122 +9,144 @@
     <!-- User screen -->
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
         android:background="@color/background"
         tools:context="com.wlmac.lyonsden2_android.UserActivity">
 
-        <!-- Display Name Area -->
-        <LinearLayout
+        <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            android:id="@+id/USDisplayName">
-
-            <!-- Display Name Label -->
-            <TextView
-                style="@style/UserParameterLabel"
-                android:text="@string/USName"/>
-
-            <!-- Display Name Field -->
-            <EditText
-                style="@style/UserParameterField"
-                android:hint="@string/USNameHint"
-                android:id="@+id/USNameField"/>
-        </LinearLayout>
-
-        <!-- Email Area -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/USDisplayName"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            android:id="@+id/USEmail">
-
-            <!-- Email Label -->
-            <TextView
-                style="@style/UserParameterLabel"
-                android:text="@string/USEmail"/>
-
-            <!-- Email Field -->
-            <EditText
-                style="@style/UserParameterField"
-                android:hint="@string/USEmailHint"
-                android:id="@+id/USEmailField"/>
-        </LinearLayout>
-
-        <!-- Access Area -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/USEmail"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            android:id="@+id/USAccess">
-
-            <!-- Access Label -->
-            <TextView
-                style="@style/UserParameterLabel"
-                android:text="@string/USAccess"/>
-
-            <!-- Access Field -->
-            <EditText
-                style="@style/UserParameterField"
-                android:hint="@string/USAccessHint"
-                android:id="@+id/USAccessField"/>
-        </LinearLayout>
-
-        <!-- Update Info Button -->
-        <Button
-            style="@style/UserButton"
-            android:layout_below="@id/USAccess"
-            android:layout_marginTop="15dp"
-            android:layout_centerHorizontal="true"
-            android:text="@string/USUpdateButtonText"
-            android:id="@+id/USUpdate"/>
-
-        <!-- Become Leader Button -->
-        <Button
-            style="@style/UserButton"
-            android:layout_centerInParent="true"
-            android:text="@string/USLeaderButtonText"
-            android:onClick="clubLeadershipApplication"
-            android:id="@+id/USLeaderButton"/>
-
-        <!-- Delete Account Button -->
-        <Button
-            style="@style/UserButton"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:text="@string/USDeleteButtonText"
-            android:textSize="12sp"
-            android:id="@+id/USDelete"/>
-
-        <!-- Sign out Button -->
-        <Button
-            style="@style/UserButton"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:text="@string/USSignOutButtonText"
-            android:textSize="12sp"
-            android:id="@+id/USSignOut"/>
-
-        <!-- Reset Password Button -->
-        <Button
-            style="@style/UserButton"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:text="@string/USResetPassButtonText"
-            android:textSize="12sp"
-            android:id="@+id/USReset"/>
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:titleTextColor="@color/accent"
+            app:title="@string/USTitle"
+            android:id="@+id/toolbar">
+        </android.support.v7.widget.Toolbar>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+            <!-- Display Name Area -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:id="@+id/USDisplayName">
+
+                <!-- Display Name Label -->
+                <TextView
+                    style="@style/UserParameterLabel"
+                    android:text="@string/USName"/>
+
+                <!-- Display Name Field -->
+                <EditText
+                    style="@style/UserParameterField"
+                    android:hint="@string/USNameHint"
+                    android:id="@+id/USNameField"/>
+            </LinearLayout>
+
+            <!-- Email Area -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/USDisplayName"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:id="@+id/USEmail">
+
+                <!-- Email Label -->
+                <TextView
+                    style="@style/UserParameterLabel"
+                    android:text="@string/USEmail"/>
+
+                <!-- Email Field -->
+                <EditText
+                    style="@style/UserParameterField"
+                    android:hint="@string/USEmailHint"
+                    android:id="@+id/USEmailField"/>
+            </LinearLayout>
+
+            <!-- Access Area -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/USEmail"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:id="@+id/USAccess">
+
+                <!-- Access Label -->
+                <TextView
+                    style="@style/UserParameterLabel"
+                    android:text="@string/USAccess"/>
+
+                <!-- Access Field -->
+                <EditText
+                    style="@style/UserParameterField"
+                    android:hint="@string/USAccessHint"
+                    android:id="@+id/USAccessField"/>
+            </LinearLayout>
+
+            <!-- Update Info Button -->
+            <Button
+                style="@style/UserButton"
+                android:layout_below="@id/USAccess"
+                android:layout_marginTop="15dp"
+                android:layout_centerHorizontal="true"
+                android:text="@string/USUpdateButtonText"
+                android:id="@+id/USUpdate"/>
+
+            <!-- Become Leader Button -->
+            <Button
+                style="@style/UserButton"
+                android:layout_centerInParent="true"
+                android:text="@string/USLeaderButtonText"
+                android:onClick="clubLeadershipApplication"
+                android:id="@+id/USLeaderButton"/>
+
+            <!-- Delete Account Button -->
+            <Button
+                style="@style/UserButton"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:text="@string/USDeleteButtonText"
+                android:textSize="12sp"
+                android:id="@+id/USDelete"/>
+
+            <!-- Sign out Button -->
+            <Button
+                style="@style/UserButton"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/USSignOutButtonText"
+                android:textSize="12sp"
+                android:id="@+id/USSignOut"/>
+
+            <!-- Reset Password Button -->
+            <Button
+                style="@style/UserButton"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:text="@string/USResetPassButtonText"
+                android:textSize="12sp"
+                android:id="@+id/USReset"/>
+        </RelativeLayout>
     </RelativeLayout>
 
     <!-- Navigation drawer -->

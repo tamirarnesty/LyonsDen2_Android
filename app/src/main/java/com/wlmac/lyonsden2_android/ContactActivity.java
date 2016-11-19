@@ -7,6 +7,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -14,7 +15,7 @@ import android.widget.Toast;
 
 import com.wlmac.lyonsden2_android.contactActivities.AnnouncementActivity;
 import com.wlmac.lyonsden2_android.contactActivities.MusicActivity;
-import com.wlmac.lyonsden2_android.resourceActivities.ListViewerActivity;
+import com.wlmac.lyonsden2_android.lyonsLists.ListViewerActivity;
 
 /**
  * The activity used to display the methods for contacting the school.
@@ -34,6 +35,9 @@ public class ContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_activity);
+
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
         if (getIntent().getBooleanExtra("afterProposal", false)) {
             Toast.makeText(this, "Submitted!", Toast.LENGTH_SHORT).show();
         }
