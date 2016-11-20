@@ -175,6 +175,14 @@
         <item name="android:textColor">@color/whiteText</item>
     </style>
 
+    <style name="ExtraButtonStyle" parent="LyonsButtonStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <!-- Course View Themes -->
     <style name="CourseViewLabel">
         <item name="android:layout_width">wrap_content</item>

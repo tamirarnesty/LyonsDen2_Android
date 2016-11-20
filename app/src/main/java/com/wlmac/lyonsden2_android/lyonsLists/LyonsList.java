@@ -18,6 +18,8 @@ import com.wlmac.lyonsden2_android.HomeActivity;
 import com.wlmac.lyonsden2_android.R;
 import com.wlmac.lyonsden2_android.otherClasses.LoadingLabel;
 
+import java.util.ArrayList;
+
 /**
  * Created by sketch204 on 2016-10-16.
  */
@@ -31,7 +33,7 @@ public class LyonsList extends AppCompatActivity {
     protected ListView drawerList;
     /** The drawer toggler used this activity. */
     protected ActionBarDrawerToggle drawerToggle;
-
+    protected ArrayList<String[]> content = new ArrayList<>();
     protected LoadingLabel loadingLabel;
     protected ProgressBar loadingCircle;
 

@@ -8,14 +8,19 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.wlmac.lyonsden2_android.contactActivities.AnnouncementActivity;
 import com.wlmac.lyonsden2_android.contactActivities.MusicActivity;
 import com.wlmac.lyonsden2_android.lyonsLists.ListViewerActivity;
+import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
 /**
  * The activity used to display the methods for contacting the school.
@@ -30,11 +35,16 @@ public class ContactActivity extends AppCompatActivity {
     private ListView drawerList;
     /** The drawer toggler used this activity. */
     private ActionBarDrawerToggle drawerToggle;
+    private RelativeLayout extraButtonsContainer;
+    private Button extraButtonsToggle;
+    private boolean isShowingExtraButtons = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_activity);
+        extraButtonsContainer = (RelativeLayout) findViewById(R.id.CSButtonContainer);
+        extraButtonsToggle = (Button) findViewById(R.id.CSToggleButton);
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
@@ -46,6 +56,14 @@ public class ContactActivity extends AppCompatActivity {
         drawerList = (ListView) findViewById(R.id.ConDList);
         drawerToggle = HomeActivity.initializeDrawerToggle(this, rootLayout);
         HomeActivity.setupDrawer(this, drawerList, rootLayout, drawerToggle);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int textHeight = Retrieve.heightForText("Report a Bug", this, 12) + 16; // Accounts for padding
+        extraButtonsContainer.animate().translationYBy(textHeight).setDuration(0).start();
+        extraButtonsToggle.animate().translationYBy(textHeight).setDuration(0).start();
     }
 
     /** Called when the Propose Announcement button is pressed. */
@@ -74,6 +92,15 @@ public class ContactActivity extends AppCompatActivity {
         // TODO: Implement emergency hotline
     }
 
+    public void toggleButtons (View view) {
+        int textHeight = Retrieve.heightForText("Report a Bug", this, 12) + 16; // Accounts for padding
+        textHeight = (isShowingExtraButtons) ? textHeight * -1 : textHeight;
+        extraButtonsContainer.animate().translationYBy(textHeight).setDuration(300).start();
+        extraButtonsToggle.animate().translationYBy(textHeight).setDuration(300).start();
+            extraButtonsToggle.setBackgroundResource((isShowingExtraButtons) ? R.drawable.arrow_down_48dp : R.drawable.arrow_up_48dp);
+        isShowingExtraButtons = !isShowingExtraButtons;
+    }
+
     public void reportBug (View view) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
@@ -81,6 +108,14 @@ public class ContactActivity extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_SUBJECT, "Hey Keeper, I found a bug!");
         intent.putExtra(Intent.EXTRA_TEXT, "Before the bug occurred I did this:");
         startActivity(Intent.createChooser(intent, "Send Mail"));
+    }
+
+    public void displayList (View view) {
+        if ((view.getTag()).equals("1")) {   // If Licences
+            Log.d("Contact", "Lets pretend I displayed the Licences");
+        } else {        // If Help
+            Log.d("Contact", "Lets pretend I displayed the Help Files");
+        }
     }
 
     @Override

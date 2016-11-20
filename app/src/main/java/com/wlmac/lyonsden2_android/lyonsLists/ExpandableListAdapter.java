@@ -17,22 +17,16 @@ import java.util.ArrayList;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
-    private String[][] content;
-//    private ArrayList<String> titles = new ArrayList<>();
-//    private ArrayList<String> infos = new ArrayList<>();
-//    private ArrayList<String> dates = new ArrayList<>();
+    private ArrayList<String[]> content;
 
-    public ExpandableListAdapter(Context context, String [][] content) {
+    public ExpandableListAdapter(Context context, ArrayList<String[]> content) {
         this.context = context;
         this.content = content;
-//        this.titles = titles;
-//        this.infos = infos;
-//        this.dates = dates;
     }
 
     @Override
     public int getGroupCount() {
-        return content.length;
+        return content.size();
     }
 
     @Override
@@ -42,14 +36,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int groupPosition) {
-        return content[groupPosition];
+        return content.get(groupPosition);
     }
 
     private ArrayList<String> constructChild (int index) {
         ArrayList<String> output = new ArrayList<>();
-        output.add(content[index][0]);
-        output.add(content[index][1]);
-        output.add(content[index][2]);
+        output.add(content.get(index)[0]);
+        output.add(content.get(index)[1]);
+        output.add(content.get(index)[2]);
         return output;
     }
 
@@ -60,12 +54,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getGroupId(int groupPosition) {
-        return content[groupPosition].hashCode();
+        return content.get(groupPosition).hashCode();
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return content[groupPosition].hashCode();
+        return content.get(groupPosition).hashCode();
     }
 
     @Override
@@ -79,7 +73,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.list_expandable_collapsed, null);
         }
 
-        ((TextView) convertView.findViewById(R.id.LECTitle)).setText(content[groupPosition][0]);
+        ((TextView) convertView.findViewById(R.id.LECTitle)).setText(content.get(groupPosition)[0]);
         return convertView;
     }
 
@@ -89,18 +83,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.list_expandable_expanded, null);
         }
 
-        ((TextView) convertView.findViewById(R.id.LECInfo)).setText(content[groupPosition][1]);
-        ((TextView) convertView.findViewById(R.id.LECDate)).setText(content[groupPosition][2]);
+        ((TextView) convertView.findViewById(R.id.LECInfo)).setText(content.get(groupPosition)[1]);
+        ((TextView) convertView.findViewById(R.id.LECDate)).setText(content.get(groupPosition)[2]);
         return convertView;
     }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
-    }
-
-    public void updateDataSet (String[][] newDataSet) {
-        this.content = newDataSet;
-        this.notifyDataSetChanged();
     }
 }

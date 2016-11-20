@@ -81,19 +81,47 @@
             android:onClick="emergency"
             android:text="@string/CSEmergencyButton" />
 
-        <!-- Report Bug Button -->
-        <Button
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:onClick="reportBug"
-            android:background="@color/background"
-            android:textColor="@color/accent"
-            android:text="@string/CSReport" />
+            android:id="@+id/CSButtonContainer">
+
+            <!-- Report Bug Button -->
+            <Button
+                style="@style/ExtraButtonStyle"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:onClick="reportBug"
+                android:text="@string/CSReport" />
+
+            <!-- Help Button -->
+            <Button
+                style="@style/ExtraButtonStyle"
+                android:layout_centerHorizontal="true"
+                android:tag="2"
+                android:onClick="displayList"
+                android:text="@string/CSHelp" />
+
+            <!-- Licences Button -->
+            <Button
+                style="@style/ExtraButtonStyle"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:tag="1"
+                android:onClick="displayList"
+                android:text="@string/CSReport" />
+        </RelativeLayout>
+
+        <Button
+            style="@style/LyonsButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/CSButtonContainer"
+            android:background="@drawable/arrow_up_48dp"
+            android:onClick="toggleButtons"
+            android:id="@+id/CSToggleButton"/>
     </RelativeLayout>
 
     <!-- Navigation drawer -->

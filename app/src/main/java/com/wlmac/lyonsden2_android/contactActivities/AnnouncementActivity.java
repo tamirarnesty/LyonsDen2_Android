@@ -144,7 +144,8 @@ public class AnnouncementActivity extends AppCompatActivity {
         contentView = (LinearLayout) findViewById(R.id.APSContentView);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER;
-        contentView.addView(loadingToast.getView(), params);
+        loadingToast.getView().setLayoutParams(params);
+        contentView.addView(loadingToast.getView());//, params);
 
 //        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 //        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);

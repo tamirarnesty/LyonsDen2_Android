@@ -25,6 +25,7 @@ import com.wlmac.lyonsden2_android.lyonsLists.ExpandableListAdapter;
 import com.wlmac.lyonsden2_android.lyonsLists.ListViewerActivity;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ import java.util.Map;
 public class ClubActivity extends AppCompatActivity {
     public static Drawable image;
 
-    private String[][] content = new String [0][0];
+    private ArrayList<String[]> content = new ArrayList<>();
 
     private DatabaseReference clubRef;
 
@@ -86,10 +87,10 @@ public class ClubActivity extends AppCompatActivity {
         clubsEvents.setAdapter(adapter);
 
 //        EventList.parseForEvents(adapter, content, clubRef.child("announcements"), null, null);
-        Retrieve.eventData(clubRef.child("announcements"), new Retrieve.EventDataHandler() {
+        Retrieve.eventData(clubRef.child("announcements"), content, new Retrieve.ListDataHandler() {
             @Override
-            public void handle(String[][] eventData) {
-                onEventsLoaded(eventData);
+            public void handle(ArrayList<String[]> listData) {
+                onEventsLoaded();
             }
         });
 
@@ -97,18 +98,17 @@ public class ClubActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(parent.getContext(), InfoActivity.class);
-                intent.putExtra("title", content[position][0]);
-                intent.putExtra("info", content[position][1]);
-                intent.putExtra("date", content[position][2]);
-                intent.putExtra("location", content[position][3]);
+                intent.putExtra("title", content.get(position)[0]);
+                intent.putExtra("info", content.get(position)[1]);
+                intent.putExtra("date", content.get(position)[2]);
+                intent.putExtra("location", content.get(position)[3]);
                 startActivity(intent);
             }
         });
     }
 
-    private void onEventsLoaded (String[][] eventData) {
-        this.content = eventData;
-        adapter.updateDataSet(content);
+    private void onEventsLoaded () {
+        adapter.notifyDataSetChanged();
     }
 
     private void checkUserForLeadership () {

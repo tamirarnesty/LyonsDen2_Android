@@ -59,8 +59,6 @@ public class HomeActivity extends AppCompatActivity {
     private TextView dayLabel;
     /** Declared merely because it must be set to a custom font */
     private TextView todayIsDay;
-    /** The custom font used with most TextViews, this is where it should always be accessed from. */
-    public static Typeface hapnaMonoLight;
     /** An array of 4 RelativeLayout each of which represent a period in the timetable*/
     private LinearLayout[] periods = new LinearLayout[4];
     /** The ListView that contains the announcements */
@@ -104,10 +102,10 @@ public class HomeActivity extends AppCompatActivity {
         setupDrawer(this, drawerList, rootLayout, drawerToggle);
 
         // Resize the announcement ListView to fit the screen. DOES NOT WORK ATM!!!
-        listView.setMinimumHeight(getScreenSize().y);
+        listView.setMinimumHeight(Retrieve.screenSize(this).y);
         // Set the custom font of the TextLabels
-        dayLabel.setTypeface(hapnaMonoLight);
-        todayIsDay.setTypeface(hapnaMonoLight);
+        dayLabel.setTypeface(Retrieve.typeface(this));
+        todayIsDay.setTypeface(Retrieve.typeface(this));
 
         // TEMPORARY!!!
         for (int h = 0; h < 50; h ++) {
@@ -225,7 +223,6 @@ public class HomeActivity extends AppCompatActivity {
 
     /** Instantiates all GUI components */
     private void initializeComponents () {
-        hapnaMonoLight = Typeface.createFromAsset(getAssets(), "fonts/HapnaMono-Light.otf");
         dayLabel = (TextView) findViewById(R.id.HSDayLabel);
         todayIsDay = (TextView) findViewById(R.id.HSTodayIsDay);
         listView = (ListView) findViewById(R.id.HSList);
@@ -260,20 +257,6 @@ public class HomeActivity extends AppCompatActivity {
         }
         return timeTable;
         // P.S. I have no clue how permanent storage works in android :)
-    }
-
-    /**
-     * Retrieves the current screen size from the system and returns it as a Point.
-     * @return A Point representing the current screen size.
-     */
-    private Point getScreenSize () {
-        // Declare the display object of the current device
-        Display display = getWindowManager().getDefaultDisplay();
-        // Declare the instance of the size of the display
-        Point size = new Point();
-        // Instantiate the size instance
-        display.getSize(size);
-        return size;
     }
 
     public void periodClicked (View view) {

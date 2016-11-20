@@ -138,12 +138,13 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         } else if (!signUpSelected) { // log in
+            Log.d("Login Activity", "Login: " + emailField.getText().toString());
+            Log.d("Login Activity", "Login: " + passField.getText().toString());
             authenticator.signInWithEmailAndPassword(emailField.getText().toString(), passField.getText().toString())
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             Log.d("Login Activity", "signInWithEmail:onComplete:" + task.isSuccessful());
-
                             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                                 performIntent[0] = true;
                             }

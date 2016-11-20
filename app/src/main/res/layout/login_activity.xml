@@ -100,7 +100,7 @@
             android:ems="10"
             android:id="@+id/LSEmailField"
             android:maxLines="1"
-            android:textColor="@color/whiteText"
+            android:textColor="@color/blackText"
             android:hint="@string/LSLoginHint" />
 
         <EditText
@@ -111,7 +111,7 @@
             android:maxLines="1"
             android:hint="@string/LSPassHint"
             android:fontFamily="sans-serif"
-            android:textColor="@color/whiteText"
+            android:textColor="@color/blackText"
             android:id="@+id/LSPassField" />
 
         <EditText
@@ -121,7 +121,7 @@
             android:ems="10"
             android:maxLines="1"
             android:hint="@string/LSCodeHint"
-            android:textColor="@color/whiteText"
+            android:textColor="@color/blackText"
             android:id="@+id/LSCodeField"/>
     </LinearLayout>
 </RelativeLayout>

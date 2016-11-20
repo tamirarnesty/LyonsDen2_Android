@@ -41,6 +41,8 @@
     <string name="CSTeacherButton">Contact a Teacher</string>
     <string name="CSEmergencyButton">Emergency Hotline</string>
     <string name="CSReport">Report a Bug</string>
+    <string name="CSHelp">Help</string>
+    <string name="CSLicence">Licences</string>
 
     <!-- Announcement Proposal Screen Strings -->
     <string name="APSTitleLabel">Title:</string>

@@ -23,7 +23,6 @@ public class ClubList extends LyonsList {
 //    public static boolean contentChanged = false;
     ListView clubList;
     ListAdapter adapter;
-    private ArrayList<String[]> content = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,10 +37,10 @@ public class ClubList extends LyonsList {
         adapter = new ListAdapter(this, content, true);
         clubList.setAdapter(adapter);
 
-        Retrieve.clubData(FirebaseDatabase.getInstance().getReference("clubs"), content, new Retrieve.ClubDataHandler() {
+        Retrieve.clubData(FirebaseDatabase.getInstance().getReference("clubs"), content, new Retrieve.ListDataHandler() {
             @Override
-            public void handle(ArrayList<String[]> clubData) {
-                onClubsLoaded(clubData);
+            public void handle(ArrayList<String[]> listData) {
+                onClubsLoaded(listData);
             }
         });
 

@@ -2,10 +2,16 @@ package com.wlmac.lyonsden2_android.otherClasses;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Display;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,28 +32,27 @@ import java.util.concurrent.ExecutionException;
 
 public class Retrieve {
 
-    public static void eventData (DatabaseReference ref, final EventDataHandler handler) {
+    public static void eventData (DatabaseReference ref, final ArrayList<String[]> target, final ListDataHandler handler) {
         Log.d("Event Parser", "Commencing Parse!");
         ref.orderByChild("dateTime").addListenerForSingleValueEvent(new ValueEventListener() {
-            ArrayList<String[]> eventData = new ArrayList<>();
-            private String[] keys = {"title", "description", "dateTime", "location"};
-
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                String[] keys = {"title", "description", "dateTime", "location"};
                 if (dataSnapshot.exists()) {
+                    target.clear();
+
                     for (DataSnapshot event : dataSnapshot.getChildren()) {
-                        eventData.add(new String[4]);
+                        target.add(new String[4]);
                         for (int h = 0; h < keys.length; h ++) {
                             try {
-                                if (h == 2) { eventData.get(eventData.size() - 1)[h] = convertToDate(event.child(keys[h]).getValue(String.class)); }
-                                else { eventData.get(eventData.size() - 1)[h] = event.child(keys[h]).getValue(String.class); }
+                                if (h == 2) { target.get(target.size() - 1)[h] = convertToDate(event.child(keys[h]).getValue(String.class)); }
+                                else { target.get(target.size() - 1)[h] = event.child(keys[h]).getValue(String.class); }
                             } catch (DatabaseException e) {
-                                eventData.get(eventData.size() - 1)[h] = event.child(keys[h]).getValue(Long.class).toString();
+                                target.get(target.size() - 1)[h] = event.child(keys[h]).getValue(Long.class).toString();
                             }
                         }
                     }
-                    String[][] typeHolder = new String[0][0];
-                    handler.handle(reverse(eventData.toArray(typeHolder)));
+                    handler.handle(reverse(target));
                     Log.d("Event Retriever", "Retrieval Success!");
                 } else {
                     handler.handle(null);
@@ -63,7 +68,7 @@ public class Retrieve {
         });
     }
 
-    public static void clubData (DatabaseReference ref, final ArrayList<String[]> target, final ClubDataHandler handler) {
+    public static void clubData (DatabaseReference ref, final ArrayList<String[]> target, final ListDataHandler handler) {
         ref.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -174,7 +179,44 @@ public class Retrieve {
 
     }
 
+    public static int heightForText (String text, Activity initiator, int textSize) {
+        TextView textView = new TextView(initiator.getApplicationContext());
+        textView.setTypeface(typeface(initiator));
+        textView.setText(text);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
+        textView.measure(View.MeasureSpec.makeMeasureSpec(screenSize(initiator).x, View.MeasureSpec.AT_MOST), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        return textView.getMeasuredHeight();
+    }
+
+    /**
+     * Retrieves the current screen size from the system and returns it as a Point.
+     * @return A Point representing the current screen size.
+     */
+    public static Point screenSize(Activity initiator) {
+        // Declare the display object of the current device
+        Display display = initiator.getWindowManager().getDefaultDisplay();
+        // Declare the instance of the size of the display
+        Point size = new Point();
+        // Instantiate the size instance
+        display.getSize(size);
+        return size;
+    }
+
+    public static Typeface typeface (Activity initiator) {
+        return Typeface.createFromAsset(initiator.getAssets(), "fonts/OpenSans-Light.ttf");
+    }
+
 // MARK: HELPER METHODS
+
+    private static ArrayList<String[]> reverse (ArrayList<String[]> input) {
+        String[] tempHold;
+        for (int h = 0; h < input.size()/2; h ++) {
+            tempHold = input.get(h);
+            input.set(h, input.get(input.size() - 1 - h));
+            input.set(input.size() - 1 - h, tempHold);
+        }
+        return input;
+    }
 
     private static String convertToDate (String input) {
         String output = input.substring(0, 4) + "-" + input.substring(4, 6) + "-" + input.substring(6, 8);;
@@ -183,28 +225,14 @@ public class Retrieve {
         return output;
     }
 
-    private static String[][] reverse (String[][] input) {
-        String[] tempHold;
-        for (int h = 0; h < input.length/2; h ++) {
-            tempHold = input[h];
-            input[h] = input[input.length - 1 - h];
-            input[input.length - 1 - h] = tempHold;
-        }
-        return input;
-    }
-
     private static String convertToTimeStamp (String input) {
         return null;
     }
 
 // MARK: HANDLER INTERFACES
 
-    public interface EventDataHandler {
-        void handle (String[][] eventData);
-    }
-
-    public interface ClubDataHandler {
-        void handle (ArrayList<String[]> clubData);
+    public interface ListDataHandler {
+        void handle (ArrayList<String[]> listData);
     }
 
     public interface StatusHandler {

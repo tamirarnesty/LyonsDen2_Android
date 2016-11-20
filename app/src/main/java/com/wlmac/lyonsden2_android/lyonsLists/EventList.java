@@ -12,6 +12,8 @@ import com.wlmac.lyonsden2_android.R;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 import com.wlmac.lyonsden2_android.resourceActivities.InfoActivity;
 
+import java.util.ArrayList;
+
 /**
  * Created by sketch204 on 2016-10-16.
  */
@@ -19,7 +21,6 @@ import com.wlmac.lyonsden2_android.resourceActivities.InfoActivity;
 public class EventList extends LyonsList {
     private int curExpandedCellIndex = -1;
     private ExpandableListAdapter adapter;
-    private String[][] content = new String[0][0];
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,10 +38,10 @@ public class EventList extends LyonsList {
         adapter = new ExpandableListAdapter(this, content);
         eventList.setAdapter(adapter);
 
-        Retrieve.eventData(FirebaseDatabase.getInstance().getReference("announcements"), new Retrieve.EventDataHandler() {
+        Retrieve.eventData(FirebaseDatabase.getInstance().getReference("announcements"), content, new Retrieve.ListDataHandler() {
             @Override
-            public void handle(String[][] eventData) {
-                onEventsLoaded(eventData);
+            public void handle(ArrayList<String[]> listData) {
+                onEventsLoaded();
             }
         });
 //        parseForEvents(adapter, content, FirebaseDatabase.getInstance().getReference("announcements"), loadingLabel, loadingCircle);
@@ -70,9 +71,8 @@ public class EventList extends LyonsList {
         Log.d("List Activity", "We have been created now!");
     }
 
-    private void onEventsLoaded(String[][] eventData) {
-        this.content = eventData;
-        adapter.updateDataSet(content);
+    private void onEventsLoaded() {
+        adapter.notifyDataSetChanged();
         loadingLabel.dismiss();
         loadingCircle.setVisibility(View.GONE);
     }
@@ -82,10 +82,10 @@ public class EventList extends LyonsList {
         // Event keys: title, info, date, location
 
         Intent intent = new Intent(this, InfoActivity.class);
-        intent.putExtra("title", content[curExpandedCellIndex][0]);
-        intent.putExtra("info", content[curExpandedCellIndex][1]);
-        intent.putExtra("date", content[curExpandedCellIndex][2]);
-        intent.putExtra("location", content[curExpandedCellIndex][3]);
+        intent.putExtra("title", content.get(curExpandedCellIndex)[0]);
+        intent.putExtra("info", content.get(curExpandedCellIndex)[1]);
+        intent.putExtra("date", content.get(curExpandedCellIndex)[2]);
+        intent.putExtra("location", content.get(curExpandedCellIndex)[3]);
 
         InfoActivity.image = null;
 
