@@ -73,6 +73,15 @@
     <string name="USSignOutButtonText">Sign Out</string>
     <string name="USResetPassButtonText">Reset Password</string>
 
+    <!-- Information Activity Strings -->
+    <string name="IFSName">Name</string>
+    <string name="IFSGrade">Grade</string>
+    <string name="IFSCompleteButton">Complete Form</string>
+    <string name="IFTName">Name</string>
+    <string name="IFTDepartment">Department</string>
+    <string name="IFTContactEmail">Contact Email</string>
+    <string name="IFTCompleteButton">Complete Form</string>
+
     <!-- Course Screen Strings -->
     <string name="CourseSCode">Course Code</string>
     <string name="CourseSCodeHint">eg. ENG4U1</string>
