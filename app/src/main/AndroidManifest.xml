@@ -53,7 +53,9 @@
 
         <service
             android:name=".otherClasses.WebCalendar"
-            android:exported="false"/>
+            android:exported="false" />
+
+        <activity android:name=".resourceActivities.InformationFormActivity"></activity>
     </application>
 
 </manifest>
