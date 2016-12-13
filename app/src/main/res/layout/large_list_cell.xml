@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:lines="1"
             android:textColor="@color/blackText"
-            android:textSize="@dimen/LITitleTextSize"
+            android:textSize="@dimen/textSizeLabel"
             android:id="@+id/LIDTitleLabel"/>
 
         <TextView
@@ -40,7 +40,7 @@
             android:layout_marginTop="4dp"
             android:lines="1"
             android:textColor="@color/blackText"
-            android:textSize="@dimen/LISubtitleTextSize"
+            android:textSize="@dimen/textSizeDetails"
             android:id="@+id/LIDInfoLabel"/>
     </LinearLayout>
 

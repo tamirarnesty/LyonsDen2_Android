@@ -12,7 +12,7 @@
         android:layout_marginBottom="8dp"
         android:maxLines="1"
         android:textColor="@color/whiteText"
-        android:textSize="@dimen/EVTitleInfoTextSize"
+        android:textSize="@dimen/textSizeSubtitle"
         android:id="@+id/EVTitleLabel"/>
 
     <TextView
@@ -20,7 +20,7 @@
         android:layout_height="@dimen/EVInfoHeight"
         android:layout_marginBottom="8dp"
         android:textColor="@color/whiteText"
-        android:textSize="@dimen/EVDescriptionTextSize"
+        android:textSize="@dimen/textSizeLabel"
         android:id="@+id/EVInfoLabel"/>
 
     <LinearLayout
@@ -37,7 +37,7 @@
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
             android:textColor="@color/whiteText"
-            android:textSize="@dimen/EVDateLocationTextSize"
+            android:textSize="@dimen/textSizeLabel"
             android:id="@+id/EVDateLabel"/>
 
         <TextView
@@ -47,7 +47,7 @@
             android:layout_marginStart="4dp"
             android:layout_weight="1"
             android:textColor="@color/whiteText"
-            android:textSize="@dimen/EVDateLocationTextSize"
+            android:textSize="@dimen/textSizeLabel"
             android:id="@+id/EVLocationLabel"/>
     </LinearLayout>
 </LinearLayout>

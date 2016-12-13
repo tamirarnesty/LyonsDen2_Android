@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -69,7 +70,7 @@ public class Retrieve {
     }
 
     public static void clubData (DatabaseReference ref, final ArrayList<String[]> target, final ListDataHandler handler) {
-        ref.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.orderByChild("title").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String[] keys = {"title", "description", "leads"};
@@ -204,6 +205,26 @@ public class Retrieve {
 
     public static Typeface typeface (Activity initiator) {
         return Typeface.createFromAsset(initiator.getAssets(), "fonts/OpenSans-Light.ttf");
+    }
+
+    /**
+     * This method is used to get a {@link String} representation of the day of the given {@link Date} from
+     * the given {@link String} Day Dictionary.
+     * @param dictionary A {@link String} instance of the Day Dictionary to use.
+     * @param date The date to look for.
+     * @return A {@link String} representation of the day. Will only return the number of the day. If no day is available will return -1.
+     */
+    public static String dayFromDictionary (String dictionary, Date date) {
+        // Key to look for in the dictionary
+        String key = LyonsCalendar.convertToKey(date).toString();
+        // Index of the day
+        int index = dictionary.indexOf(key) + key.length() + 1;
+
+        try {
+            return "" + dictionary.charAt(index);
+        } catch (IndexOutOfBoundsException e) {
+            return "-1";
+        }
     }
 
 // MARK: HELPER METHODS

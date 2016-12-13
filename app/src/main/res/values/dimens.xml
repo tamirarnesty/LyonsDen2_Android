@@ -3,21 +3,20 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="textSizeTitle">24sp</dimen>        <!-- Like title in Info View -->
+    <dimen name="textSizeSubtitle">20sp</dimen>     <!-- Like description in Info View -->
+    <dimen name="textSizeDetails">14sp</dimen>      <!-- Like dateTime or location in Info View -->
+    <dimen name="textSizeButton">12sp</dimen>       <!-- App-wide text size for all buttons -->
+    <dimen name="textSizeLabel">17sp</dimen>        <!-- App-wide text size for all labels -->
+    <dimen name="textSizeField">15sp</dimen>        <!-- App-wide text size for all text fields -->
+
     <dimen name="defaultCellSize">56dp</dimen>
     <dimen name="largeCellSize">104dp</dimen>
 
     <dimen name="EVHeight">185dp</dimen>
     <dimen name="EVInfoHeight">100dp</dimen>
     <dimen name="EVTitleHeight">66dp</dimen>
-    <dimen name="EVTitleInfoTextSize">21sp</dimen>
-    <dimen name="EVDescriptionTextSize">17sp</dimen>
-    <dimen name="EVDateLocationTextSize">15sp</dimen>
 
-    <dimen name="CalSDayTextSize">17sp</dimen>
-    <dimen name="CalSWeekTextSize">20sp</dimen>
-
-    <dimen name="LITitleTextSize">17sp</dimen>
-    <dimen name="LISubtitleTextSize">14sp</dimen>
     <dimen name="LIDefaultImageViewSize">44dp</dimen>
     <dimen name="LILargeImageViewSize">92dp</dimen>
 
@@ -26,16 +25,6 @@
     <dimen name="APS_description_field_height">297dp</dimen>
     <dimen name="APS_teacher_login_width">233dp</dimen>
 
-    <dimen name="ISImageViewWidth">176dp</dimen>
-    <dimen name="ISImageViewHeight">134dp</dimen>
-    <dimen name="ISDescriptionHeight">290dp</dimen>
-    <dimen name="ISTitleTextSize">24sp</dimen>
-    <dimen name="ISTextSize">20sp</dimen>
-
-    <dimen name="ClubSTitleTextSize">24sp</dimen>
-    <dimen name="ClubSDescriptionTextSize">17sp</dimen>
-    <dimen name="ClubSMemberTextSize">18sp</dimen>
-    <dimen name="ClubSButtonTextSize">19sp</dimen>
     <dimen name="ClubSDescriptionHeight">88dp</dimen>
 
     <dimen name="USTextLabelWidth">103dp</dimen>

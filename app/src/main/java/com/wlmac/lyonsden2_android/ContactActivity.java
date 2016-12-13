@@ -70,6 +70,7 @@ public class ContactActivity extends AppCompatActivity {
     public void proposeAnnouncement (View view) {
         // Segue into Announcement Proposal Activity
         Intent intent = new Intent (this, AnnouncementActivity.class);
+        intent.putExtra("clubKey", "no-key");
         startActivity(intent);
     }
 

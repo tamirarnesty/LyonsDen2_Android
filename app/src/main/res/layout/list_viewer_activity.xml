@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
     tools:context=".lyonsLists.ListViewerActivity">
 
+    <android.support.v7.widget.Toolbar
+        style="@style/LyonsToolBar"
+        app:title="@string/LVSTitle"
+        app:titleTextColor="@color/accent"
+        android:id="@+id/toolbar">
+    </android.support.v7.widget.Toolbar>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/toolbar"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -20,4 +28,21 @@
         android:divider="@color/listDivider"
         android:dividerHeight="1dp"
         android:id="@+id/LVSList"/>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/loading_circle"
+        android:id="@+id/LVSLoadingWheel" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/LVSLoadingWheel"
+        android:textSize="17sp"
+        android:textColor="@color/accent"
+        android:maxLines="3"
+        android:id="@+id/LVSLoadingLabel" />
 </RelativeLayout>

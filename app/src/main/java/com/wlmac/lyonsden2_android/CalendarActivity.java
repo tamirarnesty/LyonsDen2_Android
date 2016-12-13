@@ -129,12 +129,12 @@ public class CalendarActivity extends AppCompatActivity {
                 dayDictionary = getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyDayDictionary, null);
                 if (dayDictionary != null) {    // If it worked then get the day of the selected date and
                     // Set it
-                    String day = getDayFromDictionary(dayDictionary, date);
+                    String day = Retrieve.dayFromDictionary(dayDictionary, date);
                     dateLabelText += (!day.equals("-1")) ? " Day " + day : "";
                 }
             } else {    // If a Day Dictionary is available then
                 // Set the day of the selected date
-                String day = getDayFromDictionary(dayDictionary, date);
+                String day = Retrieve.dayFromDictionary(dayDictionary, date);
                 dateLabelText += (!day.equals("-1")) ? " Day " + day : "";
             }
             // Update the date label
@@ -338,26 +338,6 @@ public class CalendarActivity extends AppCompatActivity {
         loadingLabel = new LoadingLabel(((TextView) findViewById(R.id.CalSLoadingLabel)), this);
         loadingLabel.startCycling();
         loadingCircle = (ProgressBar) findViewById(R.id.CalSLoadingWheel);
-    }
-
-    /**
-     * This method is used to get a {@link String} representation of the day of the given {@link Date} from
-     * the given {@link String} Day Dictionary.
-     * @param dictionary A {@link String} instance of the Day Dictionary to use.
-     * @param date The date to look for.
-     * @return A {@link String} representation of the day. Will only return the number of the day. If no day is available will return -1.
-     */
-    public static String getDayFromDictionary (String dictionary, Date date) {
-        // Key to look for in the dictionary
-        String key = LyonsCalendar.convertToKey(date).toString();
-        // Index of the day
-        int index = dictionary.indexOf(key) + key.length() + 1;
-
-        try {
-            return "" + dictionary.charAt(index);
-        } catch (IndexOutOfBoundsException e) {
-            return "-1";
-        }
     }
 
     @Override

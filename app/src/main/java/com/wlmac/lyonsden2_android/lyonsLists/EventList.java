@@ -87,8 +87,6 @@ public class EventList extends LyonsList {
         intent.putExtra("date", content.get(curExpandedCellIndex)[2]);
         intent.putExtra("location", content.get(curExpandedCellIndex)[3]);
 
-        InfoActivity.image = null;
-
         startActivity(intent);
     }
 

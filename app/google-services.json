@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "439458941706",
-    "firebase_url": "https://lyons-den.firebaseio.com",
-    "project_id": "lyons-den",
-    "storage_bucket": "lyons-den.appspot.com"
+    "project_number": "740613798646",
+    "firebase_url": "https://lyons-den-testing.firebaseio.com",
+    "project_id": "lyons-den-testing",
+    "storage_bucket": "lyons-den-testing.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:439458941706:android:ddb6bff9a58c79f5",
+        "mobilesdk_app_id": "1:740613798646:android:ddb6bff9a58c79f5",
         "android_client_info": {
           "package_name": "com.wlmac.lyonsden2_android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "439458941706-sohvfl810l5phm9m2dv4rmkgo29jqv30.apps.googleusercontent.com",
+          "client_id": "740613798646-v6qsop6rdtjt0n7dlc84rnevp2nvr1fr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA9YU3yPiw0ow4qiFD-4Ld93BJUw_b_5nQ"
+          "current_key": "AIzaSyCI79bjTRfK255JzluvMxZIZ8XmpdUVVe4"
         }
       ],
       "services": {

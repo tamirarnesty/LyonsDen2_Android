@@ -2,9 +2,13 @@ package com.wlmac.lyonsden2_android.otherClasses;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +37,7 @@ public class LyonsAlert extends DialogFragment {
         }
     };
     private EditText inputField;
+    private boolean inputShouldBeSecure = false;
 
     @NonNull
     @Override
@@ -48,7 +53,9 @@ public class LyonsAlert extends DialogFragment {
         alertView.findViewById(R.id.LAButtonRight).setOnClickListener(rightButtonOnClick);
 
         inputField = (EditText) alertView.findViewById(R.id.LAInput);
-
+        if (inputShouldBeSecure) {
+            inputField.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        }
 
         builder.setView(alertView);
         return builder.create();
@@ -56,6 +63,10 @@ public class LyonsAlert extends DialogFragment {
 
     public String getInputText () {
         return (inputField != null && inputField.getText().toString() != null) ? inputField.getText().toString() : null;
+    }
+
+    public void makeInputSecure () {
+        inputShouldBeSecure = true;
     }
 
     public void setTitle(String title) {

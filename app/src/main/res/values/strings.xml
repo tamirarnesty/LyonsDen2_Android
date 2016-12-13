@@ -18,6 +18,7 @@
     <string name="ISTitle">Announcement</string>
     <string name="LSTitleEvents">Announcements</string>
     <string name="LSTitleClubs">Clubs</string>
+    <string name="LVSTitle">Teachers</string>
 
     <!-- Login Screen Strings -->
     <string name="LSLoginHint">Enter e-mail here</string>

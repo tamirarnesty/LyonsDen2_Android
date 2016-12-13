@@ -19,8 +19,10 @@ import java.util.ArrayList;
  * Created by sketch204 on 2016-10-16.
  */
 
+// TODO: FIX LIST TO NOT SHOW SUBTITLE
+
 public class ClubList extends LyonsList {
-//    public static boolean contentChanged = false;
+    public static boolean contentChanged = false;
     ListView clubList;
     ListAdapter adapter;
 
@@ -34,7 +36,7 @@ public class ClubList extends LyonsList {
         clubList = (ListView) findViewById(R.id.LSClubsList);
 
         clubList = (ListView) findViewById(R.id.LSClubsList);
-        adapter = new ListAdapter(this, content, true);
+        adapter = new ListAdapter(this, content, false);
         clubList.setAdapter(adapter);
 
         Retrieve.clubData(FirebaseDatabase.getInstance().getReference("clubs"), content, new Retrieve.ListDataHandler() {
@@ -64,7 +66,6 @@ public class ClubList extends LyonsList {
     }
 
     private void onClubsLoaded (ArrayList<String[]> clubData) {
-//        adapter.updateDataSet(content);
         adapter.notifyDataSetChanged();
         loadingLabel.dismiss();
         loadingCircle.setVisibility(View.GONE);
@@ -74,5 +75,13 @@ public class ClubList extends LyonsList {
     protected void onStart() {
         super.onStart();
         this.getSupportActionBar().setTitle(getResources().getString(R.string.LSTitleClubs));
+        if (contentChanged) {
+            Retrieve.clubData(FirebaseDatabase.getInstance().getReference("clubs"), content, new Retrieve.ListDataHandler() {
+                @Override
+                public void handle(ArrayList<String[]> listData) {
+                    onClubsLoaded(listData);
+                }
+            });
+        }
     }
 }

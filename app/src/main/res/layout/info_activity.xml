@@ -9,92 +9,65 @@
     tools:context="com.wlmac.lyonsden2_android.resourceActivities.InfoActivity">
 
     <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
+        style="@style/LyonsToolBar"
+        app:title=""
         app:titleTextColor="@color/accent"
         android:id="@+id/toolbar">
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:layout_margin="16dp"
-        android:layout_marginBottom="0dp"
-        android:orientation="horizontal"
-        android:clipChildren="true"
-        android:id="@+id/ISTopSection">
-
-        <ImageView
-            android:layout_width="@dimen/ISImageViewWidth"
-            android:layout_height="@dimen/ISImageViewHeight"
-            android:layout_weight="0.75"
-            android:id="@+id/ISImageView"/>
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="@dimen/ISImageViewHeight"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginBottom="0dp"
+            android:maxLines="2"
             android:gravity="start"
             android:textColor="@color/accent"
-            android:textSize="@dimen/ISTitleTextSize"
+            android:textSize="@dimen/textSizeTitle"
             android:id="@+id/ISTitleLabel"/>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/ISDescriptionHeight"
-        android:layout_below="@id/ISTopSection"
-        android:layout_marginTop="8dp"
-        android:layout_margin="16dp"
-        android:layout_marginBottom="0dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:textColor="@color/accent"
-        android:textSize="@dimen/ISTextSize"
-        android:id="@+id/ISDescriptionLabel"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ISDescriptionLabel"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_marginTop="8dp"
+            android:layout_margin="16dp"
+            android:layout_marginBottom="0dp"
             android:textColor="@color/accent"
-            android:textSize="@dimen/ISTextSize"
-            android:id="@+id/ISDateLabel"/>
+            android:textSize="@dimen/textSizeSubtitle"
+            android:id="@+id/ISDescriptionLabel"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:gravity="right|end"
-            android:textColor="@color/accent"
-            android:textSize="@dimen/ISTextSize"
-            android:id="@+id/ISLocationLabel"/>
+            android:layout_margin="16dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/accent"
+                android:textSize="@dimen/textSizeDetails"
+                android:id="@+id/ISDateLabel"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:gravity="right|end"
+                android:textColor="@color/accent"
+                android:textSize="@dimen/textSizeDetails"
+                android:id="@+id/ISLocationLabel"/>
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

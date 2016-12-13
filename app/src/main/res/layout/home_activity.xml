@@ -55,15 +55,7 @@
         android:background="@color/background">
 
         <android.support.v7.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
+            style="@style/LyonsToolBar"
             app:titleTextColor="@color/accent"
             app:title="@string/HSTitle"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"

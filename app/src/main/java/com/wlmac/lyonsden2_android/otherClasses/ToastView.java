@@ -1,11 +1,12 @@
 package com.wlmac.lyonsden2_android.otherClasses;
 
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.os.Bundle;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import com.wlmac.lyonsden2_android.R;
 
@@ -13,36 +14,15 @@ import com.wlmac.lyonsden2_android.R;
  * Created by sketch204 on 2016-11-18.
  */
 
-public class ToastView {
-    private View toastView;
-    private LoadingLabel loadingLabel;
-    private boolean isVisible = false;
-//    private ProgressBar loadingCircle;
+public class ToastView extends DialogFragment {
+    View toastView;
 
-    public ToastView(Activity initiator) {
-        toastView = initiator.getLayoutInflater().inflate(R.layout.toast_view, null);
-        loadingLabel = new LoadingLabel(((TextView) toastView.findViewById(R.id.TVLoadingLabel)), initiator);
-//        loadingCircle = (ProgressBar) toastView.findViewById(R.id.TVLoadingWheel);
-        toastView.setVisibility(View.VISIBLE);
-    }
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        toastView = getActivity().getLayoutInflater().inflate(R.layout.toast_view, null);
 
-    public View getView() {
-        return toastView;
-    }
-
-    public boolean isVisible() {
-        return isVisible;
-    }
-
-    public void show() {
-        toastView.setVisibility(View.VISIBLE);
-        isVisible = true;
-        loadingLabel.startCycling();
-    }
-
-    public void hide() {
-        toastView.setVisibility(View.GONE);
-        isVisible = false;
-        loadingLabel.stopCycling();
+        builder.setView(toastView);
+        return builder.create();
     }
 }

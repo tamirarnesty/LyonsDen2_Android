@@ -1,15 +1,14 @@
 package com.wlmac.lyonsden2_android.resourceActivities;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.wlmac.lyonsden2_android.R;
+
+// TODO: FIX TIME FORMATTING
 
 /**
  * This activity is used for viewing an announcement or an event. The data that should be passed to
@@ -22,12 +21,6 @@ import com.wlmac.lyonsden2_android.R;
  * @version 1, 2016/08/05
  */
 public class InfoActivity extends AppCompatActivity {
-    /**
-     * The drawable that is used in the ImageView of this Activity.
-     * If null, all component will be reposition appropriately
-     */
-    public static Drawable image = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,16 +29,6 @@ public class InfoActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         Intent intent = getIntent();
-
-        // An instance of the ImageView of this activity
-        ImageView imageView = (ImageView) findViewById(R.id.ISImageView);
-        imageView.setImageDrawable(image);
-        if (imageView.getDrawable() == null) {
-            LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            imageParams.weight = 0;
-
-            imageView.setLayoutParams(imageParams);
-        }
 
         // An instance of the title TextView of this activity
         TextView titleLabel = (TextView) findViewById(R.id.ISTitleLabel);

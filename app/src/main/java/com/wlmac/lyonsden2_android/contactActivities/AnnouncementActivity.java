@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.wlmac.lyonsden2_android.ContactActivity;
@@ -65,6 +66,8 @@ public class AnnouncementActivity extends AppCompatActivity {
 
     private ToastView loadingToast;
 
+    private DatabaseReference targetRef = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +99,9 @@ public class AnnouncementActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         // Set the the date field to the current date
-                        String date = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                        String month = (monthOfYear < 10) ? "0" + (monthOfYear + 1) : "" + (monthOfYear + 1);
+                        String day = (dayOfMonth < 10) ? "0" + dayOfMonth : "" + dayOfMonth;
+                        String date = year + "-" + month + "-" + day;
                         dateField.setText(date);
                     }
                 }, curYear, curMonth, curDay);
@@ -122,7 +127,9 @@ public class AnnouncementActivity extends AppCompatActivity {
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        String time = hourOfDay + ":" + minute;
+                        String hour = (hourOfDay < 10) ? "0" + hourOfDay : "" + hourOfDay;
+                        String min = (minute < 10) ? "0" + minute : "" + minute;
+                        String time = hour + ":" + min;
                         timeField.setText(time);
                     }
                 }, curHour, curMinute, false);
@@ -132,28 +139,19 @@ public class AnnouncementActivity extends AppCompatActivity {
 
     /** Instantiates all GUI components. Also sets the initial date/time for the date and time fields. */
     private void instantiateComponents () {
+        if (!getIntent().getStringExtra("clubKey").equals("no-key"))
+            targetRef = FirebaseDatabase.getInstance().getReference("clubs").child(getIntent().getStringExtra("clubKey")).child("announcements");
         titleField = (EditText) findViewById(R.id.APSTitleField);
         descriptionField = (EditText) findViewById(R.id.APSDescriptionField);
         locationField = (EditText) findViewById(R.id.APSLocationField);
         teacherLogin = (EditText) findViewById(R.id.APSTeacherLogin);
         approveButton = (Button) findViewById(R.id.APSApproveButton);
         submitButton = (Button) findViewById(R.id.APSSubmitButton);
-//        loadingCircle = (ProgressBar) findViewById(R.id.APSLoadingWheel);
-//        loadingLabel = new LoadingLabel(((TextView) findViewById(R.id.APSLoadingLabel)), this);
-        loadingToast = new ToastView(this);
-        contentView = (LinearLayout) findViewById(R.id.APSContentView);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.gravity = Gravity.CENTER;
-        loadingToast.getView().setLayoutParams(params);
-        contentView.addView(loadingToast.getView());//, params);
-
-//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-//        contentView.addView(loadingToast.getView(), params);
+        loadingToast = new ToastView();
 
         final Calendar cal = Calendar.getInstance();
         // An Array of fields that should be formatted
-        String [] fields = {"" + cal.get(Calendar.MONTH), "" + cal.get(Calendar.DAY_OF_MONTH), "" + cal.get(Calendar.HOUR_OF_DAY), "" + cal.get(Calendar.MINUTE)};
+        String [] fields = {"" + (cal.get(Calendar.MONTH) + 1), "" + cal.get(Calendar.DAY_OF_MONTH), "" + cal.get(Calendar.HOUR_OF_DAY), "" + cal.get(Calendar.MINUTE)};
         // For each field that is in the array
         for (int h = 0; h < fields.length; h ++) {
             if (fields[h].length() < 2) {   // If a 0 must be added to the value, then do it
@@ -175,37 +173,24 @@ public class AnnouncementActivity extends AppCompatActivity {
         timeField.setText(time);
     }
 
-    private void toggleLoadingComponents () {
-        if (loadingToast.isVisible()) {
-            loadingToast.hide();
-
-            Log.d("AnnouncementActivity", "Hiding Toast!");
-        } else {
-            loadingToast.show();
-            Log.d("AnnouncementActivity", "Displaying Toast!");
-        }
-    }
-
     public void submitAnnouncement (View view) {
-        toggleLoadingComponents();
+        loadingToast.show(getFragmentManager(), "SomeDialog");
 
         if (Retrieve.isInternetAvailable(this)) {
-            DatabaseReference announcement = FirebaseDatabase.getInstance().getReference("announcements").push();
+            DatabaseReference announcement = (targetRef != null) ? targetRef.push() :FirebaseDatabase.getInstance().getReference("announcements").push();
             String dateTime = dateField.getText().toString().replaceAll("-", "") + timeField.getText().toString().replaceAll(":", "") + "00";
 
-//            announcement.child("title").setValue(titleField.getText().toString());
-//            announcement.child("description").setValue(descriptionField.getText().toString());
-//            announcement.child("dateTime").setValue(dateTime);
-//            announcement.child("location").setValue(locationField.getText().toString());
+            announcement.child("title").setValue(titleField.getText().toString());
+            announcement.child("description").setValue(descriptionField.getText().toString());
+            announcement.child("dateTime").setValue(dateTime);
+            announcement.child("location").setValue(locationField.getText().toString());
+            announcement.child("creator").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-            // Notify User about success!
-            Intent intent = new Intent(this, ContactActivity.class);
-            intent.putExtra("afterProposal", true);
-            startActivity(intent);
+            finish();
         } else {    // No Internet
             Toast.makeText(getApplicationContext(), "Submission Failed!\nNo Internet!", Toast.LENGTH_LONG).show();
         }
-        toggleLoadingComponents();
+        loadingToast.dismiss();
     }
 
     private void lockUnlockProposal() {
@@ -224,10 +209,11 @@ public class AnnouncementActivity extends AppCompatActivity {
     public void approveProposal (View view) {
         // If unlocking proposal
         if (isProposalLocked) { lockUnlockProposal(); }
-//        // If fields are invalid
-//        if (fieldsAreInvalid()) { return; }
+        // If fields are invalid
+        if (fieldsAreInvalid()) { return; }
 
-        toggleLoadingComponents();
+        loadingToast.show(getFragmentManager(), "SomeDialog");
+
         // Perform internet check
         boolean internetAvailable = Retrieve.isInternetAvailable(this);
 
@@ -237,18 +223,21 @@ public class AnnouncementActivity extends AppCompatActivity {
                 public void handle(boolean status) {
                     isProposalLocked = status;
                     if (isProposalLocked) {
+                        Log.d("Announcement Proposal", "Approval Success!");
                         Toast.makeText(getApplicationContext(), "Approval Success!", Toast.LENGTH_LONG).show();
                         lockUnlockProposal();
-                        toggleLoadingComponents();
+                        loadingToast.dismiss();
                     } else {
+                        Log.d("Announcement Proposal", "Approval Failed! Wrong Password!");
                         Toast.makeText(getApplicationContext(), "Approval Failed!\nWrong Key!", Toast.LENGTH_LONG).show();
-                        toggleLoadingComponents();
+                        loadingToast.dismiss();
                     }
                 }
             });
         } else {
+            Log.d("Announcement Proposal", "Approval Failed! No Internet!");
             Toast.makeText(getApplicationContext(), "Approval Failed!\nNo Internet!", Toast.LENGTH_LONG).show();
-            toggleLoadingComponents();
+            loadingToast.dismiss();
         }
     }
 
