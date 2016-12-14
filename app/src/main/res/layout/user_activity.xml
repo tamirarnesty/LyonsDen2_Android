@@ -117,8 +117,11 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:text="@string/USDeleteButtonText"
+                android:tag="deleteAcc"
                 android:textSize="12sp"
-                android:id="@+id/USDelete"/>
+                android:id="@+id/USDelete"
+                android:onClick="UAButtons"
+                />
 
             <!-- Sign out Button -->
             <Button
@@ -126,8 +129,11 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:text="@string/USSignOutButtonText"
+                android:tag="signOut"
                 android:textSize="12sp"
-                android:id="@+id/USSignOut"/>
+                android:id="@+id/USSignOut"
+                android:onClick="UAButtons"
+                />
 
             <!-- Reset Password Button -->
             <Button
@@ -136,8 +142,11 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:text="@string/USResetPassButtonText"
+                android:tag="resetPass"
                 android:textSize="12sp"
-                android:id="@+id/USReset"/>
+                android:id="@+id/USReset"
+                android:onClick="UAButtons"
+                />
         </RelativeLayout>
     </RelativeLayout>
 

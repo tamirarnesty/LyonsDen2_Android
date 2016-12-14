@@ -19,6 +19,11 @@ import android.widget.ListView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 
 // TODO: IMPLEMENT CLUB CODE CHECKER
@@ -158,6 +163,19 @@ public class UserActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.edit_menu, menu);
         return true;
+    }
+
+    public void UAButtons (View view) {
+        String s = (String) view.getTag();
+        if (s.equals("deleteAcc")) {
+        } else if (s.equals("signOut")) {
+
+        } else if (s.equals("resetPass")) {
+
+        }
+    }
+    public void becomeClubLeaderButton(View view) {
+
     }
 }
 
