@@ -83,8 +83,6 @@ public class HomeActivity extends AppCompatActivity {
         // Declare the associated xml layout file
         setContentView(R.layout.home_activity);
 
-        FirebaseDatabase.getInstance().getReference("SomeKey").setValue("Some Value");
-
 //        initializeContent();
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));

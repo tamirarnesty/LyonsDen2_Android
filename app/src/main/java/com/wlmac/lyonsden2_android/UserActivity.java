@@ -1,5 +1,6 @@
 package com.wlmac.lyonsden2_android;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,16 +16,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
+import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
 // TODO: IMPLEMENT CLUB CODE CHECKER
 // TODO: MAKE A LOADING INDICATOR FOR WHEN CHECKING THE CLUB CODE
@@ -37,6 +42,7 @@ public class UserActivity extends AppCompatActivity {
     private ListView drawerList;
     /** The drawer toggler used this activity. */
     private ActionBarDrawerToggle drawerToggle;
+    private String displayNameString, emailString, accessLevelString;
     private EditText displayName;
     private EditText email;
     private EditText accessLevel;
@@ -57,6 +63,26 @@ public class UserActivity extends AppCompatActivity {
         drawerList = (ListView) findViewById(R.id.LDList);
         drawerToggle = HomeActivity.initializeDrawerToggle(this, rootLayout);
         HomeActivity.setupDrawer(this, drawerList, rootLayout, drawerToggle);
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        emailString = user.getEmail();
+        FirebaseDatabase.getInstance().getReference("users").child("students").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists())
+                    onContentLoad(dataSnapshot.child("name").getValue(String.class), emailString,
+                            dataSnapshot.child("accessLevel").getValue(String.class));
+                else Log.d("An error occured", "database directory isn't correct or database does not exist");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    private void onContentLoad(String name, String email, String accessLevel) {
+        this.displayName.setText(name);
+        this.email.setText(email);
+        this.accessLevel.setText(accessLevel);
     }
 
     private void instantiateComponents () {
@@ -166,16 +192,49 @@ public class UserActivity extends AppCompatActivity {
     }
 
     public void UAButtons (View view) {
-        String s = (String) view.getTag();
-        if (s.equals("deleteAcc")) {
-        } else if (s.equals("signOut")) {
-
-        } else if (s.equals("resetPass")) {
-
-        }
+        if (Retrieve.isInternetAvailable(this)) {
+            String s = (String) view.getTag();
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            switch (s) {
+                case "deleteAcc":
+                    FirebaseUser user = auth.getCurrentUser();
+                    FirebaseDatabase.getInstance().getReference("users").child("students").child(user.getUid()).removeValue();
+                    user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(UserActivity.this, "Account deleted", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(UserActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                            } else
+                                Toast.makeText(UserActivity.this, "An error 1.1 occurred", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    break;
+                case "signOut":
+                    auth.signOut();
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                    break;
+                case "resetPass":
+                    TextView textView = (TextView) findViewById(R.id.USEmailField);
+                    String email = textView.getText().toString();
+                    auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful())
+                                Toast.makeText(UserActivity.this, "Email sent", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(UserActivity.this, "An error 1.2 occurred", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    break;
+            }
+        } else
+            Toast.makeText(this, "No Internet Available", Toast.LENGTH_SHORT).show();
     }
-    public void becomeClubLeaderButton(View view) {
 
+    public void becomeClubLeaderButton(View view) {
     }
 }
 

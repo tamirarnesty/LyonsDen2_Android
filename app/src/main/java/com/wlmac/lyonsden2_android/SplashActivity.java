@@ -85,7 +85,7 @@ public class SplashActivity extends AppCompatActivity {
 //
 ////        if (email.equals("") || password.equals(""))
 //
-        authenticator.signInWithEmailAndPassword("sketch204@gmail.com", "Pok3monG0")
+        authenticator.signInWithEmailAndPassword("some@email.com", "password")
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
