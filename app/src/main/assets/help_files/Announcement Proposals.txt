@@ -1,0 +1,54 @@
+<h1>Posting an Announcement</h1>
+
+<p>The Announcement Proposal feature is available to all app users. Before proposing an announcement
+you should make sure that you have: a title, a description, as well as a teacher to approve your announcement.</p>
+
+<h3>Announcement Contents</h3>
+
+<p>The title should be kept short. Titles that are too long will not be read properly by the receivers. The description can be as
+detailed as you want, but it is recommended to keep it brief. It should not be longer than approximately 200-300 words.</p>
+
+<p>Along with the description and title, you can also provide a custom date-time stamp and an optional location. The date-time stamp
+is automaticaly generated from the current date and time and can be changed upon will.
+
+<br>
+<br>We do not <i>recommended</i> you change the date-time stamp unless necessary for the content of the announcement.
+<br>The date-time stamp determines where on the list of announcements your announcement will show up. A date-time stamp that is far into the
+future will ensure that your announcement will stay on top of the list until that date and time has passed. A
+date-time stamp into the past will put your announcement lower in the list of announcements.
+
+<br>
+<br>We recommend keeping this in mind when you post announcements.</p>
+
+<p>The location field is optional. It is recomended that you use it only if your announcement is
+connected to a specific place, such as a room in the school or a place outside of school. This would generally be used for
+club meetings, or event locations.
+
+<br>
+<br>The location should be brief and to the point.
+<br>The shorter the location, the better it is.</p>
+
+<h3>Announcement Approval</h3>
+
+<p>Every announcement proposal must be approved by a teacher before being posted. After you have finished writing
+your announcement, you should pass your device with the announcement visible to a registered teacher for review.
+
+<br>
+<br>Once the teacher has reviewed and approved the proposal, a submit button will appear and the approve button will be changed
+to an unlock button.</p>
+
+<p>After the proposal has been approved it will be locked from editing. If you need to edit the propsal you can press
+the Unlock button to unlock the proposal. Keep in mind that you will need to regain your approval if you unlock your proposal.
+
+<br>
+<br>So make sure you are satisfied with your announcement before requesting a teacher to review it.</p>
+
+<p>The submit button will post your announcement and close your proposal. If you have a slow internet connection, please allow
+for a few extra seconds after the proposal has been closed to make sure that it has been uploaded. You will receive a message once your
+announcement has been posted. </p>
+
+<p>Keep in mind that if you press the back button or close the app before the announcement has been submitted,
+any content that you have entered as well as your approval will be lost.</p>
+
+<p>After the announcement has been uploaded it will be visible in the announcement list. The announcement list can be found from the side menu
+or in Home screen. </p>

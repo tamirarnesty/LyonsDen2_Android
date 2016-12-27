@@ -1,0 +1,42 @@
+<h1>Club Leading Duties</h1>
+
+<h3>Becoming a Club Leader</h3>
+
+<p>As a club leader, the first thing you should do, is gain a 'club code' for
+your club. You can get your club's code from either Denesh Kumar,
+Inal Gotov or Tamir Arnesty.
+
+<br>
+<br>This code is specific to each club.
+<br>Do not share it with anyone unless they have an executive position in your club.
+<br>False leaders will be removed.
+<br>
+
+<br>After getting your club code ,the next thing you should do is head into the User
+section of the app. This section will have your name as the title and can be found in the side menu.
+
+<br>
+<br>You will then have to show the extra buttons at the bottom of the screen
+and press the button that says "Become Club Leader". A window will appear and
+you can enter the club code of your club. After submitting your code, you will 
+see a message on screen saying "Key match Found!". At this point you should be able
+to navigate to your club in the Club list and see a club leader's editing bar
+at the bottom.
+
+<br>
+<br>If you do not see this bar, you do not have access to club leadership or the code you entered is incorrect.
+</p>
+
+<h3>Managing your Club</h3>
+
+<p> When you designate yourself as a club leader for your club, the editing toolbar will have two buttons,
+which can be found at the bottom of the screen. One of which will be an edit button, which allows you to edit
+your clubs title and description. When pressing done, this information will be updated. These new changes should appear in
+the Club list and on your current club page.
+
+<br>
+<br>In the toolbar you will also see an "Add" button. This button will take you to
+the announcement proposal screen, where you can create an announcement to post
+in your club. This announcement has to be approved by a teacher as usual and 
+will only be posted into your club's feed, not into the global app's feed.
+</p>

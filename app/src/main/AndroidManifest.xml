@@ -55,7 +55,8 @@
             android:name=".otherClasses.WebCalendar"
             android:exported="false" />
 
-        <activity android:name=".resourceActivities.InformationFormActivity"></activity>
+        <activity android:name=".resourceActivities.InformationFormActivity" />
+        <activity android:name=".resourceActivities.TextViewerActivity"></activity>
     </application>
 
 </manifest>

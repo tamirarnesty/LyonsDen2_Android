@@ -21,6 +21,7 @@ import com.wlmac.lyonsden2_android.contactActivities.AnnouncementActivity;
 import com.wlmac.lyonsden2_android.contactActivities.MusicActivity;
 import com.wlmac.lyonsden2_android.lyonsLists.ListViewerActivity;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
+import com.wlmac.lyonsden2_android.otherClasses.ToastView;
 
 /**
  * The activity used to display the methods for contacting the school.
@@ -64,6 +65,8 @@ public class ContactActivity extends AppCompatActivity {
         int textHeight = Retrieve.heightForText("Report a Bug", this, 12) + 16; // Accounts for padding
         extraButtonsContainer.animate().translationYBy(textHeight).setDuration(0).start();
         extraButtonsToggle.animate().translationYBy(textHeight).setDuration(0).start();
+        extraButtonsToggle.setBackgroundResource(R.drawable.arrow_up_48dp);
+        isShowingExtraButtons = true;
     }
 
     /** Called when the Propose Announcement button is pressed. */
@@ -104,18 +107,28 @@ public class ContactActivity extends AppCompatActivity {
 
     public void reportBug (View view) {
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
+        intent.setType("message/rfc822");
         intent.putExtra(Intent.EXTRA_EMAIL, "TheLyonsKeeper@gmail.com");
         intent.putExtra(Intent.EXTRA_SUBJECT, "Hey Keeper, I found a bug!");
         intent.putExtra(Intent.EXTRA_TEXT, "Before the bug occurred I did this:");
-        startActivity(Intent.createChooser(intent, "Send Mail"));
+        try {
+            startActivity(Intent.createChooser(intent, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getApplicationContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void displayList (View view) {
         if ((view.getTag()).equals("1")) {   // If Licences
             Log.d("Contact", "Lets pretend I displayed the Licences");
+            Intent intent = new Intent(this, ListViewerActivity.class);
+            intent.putExtra("title", "Licences");
+            startActivity(intent);
         } else {        // If Help
             Log.d("Contact", "Lets pretend I displayed the Help Files");
+            Intent intent = new Intent(this, ListViewerActivity.class);
+            intent.putExtra("title", "Help");
+            startActivity(intent);
         }
     }
 

@@ -5,8 +5,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import com.wlmac.lyonsden2_android.R;
 
@@ -24,5 +22,11 @@ public class ToastView extends DialogFragment {
 
         builder.setView(toastView);
         return builder.create();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getDialog().getWindow().setLayout(300, 280);
     }
 }

@@ -1,0 +1,50 @@
+<h1>The Home Screen</h1>
+
+<p>
+In the Home screen you will fnd a lot of userful information, some of which if personalized
+and must be entered by you. The rest, we made for you.
+</p>
+
+<h3>Day of the Day</h3>
+
+<p>At the very top you can find the current 'day' of the day. This information is accurate
+so long as the school calendar is accurate. You will be able to see day 1 or day 2, respective
+of the day. If school is not in session, such as a weekend or PA Day, the number representing day will be
+X, for unavailable.
+
+<br>
+<br>The Day label can also tell you whether it is a late start or not. On a late
+start day, you will find a smaller "Late Start" label right next to the day.
+
+<br>
+<br>The home screen requires internet access for accurate information. Ensure you are connected
+to Wifi or wireless data for the best outcome. Some features are available offline once you have launched
+some sections of the app once.
+</p>
+
+<h3>Time Table</h3>
+
+<p>Underneath the 'Day' label you will find the time table. The information
+regarding each period has to be manually entered by you. A simple press & hold 
+on one of the periods will open a small window where you can edit the content
+of the currently selected period.
+
+<br>
+<br>The timetable automatically highlights the current period and will highlight
+the proper periods on Late Start days as well. If you are checking during a 
+time that is not a period, a white line will be placed in the approprite spot.
+
+<br>
+<br>For example, if you are checking between 3:05pm and midnight, a line will
+be placed on the right side of the time table.
+
+<br>
+<br>If you are checking during a period, the respective block in the time table will be outlined.
+</p>
+
+<h3>Event List</h3>
+
+<p>Underneath the timetable you will find a list of the latest events. These events
+are loaded from an online database and will contain announcements that have been
+posted by students and teachers, and are displayed from most to least recent.
+</p>

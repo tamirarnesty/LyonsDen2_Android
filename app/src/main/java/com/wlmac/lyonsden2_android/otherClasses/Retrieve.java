@@ -227,6 +227,14 @@ public class Retrieve {
         }
     }
 
+    /** A helper method that creates a {@link String} representation out of the contents of the passed {@link java.io.InputStream} */
+    public static String stringFromStream (java.io.InputStream is) {
+        if (is == null) return "";
+        // Tell the scanner to convert the whole string into a single token
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
+    }
+
 // MARK: HELPER METHODS
 
     private static ArrayList<String[]> reverse (ArrayList<String[]> input) {

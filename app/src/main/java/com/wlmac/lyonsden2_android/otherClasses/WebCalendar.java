@@ -72,12 +72,12 @@ public class WebCalendar extends IntentService {
                 try {
                     // Start the session
                     session.connect();
-                    webData = convertStreamToString(session.getInputStream());
+                    webData = Retrieve.stringFromStream(session.getInputStream());
                 } catch (IOException e) {   // If connection Failed
                     Log.i("WebCalendar", "Recording Process Failed!");
                     Log.i("WebCalendar", "Trying to Reconnect");
                     if (numberOfAttempts < 4) {
-                        numberOfAttempts ++;
+                        numberOfAttempts++;
                         onHandleIntent(intent);     // Will perform a recursive call to self and hopefully
                         return;                     // Return from all of the 'caller' instances
                     }                               // Haven't actually tested this, but the theory checks out
@@ -100,17 +100,10 @@ public class WebCalendar extends IntentService {
             SharedPreferences.Editor cache = getSharedPreferences(HomeActivity.sharedPreferencesName, 0).edit();
             cache.putString(LyonsCalendar.keyCalendarCache, webData);
             cache.apply();
-        // If the request was to load the calendar offline, from last cached file
+            // If the request was to load the calendar offline, from last cached file
         } else if (intent.getAction().equals(actionLoadOffline)) {      // Action 4
             String offlineCalendar = getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyCalendarCache, null);
             targetCalendar.loadEvents(targetCalendar.parseCalendar(offlineCalendar, null));
         }
-    }
-
-    /** A helper method that creates a {@link String} representation out of the contents of the passed {@link java.io.InputStream} */
-    private String convertStreamToString(java.io.InputStream is) {
-        // Tell the scanner to convert the whole string into a single token
-        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "";
     }
 }

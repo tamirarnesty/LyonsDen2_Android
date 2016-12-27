@@ -19,6 +19,7 @@ import android.widget.ListView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 
 // TODO: IMPLEMENT CLUB CODE CHECKER

@@ -60,8 +60,6 @@ public class AnnouncementActivity extends AppCompatActivity {
 
     private Button submitButton;
 
-    private LinearLayout contentView;
-
     private boolean isProposalLocked = false;
 
     private ToastView loadingToast;
