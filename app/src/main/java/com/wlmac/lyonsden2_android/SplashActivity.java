@@ -82,14 +82,20 @@ public class SplashActivity extends AppCompatActivity {
 
 //        email = sharedPreferences.getString("username", "sketch204@gmail.com");
 //        password = sharedPreferences.getString("password", "Pok3monG0");
-//
-////        if (email.equals("") || password.equals(""))
-//
-        authenticator.signInWithEmailAndPassword("sketch204@gmail.com", "Pok3monG0")
+//        if (email.equals("") || password.equals(""))
+
+        //Temporal placeholders
+        email = "g@gmail.com";
+        password = "Pok3monG0";
+        authenticator.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d("Splash Screen", "signInWithEmail:onComplete:" + task.isSuccessful());
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("email", email);
+                        editor.putString("password", password);
+                        editor.commit();
                     }
                 });
     }

@@ -94,50 +94,71 @@
             </LinearLayout>
 
             <!-- Update Info Button -->
-            <Button
+            <!--<Button
                 style="@style/UserButton"
                 android:layout_below="@id/USAccess"
                 android:layout_marginTop="15dp"
                 android:layout_centerHorizontal="true"
                 android:text="@string/USUpdateButtonText"
                 android:id="@+id/USUpdate"/>
+            -->
+            <TableLayout
+                android:id="@+id/USContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true">
 
-            <!-- Become Leader Button -->
-            <Button
-                style="@style/UserButton"
-                android:layout_centerInParent="true"
-                android:text="@string/USLeaderButtonText"
-                android:onClick="clubLeadershipApplication"
-                android:id="@+id/USLeaderButton"/>
+                <TableRow>
+                    <!-- Become a leader Button -->
+                    <Button
+                        style="@style/ExtraButtonStyle"
+                        android:text="@string/USLeaderButtonText"
+                        android:textAlignment="center"
+                        android:onClick="clubLeadershipApplication"
+                        android:textSize="12sp"
+                        android:id="@+id/USLeaderButton" />
 
-            <!-- Delete Account Button -->
-            <Button
-                style="@style/UserButton"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:text="@string/USDeleteButtonText"
-                android:textSize="12sp"
-                android:id="@+id/USDelete"/>
+                    <!-- Sign out Button -->
+                    <Button
+                        style="@style/ExtraButtonStyle"
+                        android:textAlignment="center"
+                        android:text="@string/USSignOutButtonText"
+                        android:tag="signOut"
+                        android:textSize="12sp"
+                        android:id="@+id/USSignOut"
+                        android:onClick="UAButtons" />
+                </TableRow>
 
-            <!-- Sign out Button -->
+                <TableRow>
+                    <!-- Delete Account Button -->
+                    <Button
+                        android:textAlignment="center"
+                        style="@style/ExtraButtonStyle"
+                        android:text="@string/USDeleteButtonText"
+                        android:tag="deleteAcc"
+                        android:textSize="12sp"
+                        android:id="@+id/USDelete"
+                        android:onClick="UAButtons" />
+
+                    <!-- Reset Password Button -->
+                    <Button
+                        style="@style/ExtraButtonStyle"
+                        android:text="@string/USResetPassButtonText"
+                        android:tag="resetPass"
+                        android:textSize="12sp"
+                        android:id="@+id/USReset"
+                        android:onClick="UAButtons" />
+                </TableRow>
+            </TableLayout>
             <Button
-                style="@style/UserButton"
-                android:layout_alignParentBottom="true"
+                style="@style/LyonsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="@string/USSignOutButtonText"
-                android:textSize="12sp"
-                android:id="@+id/USSignOut"/>
-
-            <!-- Reset Password Button -->
-            <Button
-                style="@style/UserButton"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:text="@string/USResetPassButtonText"
-                android:textSize="12sp"
-                android:id="@+id/USReset"/>
+                android:background="@drawable/arrow_up_48dp"
+                android:layout_above="@+id/USContainer"
+                android:onClick="toggleButtons"
+                android:id="@+id/USToggleButton"/>
         </RelativeLayout>
     </RelativeLayout>
 

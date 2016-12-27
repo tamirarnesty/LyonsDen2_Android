@@ -1,0 +1,4 @@
+Error code | Class Name | Method Name | Description
+
+1.1  - UserActivity - UAButton - User account wasn't deleted after pressing "Delete Account" button
+1.2  - UserActivity - UAButton - Password wasn't sent to user after pressing "Reset password" button
