@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
+import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
 // TODO: MAKE METHODS SWITACHBLE BASED ON PLATFORM VERSION (GET RID OF DEPRECATED METHOD)
 
@@ -107,36 +109,33 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void logIn (View view) {
+
+    public void logIn(View view) {
+
+        if (!fieldsAreValid()) {
+            return;
+        }
+
+        // initiate loading toast
+        // loadingToast.initiate();
+
+        if (Retrieve.isInternetAvailable(this)) {
+            this.processRequest();
+        } else {
+            Toast.makeText(getApplicationContext(), "No internet access!", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private void processRequest() {
         // initialize needed
         final boolean[] performIntent = {false};
-        final String [] signUpKeys = {FirebaseDatabase.getInstance().getReference("java").child("type1").getKey(),
-                                FirebaseDatabase.getInstance().getReference("java").child("type2").getKey()};
+        final String[] signUpKeys = {FirebaseDatabase.getInstance().getReference("java").child("type1").getKey(),
+                FirebaseDatabase.getInstance().getReference("java").child("type2").getKey()};
 
         if (signUpSelected) { // sign up
             if (signUpKeyField.getText().toString().equals(signUpKeys[0]) || signUpKeyField.getText().toString().equals(signUpKeys[1])) {
-                authenticator.createUserWithEmailAndPassword(emailField.getText().toString(), passField.getText().toString())
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                Log.d("Login Activity", "createUserWithEmail:onComplete:" + task.isSuccessful());
-
-                                if (signUpKeyField.getText().toString().equals(signUpKeys[1])) {
-                                    // store teacher password into database for announcements
-                                    FirebaseDatabase.getInstance().getReference("users").child("teacherIDs").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(passField.getText().toString());
-                                }
-
-                                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                                    performIntent[0] = true;
-                                }
-
-                                if (!task.isSuccessful()) {
-
-                                    Log.d("Login Activity", "Create user failure");
-                                }
-                            }
-                });
-
+                this.createNewUser(signUpKeys);
             }
         } else if (!signUpSelected) { // log in
             Log.d("Login Activity", "Login: " + emailField.getText().toString());
@@ -152,17 +151,138 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
         } else {
+            Toast.makeText(getApplicationContext(), "Incorrect Sign Up Key\nThe key is case sensitive.", Toast.LENGTH_LONG).show();
             Log.d("LoginActivity", "Log in or sign up attempt failed terribly.");
         }
         if (performIntent[0]) {
-            // store on device
-            sharedPreferences.edit().putString("password", passField.getText().toString()).apply();
-            sharedPreferences.edit().putString("uID", emailField.getText().toString()).apply();
-            // segue
-            Intent intent = new Intent(this, HomeActivity.class);
-            startActivity(intent);
-
+            this.performIntent();
         }
+    }
+
+    private void createNewUser(final String[] signUpKeys) {
+        final boolean[] performIntent = {false};
+        authenticator.createUserWithEmailAndPassword(emailField.getText().toString(), passField.getText().toString())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d("Login Activity", "createUserWithEmail:onComplete:" + task.isSuccessful());
+
+                        if (signUpKeyField.getText().toString().equals(signUpKeys[1])) {
+                            // store teacher password into database for announcements
+                            FirebaseDatabase.getInstance().getReference("users").child("teacherIDs").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(passField.getText().toString());
+                        }
+
+                        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                            performIntent[0] = true;
+                        }
+
+                        if (!task.isSuccessful()) {
+                            Log.d("Login Activity", task.toString());
+                            Toast.makeText(getApplicationContext(), task.toString(), Toast.LENGTH_LONG).show();
+                            Log.d("Login Activity", "Create user failure");
+                        }
+                    }
+                });
+        if (performIntent[0]) {
+            this.performIntent();
+        }
+    }
+
+    /**
+     * Called when time to segue into another screen.
+     */
+    private void performIntent() {
+        // store on device
+        sharedPreferences.edit().putString("password", passField.getText().toString()).apply();
+        sharedPreferences.edit().putString("uID", emailField.getText().toString()).apply();
+        // segue
+        // change to GuideActivity
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * @return boolean true if all field data is correct.
+     */
+    private boolean fieldsAreValid() {
+        boolean valid = true;
+
+        EditText[] fields = (signUpSelected) ? new EditText[]{emailField, passField, signUpKeyField} : new EditText[]{emailField, passField};
+
+        for (EditText field : fields) {
+            if (field.getText().equals("")) {
+                valid = false;
+                return valid;
+                // set border color to red
+            }
+        }
+
+        // check email format
+        final String email = String.valueOf(fields[0].getText());
+        if (email.contains("@")) {
+            valid = true;
+            final String domain = email.substring(email.indexOf("@") + 1);
+            if (domain.contains(".")) {
+                valid = true;
+                final String domain2 = domain.substring(domain.indexOf(".") +1);
+                if (domain.contains("@") || domain2.contains(".")) {
+                    valid = false;
+                    Log.d("Login Activity", "invalid email format");
+                    Toast.makeText(getApplicationContext(), "Invalid email format", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+        return valid;
+    }
+
+    public void resetPassword(View view) {
+        Log.d("Login Activity", "Reset password requested.");
+        // confirm request
+        final LyonsAlert confirmRequestAlert = new LyonsAlert();
+        confirmRequestAlert.setTitle("Lyon's Den");
+        confirmRequestAlert.setSubtitle("Forgot Password?");
+        confirmRequestAlert.configureLeftButton("Cancel", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmRequestAlert.dismiss();
+            }
+        });
+
+        // create reset alert view
+        confirmRequestAlert.configureRightButton("Yes", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmRequestAlert.dismiss();
+
+                final LyonsAlert handleRequestAlert = new LyonsAlert();
+                handleRequestAlert.setTitle("Reset Password");
+                handleRequestAlert.setSubtitle("Enter your account email.");
+                handleRequestAlert.configureLeftButton("Cancel", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        handleRequestAlert.dismiss();
+                    }
+                });
+                handleRequestAlert.configureRightButton("Submit", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        FirebaseAuth.getInstance().sendPasswordResetEmail(handleRequestAlert.getInputText())
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d("Login Activity", "Email sent.");
+                                        }
+                                    }
+                                });
+                        handleRequestAlert.dismiss();
+                    }
+                });
+                handleRequestAlert.show(getSupportFragmentManager(), "ResestPasswordInputDialog");
+            }
+        });
+
+        confirmRequestAlert.show(getSupportFragmentManager(), "ResestPasswordDialog");
     }
 
     @Override

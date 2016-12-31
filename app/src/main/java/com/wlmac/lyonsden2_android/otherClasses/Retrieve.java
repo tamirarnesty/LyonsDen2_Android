@@ -1,6 +1,7 @@
 package com.wlmac.lyonsden2_android.otherClasses;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Typeface;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.onesignal.OneSignal;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -32,6 +34,7 @@ import java.util.concurrent.ExecutionException;
  */
 
 public class Retrieve {
+
 
     public static void eventData (DatabaseReference ref, final ArrayList<String[]> target, final ListDataHandler handler) {
         Log.d("Event Parser", "Commencing Parse!");
@@ -124,8 +127,32 @@ public class Retrieve {
         return key;
     }
 
-    public static void oneSignalIDs (OneSignalHandler handle) {
 
+    public static void oneSignalIDs (final OneSignalHandler handle) {
+        FirebaseDatabase.getInstance().getReference("users").child("notificationIDs").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String [] array = new String[]{};
+                String [] array2 = new String[]{};
+                if (dataSnapshot.exists()) {
+                    int i = 0;
+                    for (DataSnapshot ids : dataSnapshot.getChildren()) {
+                        array[i] = ids.toString();
+                        array2[i] = ids.getValue().toString();
+                        i++;
+                    }
+                    for (int x = 0; x < array.length; x++) {
+                        Log.d("Retrieve children", array[x]);
+                        Log.d("Retrieve values", array2[x]); }
+                    handle.handle(array);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public static boolean isInternetAvailable(Activity initiator) {
@@ -225,14 +252,6 @@ public class Retrieve {
         } catch (IndexOutOfBoundsException e) {
             return "-1";
         }
-    }
-
-    /** A helper method that creates a {@link String} representation out of the contents of the passed {@link java.io.InputStream} */
-    public static String stringFromStream (java.io.InputStream is) {
-        if (is == null) return "";
-        // Tell the scanner to convert the whole string into a single token
-        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "";
     }
 
 // MARK: HELPER METHODS
