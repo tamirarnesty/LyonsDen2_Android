@@ -280,7 +280,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // An instance of the time table that will be returned and assigned to a global variable
         String[][] timeTable = new String[4][4];
-        // A bank of IDs each refering to an individual piece of the timetable
+        // A bank of IDs each is reference to an individual piece of the timetable
         int[][] idBank = {{R.id.HSCourseName0, R.id.HSCourseCode0, R.id.HSTeacherName0, R.id.HSRoomNumber0},    // Period 1
                           {R.id.HSCourseName1, R.id.HSCourseCode1, R.id.HSTeacherName1, R.id.HSRoomNumber1},    // Period 2
                           {R.id.HSCourseName2, R.id.HSCourseCode2, R.id.HSTeacherName2, R.id.HSRoomNumber2},    // Period 3
@@ -290,12 +290,8 @@ public class HomeActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences(HomeActivity.sharedPreferencesName, 0);
         for (int h = 0; h < timeTable.length; h ++) {
             boolean check = pref.getBoolean("Period " + (h+1), false);
-            if (check == false) {
                 for (int j = 0; j < timeTable[h].length; j++) {
-                    // A instance of a timetable peice (made without assigning to a variable)
-                    //                                                       You might use set text here to set to data from
-
-                    //                                                       permanent storage
+                    // A instance of a timetable piece (made without assigning to a variable)
                     String s;
                     switch (j) {
                         case 0:
@@ -313,40 +309,17 @@ public class HomeActivity extends AppCompatActivity {
                         default:
                             s = "Incorrect value";
                     }
-                    if (findViewById(spares[h]).getVisibility() == View.VISIBLE) {
-                        (findViewById(spares[h])).setVisibility(View.INVISIBLE);
-                    }
-                    (findViewById(idBank[h][j])).setVisibility(View.VISIBLE);
                     ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
                     timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
-                    //toString because it return an Editable type
                 }
+            if (check == false) {
+                (findViewById(spares[h])).setVisibility(View.INVISIBLE);
+                for (int j = 0; j < timeTable[h].length; j++)
+                    (findViewById(idBank[h][j])).setVisibility(View.VISIBLE);
             } else {
-            //    if (findViewById(spares[h]).getVisibility() == View.INVISIBLE) {
-                    for (int j = 0; j < timeTable[h].length; j++) {
-                        String s;
-                        switch (j) {
-                            case 0:
-                                s = "Course Name";
-                                break;
-                            case 1:
-                                s = "Course Code";
-                                break;
-                            case 2:
-                                s = "Teacher Name";
-                                break;
-                            case 3:
-                                s = "Room Number";
-                                break;
-                            default:
-                                s = "Incorrect value";
-                        }
-                        (findViewById(idBank[h][j])).setVisibility(View.INVISIBLE);
-                        ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
-                        timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
-                    }
                 (findViewById(spares[h])).setVisibility(View.VISIBLE);
-                //    }
+                for (int j = 0; j < timeTable[h].length; j++)
+                    (findViewById(idBank[h][j])).setVisibility(View.INVISIBLE);
             }
         }
         return timeTable;
