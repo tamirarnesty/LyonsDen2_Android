@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/HDLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
 
     <!--<android.support.design.widget.CoordinatorLayout-->
         <!--android:layout_width="match_parent"-->
@@ -47,10 +48,11 @@
 
     <!--</android.support.design.widget.CoordinatorLayout>-->
 
-    <!-- Top Views Container -->
+
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="390dp"
         android:id = "@+id/topViews"
         android:background="@color/background">
 
@@ -74,7 +76,7 @@
             android:textColor="@color/listDivider"
             android:gravity="center" />
 
-        <!-- Day Label -->
+         <!-- Day Label -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,7 +84,7 @@
             android:id="@+id/HSDayLabel"
             android:layout_below="@+id/HSTodayIsDay"
             android:textColor="@color/listDivider"
-            android:textSize="150dp"
+            android:textSize="150sp"
             android:gravity="center" />
 
         <!-- Time Table Container -->
@@ -98,10 +100,20 @@
             android:id="@+id/HSCourseContainer">
 
             <!-- Period 1 Container -->
-            <LinearLayout
+            <RelativeLayout
                 style="@style/TimeTablePeriodContainer"
                 android:tag="0"
                 android:id="@+id/HSPeriod0" >
+
+                <!-- Spare -->
+                <TextView
+                    style="@style/TimeTablePeriodParameter"
+                    android:id="@+id/HSSpare0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/HSSpare"
+                    android:layout_centerInParent="true"/>
+
                 <!-- Name -->
                 <TextView
                     style="@style/TimeTablePeriodParameter"
@@ -109,35 +121,52 @@
                     android:layout_height="wrap_content"
                     android:text="@string/HSCourseNameDefault"
                     android:id="@+id/HSCourseName0" />
+
                 <!-- Code -->
                 <TextView
                     style="@style/TimeTablePeriodParameter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/HSCourseName0"
                     android:text="@string/HSCourseCodeDefault"
                     android:id="@+id/HSCourseCode0" />
+
                 <!-- Teacher -->
                 <TextView
                     style="@style/TimeTablePeriodParameter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/HSCourseCode0"
                     android:text="@string/HSTeacherNameDefault"
                     android:id="@+id/HSTeacherName0" />
+
                 <!-- Room -->
                 <TextView
                     style="@style/TimeTablePeriodParameter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/HSTeacherName0"
                     android:text="@string/HSRoomNumberDefault"
                     android:id="@+id/HSRoomNumber0"
                     android:layout_marginBottom="5dp" />
-            </LinearLayout>
+            </RelativeLayout>
 
             <!-- Period 2 Container -->
-            <LinearLayout
+            <RelativeLayout
                 style="@style/TimeTablePeriodContainer"
                 android:tag="1"
                 android:id="@+id/HSPeriod1" >
+
+                <!-- Spare -->
+                <TextView
+                    style="@style/TimeTablePeriodParameter"
+                    android:id="@+id/HSSpare1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/HSSpare"
+                    android:visibility="invisible"
+                    android:layout_centerInParent="true"/>
+
                 <!-- Name -->
                 <TextView
                     style="@style/TimeTablePeriodParameter"
@@ -145,35 +174,52 @@
                     android:layout_height="wrap_content"
                     android:text="@string/HSCourseNameDefault"
                     android:id="@+id/HSCourseName1" />
+
                 <!-- Code -->
                 <TextView
                     style="@style/TimeTablePeriodParameter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/HSCourseName1"
                     android:text="@string/HSCourseCodeDefault"
                     android:id="@+id/HSCourseCode1" />
+
                 <!-- Teacher -->
                 <TextView
                     style="@style/TimeTablePeriodParameter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/HSCourseCode1"
                     android:text="@string/HSTeacherNameDefault"
                     android:id="@+id/HSTeacherName1" />
+
                 <!-- Room -->
                 <TextView
                     style="@style/TimeTablePeriodParameter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/HSRoomNumberDefault"
+                    android:layout_below="@id/HSTeacherName1"
                     android:id="@+id/HSRoomNumber1"
                     android:layout_marginBottom="5dp" />
-            </LinearLayout>
+            </RelativeLayout>
 
             <!-- Period 3 Container -->
-            <LinearLayout
+            <RelativeLayout
                 style="@style/TimeTablePeriodContainer"
                 android:tag="2"
                 android:id="@+id/HSPeriod2" >
+
+                <!-- Spare -->
+                <TextView
+                    style="@style/TimeTablePeriodParameter"
+                    android:id="@+id/HSSpare2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/HSSpare"
+                    android:visibility="invisible"
+                    android:layout_centerInParent="true"/>
+
                 <!-- Name -->
                 <TextView
                     style="@style/TimeTablePeriodParameter"
@@ -181,35 +227,52 @@
                     android:layout_height="wrap_content"
                     android:text="@string/HSCourseNameDefault"
                     android:id="@+id/HSCourseName2" />
+
                 <!-- Code -->
                 <TextView
                     style="@style/TimeTablePeriodParameter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/HSCourseCodeDefault"
+                    android:layout_below="@id/HSCourseName2"
                     android:id="@+id/HSCourseCode2" />
+
                 <!-- Teacher -->
                 <TextView
                     style="@style/TimeTablePeriodParameter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/HSTeacherNameDefault"
+                    android:layout_below="@id/HSCourseCode2"
                     android:id="@+id/HSTeacherName2" />
                 <!-- Room -->
+
                 <TextView
                     style="@style/TimeTablePeriodParameter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/HSRoomNumberDefault"
+                    android:layout_below="@id/HSTeacherName2"
                     android:id="@+id/HSRoomNumber2"
                     android:layout_marginBottom="5dp" />
-            </LinearLayout>
+            </RelativeLayout>
 
             <!-- Period 4 Container -->
-            <LinearLayout
+            <RelativeLayout
                 style="@style/TimeTablePeriodContainer"
                 android:tag="3"
                 android:id="@+id/HSPeriod3" >
+
+                <!-- Spare -->
+                <TextView
+                    style="@style/TimeTablePeriodParameter"
+                    android:id="@+id/HSSpare3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/HSSpare"
+                    android:visibility="invisible"
+                    android:layout_centerInParent="true"/>
+
                 <!-- Name -->
                 <TextView
                     style="@style/TimeTablePeriodParameter"
@@ -217,37 +280,43 @@
                     android:layout_height="wrap_content"
                     android:text="@string/HSCourseNameDefault"
                     android:id="@+id/HSCourseName3" />
+
                 <!-- Code -->
                 <TextView
                     style="@style/TimeTablePeriodParameter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/HSCourseName3"
                     android:text="@string/HSCourseCodeDefault"
+
                     android:id="@+id/HSCourseCode3" />
+
                 <!-- Teacher -->
                 <TextView
                     style="@style/TimeTablePeriodParameter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/HSCourseCode3"
                     android:text="@string/HSTeacherNameDefault"
                     android:id="@+id/HSTeacherName3" />
+
                 <!-- Room -->
                 <TextView
                     style="@style/TimeTablePeriodParameter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/HSRoomNumberDefault"
+                    android:layout_below="@id/HSTeacherName3"
                     android:id="@+id/HSRoomNumber3"
                     android:layout_marginBottom="5dp" />
-            </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
-
         <!-- Announcements Container -->
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/HSDayLabel"
+            android:layout_height="wrap_content"
             android:id="@+id/HSList"
+            android:layout_below="@+id/HSCourseContainer"
             android:layout_gravity="center_horizontal"
             android:background="@color/background"
             android:divider="@color/listDivider"
