@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.wlmac.lyonsden2_android.R;
@@ -38,13 +39,16 @@ public class ClubList extends LyonsList {
         clubList = (ListView) findViewById(R.id.LSClubsList);
         adapter = new ListAdapter(this, content, false);
         clubList.setAdapter(adapter);
-
-        Retrieve.clubData(FirebaseDatabase.getInstance().getReference("clubs"), content, new Retrieve.ListDataHandler() {
-            @Override
-            public void handle(ArrayList<String[]> listData) {
-                onClubsLoaded(listData);
-            }
-        });
+        if (Retrieve.isInternetAvailable(this)) {
+            Retrieve.clubData(this, FirebaseDatabase.getInstance().getReference("clubs"), content, new Retrieve.ListDataHandler() {
+                @Override
+                public void handle(ArrayList<String[]> listData) {
+                    onClubsLoaded(listData);
+                }
+            });
+        } else {
+            Toast.makeText(this, "No Internet Available!", Toast.LENGTH_SHORT).show();
+        }
 
         // Set the click listener of this activity's eventList
         clubList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -76,12 +80,16 @@ public class ClubList extends LyonsList {
         super.onStart();
         this.getSupportActionBar().setTitle(getResources().getString(R.string.LSTitleClubs));
         if (contentChanged) {
-            Retrieve.clubData(FirebaseDatabase.getInstance().getReference("clubs"), content, new Retrieve.ListDataHandler() {
-                @Override
-                public void handle(ArrayList<String[]> listData) {
-                    onClubsLoaded(listData);
-                }
-            });
+            if (Retrieve.isInternetAvailable(this)) {
+                Retrieve.clubData(this, FirebaseDatabase.getInstance().getReference("clubs"), content, new Retrieve.ListDataHandler() {
+                    @Override
+                    public void handle(ArrayList<String[]> listData) {
+                        onClubsLoaded(listData);
+                    }
+                });
+            } else {
+                Toast.makeText(this, "No Internet Available!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

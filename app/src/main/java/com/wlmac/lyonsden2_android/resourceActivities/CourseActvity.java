@@ -41,7 +41,6 @@ public class CourseActvity extends AppCompatActivity {
 
     public void submitChanges (View view) {
         Log.d("Course Activity", "Let's pretend that I actually submitted your changes to the database? or saved them to the phone");
-        // I actually have no clue how permanent storage works on android, so...
-        // Wont be able to help you there :)
+        // SharedPreferences is the way to store things, use the static in HS to access the proper Preferences, or create your own, up to you
     }
 }

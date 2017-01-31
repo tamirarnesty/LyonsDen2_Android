@@ -98,4 +98,15 @@
     <!-- Course View Strings -->
     <string name="CourseVTopLabel">Period Number</string>
     <string name="CourseVButton">Done</string>
+
+    <!-- Guide Screen Strings -->
+    <string name="Page1">Welcome to Den.</string>
+    <string name="Page2">Here, we have created a hub for everything you need to know, to stay in the know. Including…</string>
+    <string name="Page3">Quick access to essential information.</string>
+    <string name="Page4">Press, hold and release the time table to enter your courses</string>
+    <string name="Page5">School wide calendar at your fingertips.</string>
+    <string name="Page6">Clubs.</string>
+    <string name="Page7">Post announcements from your phone, anytime, anywhere.</string>
+    <string name="Page8">You may enter the Den.</string>
+    <string name="Swipe">Swipe left to continue</string>
 </resources>

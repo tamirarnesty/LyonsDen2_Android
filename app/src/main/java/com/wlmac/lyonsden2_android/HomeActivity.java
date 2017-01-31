@@ -1,49 +1,35 @@
 package com.wlmac.lyonsden2_android;
 
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Point;
-import android.graphics.Typeface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.FirebaseDatabase;
-import com.wlmac.lyonsden2_android.lyonsLists.ClubList;
-import com.wlmac.lyonsden2_android.lyonsLists.EventList;
+import com.wlmac.lyonsden2_android.otherClasses.LyonsCalendar;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
+import com.wlmac.lyonsden2_android.otherClasses.WebCalendar;
 import com.wlmac.lyonsden2_android.resourceActivities.CourseActvity;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 // TODO: IMPLEMENT ANDROID PROGRESS INDICATORS WHERE NEEDED
+// TODO: Implement Error codes where necessary
 
 /**
  * The activity that will be used to display the home screen. The home screen consists of a label for
@@ -65,8 +51,6 @@ public class HomeActivity extends AppCompatActivity {
     private ListView listView;
     /** The contents of the announcement ListView */
     private ArrayList<String> announcements = new ArrayList<>();
-    /** A list of item that will be displayed in the every drawer list of this program. */
-    private static String[] drawerContent = {"Home", "Calendar", "Announcements", "Clubs", "Contact", "Me"};  // Just trying things out :)
     /** An instance of the root layout of this activity. */
     private DrawerLayout rootLayout;
     /** An instance of the ListView used in this activity's navigation drawer. */
@@ -99,7 +83,8 @@ public class HomeActivity extends AppCompatActivity {
                 updatePeriods();
             }
         }, 60000);
-        setupDrawer(this, drawerList, rootLayout, drawerToggle);
+
+        Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
 
         // Resize the announcement ListView to fit the screen. DOES NOT WORK ATM!!!
         listView.setMinimumHeight(Retrieve.screenSize(this).y);
@@ -125,6 +110,27 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(parent.getContext(), "BAH BAH", Toast.LENGTH_SHORT).show();
             }
         });
+
+// MARK: LATE START & DAY OF THE DAY RETRIEVAL
+
+        // Retrieve info from shared preferences
+        SharedPreferences sharedPreferences = getSharedPreferences(HomeActivity.sharedPreferencesName, 0);
+        String dayDictionary = sharedPreferences.getString(LyonsCalendar.keyDayDictionary, "Dictionary Not Found"),
+               lateStartDicitonary = sharedPreferences.getString(LyonsCalendar.keyLateStartDictionary, "Dictionary Not Found");
+
+        // If dictionaries do not exists a.k.a. Calendar has never been opened
+        if (dayDictionary.equals("Dictionary Not Found") || lateStartDicitonary.equals("Dictionary Not Found")) {
+            // Reload Dictionary
+            WebCalendar.downloadInto(new LyonsCalendar(), getApplicationContext(), WebCalendar.actionCacheOnly);
+
+            dayDictionary = sharedPreferences.getString(LyonsCalendar.keyDayDictionary, "Dictionary Not Found");
+            lateStartDicitonary = sharedPreferences.getString(LyonsCalendar.keyLateStartDictionary, "Dictionary Not Found");
+        }
+
+        // Checks if there is a school day today, will set to appropriate value
+        String dayOfTheDay = (Retrieve.dayFromDictionary(dayDictionary, new Date()).equals("-1")) ? "X" : Retrieve.dayFromDictionary(dayDictionary, new Date());
+        // True if today is a late start, false otherwise.
+        boolean lateStartStatus = Retrieve.isLateStartDay(lateStartDicitonary, new Date()); // This retrieve method has not been tested
     }
 
 //    private void initializeContent () {
@@ -144,83 +150,6 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * The method used for a quick and easy setup of a default drawer in the current view.
-     * @param initiator The activity that is calling this method. ('this' arguement will work most of the time)
-     * @param drawerList The drawer list that is bind to the initiating activity.
-     * @param rootLayout The root layout of the initiating activity.
-     * @param drawerToggle The drawer toggle of the initiating activity.
-     */
-    public static void setupDrawer (AppCompatActivity initiator, ListView drawerList, DrawerLayout rootLayout, ActionBarDrawerToggle drawerToggle) {
-        // Declare the drawer list adapter, to fill the drawer list
-        drawerList.setAdapter(new ArrayAdapter<String>(initiator, android.R.layout.simple_selectable_list_item, HomeActivity.drawerContent) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view =super.getView(position, convertView, parent);
-                ((TextView) view.findViewById(android.R.id.text1)).setTextColor(parent.getResources().getColor(R.color.whiteText));
-                return view;
-            }
-        });
-        // Set the drawer list's item click listener
-        drawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                HomeActivity.performDrawerSegue(parent.getContext(), position); // Segue into the appropriate Activity
-            }
-        });
-        // Display the drawer indicator
-        initiator.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        initiator.getSupportActionBar().setHomeButtonEnabled(true);
-        // Enable the drawer indicator
-        drawerToggle.setDrawerIndicatorEnabled(true);
-        // Add the drawer toggler to the current layout
-        rootLayout.addDrawerListener(drawerToggle);
-    }
-
-    /**
-     * Returns a fully setup ActionBarDrawerToggle object, redy for use with a drawer.
-     * @param initiator The activity that is calling this method. ('this' arguement will work most of the time)
-     * @param rootLayout The root layout of the initiating activity.
-     */
-    public static ActionBarDrawerToggle initializeDrawerToggle (AppCompatActivity initiator, DrawerLayout rootLayout) {
-        final AppCompatActivity finalInitiator = initiator;
-        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(finalInitiator, rootLayout, R.string.drawerOpen, R.string.drawerClose) {
-            @Override
-            public void onDrawerClosed(View drawerView) {   // When the drawer is closed
-                super.onDrawerClosed(drawerView);           // Super Call
-                finalInitiator.getSupportActionBar().setTitle(finalInitiator.getTitle()); // Set the app title to the drawer's title
-                finalInitiator.invalidateOptionsMenu();                    // State that the drawer should be redrawn
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {   // When the drawer is opened
-                super.onDrawerOpened(drawerView);           // Super call
-                finalInitiator.getSupportActionBar().setTitle("Menu");     // Set the app title to the drawer's title
-                finalInitiator.invalidateOptionsMenu();                    // State that the drawer should be redrawn
-            }
-        };
-        return  drawerToggle;
-    }
-
-    public static void performDrawerSegue (Context initiator, int activity) {
-        Class target = null;
-        if (activity == 0) {
-            target = HomeActivity.class;
-        } else if (activity == 1) {
-            target = CalendarActivity.class;
-        } else if (activity == 2) {
-            target = EventList.class;
-        } else if ( activity == 3) {
-            target = ClubList.class;
-        } else if (activity == 4) {
-            target = ContactActivity.class;
-        } else if (activity == 5) {
-            target = UserActivity.class;
-        }
-        Intent intent = new Intent (initiator, target);
-        initiator.startActivity(intent);
-    }
-
     /** Instantiates all GUI components */
     private void initializeComponents () {
         dayLabel = (TextView) findViewById(R.id.HSDayLabel);
@@ -228,7 +157,7 @@ public class HomeActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.HSList);
         rootLayout = (DrawerLayout) findViewById(R.id.HDLayout);
         drawerList = (ListView) findViewById(R.id.HDList);
-        drawerToggle = initializeDrawerToggle(this, rootLayout);
+        drawerToggle = Retrieve.drawerToggle(this, rootLayout);
 
         periods[0] = (LinearLayout) findViewById(R.id.HSPeriod0);
         periods[1] = (LinearLayout) findViewById(R.id.HSPeriod1);

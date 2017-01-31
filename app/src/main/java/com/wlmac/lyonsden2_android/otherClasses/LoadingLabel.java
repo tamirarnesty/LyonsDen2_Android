@@ -1,13 +1,10 @@
 package com.wlmac.lyonsden2_android.otherClasses;
 
 import android.app.Activity;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.text.TextPaint;
 import android.util.Log;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -75,18 +72,19 @@ public class LoadingLabel {
     }
 
     public void show() {
-        initiator.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                target.setVisibility(View.VISIBLE);
-            }
-        });
+//        initiator.runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                target.setVisibility(View.VISIBLE);
+//            }
+//        });
+        target.animate().setDuration(300).alpha(1);
         startCycling();
     }
 
     public void dismiss () {
         stopCycling();
-        target.setVisibility(View.GONE);
+        target.animate().setDuration(300).alpha(0);
     }
 
     private class LabelUpdater extends Thread {

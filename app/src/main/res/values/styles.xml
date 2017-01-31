@@ -84,7 +84,7 @@
     </style>
 
     <style name="LyonsNormalCell" parent="LyonsCell">
-        <item name="android:padding">5dp</item>
+        <item name="android:padding">4dp</item>
     </style>
 
     <style name="LyonsSquareCell" parent="LyonsCell" />

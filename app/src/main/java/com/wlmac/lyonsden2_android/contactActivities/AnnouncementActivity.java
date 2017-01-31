@@ -74,7 +74,14 @@ public class AnnouncementActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         instantiateComponents();
-//        setFonts();
+        setFonts();
+    }
+
+    private void setFonts() {
+        int[] component = {R.id.APSTitleLabel, R.id.APSDescriptionLabel, R.id.APSLocationLabel, R.id.APSTeacherLabel, R.id.APSTitleField, R.id.APSDescriptionField, R.id.APSDateField, R.id.APSTimeField, R.id.APSLocationField, R.id.APSTeacherLogin, R.id.APSDateButton, R.id.APSTimeButton, R.id.APSApproveButton, R.id.APSSubmitButton};
+
+        for (int h = 0; h < component.length; h ++)
+            ((TextView) findViewById(component[h])).setTypeface(Retrieve.typeface(this));
     }
 
     /**
@@ -184,6 +191,8 @@ public class AnnouncementActivity extends AppCompatActivity {
             announcement.child("location").setValue(locationField.getText().toString());
             announcement.child("creator").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+            Toast.makeText(getApplicationContext(), "Announcement Posted!", Toast.LENGTH_SHORT).show();
+
             finish();
         } else {    // No Internet
             Toast.makeText(getApplicationContext(), "Submission Failed!\nNo Internet!", Toast.LENGTH_LONG).show();
@@ -196,6 +205,8 @@ public class AnnouncementActivity extends AppCompatActivity {
         descriptionField.setEnabled(!isProposalLocked);
         ((Button) findViewById(R.id.APSDateButton)).setEnabled(!isProposalLocked);
         ((Button) findViewById(R.id.APSTimeButton)).setEnabled(!isProposalLocked);
+        dateField.setEnabled(!isProposalLocked);
+        timeField.setEnabled(!isProposalLocked);
         locationField.setEnabled(!isProposalLocked);
         teacherLogin.setEnabled(!isProposalLocked);
 
@@ -206,9 +217,16 @@ public class AnnouncementActivity extends AppCompatActivity {
     /** Called whenever the teacher credential has been validated and the submission process should begin. */
     public void approveProposal (View view) {
         // If unlocking proposal
-        if (isProposalLocked) { lockUnlockProposal(); }
+        if (isProposalLocked) {
+            isProposalLocked = false;
+            lockUnlockProposal();
+            return;
+        }
         // If fields are invalid
-        if (fieldsAreInvalid()) { return; }
+        if (fieldsAreInvalid()) {
+            Toast.makeText(this, "Some Fields are invalid", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         loadingToast.show(getFragmentManager(), "SomeDialog");
 
@@ -216,13 +234,14 @@ public class AnnouncementActivity extends AppCompatActivity {
         boolean internetAvailable = Retrieve.isInternetAvailable(this);
 
         if (internetAvailable) {
-            Retrieve.teacherApproval(teacherLogin.getText().toString(), new Retrieve.StatusHandler() {
+            Retrieve.teacherApproval(this, teacherLogin.getText().toString(), new Retrieve.StatusHandler() {
                 @Override
                 public void handle(boolean status) {
                     isProposalLocked = status;
                     if (isProposalLocked) {
                         Log.d("Announcement Proposal", "Approval Success!");
                         Toast.makeText(getApplicationContext(), "Approval Success!", Toast.LENGTH_LONG).show();
+                        teacherLogin.setText("");
                         lockUnlockProposal();
                         loadingToast.dismiss();
                     } else {

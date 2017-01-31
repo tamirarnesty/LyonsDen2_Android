@@ -9,11 +9,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
+import com.wlmac.lyonsden2_android.resourceActivities.GuideActivity;
+
+import java.util.Calendar;
 
 /**
  * This class contains the Splash Screen of this program
@@ -24,7 +29,6 @@ public class SplashActivity extends AppCompatActivity {
     static String email = "";
     static String password = "";
 
-    // TODO: I THINK THIS IS INSTANTIATING TOO EARLY!!!!
     SharedPreferences sharedPreferences;
     FirebaseAuth authenticator;
 
@@ -32,14 +36,17 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.splash_activity);
+
+        ((TextView) findViewById(R.id.SSCopyright)).setText("Copyright Tamir Arnesty & Inal Gotov © " + Calendar.getInstance().get(Calendar.YEAR));
+        ((TextView) findViewById(R.id.SSCopyright)).setTypeface(Retrieve.typeface(this));
+
         final boolean[] performIntent = {false};
 
         // Gota initialize things here mate
         sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
 
         authenticator = FirebaseAuth.getInstance();
-
-        attemptLogIn();
 
 //        final Handler splashDuration = new Handler();
 //        Runnable r = null;
@@ -71,10 +78,14 @@ public class SplashActivity extends AppCompatActivity {
         // TODO: AutoLogin
         // TODO: Resize the Splash Screen graphic
 //        if (performIntent[0]) {
-            Intent intent = new Intent (this, LoginActivity.class);
-            startActivity(intent);
-            finish();
 //        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        attemptLogIn();
     }
 
     private void attemptLogIn () {
@@ -84,18 +95,25 @@ public class SplashActivity extends AppCompatActivity {
 //        password = sharedPreferences.getString("password", "Pok3monG0");
 //        if (email.equals("") || password.equals(""))
 
-        //Temporal placeholders
+        //Temporary placeholders
         email = "g@gmail.com";
         password = "Pok3monG0";
-        authenticator.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        authenticator.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        // In short: Will segue in any case, but will record credentials only if login is success
+
                         Log.d("Splash Screen", "signInWithEmail:onComplete:" + task.isSuccessful());
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("email", email);
-                        editor.putString("password", password);
-                        editor.commit();
+                        if (task.isSuccessful()) {
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("email", email);
+                            editor.putString("password", password);
+                            editor.commit();
+                        }
+                                                 // SplashActivity.this, cuz we're in a lambda, and I need to access the outer class.
+                        Intent intent = new Intent (SplashActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                 });
     }

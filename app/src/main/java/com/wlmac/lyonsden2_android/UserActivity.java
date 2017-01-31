@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
+import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
 // TODO: IMPLEMENT CLUB CODE CHECKER
 // TODO: MAKE A LOADING INDICATOR FOR WHEN CHECKING THE CLUB CODE
@@ -50,8 +51,8 @@ public class UserActivity extends AppCompatActivity {
         // Drawer setup
         rootLayout = (DrawerLayout) findViewById(R.id.LDLayout);
         drawerList = (ListView) findViewById(R.id.LDList);
-        drawerToggle = HomeActivity.initializeDrawerToggle(this, rootLayout);
-        HomeActivity.setupDrawer(this, drawerList, rootLayout, drawerToggle);
+        drawerToggle = Retrieve.drawerToggle(this, rootLayout);
+        Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
     }
 
     private void instantiateComponents () {

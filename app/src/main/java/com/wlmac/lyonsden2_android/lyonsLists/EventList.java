@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.wlmac.lyonsden2_android.R;
@@ -38,13 +39,16 @@ public class EventList extends LyonsList {
         adapter = new ExpandableListAdapter(this, content);
         eventList.setAdapter(adapter);
 
-        Retrieve.eventData(FirebaseDatabase.getInstance().getReference("announcements"), content, new Retrieve.ListDataHandler() {
-            @Override
-            public void handle(ArrayList<String[]> listData) {
-                onEventsLoaded();
-            }
-        });
-//        parseForEvents(adapter, content, FirebaseDatabase.getInstance().getReference("announcements"), loadingLabel, loadingCircle);
+        if (Retrieve.isInternetAvailable(this)) {
+            Retrieve.eventData(this, FirebaseDatabase.getInstance().getReference("announcements"), content, new Retrieve.ListDataHandler() {
+                @Override
+                public void handle(ArrayList<String[]> listData) {
+                    onEventsLoaded();
+                }
+            });
+        } else {
+            Toast.makeText(this, "No Internet Available!", Toast.LENGTH_SHORT).show();
+        }
 
         eventList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override

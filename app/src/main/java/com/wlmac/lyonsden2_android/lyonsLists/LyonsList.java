@@ -2,7 +2,6 @@ package com.wlmac.lyonsden2_android.lyonsLists;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,6 +16,7 @@ import android.widget.TextView;
 import com.wlmac.lyonsden2_android.HomeActivity;
 import com.wlmac.lyonsden2_android.R;
 import com.wlmac.lyonsden2_android.otherClasses.LoadingLabel;
+import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
 import java.util.ArrayList;
 
@@ -25,8 +25,6 @@ import java.util.ArrayList;
  */
 
 public class LyonsList extends AppCompatActivity {
-//    protected ArrayList<String>[] content = new ArrayList[]{new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>()};
-
     /** An instance of the root layout of this activity. */
     protected DrawerLayout rootLayout;
     /** An instance of the ListView used in this activity's navigation drawer. */
@@ -47,8 +45,8 @@ public class LyonsList extends AppCompatActivity {
         Log.d("LyonsList", "Initializing Drawer");
         rootLayout = (DrawerLayout) findViewById(R.id.LDLayout);
         drawerList = (ListView) findViewById(R.id.LDList);
-        drawerToggle = HomeActivity.initializeDrawerToggle(this, rootLayout);
-        HomeActivity.setupDrawer(this, drawerList, rootLayout, drawerToggle);
+        drawerToggle = Retrieve.drawerToggle(this, rootLayout);
+        Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
 
         Log.d("LyonsList", "Initializing Loading Components");
         loadingLabel = new LoadingLabel((TextView) findViewById(R.id.LSLoadingLabel), this);

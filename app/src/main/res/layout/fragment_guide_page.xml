@@ -1,0 +1,68 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.wlmac.lyonsden2_android.resourceActivities.GuidePageFragment">
+
+    <!-- First Page Container -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/FGPFirst">
+        
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="185dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/FGPFirstImageView"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/accent"
+            android:textSize="16sp"
+            android:id="@+id/FGPFirstText"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="@color/accent"
+            android:text="@string/Swipe"
+            android:id="@+id/FGPBottomText"/>
+    </RelativeLayout>
+
+    <!-- Main Page Container -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:id="@+id/FGPMain">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="@color/accent"
+            android:id="@+id/FGPMainText"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/FGPMainText"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/FGPMainImageView"/>
+    </RelativeLayout>
+</FrameLayout>

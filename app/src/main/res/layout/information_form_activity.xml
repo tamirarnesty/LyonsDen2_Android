@@ -12,13 +12,14 @@
 
     <!-- Student's Information Form -->
     <LinearLayout
-        android:id="@+id/IFSLayout"
+        android:id="@+id/IFSSLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/IFSSNameLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/IFSName"
@@ -26,13 +27,14 @@
             android:textSize="15sp"
             android:textColor="@color/accent"/>
         <EditText
-            android:id="@+id/IFSName"
+            android:id="@+id/IFSSNameField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="15sp"/>
 
         <TextView
+            android:id="@+id/IFSGradeLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/IFSGrade"
@@ -40,13 +42,13 @@
             android:textSize="15sp"
             android:textColor="@color/accent"/>
         <Spinner
-            android:id="@+id/IFSGrade"
+            android:id="@+id/IFSGradeSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <Button
             style="@style/LyonsButtonStyle"
-            android:id="@+id/IFSCompleteButton"
+            android:id="@+id/IFSSCompleteButton"
             android:layout_gravity="center"
             android:text="@string/IFSCompleteButton"
             android:layout_width="wrap_content"
@@ -55,13 +57,14 @@
 
     <!-- Teacher's Information Form -->
     <LinearLayout
-        android:id="@+id/IFTLayout"
+        android:id="@+id/IFSTLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/IFSTNameLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/IFTName"
@@ -69,13 +72,14 @@
             android:textSize="15sp"
             android:textColor="@color/accent"/>
         <EditText
-            android:id="@+id/IFTName"
+            android:id="@+id/IFSTNameField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textAlignment="center"/>
 
         <TextView
+            android:id="@+id/IFSDepartmentLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/IFTDepartment"
@@ -83,11 +87,12 @@
             android:textAlignment="center"
             android:textColor="@color/accent"/>
         <Spinner
-            android:id="@+id/IFTDepartment"
+            android:id="@+id/IFSDepartmentSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <TextView
+            android:id="@+id/IFSEmailLabel"
             android:layout_width="match_parent"
             android:layout_height="30sp"
             android:text="@string/IFTContactEmail"
@@ -95,7 +100,7 @@
             android:textAlignment="center"
             android:textColor="@color/accent"/>
         <EditText
-            android:id="@+id/IFTEmail"
+            android:id="@+id/IFSEmailField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
@@ -103,12 +108,10 @@
 
         <Button
             style="@style/LyonsButtonStyle"
-            android:id="@+id/IFTCompleteButton"
+            android:id="@+id/IFSTCompleteButton"
             android:layout_gravity="center"
             android:text="@string/IFTCompleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
-
 </RelativeLayout>

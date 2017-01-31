@@ -12,7 +12,7 @@
     <color name="listViewBackground">#EDF7FF</color>
     <color name="listDivider">#607D8B</color>
     <color name="listSectionSeparator">#C2DAED</color>
-
+    <color name="copyrightLabelColor">#7fffffff</color>
 
     <color name="cellDefault">#80022a64</color>
     <color name="cellTodayBorder">#3498DB</color>
