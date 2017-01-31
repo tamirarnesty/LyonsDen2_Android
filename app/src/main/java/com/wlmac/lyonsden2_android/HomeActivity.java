@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.opengl.Visibility;
@@ -48,10 +50,14 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+
+import hirondelle.date4j.DateTime;
 // TODO: IMPLEMENT ANDROID PROGRESS INDICATORS WHERE NEEDED
 
 /**
@@ -87,6 +93,17 @@ public class HomeActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     //containers for courses
     private RelativeLayout [] containers = new RelativeLayout[4];
+
+    //date format
+    SimpleDateFormat timeFormat = new SimpleDateFormat("kk:mm:ss", Locale.CANADA);
+
+    //timetable selection backgrounds
+    Drawable drawableSelect;
+    Drawable drawableBlack;
+    Drawable drawableLeft;
+    Drawable drawableRight;
+    Drawable drawableMostLeft;
+    Drawable drawableMostRight;
 
 
     private String[][] timeTable;
@@ -148,6 +165,8 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+        Thread thread = createThread();
+        thread.start();
     }
     //    private void initializeContent () {
 //        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
@@ -159,12 +178,214 @@ public class HomeActivity extends AppCompatActivity {
 
     public void updatePeriods () {
         timeTable = assembleTimeTable();
-        //Calendar lyonsCalendar = Calendar.getInstance();
-//        Calendar periodOne = Calendar.getInstance().set(lyonsCalendar.YEAR, lyonsCalendar.MONTH, lyonsCalendar.DAY_OF_WEEK, 08, 45);
-//        Calendar periodTwo = Calendar.getInstance().set(lyonsCalendar.YEAR, lyonsCalendar.MONTH, lyonsCalendar.DAY_OF_WEEK, 10, 10);
-//        Calendar periodThree = Calendar.getInstance().set(lyonsCalendar.YEAR, lyonsCalendar.MONTH, lyonsCalendar.DAY_OF_WEEK, 12, 30);
-//        Calendar periodFour = Calendar.getInstance().set(lyonsCalendar.YEAR, lyonsCalendar.MONTH, lyonsCalendar.DAY_OF_WEEK, 13, 50);
+    }
 
+    public Thread createThread() {
+        return new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Date currentDate = new Date();
+                        String timeString = timeFormat.format(currentDate);
+                        final int a = checkTimes(timeString);
+                        long time = returnTime(a);
+                        HomeActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                drawTableTime(a);
+                            }
+                        });
+                        Thread.sleep(time);
+                    } catch (Exception e) {}
+                }
+            }
+        });
+    }
+
+    private int checkTimes(String time) {
+        if (time.compareTo("00:00:00") > 0 && time.compareTo("08:44:59") < 0) {
+            return 0;
+        } else if (time.compareTo("08:45:00") > 0 && time.compareTo("10:05:00") < 0) {
+            return 1;
+        } else if (time.compareTo("10:05:01") > 0 && time.compareTo("10:09:59") < 0) {
+            return 2;
+        } else if (time.compareTo("10:10:00") > 0 && time.compareTo("11:30:00") < 0) {
+            return 3;
+        } else if (time.compareTo("11:30:01") > 0 && time.compareTo("12:29:59") < 0) {
+            return 4;
+        } else if (time.compareTo("12:30:00") > 0 && time.compareTo("13:45:00") < 0) {
+            return 5;
+        } else if (time.compareTo("13:45:01") > 0 && time.compareTo("13:49:59") < 0) {
+            return 6;
+        } else if (time.compareTo("13:50:00") > 0 && time.compareTo("15:05:00") < 0) {
+            return 7;
+        } else {
+            Log.d("Something -", "" + time.compareTo("13:50:00"));
+            return 8;
+        }
+    }
+
+    private long returnTime(int i) {
+        Calendar c = Calendar.getInstance();
+        long now = c.getTimeInMillis();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        long currentTime = now - c.getTimeInMillis();
+        long returnValue = 0;
+        switch (i) {
+            case 0:
+                returnValue = 31499999 - currentTime;
+                break;
+            case 1:
+                returnValue = 36300000 - currentTime;
+                break;
+            case 2:
+                returnValue = 36599999 - currentTime;
+                break;
+            case 3:
+                returnValue = 41400000 - currentTime;
+                break;
+            case 4:
+                returnValue = 45098999 - currentTime;
+                break;
+            case 5:
+                returnValue = 49500000 - currentTime;
+                break;
+            case 6:
+                returnValue = 49799999 - currentTime;
+                break;
+            case 7:
+                returnValue = 54300000 - currentTime;
+                break;
+            case 8:
+                returnValue = 86399999 - currentTime;
+                break;
+        }
+        return returnValue;
+    }
+
+    private int checkLateStartTimes(String time) {
+        if (time.compareTo("00:00:00") > 0 && time.compareTo("09:59:59") < 0) {
+            return 0;
+        } else if (time.compareTo("10:00:00") > 0 && time.compareTo("11:05:00") < 0) {
+            return 1;
+        } else if (time.compareTo("11:05:01") > 0 && time.compareTo("11:09:59") < 0) {
+            return 2;
+        } else if (time.compareTo("11:10:00") > 0 && time.compareTo("12:10:00") < 0) {
+            return 3;
+        } else if (time.compareTo("12:10:01") > 0 && time.compareTo("12:59:59") < 0) {
+            return 4;
+        } else if (time.compareTo("13:00:00") > 0 && time.compareTo("13:55:00") < 0) {
+            return 5;
+        } else if (time.compareTo("13:55:01") > 0 && time.compareTo("13:59:59") < 0) {
+            return 6;
+        } else if (time.compareTo("14:00:00") > 0 && time.compareTo("15:05:00") < 0) {
+            return 7;
+        } else
+            return 8;
+    }
+
+    private long returnLateStartTime(int i) {
+        Calendar c = Calendar.getInstance();
+        long now = c.getTimeInMillis();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        long currentTime = now - c.getTimeInMillis();
+        long returnValue = 0;
+        switch (i) {
+            case 0:
+                returnValue = 35999999 - currentTime;
+                break;
+            case 1:
+                returnValue = 39900000 - currentTime;
+                break;
+            case 2:
+                returnValue = 40199999 - currentTime;
+                break;
+            case 3:
+                returnValue = 43800000 - currentTime;
+                break;
+            case 4:
+                returnValue = 46898999 - currentTime;
+                break;
+            case 5:
+                returnValue = 50100000 - currentTime;
+                break;
+            case 6:
+                returnValue = 50399999 - currentTime;
+                break;
+            case 7:
+                returnValue = 54300000 - currentTime;
+                break;
+            case 8:
+                returnValue = 86399999 - currentTime;
+                break;
+        }
+        return returnValue;
+    }
+
+    private void drawTableTime(int time) {
+        switch (time) {
+            case 0:
+                containers[0].setBackgroundDrawable(drawableMostLeft);
+                containers[1].setBackgroundDrawable(drawableBlack);
+                containers[2].setBackgroundDrawable(drawableBlack);
+                containers[3].setBackgroundDrawable(drawableBlack);
+                break;
+            case 1:
+                containers[0].setBackgroundDrawable(drawableSelect);
+                containers[1].setBackgroundDrawable(drawableBlack);
+                containers[2].setBackgroundDrawable(drawableBlack);
+                containers[3].setBackgroundDrawable(drawableBlack);
+                break;
+            case 2:
+                containers[0].setBackgroundDrawable(drawableRight);
+                containers[1].setBackgroundDrawable(drawableLeft);
+                containers[2].setBackgroundDrawable(drawableBlack);
+                containers[3].setBackgroundDrawable(drawableBlack);
+                break;
+            case 3:
+                containers[0].setBackgroundDrawable(drawableBlack);
+                containers[1].setBackgroundDrawable(drawableSelect);
+                containers[2].setBackgroundDrawable(drawableBlack);
+                containers[3].setBackgroundDrawable(drawableBlack);
+                break;
+            case 4:
+                containers[0].setBackgroundDrawable(drawableBlack);
+                containers[1].setBackgroundDrawable(drawableRight);
+                containers[2].setBackgroundDrawable(drawableLeft);
+                containers[3].setBackgroundDrawable(drawableBlack);
+                break;
+            case 5:
+                containers[0].setBackgroundDrawable(drawableBlack);
+                containers[1].setBackgroundDrawable(drawableBlack);
+                containers[2].setBackgroundDrawable(drawableSelect);
+                containers[3].setBackgroundDrawable(drawableBlack);
+                break;
+            case 6:
+                containers[0].setBackgroundDrawable(drawableBlack);
+                containers[1].setBackgroundDrawable(drawableBlack);
+                containers[2].setBackgroundDrawable(drawableRight);
+                containers[3].setBackgroundDrawable(drawableLeft);
+                break;
+            case 7:
+                containers[0].setBackgroundDrawable(drawableBlack);
+                containers[1].setBackgroundDrawable(drawableBlack);
+                containers[2].setBackgroundDrawable(drawableBlack);
+                containers[3].setBackgroundDrawable(drawableSelect);
+                break;
+            case 8:
+                containers[0].setBackgroundDrawable(drawableBlack);
+                containers[1].setBackgroundDrawable(drawableBlack);
+                containers[2].setBackgroundDrawable(drawableBlack);
+                containers[3].setBackgroundDrawable(drawableMostRight);
+                break;
+        }
     }
 
     /**
@@ -273,6 +494,18 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
         }
+        drawableSelect = getResources().getDrawable(R.drawable.time_table_backgroud);
+        drawableBlack = getResources().getDrawable(R.drawable.time_table_backgroud);
+        drawableLeft = getResources().getDrawable(R.drawable.time_table_backgroud);
+        drawableRight = getResources().getDrawable(R.drawable.time_table_backgroud);
+        drawableMostLeft = getResources().getDrawable(R.drawable.time_table_backgroud);
+        drawableMostRight = getResources().getDrawable(R.drawable.time_table_backgroud);
+        drawableSelect.setLevel(0);
+        drawableBlack.setLevel(1);
+        drawableLeft.setLevel(2);
+        drawableRight.setLevel(3);
+        drawableMostLeft.setLevel(4);
+        drawableMostRight.setLevel(5);
     }
 
     // You will probably want to change this to set the time table to whatever it retrieved from permanent storage
