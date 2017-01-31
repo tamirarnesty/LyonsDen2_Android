@@ -50,7 +50,7 @@ import java.util.concurrent.ExecutionException;
  * Created by sketch204 on 2016-11-15.
  */
 
-public class Retrieve {
+public class Retrieve { 
 
     public static void eventData (final Context context, DatabaseReference ref, final ArrayList<String[]> target, final ListDataHandler handler) {
         Log.d("Event Parser", "Commencing Parse!");
