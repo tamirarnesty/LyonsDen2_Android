@@ -1,64 +1,38 @@
 package com.wlmac.lyonsden2_android;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.opengl.Visibility;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.FirebaseDatabase;
 import com.wlmac.lyonsden2_android.lyonsLists.ClubList;
 import com.wlmac.lyonsden2_android.lyonsLists.EventList;
 import com.wlmac.lyonsden2_android.otherClasses.CourseDialog;
-import com.wlmac.lyonsden2_android.otherClasses.ObservableScrollView;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
-import com.wlmac.lyonsden2_android.resourceActivities.CourseActvity;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import hirondelle.date4j.DateTime;
-// TODO: IMPLEMENT ANDROID PROGRESS INDICATORS WHERE NEEDED
 
 /**
  * The activity that will be used to display the home screen. The home screen consists of a label for
@@ -106,6 +80,12 @@ public class HomeActivity extends AppCompatActivity {
     Drawable drawableMostRight;
 
 
+    private String[] normalDay;
+    private String[] lateDay;
+    private long[] normalTime;
+    private long[] lateTime;
+
+
     private String[][] timeTable;
 
 
@@ -117,18 +97,19 @@ public class HomeActivity extends AppCompatActivity {
         // Declare the associated xml layout file
         setContentView(R.layout.home_activity);
 
-//        initializeContent();
+        // Declare time stamps for all periods in dedicated arrays
+        initializeTimeStamps();
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         // Instantiate all UI components
         initializeComponents();
         initializeTimeTable();
+
         updatePeriods();
 
         final Handler periodUpdater = new Handler();
         periodUpdater.postDelayed(new Runnable(){
-
             @Override
             public void run() {
                 updatePeriods();
@@ -168,13 +149,22 @@ public class HomeActivity extends AppCompatActivity {
         Thread thread = createThread();
         thread.start();
     }
-    //    private void initializeContent () {
-//        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-//        recyclerView.setLayoutManager(manager);
-//
-//
-//    }
+
+    /*private void initializeContent () {
+        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(manager);
+    }*/
+
+    private void initializeTimeStamps() {
+        normalDay = new String[]{"00:00:00", "08:44:59", "08:45:00", "10:05:00", "10:05:01", "10:09:59", "10:10:00", "11:30:00", "11:30:01",
+                "12:29:59", "12:30:00", "13:45:00", "13:45:01", "13:49:59", "13:50:00", "15:05:00"};
+        lateDay = new String[]{"00:00:00", "09:59:59", "10:00:00", "11:05:00", "11:05:01", "11:09:59", "11:10:00", "12:10:00", "12:10:01",
+                "12:59:59", "13:00:00", "13:55:00", "13:55:01", "13:59:59", "14:00:00", "15:05:00"};
+
+        normalTime = new long[]{31499999, 36300000, 36599999, 41400000, 45098999, 49500000, 49799999, 54300000, 86399999};
+        lateTime = new long[]{35999999, 39900000, 40199999, 43800000, 46898999, 50100000, 50399999, 54300000, 86399999};
+    }
 
     public void updatePeriods () {
         timeTable = assembleTimeTable();
@@ -188,12 +178,21 @@ public class HomeActivity extends AppCompatActivity {
                     try {
                         Date currentDate = new Date();
                         String timeString = timeFormat.format(currentDate);
-                        final int a = checkTimes(timeString);
-                        long time = returnTime(a);
+                        boolean temp = true;
+                        int placeHolder;
+                        long time;
+                        if (temp) {
+                            placeHolder = checkTimes(timeString, normalDay);
+                            time = returnTime(placeHolder, normalTime);
+                        } else {
+                            placeHolder = checkTimes(timeString, lateDay);
+                            time = returnTime(placeHolder, lateTime);
+                        }
+                        final int timeNumber = placeHolder;
                         HomeActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                drawTableTime(a);
+                                drawTableTime(timeNumber);
                             }
                         });
                         Thread.sleep(time);
@@ -203,30 +202,29 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private int checkTimes(String time) {
-        if (time.compareTo("00:00:00") > 0 && time.compareTo("08:44:59") < 0) {
+    private int checkTimes(String time, String[] array) {
+        if (time.compareTo(array[0]) > 0 && time.compareTo(array[1]) < 0) {
             return 0;
-        } else if (time.compareTo("08:45:00") > 0 && time.compareTo("10:05:00") < 0) {
+        } else if (time.compareTo(array[2]) > 0 && time.compareTo(array[3]) < 0) {
             return 1;
-        } else if (time.compareTo("10:05:01") > 0 && time.compareTo("10:09:59") < 0) {
+        } else if (time.compareTo(array[4]) > 0 && time.compareTo(array[5]) < 0) {
             return 2;
-        } else if (time.compareTo("10:10:00") > 0 && time.compareTo("11:30:00") < 0) {
+        } else if (time.compareTo(array[6]) > 0 && time.compareTo(array[7]) < 0) {
             return 3;
-        } else if (time.compareTo("11:30:01") > 0 && time.compareTo("12:29:59") < 0) {
+        } else if (time.compareTo(array[8]) > 0 && time.compareTo(array[9]) < 0) {
             return 4;
-        } else if (time.compareTo("12:30:00") > 0 && time.compareTo("13:45:00") < 0) {
+        } else if (time.compareTo(array[9]) > 0 && time.compareTo(array[11]) < 0) {
             return 5;
-        } else if (time.compareTo("13:45:01") > 0 && time.compareTo("13:49:59") < 0) {
+        } else if (time.compareTo(array[12]) > 0 && time.compareTo(array[13]) < 0) {
             return 6;
-        } else if (time.compareTo("13:50:00") > 0 && time.compareTo("15:05:00") < 0) {
+        } else if (time.compareTo(array[14]) > 0 && time.compareTo(array[15]) < 0) {
             return 7;
         } else {
-            Log.d("Something -", "" + time.compareTo("13:50:00"));
             return 8;
         }
     }
 
-    private long returnTime(int i) {
+    private long returnTime(int i, long[] array) {
         Calendar c = Calendar.getInstance();
         long now = c.getTimeInMillis();
         c.set(Calendar.HOUR_OF_DAY, 0);
@@ -237,93 +235,31 @@ public class HomeActivity extends AppCompatActivity {
         long returnValue = 0;
         switch (i) {
             case 0:
-                returnValue = 31499999 - currentTime;
+                returnValue = array[0] - currentTime;
                 break;
             case 1:
-                returnValue = 36300000 - currentTime;
+                returnValue = array[1] - currentTime;
                 break;
             case 2:
-                returnValue = 36599999 - currentTime;
+                returnValue = array[2] - currentTime;
                 break;
             case 3:
-                returnValue = 41400000 - currentTime;
+                returnValue = array[3] - currentTime;
                 break;
             case 4:
-                returnValue = 45098999 - currentTime;
+                returnValue = array[4] - currentTime;
                 break;
             case 5:
-                returnValue = 49500000 - currentTime;
+                returnValue = array[5] - currentTime;
                 break;
             case 6:
-                returnValue = 49799999 - currentTime;
+                returnValue = array[6] - currentTime;
                 break;
             case 7:
-                returnValue = 54300000 - currentTime;
+                returnValue = array[7] - currentTime;
                 break;
             case 8:
-                returnValue = 86399999 - currentTime;
-                break;
-        }
-        return returnValue;
-    }
-
-    private int checkLateStartTimes(String time) {
-        if (time.compareTo("00:00:00") > 0 && time.compareTo("09:59:59") < 0) {
-            return 0;
-        } else if (time.compareTo("10:00:00") > 0 && time.compareTo("11:05:00") < 0) {
-            return 1;
-        } else if (time.compareTo("11:05:01") > 0 && time.compareTo("11:09:59") < 0) {
-            return 2;
-        } else if (time.compareTo("11:10:00") > 0 && time.compareTo("12:10:00") < 0) {
-            return 3;
-        } else if (time.compareTo("12:10:01") > 0 && time.compareTo("12:59:59") < 0) {
-            return 4;
-        } else if (time.compareTo("13:00:00") > 0 && time.compareTo("13:55:00") < 0) {
-            return 5;
-        } else if (time.compareTo("13:55:01") > 0 && time.compareTo("13:59:59") < 0) {
-            return 6;
-        } else if (time.compareTo("14:00:00") > 0 && time.compareTo("15:05:00") < 0) {
-            return 7;
-        } else
-            return 8;
-    }
-
-    private long returnLateStartTime(int i) {
-        Calendar c = Calendar.getInstance();
-        long now = c.getTimeInMillis();
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        long currentTime = now - c.getTimeInMillis();
-        long returnValue = 0;
-        switch (i) {
-            case 0:
-                returnValue = 35999999 - currentTime;
-                break;
-            case 1:
-                returnValue = 39900000 - currentTime;
-                break;
-            case 2:
-                returnValue = 40199999 - currentTime;
-                break;
-            case 3:
-                returnValue = 43800000 - currentTime;
-                break;
-            case 4:
-                returnValue = 46898999 - currentTime;
-                break;
-            case 5:
-                returnValue = 50100000 - currentTime;
-                break;
-            case 6:
-                returnValue = 50399999 - currentTime;
-                break;
-            case 7:
-                returnValue = 54300000 - currentTime;
-                break;
-            case 8:
-                returnValue = 86399999 - currentTime;
+                returnValue = array[8] - currentTime;
                 break;
         }
         return returnValue;
