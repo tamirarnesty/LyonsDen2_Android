@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,9 +24,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.FirebaseDatabase;
 import com.wlmac.lyonsden2_android.lyonsLists.ClubList;
 import com.wlmac.lyonsden2_android.lyonsLists.EventList;
+import com.wlmac.lyonsden2_android.lyonsLists.ListAdapter;
 import com.wlmac.lyonsden2_android.otherClasses.CourseDialog;
+import com.wlmac.lyonsden2_android.otherClasses.LyonsCalendar;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
 import java.text.SimpleDateFormat;
@@ -117,11 +121,18 @@ public class HomeActivity extends AppCompatActivity {
         }, 60000);
         setupDrawer(this, drawerList, rootLayout, drawerToggle);
 
+        Thread thread = createThread();
+        thread.start();
+
         // Resize the announcement ListView to fit the screen. DOES NOT WORK ATM!!!
         listView.setMinimumHeight(Retrieve.screenSize(this).y);
         // Set the custom font of the TextLabels
         dayLabel.setTypeface(Retrieve.typeface(this));
         todayIsDay.setTypeface(Retrieve.typeface(this));
+
+        String day = Retrieve.dayFromDictionary(getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyDayDictionary, ""), new Date());
+        boolean isLateStart = Retrieve.la(getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyLateStartDictionary, ""), new Date());
+        dayLabel.setText(day);
 
         // TEMPORARY!!!
         for (int h = 0; h < 50; h++) {
@@ -130,8 +141,21 @@ public class HomeActivity extends AppCompatActivity {
         // Declare and set the ArrayAdapter for filling the ListView with content
         //          Type of content                      |Source|Type of ListView layout            | Data source array
         //                                               |Object|                                   |
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, announcements);
+        ArrayList<String[]> targetList = new ArrayList<>();
+        final ListAdapter adapter = new ListAdapter(this, targetList, false, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         listView.setAdapter(adapter);
+
+        Retrieve.eventData(FirebaseDatabase.getInstance().getReference("announcements"), targetList, new Retrieve.ListDataHandler() {
+            @Override
+            public void handle(ArrayList<String[]> listData) {
+                adapter.notifyDataSetChanged();
+            }
+        });
 
 
         // Declare a listener for whenever an item has been clicked in the ListVew
@@ -146,8 +170,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
-        Thread thread = createThread();
-        thread.start();
     }
 
     /*private void initializeContent () {
