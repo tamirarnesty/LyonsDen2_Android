@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.wlmac.lyonsden2_android.HomeActivity;
+import com.wlmac.lyonsden2_android.R;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -31,7 +33,7 @@ public class WebCalendar extends IntentService {
     /** An action definition for downloading and loading the calendar while also creating a Day Dictionary Cache. */
     public static final String actionDownloadWithCache = "downloadWithDayDictionaryCaching";
     /** An action definition for downloading the calendar and create a Day Dictionary Cache out of it. */
-    public static final String actionDayCacheOnly = "downloadForDayDictionaryCacheOnly";
+    public static final String actionCacheOnly = "downloadForDayDictionaryCacheOnly";
     /** An action definition for loading the last saved instance of the calendar. */
     public static final String actionLoadOffline = "loadOfflineCalendar";
 
@@ -80,20 +82,24 @@ public class WebCalendar extends IntentService {
                         numberOfAttempts++;
                         onHandleIntent(intent);     // Will perform a recursive call to self and hopefully
                         return;                     // Return from all of the 'caller' instances
-                    }                               // Haven't actually tested this, but the theory checks out
+                    } else {                        // Haven't actually tested this, but the theory checks out
+                        Toast.makeText(getApplicationContext(), "Connection Lost!\nError #" + getResources().getInteger(R.integer.ConnectionAttemptsAmountExceeded), Toast.LENGTH_LONG).show();
+                        return;
+                    }
                 }
-            } catch (Exception e) {
+            } catch (IOException e) {
+                Toast.makeText(getApplicationContext(), "Failed to Connect to Servers!\nError #" + getResources().getInteger(R.integer.FailedToOpenConnection), Toast.LENGTH_LONG).show();
                 Log.i("WebCalendar", "Calendar Download Failed!");
                 Log.i("WebCalendar", e.toString());
             }
-            Log.i("WebCalendar", "Recording of Data Success!");
+            Log.i("WebCalendar", "Download of Data Success!");
 
             // Perform the necessary operations based on the necessary actions
             if (targetCalendar != null && intent.getAction().equals(actionDownload))                // Action 1
                 targetCalendar.loadEvents(targetCalendar.parseCalendar(webData, null));
             else if (targetCalendar != null && intent.getAction().equals(actionDownloadWithCache))  // Action 2
                 targetCalendar.loadEvents(targetCalendar.parseCalendar(webData, this));
-            else if (targetCalendar != null && intent.getAction().equals(actionDayCacheOnly))       // Action 3
+            else if (targetCalendar != null && intent.getAction().equals(actionCacheOnly))       // Action 3
                 targetCalendar.parseCalendar(webData, this);
 
             // Cache the calendar file

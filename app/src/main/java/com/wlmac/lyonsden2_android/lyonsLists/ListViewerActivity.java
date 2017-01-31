@@ -13,12 +13,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wlmac.lyonsden2_android.R;
 import com.wlmac.lyonsden2_android.otherClasses.LoadingLabel;
+import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 import com.wlmac.lyonsden2_android.resourceActivities.TextViewerActivity;
 
@@ -73,8 +75,9 @@ public class ListViewerActivity extends AppCompatActivity {
             parseForTeachers();
 
             // Initialize the list
-            adapter = new SectionedListAdapter(this, content, departments, new ArrayList<String[]>());
+            adapter = new SectionedListAdapter(this, content, departments, new ArrayList<String[]>(), createTeacherOnClick());
             list.setAdapter(adapter);
+            list.setAlpha(0);
         } else {
             findViewById(R.id.LVSLoadingWheel).setVisibility(View.GONE);
             final ArrayList<String> content = new ArrayList<>();
@@ -105,12 +108,52 @@ public class ListViewerActivity extends AppCompatActivity {
 
     }
 
+    private View.OnClickListener createTeacherOnClick () {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(final View teacher) {
+                final LyonsAlert alertDialog = new LyonsAlert();
+                alertDialog.setTitle("Contact Teacher");
+                alertDialog.setSubtitle("Are you sure you want to email this teacher right now?");
+                alertDialog.configureLeftButton("No", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog.configureRightButton("Yes", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View button) {
+                        alertDialog.dismiss();
+                        String[] teacherInfo = adapter.getItem((Integer) teacher.getTag());
+                        if (teacherInfo == null || teacherInfo.length < 2) {
+                            Toast.makeText(getApplicationContext(), "Another Error Occurred!\nError #" + getResources().getInteger(R.integer.TeacherInfoRetrievalFailure), Toast.LENGTH_LONG).show();
+                        }
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("message/rfc822");
+                        intent.putExtra(Intent.EXTRA_EMAIL, teacherInfo[2]);
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "A question from " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                        intent.putExtra(Intent.EXTRA_TEXT, "Dear " + teacherInfo[0] + ",\n");
+                        try {
+                            startActivity(Intent.createChooser(intent, "Send mail..."));
+                        } catch (android.content.ActivityNotFoundException ex) {
+                            Toast.makeText(getApplicationContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                alertDialog.hideInput();
+                alertDialog.show(getSupportFragmentManager(), "TeacherEmailApprovalDialog");
+            }
+        };
+    }
+
     /** Called when the teacher list has been loaded. Hides loading labels and updates the list. */
     private void onTeachersLoaded () {
         Log.d("List Viewer", "Web Content Loaded!");
         adapter.notifyDataSetChanged();
+        list.animate().setDuration(300).alpha(1);
         loadingLabel.dismiss();
-        loadingCircle.setVisibility(View.GONE);
+        loadingCircle.animate().setDuration(300).alpha(0);
     }
 
     /**
@@ -136,8 +179,6 @@ public class ListViewerActivity extends AppCompatActivity {
      * and populates the content ArrayList using populateContent(ArrayList<String[]> unsorted) method.
      * This method checks for internet availability as well as database directory existance and will show
      * appropriate errors.
-     *
-     * @throws DatabaseError Thrown if the download operation was cancelled.
      */
     private void parseForTeachers () {
         if (Retrieve.isInternetAvailable(this)) {   // Check internet availability
@@ -156,7 +197,9 @@ public class ListViewerActivity extends AppCompatActivity {
                         onTeachersLoaded();
                     } else {
                         Log.d("Teacher List Retriever", "The database entry does not exist!");
-                        Toast.makeText(ListViewerActivity.this, "Another Error Occurred!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ListViewerActivity.this,
+                                      "Another Error Occurred!\n Error #" + getResources().getInteger(R.integer.DatabaseDirectoryNonExistent),
+                                      Toast.LENGTH_LONG).show();
                         onTeachersLoaded();
                     }
                 }
@@ -164,7 +207,10 @@ public class ListViewerActivity extends AppCompatActivity {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     Log.d("Teacher List Retriever", "There has been an error!");
-                    throw databaseError.toException();
+                    Toast.makeText(ListViewerActivity.this,
+                                   "Another Error Occurred!\n Error #" + getResources().getInteger(R.integer.DatabaseOperationCancelled),
+                                   Toast.LENGTH_LONG).show();
+                    onTeachersLoaded();
                 }
             });
         } else {

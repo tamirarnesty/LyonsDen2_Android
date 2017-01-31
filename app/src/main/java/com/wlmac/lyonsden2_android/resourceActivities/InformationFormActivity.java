@@ -1,11 +1,11 @@
 package com.wlmac.lyonsden2_android.resourceActivities;
 
-import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.wlmac.lyonsden2_android.R;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
@@ -21,18 +21,27 @@ public class InformationFormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.information_form_activity);
 
+        instantiateComponents();
+        setFonts();
+    }
+
+    private void instantiateComponents () {
         //Student Information View Layout
-        IFSName = (EditText) findViewById(R.id.IFSName);
-        IFSGrade = (Spinner) findViewById(R.id.IFSGrade);
-        IFSCompleteButton = (Button) findViewById(R.id.IFSCompleteButton);
-        IFSCompleteButton.setTypeface(Retrieve.typeface(this));
+        IFSName = (EditText) findViewById(R.id.IFSSNameField);
+        IFSGrade = (Spinner) findViewById(R.id.IFSGradeSpinner);
+        IFSCompleteButton = (Button) findViewById(R.id.IFSSCompleteButton);
 
         //Teacher Information View Layout
-        IFTName = (EditText) findViewById(R.id.IFTName);
-        IFTDepartment = (Spinner) findViewById(R.id.IFTDepartment);
-        IFTEmail = (EditText) findViewById(R.id.IFTEmail);
-        IFTCompleteButton = (Button) findViewById(R.id.IFTCompleteButton);
-        IFTCompleteButton.setTypeface(Retrieve.typeface(this));
+        IFTName = (EditText) findViewById(R.id.IFSTNameField);
+        IFTDepartment = (Spinner) findViewById(R.id.IFSDepartmentSpinner);
+        IFTEmail = (EditText) findViewById(R.id.IFSEmailField);
+        IFTCompleteButton = (Button) findViewById(R.id.IFSTCompleteButton);
+    }
 
+    private void setFonts () {
+        int[] components ={R.id.IFSSNameLabel, R.id.IFSSNameField, R.id.IFSGradeLabel, R.id.IFSSCompleteButton, R.id.IFSTNameLabel, R.id.IFSTNameField, R.id.IFSDepartmentLabel, R.id.IFSEmailLabel, R.id.IFSEmailField, R.id.IFSTCompleteButton};
+        for (int h = 0; h < components.length; h ++)
+            ((TextView) findViewById(components[h])).setTypeface(Retrieve.typeface(this));
+        // TODO: Set Spinner typeface
     }
 }

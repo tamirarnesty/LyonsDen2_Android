@@ -29,7 +29,7 @@
             android:maxLines="2"
             android:gravity="start"
             android:textColor="@color/accent"
-            android:textSize="@dimen/textSizeTitle"
+            android:textSize="@dimen/textSize24Title"
             android:id="@+id/ISTitleLabel"/>
 
         <TextView
@@ -40,7 +40,7 @@
             android:layout_margin="16dp"
             android:layout_marginBottom="0dp"
             android:textColor="@color/accent"
-            android:textSize="@dimen/textSizeSubtitle"
+            android:textSize="@dimen/textSize20Subtitle"
             android:id="@+id/ISDescriptionLabel"/>
 
         <LinearLayout
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/accent"
-                android:textSize="@dimen/textSizeDetails"
+                android:textSize="@dimen/textSize14Details"
                 android:id="@+id/ISDateLabel"/>
 
             <TextView
@@ -66,7 +66,7 @@
                 android:layout_marginStart="8dp"
                 android:gravity="right|end"
                 android:textColor="@color/accent"
-                android:textSize="@dimen/textSizeDetails"
+                android:textSize="@dimen/textSize14Details"
                 android:id="@+id/ISLocationLabel"/>
         </LinearLayout>
     </LinearLayout>

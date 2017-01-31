@@ -78,12 +78,14 @@ public class ClubActivity extends AppCompatActivity {
         });
 
         checkUserForLeadership();
+
+        setFonts();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Retrieve.eventData(clubRef.child("announcements"), content, new Retrieve.ListDataHandler() {
+        Retrieve.eventData(this, clubRef.child("announcements"), content, new Retrieve.ListDataHandler() {
             @Override
             public void handle(ArrayList<String[]> listData) {
                 onEventsLoaded();
@@ -113,6 +115,12 @@ public class ClubActivity extends AppCompatActivity {
         infoField = (EditText) findViewById(R.id.ClubSDescriptionField);
     }
 
+    private void setFonts() {
+        int[] components = {R.id.ClubSTitleLabel, R.id.ClubSTitleField, R.id.ClubSDescriptionLabel, R.id.ClubSDescriptionField, R.id.ClubSLeaderList};
+        for (int h = 0; h < components.length; h ++)
+            ((TextView) findViewById(components[h])).setTypeface(Retrieve.typeface(this));
+    }
+
     private void onEventsLoaded () {
         adapter.notifyDataSetChanged();
     }
@@ -134,12 +142,16 @@ public class ClubActivity extends AppCompatActivity {
                         invalidateOptionsMenu();
                         Log.d("Club Activity", "User is not the club leader");
                     }
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Another Error Occurred!\n Error #" + getResources().getInteger(R.integer.DatabaseOperationCancelled),
+                            Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Toast.makeText(getApplicationContext(), "Another Error Occurred!\n Error #" + getResources().getInteger(R.integer.DatabaseOperationCancelled), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -154,14 +166,14 @@ public class ClubActivity extends AppCompatActivity {
         ((LinearLayout) findViewById(R.id.ClubSEditBox)).setVisibility(editVisibility);
 
         if (!editing && (!titleView.getText().toString().equals(titleField.getText().toString()) || !infoView.getText().toString().equals(infoField.getText().toString()))) {
-            promtUserForApproval();
+            promptUserForApproval();
         } else {
             titleField.setText(titleView.getText());
             infoField.setText(infoView.getText());
         }
     }
 
-    private void promtUserForApproval () {
+    private void promptUserForApproval() {
         final LyonsAlert alertDialog = new LyonsAlert();
         alertDialog.setTitle("Teacher Approval");
         alertDialog.setSubtitle("Please ask a teacher to approve your changes!");
@@ -175,7 +187,7 @@ public class ClubActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (Retrieve.isInternetAvailable(ClubActivity.this)) {
-                    Retrieve.teacherApproval(alertDialog.getInputText(), new Retrieve.StatusHandler() {
+                    Retrieve.teacherApproval(ClubActivity.this, alertDialog.getInputText(), new Retrieve.StatusHandler() {
                         @Override
                         public void handle(boolean status) {
                             if (status) {
@@ -219,7 +231,6 @@ public class ClubActivity extends AppCompatActivity {
     private void proposeAnnouncement () {
         Intent intent = new Intent(this, AnnouncementActivity.class);
         intent.putExtra("clubKey", clubRef.getKey());
-//        intent.putExtra("initiator")
         startActivity(intent);
     }
 

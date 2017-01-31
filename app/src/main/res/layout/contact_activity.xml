@@ -71,7 +71,8 @@
             android:layout_marginEnd="40dp"
             android:layout_below="@+id/CSRadioButton"
             android:onClick="emergency"
-            android:text="@string/CSEmergencyButton" />
+            android:text="@string/CSEmergencyButton"
+            android:id="@+id/CSEmergencyButton"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -85,7 +86,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:onClick="reportBug"
-                android:text="@string/CSReport" />
+                android:text="@string/CSReport"
+                android:id="@+id/CSReportButton" />
 
             <!-- Help Button -->
             <Button
@@ -93,7 +95,8 @@
                 android:layout_centerHorizontal="true"
                 android:tag="2"
                 android:onClick="displayList"
-                android:text="@string/CSHelp" />
+                android:text="@string/CSHelp"
+                android:id="@+id/CSHelpButton" />
 
             <!-- Licences Button -->
             <Button
@@ -102,7 +105,8 @@
                 android:layout_alignParentStart="true"
                 android:tag="1"
                 android:onClick="displayList"
-                android:text="@string/CSLicence" />
+                android:text="@string/CSLicence"
+                android:id="@+id/CSLicencesButton" />
         </RelativeLayout>
 
         <Button

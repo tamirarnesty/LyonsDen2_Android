@@ -48,6 +48,7 @@ public class LyonsCalendar extends CaldroidFragment {
     /** States whether this calendar is offline. */
     private boolean isOffline = false;
 
+
     /**
      * Loads the events into the calendar.
      * @param events The events to be loaded.
@@ -103,8 +104,7 @@ public class LyonsCalendar extends CaldroidFragment {
                 drawable = ((CalendarActivity)getActivity()).getResources().getDrawable(R.drawable.calendar_cell);
             } else {
                 drawable = getResources().getDrawable(R.drawable.calendar_cell);
-                Toast.makeText(getContext(), "A UI Error Occurred!", Toast.LENGTH_SHORT).show();
-//                return;
+                Toast.makeText(getContext(), "A UI Error Occurred!\nError #" + getResources().getInteger(R.integer.DrawableCreationFailure), Toast.LENGTH_LONG).show();
             }
 
             // If date is today
@@ -177,6 +177,7 @@ public class LyonsCalendar extends CaldroidFragment {
         ArrayList<Event> events = new ArrayList<>();
 
         String dayDictionary = (initiator != null) ? "" : null;
+        String lateStartDictionary = (initiator != null) ? "" : null;
 
         // An array of search flags, used for finding the proper event information
         // [h][0] - start flag, [h][1] - end flag
@@ -232,20 +233,23 @@ public class LyonsCalendar extends CaldroidFragment {
             Event curEvent = new Event();
 
             // Repeats once for every event field
-            for (int h = 0; h < searchFlag.length; h ++) {
+            for (int h = 0; h < searchFlag.length; h++) {
                 // Find the beginning index of the current field's data
                 curIndexFlag = rawCalendarData.indexOf(searchFlag[h][0]) + (searchFlag[h][0].length());
                 // Pass the current field's data to the appropriate setter method (Gotten from the eventField array)
                 eventField[h].assign(rawCalendarData.substring(curIndexFlag, rawCalendarData.indexOf(searchFlag[h][1], curIndexFlag)), curEvent);
 
             }
+
+            if (curEvent.getTitle().equalsIgnoreCase("LATE START") && lateStartDictionary != null) {
+                lateStartDictionary += "" + convertToKey(curEvent.getStartDate()).toString() + ";\n";
+            }
+
             // Once all event fields have been filled
             // Add the created event to the event bank
-            if ((curEvent.getTitle().equalsIgnoreCase("DAY 1") || curEvent.getTitle().equalsIgnoreCase("DAY 2"))) {
-                if (dayDictionary != null)
-                    dayDictionary += "" + convertToKey(curEvent.getStartDate()).toString() + ":" + curEvent.getTitle().charAt(curEvent.getTitle().length() - 1) + ";";
+            if ((curEvent.getTitle().equalsIgnoreCase("DAY 1") || curEvent.getTitle().equalsIgnoreCase("DAY 2")) && dayDictionary != null) {
+                dayDictionary += "" + convertToKey(curEvent.getStartDate()).toString() + ":" + curEvent.getTitle().charAt(curEvent.getTitle().length() - 1) + ";\n";
             } else {
-                Log.d("Calendar Parser", "Adding event with title" + curEvent.getTitle());
                 events.add(curEvent);
             }
         } while (rawCalendarData.contains("BEGIN:VEVENT"));
@@ -255,6 +259,7 @@ public class LyonsCalendar extends CaldroidFragment {
         if (dayDictionary != null) {
             SharedPreferences.Editor editor = initiator.getSharedPreferences(HomeActivity.sharedPreferencesName, 0).edit();
             editor.putString(keyDayDictionary, dayDictionary);
+            editor.putString(keyLateStartDictionary, lateStartDictionary);
             editor.apply();
         }
 
@@ -274,7 +279,7 @@ public class LyonsCalendar extends CaldroidFragment {
      * @return The generate {@link Date} object.
      */
     private Date parseDate (String input) {
-        SimpleDateFormat formatter;                                 // Declare the date formatter
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");   // Declare the date formatter
 
         if (input.startsWith(";TZID")) {                            // Example ;TZID=America/Toronto:20120928T100000
             input = input.substring(input.indexOf(':'));            // Get rid of the timezone setting
@@ -288,9 +293,9 @@ public class LyonsCalendar extends CaldroidFragment {
         } else if (input.startsWith(";")) {                         // Example ;VALUE=DATE:20170609
             // Remove the ';VALUE=DATE:' and the beginning as well as the '\r\n' at the end
             input = input.substring(input.indexOf(':') + 1, input.length() - 1);
-            formatter = new SimpleDateFormat("yyyyMMdd");           // Create an appropriate date formatter
         } else {
-            return null;
+            input = "19970101";
+            Toast.makeText(getContext(), "A Loading Error Occurred!\nError #" + getResources().getInteger(R.integer.DateParsingError), Toast.LENGTH_LONG).show();
         }
 
         Date output = null;
@@ -298,6 +303,7 @@ public class LyonsCalendar extends CaldroidFragment {
             output = formatter.parse(input);     // Create the date
         } catch (ParseException e) {                // If an exception is produced then log it
             Log.d("Date Parse Error", "Bad Date");
+            Toast.makeText(getContext(), "A Loading Error Occurred!\nError #" + getResources().getInteger(R.integer.DateParsingError), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
 
@@ -334,6 +340,8 @@ class LyonsAdapter extends CaldroidGridAdapter {
 
         // Get dateTime of this cell
         DateTime dateTime = this.datetimeList.get(position);
+
+        cellView.setVisibility(View.VISIBLE);
 
         // Set color of the visibility in previous / next month
         if (dateTime.getMonth() != month) {

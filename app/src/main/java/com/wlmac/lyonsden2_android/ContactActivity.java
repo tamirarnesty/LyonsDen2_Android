@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wlmac.lyonsden2_android.contactActivities.AnnouncementActivity;
@@ -54,8 +55,10 @@ public class ContactActivity extends AppCompatActivity {
 
         rootLayout = (DrawerLayout) findViewById(R.id.ConDLayout);
         drawerList = (ListView) findViewById(R.id.ConDList);
-        drawerToggle = HomeActivity.initializeDrawerToggle(this, rootLayout);
-        HomeActivity.setupDrawer(this, drawerList, rootLayout, drawerToggle);
+        drawerToggle = Retrieve.drawerToggle(this, rootLayout);
+        Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
+
+        setFonts();
     }
 
     @Override
@@ -68,6 +71,12 @@ public class ContactActivity extends AppCompatActivity {
         isShowingExtraButtons = true;
     }
 
+    private void setFonts() {
+        int[] components = {R.id.CSTextView, R.id.CSAnnouncementButton, R.id.CSTeacherButton, R.id.CSRadioButton, R.id.CSEmergencyButton, R.id.CSReportButton, R.id.CSHelpButton, R.id.CSLicencesButton};
+        for (int h = 0; h < components.length; h ++)
+            ((TextView) findViewById(components[h])).setTypeface(Retrieve.typeface(this));
+    }
+
     /** Called when the Propose Announcement button is pressed. */
     public void proposeAnnouncement (View view) {
         // Segue into Announcement Proposal Activity
@@ -78,8 +87,9 @@ public class ContactActivity extends AppCompatActivity {
 
     /** Called when the Propose sont for Radio button is pressed. */
     public void proposeRadio (View view) {
-        Intent intent = new Intent(this, MusicActivity.class);
-        startActivity(intent);
+        Toast.makeText(getApplicationContext(), "You're a nosy one aren't you!", Toast.LENGTH_SHORT).show();
+//        Intent intent = new Intent(this, MusicActivity.class);
+//        startActivity(intent);
     }
 
     /** Called when Contact a Teacher button is pressed. */

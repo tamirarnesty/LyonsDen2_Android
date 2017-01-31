@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.wlmac.lyonsden2_android.R;
+import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
 import java.util.ArrayList;
 
@@ -24,12 +24,14 @@ public class SectionedListAdapter extends ArrayAdapter {
     private ArrayList<ArrayList<String[]>> content;
     private ArrayList<String[]> sections;
     private ArrayList<String[]> listContent;
+    private View.OnClickListener teacherOnClick;
 
-    public SectionedListAdapter(Context context, ArrayList<ArrayList<String[]>> content, ArrayList<String> sections, ArrayList<String[]> list) {
+    public SectionedListAdapter(Context context, ArrayList<ArrayList<String[]>> content, ArrayList<String> sections, ArrayList<String[]> list, View.OnClickListener teacherOnClick) {
         super (context, -1, list);
         this.content = content;
         this.sections = toSectionsType(sections);
         this.listContent = list;
+        this.teacherOnClick = teacherOnClick;
         createListMap();
         Log.d("Section List", "Instance Created!");
     }
@@ -45,7 +47,7 @@ public class SectionedListAdapter extends ArrayAdapter {
         return output;
     }
 
-    public void createListMap () {
+    private void createListMap () {
         Log.d("SectionedList", "Attempting to create List Map...");
         if (content.isEmpty() || sections.isEmpty()) {
             Log.d("SectionedList", "createListMap: One of the contents is empty!");
@@ -63,6 +65,12 @@ public class SectionedListAdapter extends ArrayAdapter {
         }
     }
 
+    public String[] getItem (int index) {
+        if (listContent != null && !listContent.isEmpty() && index < listContent.size())
+            return listContent.get(index);
+        return null;
+    }
+
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -76,6 +84,7 @@ public class SectionedListAdapter extends ArrayAdapter {
             rowView = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.list_section_separator, parent, false);
 
             ((TextView) rowView.findViewById(R.id.LSSHeader)).setText(listContent.get(position)[0]);
+            ((TextView) rowView.findViewById(R.id.LSSHeader)).setTypeface(Retrieve.typeface(getContext()));
             rowView.setEnabled(false);
             rowView.setOnClickListener(null);
         } else {    // If the current item is a child
@@ -84,14 +93,12 @@ public class SectionedListAdapter extends ArrayAdapter {
 
             // Declare instance of all required GUI components in the cell.
             ((TextView) rowView.findViewById(R.id.LIDTitleLabel)).setText(listContent.get(position)[0]);
+            ((TextView) rowView.findViewById(R.id.LIDTitleLabel)).setTypeface(Retrieve.typeface(getContext()));
             ((TextView) rowView.findViewById(R.id.LIDInfoLabel)).setText(listContent.get(position)[2]);
+            ((TextView) rowView.findViewById(R.id.LIDInfoLabel)).setTypeface(Retrieve.typeface(getContext()));
+            rowView.setTag(position);
             rowView.setEnabled(true);
-            rowView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getContext(), "Text", Toast.LENGTH_SHORT).show();
-                }
-            });
+            rowView.setOnClickListener(teacherOnClick);
         }
 
         return rowView;
