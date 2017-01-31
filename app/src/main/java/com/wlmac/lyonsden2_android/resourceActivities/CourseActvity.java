@@ -4,8 +4,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wlmac.lyonsden2_android.R;
 
@@ -15,6 +17,7 @@ public class CourseActvity extends AppCompatActivity {
     private EditText name;
     private EditText teacher;
     private EditText room;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +40,20 @@ public class CourseActvity extends AppCompatActivity {
 
         room = (EditText) findViewById(R.id.CourseSRoomField);
         room.setText(periodData[4]);
+
+        button = (Button) findViewById(R.id.USUpdate);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitChanges();
+            }
+        });
     }
 
-    public void submitChanges (View view) {
+    public void submitChanges () {
         Log.d("Course Activity", "Let's pretend that I actually submitted your changes to the database? or saved them to the phone");
-        // SharedPreferences is the way to store things, use the static in HS to access the proper Preferences, or create your own, up to you
+        Toast.makeText(this.getApplicationContext(), "Changes Submitted", Toast.LENGTH_SHORT).show();
+        // I actually have no clue how permanent storage works on android, so...
+        // Wont be able to help you there :)
     }
 }

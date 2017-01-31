@@ -34,6 +34,7 @@
     <string name="HSCourseNameDefault">Course Name</string>
     <string name="HSTeacherNameDefault">Teacher Name</string>
     <string name="HSRoomNumberDefault">Room Number</string>
+    <string name="HSSpare">SPARE</string>
 
     <!-- Contact Screen Strings -->
     <string name="CSGetInTouchWithMac">Get in touch with Mac!</string>
