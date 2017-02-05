@@ -30,37 +30,6 @@
         android:layout_below="@id/CourseSPeriodLabel"
         android:layout_marginTop="20dp"
         android:orientation="horizontal"
-        android:id="@+id/CourseSCode">
-
-        <!-- Course Code Label -->
-        <TextView
-            android:layout_width="@dimen/USTextLabelWidth"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:gravity="end"
-            android:textColor="@color/accent"
-            android:textSize="16sp"
-            android:text="@string/CourseSCode"/>
-
-        <!-- Course Code Field -->
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:hint="@string/CourseSCodeHint"
-            android:textSize="16sp"
-            android:textColor="@color/whiteText"
-            android:id="@+id/CourseSCodeField"/>
-    </LinearLayout>
-
-    <!-- Course Name Area -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/CourseSCode"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal"
         android:id="@+id/CourseSName">
 
         <!-- Course Name Label -->
@@ -85,11 +54,44 @@
             android:id="@+id/CourseSNameField"/>
     </LinearLayout>
 
-    <!-- Teacher Name Area -->
+    <!-- Course Name Area -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/CourseSName"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:id="@+id/CourseSCode">
+
+        <!-- Course Code Label -->
+        <TextView
+            android:layout_width="@dimen/USTextLabelWidth"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:gravity="end"
+            android:textColor="@color/accent"
+            android:textSize="16sp"
+            android:text="@string/CourseSCode"/>
+
+        <!-- Course Code Field -->
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:hint="@string/CourseSCodeHint"
+            android:textSize="16sp"
+            android:inputType="textCapCharacters"
+            android:textColor="@color/whiteText"
+            android:id="@+id/CourseSCodeField"/>
+    </LinearLayout>
+
+
+    <!-- Teacher Name Area -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/CourseSCode"
         android:layout_marginTop="5dp"
         android:orientation="horizontal"
         android:id="@+id/CourseSTeacher">

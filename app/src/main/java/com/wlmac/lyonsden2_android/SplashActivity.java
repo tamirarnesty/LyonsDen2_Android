@@ -9,11 +9,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
+import com.wlmac.lyonsden2_android.resourceActivities.GuideActivity;
+
+import java.util.Calendar;
 
 /**
  * This class contains the Splash Screen of this program
@@ -23,9 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class SplashActivity extends AppCompatActivity {
     static String email = "";
     static String password = "";
-    final boolean[] performIntent = {false, false};
 
-    // TODO: I THINK THIS IS INSTANTIATING TOO EARLY!!!!
     SharedPreferences sharedPreferences;
     FirebaseAuth authenticator;
 
@@ -33,12 +36,37 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.splash_activity);
 
+        ((TextView) findViewById(R.id.SSCopyright)).setText("Copyright Tamir Arnesty & Inal Gotov © " + Calendar.getInstance().get(Calendar.YEAR));
+        ((TextView) findViewById(R.id.SSCopyright)).setTypeface(Retrieve.typeface(this));
+
+        final boolean[] performIntent = {false};
+
+        // Gota initialize things here mate
         sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
 
         authenticator = FirebaseAuth.getInstance();
 
-        attemptLogIn();
+//        final Handler splashDuration = new Handler();
+//        Runnable r = null;
+//        final Runnable finalR = r;
+//        splashDuration.postDelayed(r = new Runnable() {
+//
+//            int timer = 0;
+//
+//            @Override
+//            public void run() {
+//                timer += 1000;
+//
+//                if (timer == 3000) {
+//                    performIntent[0] = true;
+//                    splashDuration.removeCallbacks(finalR);
+//                }
+//            }
+//        }, 1000);
+
+        // ^ This put me in an infinite loop, idk what you were trying to do but...
 
         // Here's a 3 Second delay (I think its 3)
         int tick = 0;
@@ -49,47 +77,44 @@ public class SplashActivity extends AppCompatActivity {
 
         // TODO: AutoLogin
         // TODO: Resize the Splash Screen graphic
+//        if (performIntent[0]) {
+//        }
     }
 
-    private void performIntent () {
-        // 0 == home 1 == log in
-        if (performIntent[0]) {
-            Intent intent = new Intent (this, HomeActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            if (performIntent[1]) {
-                Intent intent = new Intent (this, HomeActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        attemptLogIn();
     }
 
     private void attemptLogIn () {
-        //Temporal placeholders
-//        email = "g@gmail.com";
-//        password = "Pok3monG0";
-        email = sharedPreferences.getString("email", "default");
-        password = sharedPreferences.getString("password", "defaultPass");
-        if ((email != "default") && (password != "defaultPass")) {
-            authenticator.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            Log.d("Splash Screen", "signInWithEmail:onComplete:" + task.isSuccessful());
+        // My shared preferences wiped for some reason, and i'm testing offline things so this was out temporarily
+
+//        email = sharedPreferences.getString("username", "sketch204@gmail.com");
+//        password = sharedPreferences.getString("password", "Pok3monG0");
+//        if (email.equals("") || password.equals(""))
+
+        //Temporary placeholders
+        email = "g@gmail.com";
+        password = "Pok3monG0";
+        authenticator.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        // In short: Will segue in any case, but will record credentials only if login is success
+
+                        Log.d("Splash Screen", "signInWithEmail:onComplete:" + task.isSuccessful());
+                        if (task.isSuccessful()) {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("email", email);
                             editor.putString("password", password);
                             editor.commit();
                         }
-                    });
-            performIntent[0] = true;
-            performIntent[1] = false;
-        } else {
-            performIntent[0] = false;
-            performIntent[1] = true;
-        }
-        performIntent();
+                                                 // SplashActivity.this, cuz we're in a lambda, and I need to access the outer class.
+                        Intent intent = new Intent (SplashActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
     }
 }

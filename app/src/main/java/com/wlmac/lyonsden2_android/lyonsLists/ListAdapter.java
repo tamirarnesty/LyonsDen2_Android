@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wlmac.lyonsden2_android.R;
+import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
 import java.util.ArrayList;
 
@@ -22,8 +23,7 @@ import java.util.ArrayList;
  * @version 1, 2016/08/08
  */
 public class ListAdapter extends ArrayAdapter {
-    /** The context (usually activity) that this adapter's list will belong to. */
-    private final Context context;
+
     private ArrayList<String[]> content;
     private Drawable[] images;
     private ArrayList<Button> buttons = new ArrayList<>();
@@ -54,7 +54,6 @@ public class ListAdapter extends ArrayAdapter {
      */
     public ListAdapter (Context context, ArrayList<String[]> content, boolean isLarge) {
         super (context, -1, content);    // Super call
-        this.context = context;
         this.content = content;
         this.images = null;
         this.onClick = null;
@@ -86,7 +85,6 @@ public class ListAdapter extends ArrayAdapter {
      */
     public ListAdapter (Context context, ArrayList<String[]> content, boolean isLarge, View.OnClickListener onClick) {
         super (context, -1, content);    // Super call
-        this.context = context;
         this.content = content;
         this.images = null;
         this.onClick = onClick;
@@ -110,10 +108,12 @@ public class ListAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Create an instance of the cell, from the XML cell layout file.
-        View rowView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(layout, parent, false);
+        View rowView = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(layout, parent, false);
         // Declare instance of all required GUI components in the cell.
         ((TextView) rowView.findViewById(titleID)).setText(content.get(position)[0]);
+        ((TextView) rowView.findViewById(titleID)).setTypeface(Retrieve.typeface(getContext()));
         ((TextView) rowView.findViewById(infoID)).setText(content.get(position)[1]);
+        ((TextView) rowView.findViewById(infoID)).setTypeface(Retrieve.typeface(getContext()));
 
         if (images != null && images[position] != null) {   // If there is an image, then
             ((ImageView) rowView.findViewById(imageID)).setImageDrawable(images[position]);     // Set the image
@@ -139,10 +139,6 @@ public class ListAdapter extends ArrayAdapter {
         super.notifyDataSetChanged();
     }
 
-    public boolean isEditing () {
-        return editing;
-    }
-
     public void setEditing(boolean editing) {
         if (canEdit) {
             this.editing = editing;
@@ -152,10 +148,5 @@ public class ListAdapter extends ArrayAdapter {
                 button.setVisibility(visibility);
             }
         }
-    }
-
-    public void updateDataSet (String[][] newDataSet) {
-//        this.content = newDataSet;
-        this.notifyDataSetChanged();
     }
 }

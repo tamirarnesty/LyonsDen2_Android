@@ -137,9 +137,14 @@ public class CalendarActivity extends AppCompatActivity {
                 String day = Retrieve.dayFromDictionary(dayDictionary, date);
                 dateLabelText += (!day.equals("-1")) ? " Day " + day : "";
             }
+            dateLabel.animate().setDuration(100).alpha(0);
             // Update the date label
             dateLabel.setText(dateLabelText);
+            dateLabel.animate().setDuration(100).alpha(1);
+
     // MARK: DISPLAY EVENT
+
+            eventList.animate().setDuration(100).alpha(0);
             // Clear the current eventList of all past events.
             eventList.removeAllViews();
 
@@ -162,6 +167,7 @@ public class CalendarActivity extends AppCompatActivity {
                 // And also add the divider
                 eventList.addView(dividerView);
             }
+            eventList.animate().setDuration(100).alpha(1);
         }
 
         /**
@@ -178,18 +184,22 @@ public class CalendarActivity extends AppCompatActivity {
             if (event.getTitle() == null || event.getTitle().isEmpty())   // If there is no text in title
                 // Hide Title
                 eventView.findViewById(R.id.EVTitleLabel).setVisibility(View.GONE);
-            else    // Otherwise
+            else {    // Otherwise
                 // Set the event view's title
                 ((TextView) eventView.findViewById(R.id.EVTitleLabel)).setText(event.getTitle());
+                ((TextView) eventView.findViewById(R.id.EVTitleLabel)).setTypeface(Retrieve.typeface(CalendarActivity.this));
+            }
 
 
             // Configure Description
             if (event.getDescription() == null || event.getDescription().isEmpty())   // If there is no text in title
                 // Hide Description
                 eventView.findViewById(R.id.EVInfoLabel).setVisibility(View.GONE);
-            else    // Otherwise
+            else {    // Otherwise
                 // Set the event view's description
                 ((TextView) eventView.findViewById(R.id.EVInfoLabel)).setText(event.getDescription());
+                ((TextView) eventView.findViewById(R.id.EVInfoLabel)).setTypeface(Retrieve.typeface(CalendarActivity.this));
+            }
 
             // Configure the Date/Time and Location
             if (event.getStartDate() == null && (event.getLocation() == null || event.getLocation().isEmpty()))  // If both of the fields are empty
@@ -199,8 +209,10 @@ public class CalendarActivity extends AppCompatActivity {
                 // Parse and set the event view's dateTime
                 String dateOfEvent = event.getStartDate().toString().substring(10, 16);
                 ((TextView) eventView.findViewById(R.id.EVDateLabel)).setText((dateOfEvent.contains("00:00")) ? "All day" : dateOfEvent);
+                ((TextView) eventView.findViewById(R.id.EVDateLabel)).setTypeface(Retrieve.typeface(CalendarActivity.this));
                 // Set the event view's location
                 ((TextView) eventView.findViewById(R.id.EVLocationLabel)).setText(event.getLocation());
+                ((TextView) eventView.findViewById(R.id.EVLocationLabel)).setTypeface(Retrieve.typeface(CalendarActivity.this));
             }
 
             return eventView;
@@ -229,7 +241,7 @@ public class CalendarActivity extends AppCompatActivity {
         // Setup the instantiation parameters for the UICalendar to retrieve upon instantiation
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
-        args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
+        args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.SUNDAY);
         args.putInt(CaldroidFragment.THEME_RESOURCE, R.style.LyonsCalendar);
         args.putBoolean(CaldroidFragment.SIX_WEEKS_IN_CALENDAR, false);
         args.putBoolean(CaldroidFragment.ENABLE_CLICK_ON_DISABLED_DATES, false);
@@ -247,8 +259,8 @@ public class CalendarActivity extends AppCompatActivity {
         // An instance of the ListView used in this activity's navigation drawer
         ListView drawerList = (ListView) findViewById(R.id.CalDList);
         // Instantiate the drawer for thi activity
-        drawerToggle = HomeActivity.initializeDrawerToggle(this, rootLayout);
-        HomeActivity.setupDrawer(this, drawerList, rootLayout, drawerToggle);
+        drawerToggle = Retrieve.drawerToggle(this, rootLayout);
+        Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
 
     // MARK: DAY DICTIONARY INITIALIZATION
 
@@ -264,7 +276,7 @@ public class CalendarActivity extends AppCompatActivity {
             showLoadingComponents();
 
         } else {                // If internet is not available then
-            String toastText = "Unable to connect to calendar"; // Will display this message if offline and no cache
+            String toastText = "Unable to update calendar"; // Will display this message if offline and no cache
             // If a Cached Calendar exists then use that and tell the user about it
             if (getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyCalendarCache, null) != null) {
                 calendarView.setOffline(true);
@@ -281,14 +293,23 @@ public class CalendarActivity extends AppCompatActivity {
         dateLabel = (TextView) findViewById(R.id.CalSDateLabel);
         eventList = (LinearLayout) findViewById(R.id.CalSEventList);
         if (!calendarView.isEmpty()) {      // If a calendar will load then, hide the components of this activity
-            dateLabel.setVisibility(View.GONE);
-            eventList.setVisibility(View.GONE);
+            dateLabel.animate().setDuration(0).alpha(0);
+            eventList.animate().setDuration(0).alpha(0);
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // Configure the Month label to handle long taps
+        calendarView.getMonthTitleTextView().setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                calendarView.moveToDate(today);
+                return true;
+            }
+        });
+
         if (calendarView.isOffline()) {     // If a cached calendar must be loaded
             WebCalendar.downloadInto(calendarView, this, WebCalendar.actionLoadOffline);
         }   // This is done here and not in onCreate(), to give the calendar fragment time to attach itself to the activity
@@ -296,31 +317,35 @@ public class CalendarActivity extends AppCompatActivity {
         // This is to make sure that the calendar is hidden when any sort of calendar is available
         if (!calendarView.isEmpty()) {
             try {
-                calendarView.getView().setVisibility(View.GONE);
+                calendarView.getView().setAlpha(0);
+                calendarView.getView().setVisibility(View.GONE);    // Both are required for proper animating
             } catch (NullPointerException e) {
-                Toast.makeText(this, "A UI Error Occurred!", Toast.LENGTH_SHORT).show();
+                Log.d("Calendar Activity", "Failed to show calendarView because it is null");
+                Toast.makeText(getApplicationContext(), "A UI Error Occurred!\nError #" + getResources().getInteger(R.integer.CalendarViewIsNull), Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     /** Called when the events are loaded into the calendar. */
     public void onEventsLoaded () {
-        // Display all components of this activity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                // Display all components of this activity
                 if (loadingLabel != null && loadingCircle != null) {
                     loadingLabel.dismiss();
-                    loadingCircle.setVisibility(View.GONE);
+                    loadingCircle.animate().setDuration(300).alpha(0);
                 }
 
                 try {
-                    calendarView.getView().setVisibility(View.VISIBLE);
+                    calendarView.getView().animate().setDuration(300).alpha(1);
+                    calendarView.getView().setVisibility(View.VISIBLE);         // Both are required for proper animating
                 } catch (NullPointerException e) {
-                    Toast.makeText(getApplicationContext(), "A UI Error Occurred!", Toast.LENGTH_SHORT).show();
+                    Log.d("Calendar Activity", "Failed to show calendarView because it is null");
+                    Toast.makeText(getApplicationContext(), "A UI Error Occurred!\nError #" + getResources().getInteger(R.integer.CalendarViewIsNull), Toast.LENGTH_SHORT).show();
                 }
-                dateLabel.setVisibility(View.VISIBLE);
-                eventList.setVisibility(View.VISIBLE);
+                dateLabel.animate().setDuration(300).alpha(1);
+                eventList.animate().setDuration(300).alpha(1);
             }
         });
     }
@@ -330,7 +355,12 @@ public class CalendarActivity extends AppCompatActivity {
             cellCode++;
 
         Drawable drawable = getResources().getDrawable(R.drawable.calendar_cell);
-        try { drawable.setLevel(cellCode); } catch (NullPointerException e) { Log.d("Calendar Activity:", "The calendar_cell.xml file seems to missing or corrupted."); }
+        try {
+            drawable.setLevel(cellCode);
+        } catch (NullPointerException e) {
+            Toast.makeText(this, "A UI Error Occurred!\nError #" + getResources().getInteger(R.integer.DrawableCreationFailure), Toast.LENGTH_LONG).show();
+            Log.d("Calendar Activity:", "The calendar_cell.xml file seems to missing or corrupted.");
+        }
         calendarView.setBackgroundDrawableForDate(drawable, date);
     }
 

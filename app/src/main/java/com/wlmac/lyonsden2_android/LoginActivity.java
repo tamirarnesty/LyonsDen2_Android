@@ -25,6 +25,7 @@ import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
 // TODO: MAKE METHODS SWITACHBLE BASED ON PLATFORM VERSION (GET RID OF DEPRECATED METHOD)
+// TODO: Implement Error codes where necessary (Internet unavailability does not require an error code)
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth authenticator;

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General Errors -->
+    <integer name="DatabaseOperationCancelled">1</integer>      <!-- Occurs if the download operation has been cancelled -->
+    <integer name="DatabaseDirectoryNonExistent">2</integer>    <!-- Occurs if the requested database entry does not exist -->
+    <integer name="DrawableCreationFailure">3</integer>         <!-- Occurs if the program failed to create a drawable -->
+
+    <!-- Calendar Errors -->
+    <integer name="DateParsingError">4</integer>                <!-- Occurs if an unusual date format is found in the google calendar file -->
+    <integer name="ConnectionAttemptsAmountExceeded">5</integer>  <!-- Occurs when the amount of attmepts to download the calendar has exceeded the max -->
+    <integer name="FailedToOpenConnection">6</integer>          <!-- Occurs when failed to open an HTTP URL session -->
+    <integer name="CalendarViewIsNull">8</integer>              <!-- Occurs when the the requested calendarView is null -->
+
+    <!-- List Viewer Errors -->
+    <integer name="TeacherInfoRetrievalFailure">7</integer>     <!-- Occurs if the app failed to locate the selected teacher's info -->
+</resources>

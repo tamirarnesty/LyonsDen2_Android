@@ -44,7 +44,7 @@
                 android:gravity="start"
                 android:textColor="@color/accent"
                 android:text="text"
-                android:textSize="@dimen/textSizeSubtitle"
+                android:textSize="@dimen/textSize20Subtitle"
                 android:id="@+id/ClubSTitleLabel"/>
 
             <!-- Description Label -->
@@ -55,7 +55,7 @@
                 android:layout_marginTop="8dp"
                 android:textColor="@color/accent"
                 android:text="text"
-                android:textSize="@dimen/textSizeLabel"
+                android:textSize="@dimen/textSize17Label"
                 android:id="@+id/ClubSDescriptionLabel"/>
         </LinearLayout>
 
@@ -78,7 +78,7 @@
                 android:inputType="text"
                 android:textColor="@color/whiteText"
                 android:text="textField"
-                android:textSize="@dimen/textSizeSubtitle"
+                android:textSize="@dimen/textSize20Subtitle"
                 android:id="@+id/ClubSTitleField"/>
 
             <!-- Description Label -->
@@ -93,7 +93,7 @@
                 android:gravity="top"
                 android:inputType="textMultiLine"
                 android:text="textField"
-                android:textSize="@dimen/textSizeLabel"
+                android:textSize="@dimen/textSize17Label"
                 android:id="@+id/ClubSDescriptionField"/>
         </LinearLayout>
     </RelativeLayout>
@@ -110,7 +110,7 @@
         android:maxLines="1"
         android:textColor="@color/accent"
         android:text="text"
-        android:textSize="@dimen/textSizeDetails"
+        android:textSize="@dimen/textSize14Details"
         android:id="@+id/ClubSLeaderList"/>
 
     <!-- Clubs Announcements List -->

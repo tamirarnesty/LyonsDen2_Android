@@ -12,7 +12,7 @@
         android:layout_margin="10dp"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/accent"
-        android:textSize="@dimen/textSizeLabel"
+        android:textSize="@dimen/textSize17Label"
         android:id="@+id/LATitle"/>
 
     <TextView
@@ -21,7 +21,7 @@
         android:layout_margin="10dp"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/accent"
-        android:textSize="@dimen/textSizeDetails"
+        android:textSize="@dimen/textSize14Details"
         android:id="@+id/LASubtitle"/>
 
     <EditText
@@ -30,7 +30,7 @@
         android:layout_margin="10dp"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/accent"
-        android:textSize="@dimen/textSizeDetails"
+        android:textSize="@dimen/textSize14Details"
         android:id="@+id/LAInput"/>
 
     <LinearLayout
@@ -47,7 +47,7 @@
             android:layout_marginEnd="5dp"
             android:background="@color/accent"
             android:textColor="@color/whiteText"
-            android:textSize="@dimen/textSizeButton"
+            android:textSize="@dimen/textSize12Button"
             android:id="@+id/LAButtonLeft"/>
 
         <Button
@@ -59,7 +59,7 @@
             android:layout_marginEnd="5dp"
             android:background="@color/accent"
             android:textColor="@color/whiteText"
-            android:textSize="@dimen/textSizeButton"
+            android:textSize="@dimen/textSize12Button"
             android:id="@+id/LAButtonRight"/>
     </LinearLayout>
 </LinearLayout>

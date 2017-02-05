@@ -8,6 +8,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.wlmac.lyonsden2_android.R;
+import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
 import java.util.ArrayList;
 
@@ -74,6 +75,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         ((TextView) convertView.findViewById(R.id.LECTitle)).setText(content.get(groupPosition)[0]);
+        ((TextView) convertView.findViewById(R.id.LECTitle)).setTypeface(Retrieve.typeface(context));
         return convertView;
     }
 
@@ -84,7 +86,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         ((TextView) convertView.findViewById(R.id.LECInfo)).setText(content.get(groupPosition)[1]);
+        ((TextView) convertView.findViewById(R.id.LECInfo)).setTypeface(Retrieve.typeface(context));
         ((TextView) convertView.findViewById(R.id.LECDate)).setText(content.get(groupPosition)[2]);
+        ((TextView) convertView.findViewById(R.id.LECDate)).setTypeface(Retrieve.typeface(context));
         return convertView;
     }
 

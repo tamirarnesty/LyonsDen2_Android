@@ -84,7 +84,7 @@
     </style>
 
     <style name="LyonsNormalCell" parent="LyonsCell">
-        <item name="android:padding">5dp</item>
+        <item name="android:padding">4dp</item>
     </style>
 
     <style name="LyonsSquareCell" parent="LyonsCell" />
@@ -116,8 +116,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:clickable">true</item>
-        <item name="android:onClick">periodClicked</item>
+        <item name="android:clickable">false</item>
+        <item name="android:longClickable">true</item>
         <item name="android:layout_weight">1</item>
         <item name="android:background">@color/timeTableBackground</item>
     </style>

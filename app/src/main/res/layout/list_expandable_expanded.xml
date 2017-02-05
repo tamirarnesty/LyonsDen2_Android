@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:textSize="@dimen/textSizeDetails"
+            android:textSize="@dimen/textSize14Details"
             android:textColor="@color/accent"
             android:maxLines="5"
             android:id="@+id/LECInfo"/>
@@ -39,7 +39,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_weight="1"
-        android:textSize="@dimen/textSizeDetails"
+        android:textSize="@dimen/textSize14Details"
         android:textColor="@color/accent"
         android:maxLines="1"
         android:id="@+id/LECDate"/>

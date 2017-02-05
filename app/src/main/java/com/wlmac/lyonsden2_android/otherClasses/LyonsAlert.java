@@ -2,13 +2,10 @@ package com.wlmac.lyonsden2_android.otherClasses;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +35,7 @@ public class LyonsAlert extends DialogFragment {
     };
     private EditText inputField;
     private boolean inputShouldBeSecure = false;
+    private boolean inputShouldBeHidden = false;
 
     @NonNull
     @Override
@@ -56,17 +54,35 @@ public class LyonsAlert extends DialogFragment {
         if (inputShouldBeSecure) {
             inputField.setTransformationMethod(PasswordTransformationMethod.getInstance());
         }
+        if (inputShouldBeHidden) {
+            inputField.setVisibility(View.GONE);
+        }
+
+        setFonts(alertView);
 
         builder.setView(alertView);
         return builder.create();
+    }
+
+    private void setFonts(View target) {
+        int[] components = {R.id.LATitle, R.id.LASubtitle, R.id.LAButtonLeft, R.id.LAButtonRight, R.id.LAInput};
+        for (int h = 0; h < components.length; h ++) {
+            ((TextView) target.findViewById(components[h])).setTypeface(Retrieve.typeface(getContext()));
+        }
     }
 
     public String getInputText () {
         return (inputField != null && inputField.getText().toString() != null) ? inputField.getText().toString() : null;
     }
 
+    // Must be called before dialog is shown
     public void makeInputSecure () {
         inputShouldBeSecure = true;
+    }
+
+    // Must be called before dialog is shown
+    public void hideInput () {
+        inputShouldBeHidden = true;
     }
 
     public void setTitle(String title) {
