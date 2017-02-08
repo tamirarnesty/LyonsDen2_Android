@@ -5,14 +5,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.wlmac.lyonsden2_android.HomeActivity;
 import com.wlmac.lyonsden2_android.R;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
@@ -32,7 +37,9 @@ public class InfoActivity extends AppCompatActivity {
     private String creatorName;
     private String creatorID;
 
-    TextView locationLabel;
+    private TextView locationLabel;
+
+    private Button back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +61,6 @@ public class InfoActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 onRetrieveName(dataSnapshot.getValue(String.class));
-                Log.d("THIS IS TAG", dataSnapshot.getValue(String.class) + "");
             }
 
             @Override
@@ -93,12 +99,29 @@ public class InfoActivity extends AppCompatActivity {
 
         // An instance of the date&time TextView of this activity
         TextView dateLabel = (TextView) findViewById(R.id.ISDateLabel);
-
-        // 20160906240000
-        String dateTime = list[2].substring(8, 12);
-        dateTime = dateTime.substring(0, 2) + ":" + dateTime.substring(2);
-        if (dateTime.equals("24:00")) dateTime = "All day";
+        String dateTime = list[2];
         dateLabel.setText(dateTime);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (true) {
+            getMenuInflater().inflate(R.menu.edit_menu, menu);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.editAction) {
+            enterEditMode();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void enterEditMode() {
+        Toast.makeText(this, "Some test", Toast.LENGTH_SHORT).show();
     }
 
     private void onRetrieveName(String creatorName) {

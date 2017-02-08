@@ -51,7 +51,7 @@ public class EventList extends LyonsList {
             Toast.makeText(this, "No Internet Available!", Toast.LENGTH_SHORT).show();
         }
 
-        eventList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        /*eventList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Intent intent = new Intent(EventList.this, InfoActivity.class);
@@ -59,7 +59,7 @@ public class EventList extends LyonsList {
                 intent.putExtra("announcement", list);
                 return true;
             }
-        });
+        });*/
 
         eventList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
