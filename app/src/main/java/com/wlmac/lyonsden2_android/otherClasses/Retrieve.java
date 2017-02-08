@@ -57,12 +57,12 @@ public class Retrieve {
         ref.orderByChild("dateTime").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String[] keys = {"title", "description", "dateTime", "location"};
+                String[] keys = {"title", "description", "dateTime", "location", "creator"};
                 if (dataSnapshot.exists()) {
                     target.clear();
 
                     for (DataSnapshot event : dataSnapshot.getChildren()) {
-                        target.add(new String[4]);
+                        target.add(new String[5]);
                         for (int h = 0; h < keys.length; h ++) {
                             try {
                                 if (h == 2) { target.get(target.size() - 1)[h] = convertToDate(event.child(keys[h]).getValue(String.class)); }
@@ -163,6 +163,30 @@ public class Retrieve {
 
     public static String encrypted (String key) {
         return key;
+    }
+
+    public static void isUserTeacher(final Context context, final String key, final StatusHandler handler) {
+        FirebaseDatabase.getInstance().getReference("users/teachers").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    if (d.getKey().equals(key)) {
+                        handler.handle(true);
+                        return;
+                    }
+                }
+                handler.handle(false);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(context,
+                        "Another Error Occurred!\n Error #" + context.getResources().getInteger(R.integer.DatabaseOperationCancelled),
+                        Toast.LENGTH_LONG).show();
+                handler.handle(false);
+                Log.d("Event Retriever", "Request Cancelled!");
+            }
+        });
     }
 
     public static void oneSignalIDs (OneSignalHandler handle) {

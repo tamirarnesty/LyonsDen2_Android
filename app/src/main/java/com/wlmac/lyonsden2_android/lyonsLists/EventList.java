@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.firebase.database.FirebaseDatabase;
+import com.wlmac.lyonsden2_android.HomeActivity;
 import com.wlmac.lyonsden2_android.R;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 import com.wlmac.lyonsden2_android.resourceActivities.InfoActivity;
@@ -53,7 +54,9 @@ public class EventList extends LyonsList {
         eventList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                parent.collapseGroup(groupPosition);
+                Intent intent = new Intent(EventList.this, InfoActivity.class);
+                String[] list = content.get(childPosition);
+                intent.putExtra("announcement", list);
                 return true;
             }
         });
@@ -86,10 +89,14 @@ public class EventList extends LyonsList {
         // Event keys: title, info, date, location
 
         Intent intent = new Intent(this, InfoActivity.class);
-        intent.putExtra("title", content.get(curExpandedCellIndex)[0]);
-        intent.putExtra("info", content.get(curExpandedCellIndex)[1]);
-        intent.putExtra("date", content.get(curExpandedCellIndex)[2]);
-        intent.putExtra("location", content.get(curExpandedCellIndex)[3]);
+        String[] line = new String[5];
+        line[0] = content.get(curExpandedCellIndex)[0];
+        line[1] = content.get(curExpandedCellIndex)[1];
+        line[2] = content.get(curExpandedCellIndex)[2];
+        line[3] = content.get(curExpandedCellIndex)[3];
+        line[4] = content.get(curExpandedCellIndex)[4];
+        intent.putExtra("tag", "announcement");
+        intent.putExtra("announcement", line);
 
         startActivity(intent);
     }
