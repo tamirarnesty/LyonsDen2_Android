@@ -65,8 +65,8 @@ public class UserActivity extends AppCompatActivity {
         extraButtonsContainer = (TableLayout) findViewById(R.id.USContainer);
         toggleButton = (Button) findViewById(R.id.USToggleButton);
         // Drawer setup
-        rootLayout = (DrawerLayout) findViewById(R.id.LDLayout);
-        drawerList = (ListView) findViewById(R.id.LDList);
+        DrawerLayout rootLayout = (DrawerLayout) findViewById(R.id.LDLayout);
+        ListView drawerList = (ListView) findViewById(R.id.LDList);
         drawerToggle = HomeActivity.initializeDrawerToggle(this, rootLayout);
         HomeActivity.setupDrawer(this, drawerList, rootLayout, drawerToggle);
 
@@ -130,59 +130,10 @@ public class UserActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        int textHeight = Retrieve.heightForText("Reset Password", this, 24) + 32; // Accounts for padding
-        extraButtonsContainer.animate().translationYBy(textHeight).setDuration(0).start();
-        toggleButton.animate().translationYBy(textHeight).setDuration(0).start();
-    }
-
-    public void toggleButtons (View view) {
-        int textHeight = Retrieve.heightForText("Reset Password", this, 24) + 32; // Accounts for padding
-        textHeight = (isShowingExtraButtons) ? textHeight * -1 : textHeight;
-        extraButtonsContainer.animate().translationYBy(textHeight).setDuration(300).start();
-        toggleButton.animate().translationYBy(textHeight).setDuration(300).start();
-        toggleButton.setBackgroundResource((isShowingExtraButtons) ? R.drawable.arrow_down_48dp : R.drawable.arrow_up_48dp);
-        isShowingExtraButtons = !isShowingExtraButtons;
-    }
-
-    private void onContentLoad(String name, String email, String accessLevel) {
-        this.displayName.setText(name);
-        this.email.setText(email);
-        this.accessLevel.setText(accessLevel);
-        sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
-    }
-
     private void instantiateComponents () {
         displayName = (EditText) findViewById(R.id.USNameField);
         email = (EditText) findViewById(R.id.USEmailField);
         accessLevel = (EditText) findViewById(R.id.USAccessField);
-    }
-
-    private void checkClubCode (String code) {
-
-    }
-
-    public void clubLeadershipApplication (View view) {
-        final LyonsAlert alertDialog = new LyonsAlert();
-        alertDialog.setTitle("Club Code");
-        alertDialog.setSubtitle("Please enter the club code");
-        alertDialog.configureLeftButton("Cancel", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
-        alertDialog.configureRightButton("Submit", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkClubCode(alertDialog.getInputText());
-                alertDialog.dismiss();
-            }
-        });
-
-        alertDialog.show(getSupportFragmentManager(), "ClubCodeDialog");
     }
 
     public void editAccount (String name, final String email) {
@@ -380,7 +331,7 @@ public class UserActivity extends AppCompatActivity {
                 alertDialog.dismiss();
             }
         });
-        alertDialog.hideInput();    // Make textField, secure entry
+        alertDialog.makeInputSecure();  // Make textField, secure entry
 
         alertDialog.show(getSupportFragmentManager(), "ClubCodeDialog");
     }
