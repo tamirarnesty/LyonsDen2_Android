@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.wlmac.lyonsden2_android.R;
 import com.wlmac.lyonsden2_android.contactActivities.AnnouncementActivity;
 import com.wlmac.lyonsden2_android.lyonsLists.ClubList;
 import com.wlmac.lyonsden2_android.lyonsLists.ExpandableListAdapter;
+import com.wlmac.lyonsden2_android.lyonsLists.ListAdapter;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
@@ -40,7 +42,7 @@ public class ClubActivity extends AppCompatActivity {
 
     private DatabaseReference clubRef;
 
-    private ExpandableListAdapter adapter;
+    private ListAdapter adapter;
 
     private TextView titleView;
     private TextView infoView;
@@ -59,10 +61,10 @@ public class ClubActivity extends AppCompatActivity {
 
         initializeComponents();
 
-        ExpandableListView clubsEvents = (ExpandableListView) findViewById(R.id.ClubSAnnouncements);
+        ListView clubsEvents = (ListView) findViewById(R.id.ClubSAnnouncements);
 
         // The list adapter
-        adapter = new ExpandableListAdapter(this, content);
+        adapter = new ListAdapter(this, content, false);
         clubsEvents.setAdapter(adapter);
 
         clubsEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -142,10 +144,6 @@ public class ClubActivity extends AppCompatActivity {
                         invalidateOptionsMenu();
                         Log.d("Club Activity", "User is not the club leader");
                     }
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Another Error Occurred!\n Error #" + getResources().getInteger(R.integer.DatabaseOperationCancelled),
-                            Toast.LENGTH_LONG).show();
                 }
             }
 

@@ -2,6 +2,7 @@ package com.wlmac.lyonsden2_android;
 
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
@@ -9,7 +10,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextPaint;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -163,7 +166,12 @@ public class CalendarActivity extends AppCompatActivity {
                 dividerView.setLayoutParams(lp);
                 dividerView.setBackgroundColor(getResources().getColor(R.color.background));   // Divider color
                 // Create and add the eventView to the event list scroll view
-                eventList.addView(createEventView(eventBank[h]));
+                eventList.addView(createEventView(eventBank[h], h, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }));
                 // And also add the divider
                 eventList.addView(dividerView);
             }
@@ -174,7 +182,7 @@ public class CalendarActivity extends AppCompatActivity {
          * This ethod creates the Event View and resizes it to only hold the displayed information.
          * @param event The {@link Event} associated with this {@link View}.
          */
-        private View createEventView (Event event) {
+        private View createEventView (final Event event, int index, View.OnClickListener onClick) {
             // Create a view out of the "event_view.xml" layout file
             View eventView = getLayoutInflater().inflate(R.layout.event_layout, null);
 
@@ -214,6 +222,32 @@ public class CalendarActivity extends AppCompatActivity {
                 ((TextView) eventView.findViewById(R.id.EVLocationLabel)).setText(event.getLocation());
                 ((TextView) eventView.findViewById(R.id.EVLocationLabel)).setTypeface(Retrieve.typeface(CalendarActivity.this));
             }
+
+            eventView.setTag(false);    // States whether this event cell is expanded or not
+            eventView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final View eventView = v;
+                    final TextView textView = (TextView) v.findViewById(R.id.EVInfoLabel);
+
+                    CalendarActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if ((boolean)eventView.getTag()) {
+                                Log.d("OnClickListener", "Closing Cell!");
+                                eventView.setTag(false);
+                                textView.getLayoutParams().height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+                            } else{
+                                Log.d("OnClickListener", "Opening Cell!");
+                                eventView.setTag(true);
+                                textView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                            }
+                            textView.setVisibility(View.GONE);
+                            textView.setVisibility(View.VISIBLE);
+                        }
+                    });
+                }
+            });
 
             return eventView;
         }

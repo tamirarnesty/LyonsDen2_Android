@@ -50,19 +50,19 @@ import java.util.concurrent.ExecutionException;
  * Created by sketch204 on 2016-11-15.
  */
 
-public class Retrieve { 
+public class Retrieve {
 
     public static void eventData (final Context context, DatabaseReference ref, final ArrayList<String[]> target, final ListDataHandler handler) {
         Log.d("Event Parser", "Commencing Parse!");
         ref.orderByChild("dateTime").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String[] keys = {"title", "description", "dateTime", "location"};
+                String[] keys = {"title", "description", "dateTime", "location", "creator"};
                 if (dataSnapshot.exists()) {
                     target.clear();
 
                     for (DataSnapshot event : dataSnapshot.getChildren()) {
-                        target.add(new String[4]);
+                        target.add(new String[5]);
                         for (int h = 0; h < keys.length; h ++) {
                             try {
                                 if (h == 2) { target.get(target.size() - 1)[h] = convertToDate(event.child(keys[h]).getValue(String.class)); }

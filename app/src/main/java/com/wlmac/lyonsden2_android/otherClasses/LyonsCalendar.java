@@ -247,8 +247,10 @@ public class LyonsCalendar extends CaldroidFragment {
 
             // Once all event fields have been filled
             // Add the created event to the event bank
-            if ((curEvent.getTitle().equalsIgnoreCase("DAY 1") || curEvent.getTitle().equalsIgnoreCase("DAY 2")) && dayDictionary != null) {
-                dayDictionary += "" + convertToKey(curEvent.getStartDate()).toString() + ":" + curEvent.getTitle().charAt(curEvent.getTitle().length() - 1) + ";\n";
+            if ((curEvent.getTitle().equalsIgnoreCase("DAY 1") || curEvent.getTitle().equalsIgnoreCase("DAY 2"))) {
+                if (dayDictionary != null)
+                    dayDictionary += "" + convertToKey(curEvent.getStartDate()).toString() + ":" + curEvent.getTitle().charAt(curEvent.getTitle().length() - 1) + ";\n";
+                // Else do nothing
             } else {
                 events.add(curEvent);
             }
