@@ -71,10 +71,14 @@ public class ClubActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(parent.getContext(), InfoActivity.class);
-                intent.putExtra("title", content.get(position)[0]);
-                intent.putExtra("info", content.get(position)[1]);
-                intent.putExtra("date", content.get(position)[2]);
-                intent.putExtra("location", content.get(position)[3]);
+                String[] list = new String[5];
+                list[0] = content.get(position)[0];
+                list[1] = content.get(position)[1];
+                list[2] = content.get(position)[2];
+                list[3] = content.get(position)[3];
+                list[4] = content.get(position)[4];
+                intent.putExtra("tag", "club");
+                intent.putExtra("club", list);
                 startActivity(intent);
             }
         });

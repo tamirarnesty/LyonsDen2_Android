@@ -14,24 +14,19 @@
         android:id="@+id/toolbar">
     </android.support.v7.widget.Toolbar>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/LSLogoImageHeight"
-        android:layout_below="@id/toolbar"
-        android:src="@drawable/den_logo"
-        android:id="@+id/LSLogoImage"/>
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true"
-        android:background="@color/accent"
+        android:background="@android:color/transparent"
         android:text="@string/LSLoginButton"
         android:textColor="@color/whiteText"
         android:onClick="logIn"
-        android:id="@+id/LSLogin" />
+        android:id="@+id/LSLogin"
+        style="@style/Widget.AppCompat.Button"
+        android:elevation="0dp" />
 
     <RelativeLayout
         android:layout_width="120dp"
@@ -76,13 +71,23 @@
             android:id="@+id/LSLoginButton"/>
     </RelativeLayout>
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/LSLogoImageHeight"
+        android:src="@drawable/den_logo"
+        android:id="@+id/LSLogoImage"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="21dp" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/LSLogin"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:orientation="vertical">
+        android:layout_marginBottom="24dp"
+        android:orientation="vertical"
+        android:layout_above="@+id/LSLogin"
+        android:layout_centerHorizontal="true">
 
 
         <EditText
@@ -98,22 +103,23 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:maxLines="1"
-            android:hint="@string/LSPassHint"
-            android:fontFamily="sans-serif"
-            android:textColor="@color/blackText"
-            android:id="@+id/LSPassField" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:inputType="text"
             android:ems="10"
             android:maxLines="1"
             android:hint="@string/LSCodeHint"
             android:textColor="@color/blackText"
             android:id="@+id/LSCodeField"/>
+
+        <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:maxLines="1"
+        android:hint="@string/LSPassHint"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/blackText"
+        android:id="@+id/LSPassField" />
+
     </LinearLayout>
 </RelativeLayout>

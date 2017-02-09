@@ -165,6 +165,30 @@ public class Retrieve {
         return key;
     }
 
+    public static void isUserTeacher(final Context context, final String key, final StatusHandler handler) {
+        FirebaseDatabase.getInstance().getReference("users/teachers").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    if (d.getKey().equals(key)) {
+                        handler.handle(true);
+                        return;
+                    }
+                }
+                handler.handle(false);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(context,
+                        "Another Error Occurred!\n Error #" + context.getResources().getInteger(R.integer.DatabaseOperationCancelled),
+                        Toast.LENGTH_LONG).show();
+                handler.handle(false);
+                Log.d("Event Retriever", "Request Cancelled!");
+            }
+        });
+    }
+
     public static void oneSignalIDs (OneSignalHandler handle) {
 
     }
@@ -271,6 +295,7 @@ public class Retrieve {
         } else {
             return "-1";
         }
+        //date:1;20160203:2;
     }
 
     public static boolean isLateStartDay (String dictionary, Date date) {

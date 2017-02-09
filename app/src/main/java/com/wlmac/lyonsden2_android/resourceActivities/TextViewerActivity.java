@@ -31,6 +31,6 @@ public class TextViewerActivity extends AppCompatActivity {
             Log.d("TextViewActivity", e.getMessage());
         }
 
-        return Retrieve.stringFromStream(is);
+        return /*Retrieve.stringFromStream(is); */ "";
     }
 }

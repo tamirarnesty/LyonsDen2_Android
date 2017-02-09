@@ -1,5 +1,6 @@
 package com.wlmac.lyonsden2_android;
 
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,10 +25,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.FirebaseDatabase;
+import com.wlmac.lyonsden2_android.contactActivities.AnnouncementActivity;
 import com.wlmac.lyonsden2_android.lyonsLists.ClubList;
 import com.wlmac.lyonsden2_android.lyonsLists.EventList;
+import com.wlmac.lyonsden2_android.lyonsLists.ListAdapter;
 import com.wlmac.lyonsden2_android.otherClasses.CourseDialog;
+import com.wlmac.lyonsden2_android.otherClasses.LyonsCalendar;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
+import com.wlmac.lyonsden2_android.resourceActivities.InfoActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,7 +86,8 @@ public class HomeActivity extends AppCompatActivity {
     Drawable drawableMostLeft;
     Drawable drawableMostRight;
 
-
+    private TextView noInternet;
+    private boolean isLateStart;
     private String[] normalDay;
     private String[] lateDay;
     private long[] normalTime;
@@ -117,21 +125,53 @@ public class HomeActivity extends AppCompatActivity {
         }, 60000);
         setupDrawer(this, drawerList, rootLayout, drawerToggle);
 
+        Thread thread = createThread();
+        thread.start();
+
         // Resize the announcement ListView to fit the screen. DOES NOT WORK ATM!!!
         listView.setMinimumHeight(Retrieve.screenSize(this).y);
         // Set the custom font of the TextLabels
         dayLabel.setTypeface(Retrieve.typeface(this));
         todayIsDay.setTypeface(Retrieve.typeface(this));
 
-        // TEMPORARY!!!
-        for (int h = 0; h < 50; h++) {
-            announcements.add("Title " + (h+1));
+        if (Retrieve.isInternetAvailable(this) == true) {
+            String day = Retrieve.dayFromDictionary(getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyDayDictionary, ""), new Date());
+            if (day == "-1") {
+                day = "X";
+            }
+            dayLabel.setText(day);
         }
+        else {
+            dayLabel.setText("N/A");
+            todayIsDay.setText("No Internet Available");
+        }
+
+        isLateStart = Retrieve.isLateStartDay(getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyLateStartDictionary, ""), new Date());
+
+
         // Declare and set the ArrayAdapter for filling the ListView with content
         //          Type of content                      |Source|Type of ListView layout            | Data source array
         //                                               |Object|                                   |
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, announcements);
+        final ArrayList<String[]> targetList = new ArrayList<>();
+        final ListAdapter adapter = new ListAdapter(this, targetList, false);
         listView.setAdapter(adapter);
+
+        if (Retrieve.isInternetAvailable(HomeActivity.this) == true) {
+            Retrieve.eventData(this, FirebaseDatabase.getInstance().getReference("announcements"), targetList, new Retrieve.ListDataHandler() {
+                @Override
+                public void handle(ArrayList<String[]> listData) {
+                    adapter.notifyDataSetChanged();
+                }
+            });
+            listView.setVisibility(View.VISIBLE);
+            noInternet.setVisibility(View.INVISIBLE);
+        } else {
+            listView.setVisibility(View.INVISIBLE);
+            noInternet.setText(View.VISIBLE);
+        }
+
+
+
 
 
         // Declare a listener for whenever an item has been clicked in the ListVew
@@ -139,15 +179,13 @@ public class HomeActivity extends AppCompatActivity {
             @Override//             |The ListView        |The item  |The item's   |The item's
             //                      |                    |clicked   |position     |ID
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    Toast.makeText(parent.getContext(), "This is wrong", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(parent.getContext(), Integer.toString(position), Toast.LENGTH_SHORT).show();
-                }
+                Intent intent = new Intent(HomeActivity.this, InfoActivity.class);
+                String[] list = targetList.get(position);
+                intent.putExtra("tag", "announcement");
+                intent.putExtra("announcement", list);
+                startActivity(intent);
             }
         });
-        Thread thread = createThread();
-        thread.start();
     }
 
     /*private void initializeContent () {
@@ -178,10 +216,9 @@ public class HomeActivity extends AppCompatActivity {
                     try {
                         Date currentDate = new Date();
                         String timeString = timeFormat.format(currentDate);
-                        boolean temp = true;
                         int placeHolder;
                         long time;
-                        if (temp) {
+                        if (isLateStart) {
                             placeHolder = checkTimes(timeString, normalDay);
                             time = returnTime(placeHolder, normalTime);
                         } else {
@@ -409,6 +446,7 @@ public class HomeActivity extends AppCompatActivity {
         rootLayout = (DrawerLayout) findViewById(R.id.HDLayout);
         drawerList = (ListView) findViewById(R.id.HDList);
         drawerToggle = initializeDrawerToggle(this, rootLayout);
+        noInternet = (TextView) findViewById(R.id.HSNoInternet);
 
         periods[0] = (RelativeLayout) findViewById(R.id.HSPeriod0);
         periods[1] = (RelativeLayout) findViewById(R.id.HSPeriod1);

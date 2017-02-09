@@ -65,6 +65,49 @@ public class UserActivity extends AppCompatActivity {
         extraButtonsContainer = (TableLayout) findViewById(R.id.USContainer);
         toggleButton = (Button) findViewById(R.id.USToggleButton);
         // Drawer setup
+        rootLayout = (DrawerLayout) findViewById(R.id.LDLayout);
+        drawerList = (ListView) findViewById(R.id.LDList);
+        drawerToggle = HomeActivity.initializeDrawerToggle(this, rootLayout);
+        HomeActivity.setupDrawer(this, drawerList, rootLayout, drawerToggle);
+
+        //something entirely different
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase.getInstance().getReference("users").child("students").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists())
+                    onContentLoad(dataSnapshot.child("name").getValue(String.class), user.getEmail(),
+                            dataSnapshot.child("accessLevel").getValue(String.class));
+                else Log.d("An error occured", "database directory isn't correct or database does not exist");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int textHeight = Retrieve.heightForText("Reset Password", this, 24) + 32; // Accounts for padding
+        extraButtonsContainer.animate().translationYBy(textHeight).setDuration(0).start();
+        toggleButton.animate().translationYBy(textHeight).setDuration(0).start();
+    }
+
+    public void toggleButtons (View view) {
+        int textHeight = Retrieve.heightForText("Reset Password", this, 24) + 32; // Accounts for padding
+        textHeight = (isShowingExtraButtons) ? textHeight * -1 : textHeight;
+        extraButtonsContainer.animate().translationYBy(textHeight).setDuration(300).start();
+        toggleButton.animate().translationYBy(textHeight).setDuration(300).start();
+        toggleButton.setBackgroundResource((isShowingExtraButtons) ? R.drawable.arrow_down_48dp : R.drawable.arrow_up_48dp);
+        isShowingExtraButtons = !isShowingExtraButtons;
+    }
+
+    private void onContentLoad(String name, String email, String accessLevel) {
+        this.displayName.setText(name);
+        this.email.setText(email);
+        this.accessLevel.setText(accessLevel);
+        sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
         /* An instance of the root layout of this activity. */
         DrawerLayout rootLayout = (DrawerLayout) findViewById(R.id.LDLayout);
         /* An instance of the ListView used in this activity's navigation drawer. */
@@ -115,6 +158,31 @@ public class UserActivity extends AppCompatActivity {
         displayName = (EditText) findViewById(R.id.USNameField);
         email = (EditText) findViewById(R.id.USEmailField);
         accessLevel = (EditText) findViewById(R.id.USAccessField);
+    }
+
+    private void checkClubCode (String code) {
+
+    }
+
+    public void clubLeadershipApplication (View view) {
+        final LyonsAlert alertDialog = new LyonsAlert();
+        alertDialog.setTitle("Club Code");
+        alertDialog.setSubtitle("Please enter the club code");
+        alertDialog.configureLeftButton("Cancel", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.configureRightButton("Submit", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkClubCode(alertDialog.getInputText());
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show(getSupportFragmentManager(), "ClubCodeDialog");
     }
 
     public void editAccount (String name, final String email) {
