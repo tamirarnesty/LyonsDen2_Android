@@ -77,6 +77,12 @@ public class AnnouncementActivity extends AppCompatActivity {
         setFonts();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
+    }
+
     private void setFonts() {
         int[] component = {R.id.APSTitleLabel, R.id.APSDescriptionLabel, R.id.APSLocationLabel, R.id.APSTeacherLabel, R.id.APSTitleField, R.id.APSDescriptionField, R.id.APSDateField, R.id.APSTimeField, R.id.APSLocationField, R.id.APSTeacherLogin, R.id.APSDateButton, R.id.APSTimeButton, R.id.APSApproveButton, R.id.APSSubmitButton};
 

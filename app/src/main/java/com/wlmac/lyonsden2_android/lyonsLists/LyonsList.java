@@ -13,7 +13,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.wlmac.lyonsden2_android.HomeActivity;
 import com.wlmac.lyonsden2_android.R;
 import com.wlmac.lyonsden2_android.otherClasses.LoadingLabel;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
@@ -43,14 +42,20 @@ public class LyonsList extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         Log.d("LyonsList", "Initializing Drawer");
-        rootLayout = (DrawerLayout) findViewById(R.id.LDLayout);
-        drawerList = (ListView) findViewById(R.id.LDList);
+        rootLayout = (DrawerLayout) findViewById(R.id.NDLayout);
+        drawerList = (ListView) findViewById(R.id.NDList);
         drawerToggle = Retrieve.drawerToggle(this, rootLayout);
         Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
 
         Log.d("LyonsList", "Initializing Loading Components");
         loadingLabel = new LoadingLabel((TextView) findViewById(R.id.LSLoadingLabel), this);
         loadingCircle = (ProgressBar) findViewById(R.id.LSLoadingWheel);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 
     @Override

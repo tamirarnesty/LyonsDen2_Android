@@ -123,7 +123,7 @@ public class HomeActivity extends AppCompatActivity {
                 updatePeriods();
             }
         }, 60000);
-        setupDrawer(this, drawerList, rootLayout, drawerToggle);
+        Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
 
         Thread thread = createThread();
         thread.start();
@@ -184,8 +184,15 @@ public class HomeActivity extends AppCompatActivity {
                 intent.putExtra("tag", "announcement");
                 intent.putExtra("announcement", list);
                 startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 
     /*private void initializeContent () {
@@ -361,91 +368,14 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * The method used for a quick and easy setup of a default drawer in the current view.
-     * @param initiator The activity that is calling this method. ('this' arguement will work most of the time)
-     * @param drawerList The drawer list that is bind to the initiating activity.
-     * @param rootLayout The root layout of the initiating activity.
-     * @param drawerToggle The drawer toggle of the initiating activity.
-     */
-    public static void setupDrawer (AppCompatActivity initiator, ListView drawerList, DrawerLayout rootLayout, ActionBarDrawerToggle drawerToggle) {
-        // Declare the drawer list adapter, to fill the drawer list
-        drawerList.setAdapter(new ArrayAdapter<String>(initiator, android.R.layout.simple_selectable_list_item, HomeActivity.drawerContent) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view =super.getView(position, convertView, parent);
-                ((TextView) view.findViewById(android.R.id.text1)).setTextColor(parent.getResources().getColor(R.color.whiteText));
-                return view;
-            }
-        });
-        // Set the drawer list's item click listener
-        drawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                HomeActivity.performDrawerSegue(parent.getContext(), position); // Segue into the appropriate Activity
-            }
-        });
-        // Display the drawer indicator
-        initiator.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        initiator.getSupportActionBar().setHomeButtonEnabled(true);
-        // Enable the drawer indicator
-        drawerToggle.setDrawerIndicatorEnabled(true);
-        // Add the drawer toggler to the current layout
-        rootLayout.addDrawerListener(drawerToggle);
-    }
-
-    /**
-     * Returns a fully setup ActionBarDrawerToggle object, redy for use with a drawer.
-     * @param initiator The activity that is calling this method. ('this' arguement will work most of the time)
-     * @param rootLayout The root layout of the initiating activity.
-     */
-    public static ActionBarDrawerToggle initializeDrawerToggle (AppCompatActivity initiator, DrawerLayout rootLayout) {
-        final AppCompatActivity finalInitiator = initiator;
-        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(finalInitiator, rootLayout, R.string.drawerOpen, R.string.drawerClose) {
-            @Override
-            public void onDrawerClosed(View drawerView) {   // When the drawer is closed
-                super.onDrawerClosed(drawerView);           // Super Call
-                finalInitiator.getSupportActionBar().setTitle(finalInitiator.getTitle()); // Set the app title to the drawer's title
-                finalInitiator.invalidateOptionsMenu();                    // State that the drawer should be redrawn
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {   // When the drawer is opened
-                super.onDrawerOpened(drawerView);           // Super call
-                finalInitiator.getSupportActionBar().setTitle("Menu");     // Set the app title to the drawer's title
-                finalInitiator.invalidateOptionsMenu();                    // State that the drawer should be redrawn
-            }
-        };
-        return  drawerToggle;
-    }
-
-    public static void performDrawerSegue (Context initiator, int activity) {
-        Class target = null;
-        if (activity == 0) {
-            target = HomeActivity.class;
-        } else if (activity == 1) {
-            target = CalendarActivity.class;
-        } else if (activity == 2) {
-            target = EventList.class;
-        } else if ( activity == 3) {
-            target = ClubList.class;
-        } else if (activity == 4) {
-            target = ContactActivity.class;
-        } else if (activity == 5) {
-            target = UserActivity.class;
-        }
-        Intent intent = new Intent (initiator, target);
-        initiator.startActivity(intent);
-    }
-
     /** Instantiates all GUI components */
     private void initializeComponents () {
         dayLabel = (TextView) findViewById(R.id.HSDayLabel);
         todayIsDay = (TextView) findViewById(R.id.HSTodayIsDay);
         listView = (ListView) findViewById(R.id.HSList);
-        rootLayout = (DrawerLayout) findViewById(R.id.HDLayout);
-        drawerList = (ListView) findViewById(R.id.HDList);
-        drawerToggle = initializeDrawerToggle(this, rootLayout);
+        rootLayout = (DrawerLayout) findViewById(R.id.NDLayout);
+        drawerList = (ListView) findViewById(R.id.NDList);
+        drawerToggle = Retrieve.drawerToggle(this, rootLayout);
         noInternet = (TextView) findViewById(R.id.HSNoInternet);
 
         periods[0] = (RelativeLayout) findViewById(R.id.HSPeriod0);

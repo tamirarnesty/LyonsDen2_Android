@@ -104,6 +104,12 @@ public class InfoActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
+    }
+
+    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (true) {
             getMenuInflater().inflate(R.menu.edit_menu, menu);

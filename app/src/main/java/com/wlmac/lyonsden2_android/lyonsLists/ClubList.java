@@ -64,6 +64,7 @@ public class ClubList extends LyonsList {
 
                 ClubActivity.image = null;
                 startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
         Log.d("List Activity", "We have been created now!");

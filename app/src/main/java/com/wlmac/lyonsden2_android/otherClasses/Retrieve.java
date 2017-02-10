@@ -3,6 +3,7 @@ package com.wlmac.lyonsden2_android.otherClasses;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
@@ -254,6 +255,10 @@ public class Retrieve {
         return textView.getMeasuredHeight();
     }
 
+    public static int dpFromInt (int input, Resources resources) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, input, resources.getDisplayMetrics());
+    }
+
     /**
      * Retrieves the current screen size from the system and returns it as a Point.
      * @return A Point representing the current screen size.
@@ -322,7 +327,7 @@ public class Retrieve {
      * @param rootLayout The root layout of the initiating activity.
      * @param drawerToggle The drawer toggle of the initiating activity.
      */
-    public static void drawerSetup(AppCompatActivity initiator, ListView drawerList, DrawerLayout rootLayout, ActionBarDrawerToggle drawerToggle) {
+    public static void drawerSetup(final AppCompatActivity initiator, ListView drawerList, DrawerLayout rootLayout, ActionBarDrawerToggle drawerToggle) {
         // Declare the drawer list adapter, to fill the drawer list
         drawerList.setAdapter(new ArrayAdapter<String>(initiator, android.R.layout.simple_selectable_list_item, Retrieve.drawerContent) {
             @Override
@@ -336,7 +341,7 @@ public class Retrieve {
         drawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Retrieve.drawerSegue(parent.getContext(), position); // Segue into the appropriate Activity
+                Retrieve.drawerSegue(initiator, position); // Segue into the appropriate Activity
             }
         });
         // Display the drawer indicator
@@ -373,7 +378,7 @@ public class Retrieve {
         return  drawerToggle;
     }
 
-    public static void drawerSegue(Context initiator, int activity) {
+    public static void drawerSegue(AppCompatActivity initiator, int activity) {
         Class target = null;
         if (activity == 0) {
             target = HomeActivity.class;
@@ -390,6 +395,8 @@ public class Retrieve {
         }
         Intent intent = new Intent (initiator, target);
         initiator.startActivity(intent);
+        initiator.overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+        ((DrawerLayout) initiator.findViewById(R.id.NDLayout)).closeDrawers();
     }
 
 // MARK: HELPER METHODS

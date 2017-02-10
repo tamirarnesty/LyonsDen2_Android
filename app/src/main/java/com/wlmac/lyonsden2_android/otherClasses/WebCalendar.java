@@ -74,7 +74,7 @@ public class WebCalendar extends IntentService {
                 try {
                     // Start the session
                     session.connect();
-//                    webData = Retrieve.stringFromStream(session.getInputStream());
+                    webData = Retrieve.stringFromStream(session.getInputStream());
                 } catch (IOException e) {   // If connection Failed
                     Log.i("WebCalendar", "Recording Process Failed!");
                     Log.i("WebCalendar", "Trying to Reconnect");

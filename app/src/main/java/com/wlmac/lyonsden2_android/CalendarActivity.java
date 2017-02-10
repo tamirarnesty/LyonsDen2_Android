@@ -234,7 +234,7 @@ public class CalendarActivity extends AppCompatActivity {
                             if ((boolean)eventView.getTag()) {
                                 Log.d("OnClickListener", "Closing Cell!");
                                 eventView.setTag(false);
-                                textView.getLayoutParams().height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+                                textView.getLayoutParams().height = Retrieve.dpFromInt(100, getResources());
                             } else{
                                 Log.d("OnClickListener", "Opening Cell!");
                                 eventView.setTag(true);
@@ -287,9 +287,9 @@ public class CalendarActivity extends AppCompatActivity {
     // MARK: DRAWER INITIALIZATION
 
         // An instance of the root layout of this activity
-        DrawerLayout rootLayout = (DrawerLayout) findViewById(R.id.CalDLayout);
+        DrawerLayout rootLayout = (DrawerLayout) findViewById(R.id.NDLayout);
         // An instance of the ListView used in this activity's navigation drawer
-        ListView drawerList = (ListView) findViewById(R.id.CalDList);
+        ListView drawerList = (ListView) findViewById(R.id.NDList);
         // Instantiate the drawer for thi activity
         drawerToggle = Retrieve.drawerToggle(this, rootLayout);
         Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
@@ -356,6 +356,12 @@ public class CalendarActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "A UI Error Occurred!\nError #" + getResources().getInteger(R.integer.CalendarViewIsNull), Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 
     /** Called when the events are loaded into the calendar. */

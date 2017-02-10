@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,10 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wlmac.lyonsden2_android.contactActivities.AnnouncementActivity;
-import com.wlmac.lyonsden2_android.contactActivities.MusicActivity;
 import com.wlmac.lyonsden2_android.lyonsLists.ListViewerActivity;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
-import com.wlmac.lyonsden2_android.otherClasses.ToastView;
 
 /**
  * The activity used to display the methods for contacting the school.
@@ -30,11 +29,6 @@ import com.wlmac.lyonsden2_android.otherClasses.ToastView;
  * @version 1, 2016/08/06
  */
 public class ContactActivity extends AppCompatActivity {
-    /** An instance of the root layout of this activity. */
-    private DrawerLayout rootLayout;
-    /** An instance of the ListView used in this activity's navigation drawer. */
-    private ListView drawerList;
-    /** The drawer toggler used this activity. */
     private ActionBarDrawerToggle drawerToggle;
     private RelativeLayout extraButtonsContainer;
     private Button extraButtonsToggle;
@@ -53,8 +47,10 @@ public class ContactActivity extends AppCompatActivity {
             Toast.makeText(this, "Submitted!", Toast.LENGTH_SHORT).show();
         }
 
-        rootLayout = (DrawerLayout) findViewById(R.id.ConDLayout);
-        drawerList = (ListView) findViewById(R.id.ConDList);
+        /* An instance of the root layout of this activity. */
+        DrawerLayout rootLayout = (DrawerLayout) findViewById(R.id.NDLayout);
+        /* An instance of the ListView used in this activity's navigation drawer. */
+        ListView drawerList = (ListView) findViewById(R.id.NDList);
         drawerToggle = Retrieve.drawerToggle(this, rootLayout);
         Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
 
@@ -65,10 +61,23 @@ public class ContactActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         int textHeight = Retrieve.heightForText("Report a Bug", this, 12) + 16; // Accounts for padding
+        int transitionHeight = Retrieve.dpFromInt(Retrieve.heightForText("Report a Bug", this, 12) + 16, getResources());
+
+        Log.d("ContactActivity", "" + textHeight);
+        Log.d("ContactActivity", "" + transitionHeight);
         extraButtonsContainer.animate().translationYBy(textHeight).setDuration(0).start();
         extraButtonsToggle.animate().translationYBy(textHeight).setDuration(0).start();
         extraButtonsToggle.setBackgroundResource(R.drawable.arrow_up_48dp);
         isShowingExtraButtons = true;
+
+//        ((DrawerLayout) findViewById(R.id.ConDLayout)).closeDrawer((ListView) findViewById(R.id.ConDList), false);
+        ((DrawerLayout) findViewById(R.id.NDLayout)).closeDrawer(Gravity.LEFT);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 
     private void setFonts() {
@@ -83,6 +92,7 @@ public class ContactActivity extends AppCompatActivity {
         Intent intent = new Intent (this, AnnouncementActivity.class);
         intent.putExtra("clubKey", "no-key");
         startActivity(intent);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
     /** Called when the Propose sont for Radio button is pressed. */
@@ -98,6 +108,7 @@ public class ContactActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ListViewerActivity.class);
         intent.putExtra("title", "Teachers");
         startActivity(intent);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
     /** Called when Emergency Hotline button is pressed. */
@@ -106,6 +117,7 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     public void toggleButtons (View view) {
+//        int transitionHeight = Retrieve.dpFromInt(Retrieve.heightForText("Report a Bug", this, 12) + 16, getResources());
         int textHeight = Retrieve.heightForText("Report a Bug", this, 12) + 16; // Accounts for padding
         textHeight = (isShowingExtraButtons) ? textHeight * -1 : textHeight;
         extraButtonsContainer.animate().translationYBy(textHeight).setDuration(300).start();
