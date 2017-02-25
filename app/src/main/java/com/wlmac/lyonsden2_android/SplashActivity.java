@@ -28,6 +28,7 @@ import java.util.Calendar;
 public class SplashActivity extends AppCompatActivity {
     static String email = "";
     static String password = "";
+    final boolean[] performIntent = {false, false};
 
     SharedPreferences sharedPreferences;
     FirebaseAuth authenticator;
@@ -38,83 +39,85 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_activity);
 
-        ((TextView) findViewById(R.id.SSCopyright)).setText("Copyright Tamir Arnesty & Inal Gotov © " + Calendar.getInstance().get(Calendar.YEAR));
-        ((TextView) findViewById(R.id.SSCopyright)).setTypeface(Retrieve.typeface(this));
+        try {
+            ((TextView) findViewById(R.id.SSCopyright)).setText("Copyright Tamir Arnesty & Inal Gotov © " + Calendar.getInstance().get(Calendar.YEAR));
+            ((TextView) findViewById(R.id.SSCopyright)).setTypeface(Retrieve.typeface(this));
+        } catch (NullPointerException e) {}
 
-        final boolean[] performIntent = {false};
-
-        // Gota initialize things here mate
         sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
-
         authenticator = FirebaseAuth.getInstance();
 
-//        final Handler splashDuration = new Handler();
-//        Runnable r = null;
-//        final Runnable finalR = r;
-//        splashDuration.postDelayed(r = new Runnable() {
-//
-//            int timer = 0;
-//
-//            @Override
-//            public void run() {
-//                timer += 1000;
-//
-//                if (timer == 3000) {
-//                    performIntent[0] = true;
-//                    splashDuration.removeCallbacks(finalR);
-//                }
-//            }
-//        }, 1000);
-
-        // ^ This put me in an infinite loop, idk what you were trying to do but...
-
-        // Here's a 3 Second delay (I think its 3)
         int tick = 0;
         while (tick < 3) {
             tick ++;
             try { Thread.sleep(1000); } catch (InterruptedException e) {}
         }
-
-        // TODO: AutoLogin
-        // TODO: Resize the Splash Screen graphic
-//        if (performIntent[0]) {
-//        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        attemptLogIn();
+        attemptOfflineLogIn();
+    }
+
+    private void attemptOfflineLogIn() {
+        email = sharedPreferences.getString("username", "");
+        password = sharedPreferences.getString("password", "");
+
+        if (Retrieve.isInternetAvailable(this)) {
+                attemptLogIn();
+        } else {
+            Intent intent = new Intent (SplashActivity.this, HomeActivity.class);
+            intent.putExtra("isInternetAvailable", false);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void attemptLogIn () {
-        // My shared preferences wiped for some reason, and i'm testing offline things so this was out temporarily
+        Intent intent; // 0 = log in 1 = home
 
-//        email = sharedPreferences.getString("username", "sketch204@gmail.com");
-//        password = sharedPreferences.getString("password", "Pok3monG0");
-//        if (email.equals("") || password.equals(""))
 
-        //Temporary placeholders
-        email = "g@gmail.com";
-        password = "Pok3monG0";
-        authenticator.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        // In short: Will segue in any case, but will record credentials only if login is success
+        if (email.equals("") || password.equals("")) { // log in
+            performIntent[0] = true;
+            performIntent[1] = false;
+        } else {
+            authenticator.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    // In short: Will segue in any case, but will record credentials only if login is success
 
-                        Log.d("Splash Screen", "signInWithEmail:onComplete:" + task.isSuccessful());
-                        if (task.isSuccessful()) {
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("email", email);
-                            editor.putString("password", password);
-                            editor.commit();
+                    Log.d("Splash Screen", "signInWithEmail:onComplete:" + task.isSuccessful());
+                    if (task.isSuccessful()) {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("email", email);
+                        editor.putString("password", password);
+                        editor.apply();
+                        performIntent[0] = false;
+                        performIntent[1] = true;
+                    } else {
+                        if (!task.isSuccessful()) {
+                            performIntent[0] = true;
+                            performIntent[1] = false;
                         }
-                                                 // SplashActivity.this, cuz we're in a lambda, and I need to access the outer class.
-                        Intent intent = new Intent (SplashActivity.this, HomeActivity.class);
-                        startActivity(intent);
-                        finish();
                     }
-                });
+
+                }
+            });
+        }
+
+        if (performIntent[0]) {
+            intent = new Intent (SplashActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            if (performIntent[1]) {
+                intent = new Intent (SplashActivity.this, HomeActivity.class);
+                startActivity(intent);
+                intent.putExtra("isInternetAvailable", true);
+                finish();
+            }
+        }
     }
 }

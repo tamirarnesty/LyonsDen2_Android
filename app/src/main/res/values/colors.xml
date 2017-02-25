@@ -5,7 +5,7 @@
     <color name="navigationText">#95A5A6</color>
     <color name="accent">#3646A0</color>
     <color name="timeTableBackground">#064CB2</color>
-    <color name="accentDark">#022A64</color>
+    <color name="accentDark">#022a64</color>
     <color name="whiteText">#FFFFFF</color>
     <color name="blackText">#000000</color>
     <color name="invalidStroke">#FF0030</color>
@@ -21,7 +21,7 @@
     <color name="loadingIndicatorGradient">#3b3646a0</color>
 
     <color name="courseViewBackground">#e5ecf0f1</color>
-
+    <color name="contactButtonsBackground">#49a3a3a3</color>
     <color name="segmentedButtonUnselected">#a3a3a3</color>
 
     <color name="loadingBlanketColor">#e6ecf0f1</color>

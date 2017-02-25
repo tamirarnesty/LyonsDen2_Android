@@ -10,6 +10,16 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.wlmac.lyonsden2_android.resourceActivities.InformationFormActivity">
 
+    <TextView
+        android:id="@+id/IFSTitleLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:text="@string/IFSTitle"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textColor="@color/accentDark"/>
+
     <!-- Student's Information Form -->
     <LinearLayout
         android:id="@+id/IFSSLayout"
@@ -17,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="vertical">
+
 
         <TextView
             android:id="@+id/IFSSNameLabel"
@@ -106,12 +117,17 @@
             android:textSize="15sp"
             android:textAlignment="center"/>
 
-        <Button
-            style="@style/LyonsButtonStyle"
-            android:id="@+id/IFSTCompleteButton"
-            android:layout_gravity="center"
-            android:text="@string/IFTCompleteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
     </LinearLayout>
+
+    <Button
+        style="@style/LyonsButtonStyle"
+        android:id="@+id/IFSTCompleteButton"
+        android:layout_gravity="center"
+        android:text="@string/IFTCompleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/IFSTLayout"
+        android:layout_alignLeft="@+id/IFSTLayout"
+        android:layout_alignStart="@+id/IFSTLayout"
+        android:layout_marginTop="23dp" />
 </RelativeLayout>

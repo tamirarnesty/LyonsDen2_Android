@@ -12,113 +12,245 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/background"
+        android:background="@color/blackText"
         tools:context=".ContactActivity">
 
-        <android.support.v7.widget.Toolbar
-            style="@style/LyonsToolBar"
-            app:titleTextColor="@color/accent"
-            app:title="@string/ConSTitle"
-            android:id="@+id/toolbar">
-        </android.support.v7.widget.Toolbar>
-
-        <!-- "Get in touch with Mac" Label -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            android:text="@string/CSGetInTouchWithMac"
-            android:id="@+id/CSTextView"
-            android:layout_marginTop="11dp"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/accent"
-            android:textSize="23sp" />
-
-        <!-- Announcement Proposal Button -->
-        <Button
-            style="@style/ContactButtonStyle"
-            android:layout_below="@id/CSTextView"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:onClick="proposeAnnouncement"
-            android:text="@string/CSAnnouncementButton"
-            android:id="@+id/CSAnnouncementButton"/>
-
-        <!-- Teacher List Button -->
-        <Button
-            style="@style/ContactButtonStyle"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_below="@+id/CSAnnouncementButton"
-            android:onClick="requestTeacherList"
-            android:text="@string/CSTeacherButton"
-            android:id="@+id/CSTeacherButton" />
-
-        <!-- Musical Button Button -->
-        <Button
-            style="@style/ContactButtonStyle"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_below="@+id/CSTeacherButton"
-            android:onClick="proposeRadio"
-            android:text="@string/CSRadioButton"
-            android:id="@+id/CSRadioButton" />
-
-        <!-- Emergency Hotline Button -->
-        <Button
-            style="@style/ContactButtonStyle"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_below="@+id/CSRadioButton"
-            android:onClick="emergency"
-            android:text="@string/CSEmergencyButton"
-            android:id="@+id/CSEmergencyButton"/>
-
+        <!-- All but action sheet-->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/CSButtonContainer">
+            android:layout_height="match_parent"
+            android:id="@+id/CSContentView"
+            android:background="@color/background">
 
-            <!-- Report Bug Button -->
-            <Button
-                style="@style/ExtraButtonStyle"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:onClick="reportBug"
-                android:text="@string/CSReport"
-                android:id="@+id/CSReportButton" />
+            <android.support.v7.widget.Toolbar
+                style="@style/LyonsToolBar"
+                app:titleTextColor="@color/accent"
+                app:title="@string/ConSTitle"
+                android:id="@+id/toolbar">
+            </android.support.v7.widget.Toolbar>
 
-            <!-- Help Button -->
-            <Button
-                style="@style/ExtraButtonStyle"
+            <!-- "Get in touch with Mac" Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/toolbar"
+                android:text="@string/CSGetInTouchWithMac"
+                android:id="@+id/CSTextView"
+                android:layout_marginTop="11dp"
                 android:layout_centerHorizontal="true"
-                android:tag="2"
-                android:onClick="displayList"
-                android:text="@string/CSHelp"
-                android:id="@+id/CSHelpButton" />
+                android:textColor="@color/accent"
+                android:textSize="23sp" />
 
-            <!-- Licences Button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_centerInParent="true">
+
+            <!-- Announcement Proposal Button -->
             <Button
-                style="@style/ExtraButtonStyle"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:tag="1"
-                android:onClick="displayList"
-                android:text="@string/CSLicence"
-                android:id="@+id/CSLicencesButton" />
+                style="@style/ContactButtonStyle"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:onClick="proposeAnnouncement"
+                android:text="@string/CSAnnouncementButton"
+                android:id="@+id/CSAnnouncementButton"
+                android:typeface="sans"
+                android:textAllCaps="false" />
+
+            <!-- Teacher List Button -->
+            <Button
+                style="@style/ContactButtonStyle"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:onClick="requestTeacherList"
+                android:text="@string/CSTeacherButton"
+                android:id="@+id/CSTeacherButton"
+                android:textAllCaps="false" />
+
+            <!-- Musical Button Button -->
+            <Button
+                style="@style/ContactButtonStyle"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:onClick="proposeRadio"
+                android:text="@string/CSRadioButton"
+                android:id="@+id/CSRadioButton"
+                android:textAllCaps="false" />
+
+            <!-- Emergency Hotline Button -->
+            <Button
+                style="@style/ContactButtonStyle"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:onClick="emergency"
+                android:text="@string/CSEmergencyButton"
+                android:id="@+id/CSEmergencyButton"
+                android:textAllCaps="false" />
+            </LinearLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/CSButtonContainer">
+
+                <!-- Report Bug Button -->
+                <Button
+                    style="@style/ExtraButtonStyle"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:onClick="reportBug"
+                    android:text="@string/CSReport"
+                    android:id="@+id/CSReportButton" />
+
+                <!-- Help Button -->
+                <Button
+                    style="@style/ExtraButtonStyle"
+                    android:layout_centerHorizontal="true"
+                    android:tag="2"
+                    android:onClick="displayList"
+                    android:text="@string/CSHelp"
+                    android:id="@+id/CSHelpButton" />
+
+                <!-- Licences Button -->
+                <Button
+                    style="@style/ExtraButtonStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:tag="1"
+                    android:onClick="displayList"
+                    android:text="@string/CSLicence"
+                    android:id="@+id/CSLicencesButton" />
+
+
+            </RelativeLayout>
+
+            <!-- Arrow Up Button-->
+            <Button
+                style="@style/LyonsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@id/CSButtonContainer"
+                android:background="@drawable/arrow_up_48dp"
+                android:onClick="toggleButtons"
+                android:id="@+id/CSToggleButton"/>
         </RelativeLayout>
 
-        <Button
-            style="@style/LyonsButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <!-- Action Sheet-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/CSActionSheet"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_above="@id/CSButtonContainer"
-            android:background="@drawable/arrow_up_48dp"
-            android:onClick="toggleButtons"
-            android:id="@+id/CSToggleButton"/>
+            android:id="@+id/CSActionSheet"
+            >
+
+            <!-- Inner Options-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:baselineAligned="false"
+                android:layout_marginBottom="7dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginStart="7dp"
+                android:background="@drawable/action_sheet_background">
+
+                <!-- Contact Label-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="15dp"
+                    android:id="@+id/CSContactLabel"
+                    android:text="@string/CSContactLabel"
+                    android:textColor="@color/accent"
+                    android:textSize="16dp"
+                    android:gravity="center"
+                    />
+
+                <!-- Message Label-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="16dp"
+                    android:id="@+id/CSMessageLabel"
+                    android:text="@string/CSMessageLabel"
+                    android:textColor="@color/accent"
+                    android:textSize="12dp"
+                    android:gravity="center"
+                    />
+
+                <!-- Kids Help Phone Button-->
+                <Button
+                    style="@style/LyonsButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginStart="7dp"
+                    android:id="@+id/CSHelpPhoneButton"
+                    android:onClick="actionSheet"
+                    android:text="@string/CSHelpPhoneButton"
+                    android:textAllCaps="false"
+                    android:tag="1"
+                    />
+                <!-- WLMCI Button-->
+                <Button
+                    style="@style/LyonsButtonStyle"
+                    android:onClick="actionSheet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginBottom="1dp"
+                    android:id="@+id/CSWLMCIButton"
+                    android:tag="2"
+                    android:text="@string/CSWLMCIButton"
+                    />
+            </LinearLayout>
+
+            <!-- Cancel Button-->
+            <Button
+                style="@style/LyonsButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="17dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginBottom="1dp"
+                android:id="@+id/CSCancelButton"
+                android:onClick="actionSheet"
+                android:text="@string/CSCancelButton"
+                android:background="@drawable/action_sheet_background"
+                android:textAllCaps="false"
+                android:tag="3"
+                />
+        </LinearLayout>
+
+        <!-- End of Main Components Layout-->
     </RelativeLayout>
+
+
 
     <!-- Navigation drawer -->
     <ListView
