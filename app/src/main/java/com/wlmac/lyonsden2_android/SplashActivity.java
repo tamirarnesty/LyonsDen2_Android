@@ -96,7 +96,7 @@ public class SplashActivity extends AppCompatActivity {
 //        if (email.equals("") || password.equals(""))
 
         //Temporary placeholders
-        email = "g@gmail.com";
+        email = "sketch204@gmail.com";
         password = "Pok3monG0";
         authenticator.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override

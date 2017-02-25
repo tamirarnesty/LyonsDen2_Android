@@ -45,7 +45,7 @@
             android:layout_marginStart="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@color/accent"
+            android:background="@drawable/button_background"
             android:textColor="@color/whiteText"
             android:textSize="@dimen/textSize12Button"
             android:id="@+id/LAButtonLeft"/>
@@ -57,7 +57,7 @@
             android:layout_marginStart="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@color/accent"
+            android:background="@drawable/button_background"
             android:textColor="@color/whiteText"
             android:textSize="@dimen/textSize12Button"
             android:id="@+id/LAButtonRight"/>

@@ -74,6 +74,7 @@
             android:text="@string/CSEmergencyButton"
             android:id="@+id/CSEmergencyButton"/>
 
+        <!-- Pull Up Buttons Container -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -109,6 +110,7 @@
                 android:id="@+id/CSLicencesButton" />
         </RelativeLayout>
 
+        <!-- Pull up Buttons Toggel Button -->
         <Button
             style="@style/LyonsButtonStyle"
             android:layout_width="wrap_content"

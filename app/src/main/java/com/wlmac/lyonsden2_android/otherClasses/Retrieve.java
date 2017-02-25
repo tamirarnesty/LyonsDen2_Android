@@ -23,12 +23,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.onesignal.OneSignal;
 import com.wlmac.lyonsden2_android.CalendarActivity;
 import com.wlmac.lyonsden2_android.ContactActivity;
 import com.wlmac.lyonsden2_android.HomeActivity;
@@ -42,6 +45,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -190,8 +194,47 @@ public class Retrieve {
         });
     }
 
-    public static void oneSignalIDs (OneSignalHandler handle) {
+    // Used for retrieving a list of OneSignal recievers' IDs for notification
+    public static void oneSignalIDs (final OneSignalHandler handle) {
+        FirebaseDatabase.getInstance().getReference("/users/notificationIDs").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    ArrayList<String> output = new ArrayList<String>(dataSnapshot.getValue(new GenericTypeIndicator<Map<String, String>>() {}).values());
+                    handle.handle(output);
+                } else {
+                    handle.handle(null);
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public static void oneSignalStatus () {
+        Log.d("OneSignalStatusChecker", "Checking Status...");
+        Retrieve.oneSignalIDs(new OneSignalHandler() {
+            @Override
+            public void handle(final ArrayList<String> receivers) {
+                OneSignal.idsAvailable(new OneSignal.IdsAvailableHandler() {
+                    @Override
+                    public void idsAvailable(String userId, String registrationId) {
+                        if (userId != null && !receivers.contains(userId)) {
+                            Log.d("OneSignalStatusChecker", "One Signal ID Does not exist. Creating...");
+                            String firUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            if (firUID != null) {
+                                FirebaseDatabase.getInstance().getReference("users/notificationIDs/" + firUID).setValue(userId);
+                            } else {
+                                Log.d("OneSignalStatusChecker", "Creation Failed! Not authenticated with Firebase!");
+                            }
+                        } else Log.d("OneSignalStatusChecker", "One Signal ID Exists.");
+                    }
+                });
+            }
+        });
     }
 
     public static boolean isInternetAvailable(Activity initiator) {
@@ -240,10 +283,6 @@ public class Retrieve {
         } catch (InterruptedException | ExecutionException e) {
             return false;
         }
-    }
-
-    public static void oneSignalStatus () {
-
     }
 
     public static int heightForText (String text, Activity initiator, int textSize) {
@@ -433,6 +472,6 @@ public class Retrieve {
     }
 
     public interface OneSignalHandler {
-        void handle (String[] receivers);
+        void handle (ArrayList<String> receivers);
     }
 }
