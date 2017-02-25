@@ -41,9 +41,6 @@ import java.util.Locale;
  * @version 1, 2016/07/30
  */
 public class HomeActivity extends AppCompatActivity {
-
-
-
     public static String sharedPreferencesName = "com.wlmac.lyonsden2_android";
     /** Holds the current day's value (1 or 2) */
     private TextView dayLabel;
@@ -65,7 +62,6 @@ public class HomeActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     //containers for courses
     private RelativeLayout [] containers = new RelativeLayout[4];
-
     //date format
     SimpleDateFormat timeFormat = new SimpleDateFormat("kk:mm:ss", Locale.CANADA);
 
@@ -83,7 +79,8 @@ public class HomeActivity extends AppCompatActivity {
     private String[] lateDay;
     private long[] normalTime;
     private long[] lateTime;
-
+    private boolean isOnlineLogInShown;
+    SharedPreferences sharedPreferences;
 
     private String[][] timeTable;
 
@@ -107,8 +104,20 @@ public class HomeActivity extends AppCompatActivity {
         initializeComponents();
         initializeTimeTable();
 
+        sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
         updatePeriods();
 
+        if (sharedPreferences.getBoolean("isOnlineLogInShown", false)) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("isOnlineLogInShown", true);
+            editor.apply();
+            boolean isOnlineLogIn = getIntent().getBooleanExtra("isInternetAvailable", true);
+            if (!isOnlineLogIn) {
+                Toast.makeText(getApplicationContext(), "Offline Log In. \nSome features unavailable", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Successful Log In", Toast.LENGTH_LONG).show();
+            }
+        }
         final Handler periodUpdater = new Handler();
         periodUpdater.postDelayed(new Runnable(){
             @Override
@@ -127,9 +136,9 @@ public class HomeActivity extends AppCompatActivity {
         dayLabel.setTypeface(Retrieve.typeface(this));
         todayIsDay.setTypeface(Retrieve.typeface(this));
 
-        if (Retrieve.isInternetAvailable(this) == true) {
+        if (Retrieve.isInternetAvailable(this)) {
             String day = Retrieve.dayFromDictionary(getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyDayDictionary, ""), new Date());
-            if (day == "-1") {
+            if (day.equals("-1")) {
                 day = "X";
             }
             dayLabel.setText(day);
@@ -149,7 +158,7 @@ public class HomeActivity extends AppCompatActivity {
         final ListAdapter adapter = new ListAdapter(this, targetList, false);
         listView.setAdapter(adapter);
 
-        if (Retrieve.isInternetAvailable(HomeActivity.this) == true) {
+        if (Retrieve.isInternetAvailable(HomeActivity.this)) {
             Retrieve.eventData(this, FirebaseDatabase.getInstance().getReference("announcements"), targetList, new Retrieve.ListDataHandler() {
                 @Override
                 public void handle(ArrayList<String[]> listData) {
@@ -162,10 +171,6 @@ public class HomeActivity extends AppCompatActivity {
             listView.setVisibility(View.INVISIBLE);
             noInternet.setText(View.VISIBLE);
         }
-
-
-
-
 
         // Declare a listener for whenever an item has been clicked in the ListVew
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

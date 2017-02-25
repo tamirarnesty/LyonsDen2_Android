@@ -1,19 +1,29 @@
 package com.wlmac.lyonsden2_android;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuInflater;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +43,9 @@ public class ContactActivity extends AppCompatActivity {
     private RelativeLayout extraButtonsContainer;
     private Button extraButtonsToggle;
     private boolean isShowingExtraButtons = true;
+    private LinearLayout actionSheet;
+    int actionSheetHeight;
+    private RelativeLayout contentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +53,8 @@ public class ContactActivity extends AppCompatActivity {
         setContentView(R.layout.contact_activity);
         extraButtonsContainer = (RelativeLayout) findViewById(R.id.CSButtonContainer);
         extraButtonsToggle = (Button) findViewById(R.id.CSToggleButton);
-
+        actionSheet = (LinearLayout) findViewById(R.id.CSActionSheet);
+        contentView = (RelativeLayout) findViewById(R.id.CSContentView);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         if (getIntent().getBooleanExtra("afterProposal", false)) {
@@ -62,11 +76,13 @@ public class ContactActivity extends AppCompatActivity {
         super.onResume();
         int textHeight = Retrieve.heightForText("Report a Bug", this, 12) + 16; // Accounts for padding
         int transitionHeight = Retrieve.dpFromInt(Retrieve.heightForText("Report a Bug", this, 12) + 16, getResources());
-
+        actionSheetHeight = (int) getResources().getDimension(R.dimen.CSActionSheet) + 60;
         Log.d("ContactActivity", "" + textHeight);
         Log.d("ContactActivity", "" + transitionHeight);
         extraButtonsContainer.animate().translationYBy(textHeight).setDuration(0).start();
         extraButtonsToggle.animate().translationYBy(textHeight).setDuration(0).start();
+        actionSheet.animate().translationYBy(actionSheetHeight).setDuration(0).start();
+
         extraButtonsToggle.setBackgroundResource(R.drawable.arrow_up_48dp);
         isShowingExtraButtons = true;
 
@@ -82,28 +98,28 @@ public class ContactActivity extends AppCompatActivity {
 
     private void setFonts() {
         int[] components = {R.id.CSTextView, R.id.CSAnnouncementButton, R.id.CSTeacherButton, R.id.CSRadioButton, R.id.CSEmergencyButton, R.id.CSReportButton, R.id.CSHelpButton, R.id.CSLicencesButton};
-        for (int h = 0; h < components.length; h ++)
+        for (int h = 0; h < components.length; h++)
             ((TextView) findViewById(components[h])).setTypeface(Retrieve.typeface(this));
     }
 
     /** Called when the Propose Announcement button is pressed. */
-    public void proposeAnnouncement (View view) {
+    public void proposeAnnouncement(View view) {
         // Segue into Announcement Proposal Activity
-        Intent intent = new Intent (this, AnnouncementActivity.class);
+        Intent intent = new Intent(this, AnnouncementActivity.class);
         intent.putExtra("clubKey", "no-key");
         startActivity(intent);
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
     /** Called when the Propose sont for Radio button is pressed. */
-    public void proposeRadio (View view) {
+    public void proposeRadio(View view) {
         Toast.makeText(getApplicationContext(), "You're a nosy one aren't you!", Toast.LENGTH_SHORT).show();
 //        Intent intent = new Intent(this, MusicActivity.class);
 //        startActivity(intent);
     }
 
     /** Called when Contact a Teacher button is pressed. */
-    public void requestTeacherList (View view) {
+    public void requestTeacherList(View view) {
         // Segue into a teacher list.
         Intent intent = new Intent(this, ListViewerActivity.class);
         intent.putExtra("title", "Teachers");
@@ -111,9 +127,62 @@ public class ContactActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
+    public void actionSheet(View view) {
+        if (view.getTag().toString().equals("3")) { // cancel
+            Log.d("ContactActivity", "Cancel Pressed");
+
+        } else if (view.getTag().toString().equals("1")) { // help phone
+            Log.d("ContactActivity", "Kids Help Phone Pressed");
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:1-800-668-6868"));
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            startActivity(intent);
+        } else {
+            if (view.getTag().toString().equals("2")) { // wlmci
+                Log.d("ContactActivity", "WLMCI Pressed");
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:416-395-3330" ));
+                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                startActivity(intent);
+            }
+        }
+        actionSheet.animate().translationYBy(actionSheetHeight).setDuration(300).start();
+        contentView.animate().alpha(1).setDuration(300).start();
+        contentView.setEnabled(true);
+        contentView.setClickable(true);
+        findViewById(R.id.CSAnnouncementButton).setClickable(true);
+        findViewById(R.id.CSTeacherButton).setClickable(true);
+        findViewById(R.id.CSRadioButton).setClickable(true);
+        findViewById(R.id.CSEmergencyButton).setClickable(true);
+    }
+
     /** Called when Emergency Hotline button is pressed. */
-    public void emergency (View view) {
-        // TODO: Implement emergency hotline
+    public void emergency(View view) {
+        Toast.makeText(getApplicationContext(), "Calling...", Toast.LENGTH_SHORT).show();
+        actionSheet.animate().translationYBy(-actionSheetHeight).setDuration(300).start();
+        contentView.animate().alpha(0.5f).setDuration(300).start();
+        contentView.setEnabled(false);
+        contentView.setClickable(false);
+        findViewById(R.id.CSAnnouncementButton).setClickable(false);
+        findViewById(R.id.CSTeacherButton).setClickable(false);
+        findViewById(R.id.CSRadioButton).setClickable(false);
+        findViewById(R.id.CSEmergencyButton).setClickable(false);
     }
 
     public void toggleButtons (View view) {

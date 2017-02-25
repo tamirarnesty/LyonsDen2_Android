@@ -42,10 +42,15 @@
     <string name="CSAnnouncementButton">Propose Announcement</string>
     <string name="CSRadioButton">Secret... Coming Soon!</string>
     <string name="CSTeacherButton">Contact a Teacher</string>
-    <string name="CSEmergencyButton">Emergency Hotline</string>
+    <string name="CSEmergencyButton">Contact</string>
     <string name="CSReport">Report a Bug</string>
     <string name="CSHelp">Help</string>
     <string name="CSLicence">Licences</string>
+    <string name="CSHelpPhoneButton">Kids Help Phone</string>
+    <string name="CSWLMCIButton">WLMCI</string>
+    <string name="CSContactLabel">Contact</string>
+    <string name="CSMessageLabel">Who would you like to talk to?</string>
+    <string name="CSCancelButton">Cancel</string>
 
     <!-- Announcement Proposal Screen Strings -->
     <string name="APSTitleLabel">Title:</string>
@@ -84,6 +89,7 @@
     <string name="IFTDepartment">Department</string>
     <string name="IFTContactEmail">Contact Email</string>
     <string name="IFTCompleteButton">Complete Form</string>
+    <string name="IFSTitle">Information Form</string>
 
     <!-- Course Screen Strings -->
     <string name="CourseSCode">Course Code</string>

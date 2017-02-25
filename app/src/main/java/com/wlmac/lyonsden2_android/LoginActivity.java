@@ -15,12 +15,20 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
@@ -34,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passField;
     private EditText signUpKeyField;
     private boolean signUpSelected = true;
+    private String[] signUpKeys = new String[2];
     private Button[] segmentedButtons = new Button[2];
     /** Store data permanently on device */
     SharedPreferences sharedPreferences;
@@ -80,8 +89,12 @@ public class LoginActivity extends AppCompatActivity {
         };
         // Create the authenticator
         authenticator = FirebaseAuth.getInstance();
-        // Don't use this, you got your own, i'm just too lazy to make it proper :)
-        //authenticator.signInWithEmailAndPassword("sketch204@gmail.com", "Pok3monG0");
+
+        if (sharedPreferences.getBoolean("isOnlineLogInShown", true)) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("isOnlineLogInShown", false);
+            editor.apply();
+        }
     }
 
     // TODO: MAKE METHODS SWITCHABLE BASED ON PLATFORM VERSION (GET RID OF DEPRECATED METHOD)
@@ -112,48 +125,95 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void logIn(View view) {
+        Log.d("Login Activity:", "button pressed.");
+        if (fieldsAreValid()) {
+            Log.d("Login Activity:", "fields are valid");
 
-        if (!fieldsAreValid()) {
-            return;
-        }
+            // initiate loading toast
+            // loadingToast.initiate();
 
-        // initiate loading toast
-        // loadingToast.initiate();
-
-        if (Retrieve.isInternetAvailable(this)) {
-            this.processRequest();
+            if (Retrieve.isInternetAvailable(this)) {
+                Log.d("Login Activity:", "to process request");
+                this.retrieveKeys();
+            } else {
+                Toast.makeText(getApplicationContext(), "No internet access!", Toast.LENGTH_LONG).show();
+            }
         } else {
-            Toast.makeText(getApplicationContext(), "No internet access!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Log in failed", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    private String[] retrieveKeys() {
+        FirebaseDatabase.getInstance().getReference("java").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                signUpKeys[0] = dataSnapshot.child("type1").getValue(String.class);
+                signUpKeys[1] = dataSnapshot.child("type2").getValue(String.class);
+                processRequest();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return signUpKeys;
     }
 
     private void processRequest() {
         // initialize needed
         final boolean[] performIntent = {false};
-        final String[] signUpKeys = {FirebaseDatabase.getInstance().getReference("java").child("type1").getKey(),
-                FirebaseDatabase.getInstance().getReference("java").child("type2").getKey()};
+        final String[] signUpKeys = this.signUpKeys;
 
         if (signUpSelected) { // sign up
             if (signUpKeyField.getText().toString().equals(signUpKeys[0]) || signUpKeyField.getText().toString().equals(signUpKeys[1])) {
                 this.createNewUser(signUpKeys);
+            } else {
+                Toast.makeText(getApplicationContext(), "Incorrect sign up key", Toast.LENGTH_SHORT).show();
             }
-        } else if (!signUpSelected) { // log in
-            Log.d("Login Activity", "Login: " + emailField.getText().toString());
-            Log.d("Login Activity", "Login: " + passField.getText().toString());
-            authenticator.signInWithEmailAndPassword(emailField.getText().toString(), passField.getText().toString())
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            Log.d("Login Activity", "signInWithEmail:onComplete:" + task.isSuccessful());
-                            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                                performIntent[0] = true;
+        } else { // log in
+            Log.d("Login Activity", "not sign up");
+            if (!signUpSelected) {
+                Log.d("Login Activity", "sign up passed");
+                Log.d("Login Activity", "Login: " + emailField.getText().toString());
+                Log.d("Login Activity", "Login: " + passField.getText().toString());
+                authenticator.signInWithEmailAndPassword(emailField.getText().toString(), passField.getText().toString())
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                Log.d("Login Activity", "signInWithEmail:onComplete:" + task.isSuccessful());
+                                Log.d("Login Activity", FirebaseAuth.getInstance().getCurrentUser().toString());
+                                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                    performIntent[0] = true;
+                                }
+
+                                if (!task.isSuccessful()) {
+                                    try {
+                                        throw task.getException();
+                                    } catch (FirebaseAuthUserCollisionException e) {
+                                        Log.d("Login Activity", "User already exists error");
+                                        Toast.makeText(getApplicationContext(), "User already exists.", Toast.LENGTH_LONG).show();
+                                    } catch (FirebaseAuthWeakPasswordException e) {
+                                        Log.d("Login Activity", "Weak password error");
+                                        Toast.makeText(getApplicationContext(), "Password entered is too weak.", Toast.LENGTH_LONG).show();
+                                    } catch (FirebaseAuthInvalidCredentialsException e) {
+                                        Log.d("Login Activity", "Username or password error");
+                                        Toast.makeText(getApplicationContext(), "Username or password is incorrect.", Toast.LENGTH_LONG).show();
+                                    } catch (FirebaseAuthInvalidUserException e) {
+                                        Log.d("Login Activity", "User does not exist");
+                                        Toast.makeText(getApplicationContext(), "User does not exist.", Toast.LENGTH_LONG).show();
+                                    } catch (Exception e) {
+                                        Log.d("Login Activity", "unknown error");
+                                        Toast.makeText(getApplicationContext(), "An unknown error occurred.", Toast.LENGTH_LONG).show();
+                                    }
+                                    Log.d("Login Activity", task.toString());
+                                    Toast.makeText(getApplicationContext(), task.toString(), Toast.LENGTH_LONG).show();
+                                    Log.d("Login Activity", "Log in failure");
+                                }
                             }
-                        }
-                    });
-        } else {
-            Toast.makeText(getApplicationContext(), "Incorrect Sign Up Key\nThe key is case sensitive.", Toast.LENGTH_LONG).show();
-            Log.d("LoginActivity", "Log in or sign up attempt failed terribly.");
+                        });
+            }
         }
         if (performIntent[0]) {
             this.performIntent();
@@ -162,30 +222,52 @@ public class LoginActivity extends AppCompatActivity {
 
     private void createNewUser(final String[] signUpKeys) {
         final boolean[] performIntent = {false};
-        authenticator.createUserWithEmailAndPassword(emailField.getText().toString(), passField.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("Login Activity", "createUserWithEmail:onComplete:" + task.isSuccessful());
 
-                        if (signUpKeyField.getText().toString().equals(signUpKeys[1])) {
-                            // store teacher password into database for announcements
-                            FirebaseDatabase.getInstance().getReference("users").child("teacherIDs").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(passField.getText().toString());
-                        }
+        if (fieldsAreValid()) {
+            authenticator.createUserWithEmailAndPassword(emailField.getText().toString(), passField.getText().toString())
 
-                        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                            performIntent[0] = true;
-                        }
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Log.d("Login Activity", "createUserWithEmail:onComplete:" + task.isSuccessful());
 
-                        if (!task.isSuccessful()) {
-                            Log.d("Login Activity", task.toString());
-                            Toast.makeText(getApplicationContext(), task.toString(), Toast.LENGTH_LONG).show();
-                            Log.d("Login Activity", "Create user failure");
+                            if (signUpKeyField.getText().toString().equals(signUpKeys[1])) {
+                                // store teacher password into database for announcements
+                                FirebaseDatabase.getInstance().getReference("users").child("teacherIDs").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(passField.getText().toString());
+                            }
+
+                            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                performIntent[0] = true;
+                            }
+
+                            if (!task.isSuccessful()) {
+                                try {
+                                    throw task.getException();
+                                } catch (FirebaseAuthUserCollisionException e) {
+                                    Log.d("Login Activity", "User already exists error");
+                                    Toast.makeText(getApplicationContext(), "User already exists.", Toast.LENGTH_LONG).show();
+                                } catch (FirebaseAuthWeakPasswordException e) {
+                                    Log.d("Login Activity", "Weak password error");
+                                    Toast.makeText(getApplicationContext(), "Password entered is too weak.", Toast.LENGTH_LONG).show();
+                                } catch (FirebaseAuthInvalidCredentialsException e) {
+                                    Log.d("Login Activity", "Username or password error");
+                                    Toast.makeText(getApplicationContext(), "Username or password is incorrect.", Toast.LENGTH_LONG).show();
+                                } catch (Exception e) {
+                                    Log.d("Login Activity", "unknown error");
+                                    Toast.makeText(getApplicationContext(), "An unknown error occurred.", Toast.LENGTH_LONG).show();
+                                }
+                                Log.d("Login Activity", task.toString());
+                                Toast.makeText(getApplicationContext(), task.toString(), Toast.LENGTH_LONG).show();
+                                Log.d("Login Activity", "Create user failure");
+                            }
                         }
-                    }
-                });
-        if (performIntent[0]) {
-            this.performIntent();
+                    });
+
+            if (performIntent[0]) {
+                this.performIntent();
+            }
+        } else {
+            Toast.makeText(getApplicationContext(), "Sign up failed", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -198,8 +280,10 @@ public class LoginActivity extends AppCompatActivity {
         sharedPreferences.edit().putString("uID", emailField.getText().toString()).apply();
         // segue
         // change to GuideActivity
-        Intent intent = new Intent(this, HomeActivity.class);
+        Toast.makeText(getApplicationContext(), "Segue success", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
         startActivity(intent);
+        finish();
     }
 
     /**
@@ -209,13 +293,18 @@ public class LoginActivity extends AppCompatActivity {
         boolean valid = true;
 
         EditText[] fields = (signUpSelected) ? new EditText[]{emailField, passField, signUpKeyField} : new EditText[]{emailField, passField};
-
         for (EditText field : fields) {
-            if (field.getText().equals("")) {
+            if (field.getText() == null || field.getText().toString().equals("")) {
+                field.setBackgroundResource(R.drawable.text_view_invalid);
                 valid = false;
-                return valid;
-                // set border color to red
+            } else {
+                field.setBackgroundResource(R.drawable.text_view_default);
+                valid = true;
             }
+        }
+
+        if (!valid) {
+            return valid;
         }
 
         // check email format
@@ -226,13 +315,14 @@ public class LoginActivity extends AppCompatActivity {
             if (domain.contains(".")) {
                 valid = true;
                 final String domain2 = domain.substring(domain.indexOf(".") +1);
-                if (domain.contains("@") || domain2.contains(".")) {
+                if (domain2.contains("@") || domain2.contains(".")) {
                     valid = false;
                     Log.d("Login Activity", "invalid email format");
-                    Toast.makeText(getApplicationContext(), "Invalid email format", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Invalid email format", Toast.LENGTH_SHORT).show();
                 }
             }
         }
+
         return valid;
     }
 
@@ -242,6 +332,7 @@ public class LoginActivity extends AppCompatActivity {
         final LyonsAlert confirmRequestAlert = new LyonsAlert();
         confirmRequestAlert.setTitle("Lyon's Den");
         confirmRequestAlert.setSubtitle("Forgot Password?");
+        confirmRequestAlert.hideInput();
         confirmRequestAlert.configureLeftButton("Cancel", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -273,17 +364,40 @@ public class LoginActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Log.d("Login Activity", "Email sent.");
+                                            Toast.makeText(getApplicationContext(), "Email sent.", Toast.LENGTH_LONG).show();
+                                        } else if (!task.isSuccessful()) {
+                                            try {
+                                                throw task.getException();
+                                            } catch (FirebaseAuthUserCollisionException e) {
+                                                Log.d("Login Activity", "User already exists error");
+                                                Toast.makeText(getApplicationContext(), "User already exists.", Toast.LENGTH_LONG).show();
+                                            } catch (FirebaseAuthWeakPasswordException e) {
+                                                Log.d("Login Activity", "Weak password error");
+                                                Toast.makeText(getApplicationContext(), "Password entered is too weak.", Toast.LENGTH_LONG).show();
+                                            } catch (FirebaseAuthInvalidCredentialsException e) {
+                                                Log.d("Login Activity", "Username or password error");
+                                                Toast.makeText(getApplicationContext(), "Username or password is incorrect.", Toast.LENGTH_LONG).show();
+                                            } catch (FirebaseAuthInvalidUserException e) {
+                                                Log.d("Login Activity", "User does not exist");
+                                                Toast.makeText(getApplicationContext(), "User does not exist.", Toast.LENGTH_LONG).show();
+                                            } catch (Exception e) {
+                                                Log.d("Login Activity", "unknown error");
+                                                Toast.makeText(getApplicationContext(), "An unknown error occurred.", Toast.LENGTH_LONG).show();
+                                            }
+                                            Log.d("Login Activity", task.toString());
+                                            Toast.makeText(getApplicationContext(), task.toString(), Toast.LENGTH_LONG).show();
+                                            Log.d("Login Activity", "Create user failure");
                                         }
                                     }
                                 });
                         handleRequestAlert.dismiss();
                     }
                 });
-                handleRequestAlert.show(getSupportFragmentManager(), "ResestPasswordInputDialog");
+                handleRequestAlert.show(getSupportFragmentManager(), "ResetPasswordInputDialog");
             }
         });
 
-        confirmRequestAlert.show(getSupportFragmentManager(), "ResestPasswordDialog");
+        confirmRequestAlert.show(getSupportFragmentManager(), "ResetPasswordDialog");
     }
 
     @Override

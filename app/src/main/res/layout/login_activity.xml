@@ -22,11 +22,12 @@
         android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
         android:text="@string/LSLoginButton"
-        android:textColor="@color/whiteText"
+        android:textColor="@color/accentDark"
         android:onClick="logIn"
         android:id="@+id/LSLogin"
         style="@style/Widget.AppCompat.Button"
-        android:elevation="0dp" />
+        android:elevation="0dp"
+        android:typeface="sans" />
 
     <RelativeLayout
         android:layout_width="120dp"
@@ -87,7 +88,8 @@
         android:layout_marginBottom="24dp"
         android:orientation="vertical"
         android:layout_above="@+id/LSLogin"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout">
 
 
         <EditText
@@ -103,6 +105,17 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:maxLines="1"
+            android:hint="@string/LSPassHint"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/blackText"
+            android:id="@+id/LSPassField" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:inputType="text"
             android:ems="10"
             android:maxLines="1"
@@ -110,16 +123,23 @@
             android:textColor="@color/blackText"
             android:id="@+id/LSCodeField"/>
 
-        <EditText
+    </LinearLayout>
+
+    <Button
+        android:text="Reset Password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:maxLines="1"
-        android:hint="@string/LSPassHint"
-        android:fontFamily="sans-serif"
-        android:textColor="@color/blackText"
-        android:id="@+id/LSPassField" />
-
-    </LinearLayout>
+        android:id="@+id/LSResetPassword"
+        android:background="@android:color/transparent"
+        android:textSize="12sp"
+        android:onClick="resetPassword"
+        android:textAllCaps="false"
+        android:layout_marginRight="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="43dp"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/accentDark"
+        android:typeface="sans" />
 </RelativeLayout>
