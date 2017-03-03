@@ -40,6 +40,7 @@ public class InformationFormActivity extends AppCompatActivity {
         TextView label = (TextView) findViewById(R.id.IFSTitleLabel);
         assert label != null;
         label.setText(getIntent().getStringExtra("IFTitle"));
+
     }
 
     private void setFonts () {
