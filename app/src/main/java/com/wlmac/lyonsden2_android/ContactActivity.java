@@ -127,6 +127,13 @@ public class ContactActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
+    private void checkPermissions() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CALL_PHONE}, 1);
+            return;
+        }
+    }
+
     public void actionSheet(View view) {
         if (view.getTag().toString().equals("3")) { // cancel
             Log.d("ContactActivity", "Cancel Pressed");
@@ -136,30 +143,22 @@ public class ContactActivity extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_CALL);
             intent.setData(Uri.parse("tel:1-800-668-6868"));
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
+                checkPermissions();
                 return;
+            } else {
+                startActivity(intent);
             }
-            startActivity(intent);
         } else {
             if (view.getTag().toString().equals("2")) { // wlmci
                 Log.d("ContactActivity", "WLMCI Pressed");
                 Intent intent = new Intent(Intent.ACTION_CALL);
                 intent.setData(Uri.parse("tel:416-395-3330" ));
                 if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
+                    checkPermissions();
                     return;
+                } else {
+                    startActivity(intent);
                 }
-                startActivity(intent);
             }
         }
         actionSheet.animate().translationYBy(actionSheetHeight).setDuration(300).start();
@@ -172,6 +171,7 @@ public class ContactActivity extends AppCompatActivity {
         findViewById(R.id.CSEmergencyButton).setClickable(true);
     }
 
+
     /** Called when Emergency Hotline button is pressed. */
     public void emergency(View view) {
         Toast.makeText(getApplicationContext(), "Calling...", Toast.LENGTH_SHORT).show();
@@ -179,6 +179,7 @@ public class ContactActivity extends AppCompatActivity {
         contentView.animate().alpha(0.5f).setDuration(300).start();
         contentView.setEnabled(false);
         contentView.setClickable(false);
+        checkPermissions();
         findViewById(R.id.CSAnnouncementButton).setClickable(false);
         findViewById(R.id.CSTeacherButton).setClickable(false);
         findViewById(R.id.CSRadioButton).setClickable(false);

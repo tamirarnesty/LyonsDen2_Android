@@ -36,6 +36,10 @@ public class InformationFormActivity extends AppCompatActivity {
         IFTDepartment = (Spinner) findViewById(R.id.IFSDepartmentSpinner);
         IFTEmail = (EditText) findViewById(R.id.IFSEmailField);
         IFTCompleteButton = (Button) findViewById(R.id.IFSTCompleteButton);
+
+        TextView label = (TextView) findViewById(R.id.IFSTitleLabel);
+        assert label != null;
+        label.setText(getIntent().getStringExtra("IFTitle"));
     }
 
     private void setFonts () {
@@ -44,4 +48,5 @@ public class InformationFormActivity extends AppCompatActivity {
             ((TextView) findViewById(components[h])).setTypeface(Retrieve.typeface(this));
         // TODO: Set Spinner typeface
     }
+
 }

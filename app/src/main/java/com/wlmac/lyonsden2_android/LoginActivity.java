@@ -31,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
+import com.wlmac.lyonsden2_android.resourceActivities.InformationFormActivity;
 
 // TODO: MAKE METHODS SWITACHBLE BASED ON PLATFORM VERSION (GET RID OF DEPRECATED METHOD)
 // TODO: Implement Error codes where necessary (Internet unavailability does not require an error code)
@@ -44,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean signUpSelected = true;
     private String[] signUpKeys = new String[2];
     private Button[] segmentedButtons = new Button[2];
+    private boolean isStudent = true;
     /** Store data permanently on device */
     SharedPreferences sharedPreferences;
 
@@ -216,7 +218,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         if (performIntent[0]) {
-            this.performIntent();
+            this.performIntent("old");
         }
     }
 
@@ -264,7 +266,7 @@ public class LoginActivity extends AppCompatActivity {
                     });
 
             if (performIntent[0]) {
-                this.performIntent();
+                this.performIntent("new");
             }
         } else {
             Toast.makeText(getApplicationContext(), "Sign up failed", Toast.LENGTH_LONG).show();
@@ -274,14 +276,19 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Called when time to segue into another screen.
      */
-    private void performIntent() {
+    private void performIntent(String type) {
+        Intent intent;
         // store on device
         sharedPreferences.edit().putString("password", passField.getText().toString()).apply();
         sharedPreferences.edit().putString("uID", emailField.getText().toString()).apply();
-        // segue
-        // change to GuideActivity
+        if (type.equals("new")) {
+            intent = new Intent(LoginActivity.this, InformationFormActivity.class);
+        } else {
+            intent = new Intent(LoginActivity.this, HomeActivity.class);
+        }
+        String IFTitle = (isStudent) ? "Student Information Form" : "Teacher Information Form";
+        intent.putExtra("IFTitle", IFTitle);
         Toast.makeText(getApplicationContext(), "Segue success", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
         startActivity(intent);
         finish();
     }

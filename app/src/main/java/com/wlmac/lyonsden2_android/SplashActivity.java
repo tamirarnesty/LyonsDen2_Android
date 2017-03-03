@@ -66,8 +66,10 @@ public class SplashActivity extends AppCompatActivity {
         password = sharedPreferences.getString("password", "");
 
         if (Retrieve.isInternetAvailable(this)) {
-                attemptLogIn();
+            Log.d("Splash Screen", "internet available");
+            attemptLogIn();
         } else {
+            Log.d("Splash Screen", "internet not available");
             Intent intent = new Intent (SplashActivity.this, HomeActivity.class);
             intent.putExtra("isInternetAvailable", false);
             startActivity(intent);
@@ -80,6 +82,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
         if (email.equals("") || password.equals("")) { // log in
+            Log.d("Splash Screen", "no credentials saved on device");
             performIntent[0] = true;
             performIntent[1] = false;
         } else {
@@ -108,11 +111,13 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         if (performIntent[0]) {
+            Log.d("Splash Screen", "segue to log in");
             intent = new Intent (SplashActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         } else {
             if (performIntent[1]) {
+                Log.d("Splash Screen", "segue to home");
                 intent = new Intent (SplashActivity.this, HomeActivity.class);
                 startActivity(intent);
                 intent.putExtra("isInternetAvailable", true);
