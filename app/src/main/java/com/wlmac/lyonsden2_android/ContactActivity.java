@@ -127,10 +127,17 @@ public class ContactActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
-    private void checkPermissions() {
+    private boolean checkPermissions() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CALL_PHONE}, 1);
-            return;
+
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
         }
     }
 
@@ -174,16 +181,18 @@ public class ContactActivity extends AppCompatActivity {
 
     /** Called when Emergency Hotline button is pressed. */
     public void emergency(View view) {
-        Toast.makeText(getApplicationContext(), "Calling...", Toast.LENGTH_SHORT).show();
-        actionSheet.animate().translationYBy(-actionSheetHeight).setDuration(300).start();
-        contentView.animate().alpha(0.5f).setDuration(300).start();
-        contentView.setEnabled(false);
-        contentView.setClickable(false);
-        checkPermissions();
-        findViewById(R.id.CSAnnouncementButton).setClickable(false);
-        findViewById(R.id.CSTeacherButton).setClickable(false);
-        findViewById(R.id.CSRadioButton).setClickable(false);
-        findViewById(R.id.CSEmergencyButton).setClickable(false);
+        if (checkPermissions()) {
+            actionSheet.animate().translationYBy(-actionSheetHeight).setDuration(300).start();
+            contentView.animate().alpha(0.5f).setDuration(300).start();
+            contentView.setEnabled(false);
+            contentView.setClickable(false);
+            findViewById(R.id.CSAnnouncementButton).setClickable(false);
+            findViewById(R.id.CSTeacherButton).setClickable(false);
+            findViewById(R.id.CSRadioButton).setClickable(false);
+            findViewById(R.id.CSEmergencyButton).setClickable(false);
+        } else {
+            Log.d("Contact Activity", "Something went wrong");
+        }
     }
 
     public void toggleButtons (View view) {

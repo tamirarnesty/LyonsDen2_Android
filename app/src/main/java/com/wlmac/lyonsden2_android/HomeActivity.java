@@ -1,5 +1,7 @@
 package com.wlmac.lyonsden2_android;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -8,6 +10,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -18,8 +21,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.FirebaseDatabase;
+import com.onesignal.OneSignal;
 import com.wlmac.lyonsden2_android.lyonsLists.ListAdapter;
 import com.wlmac.lyonsden2_android.otherClasses.CourseDialog;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsCalendar;
@@ -148,6 +153,9 @@ public class HomeActivity extends AppCompatActivity {
             todayIsDay.setText("No Internet Available");
         }
 
+        if (dayLabel.getText().toString().equals("X")) {
+            Toast.makeText(getApplicationContext(), "No day available.\nThere is no school today.\nIt may be a weekend.", Toast.LENGTH_LONG).show();
+        }
         isLateStart = Retrieve.isLateStartDay(getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyLateStartDictionary, ""), new Date());
 
 
@@ -185,6 +193,7 @@ public class HomeActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
+
     }
 
     @Override

@@ -201,7 +201,12 @@ public class Retrieve {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     ArrayList<String> output = new ArrayList<String>(dataSnapshot.getValue(new GenericTypeIndicator<Map<String, String>>() {}).values());
-                    handle.handle(output);
+                    ArrayList<String> formattedReceivers = new ArrayList<String>();
+                    for (int i = 0; i < output.size(); i++) {
+                        formattedReceivers.add(i, "'" + output.get(i) + "'");
+                    }
+
+                    handle.handle(formattedReceivers);
                 } else {
                     handle.handle(null);
                 }

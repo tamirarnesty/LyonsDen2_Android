@@ -133,6 +133,12 @@ public class UserActivity extends AppCompatActivity {
         displayName = (EditText) findViewById(R.id.USNameField);
         email = (EditText) findViewById(R.id.USEmailField);
         accessLevel = (EditText) findViewById(R.id.USAccessField);
+
+//        try {
+//            displayName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+//            email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+//
+//        } catch (NullPointerException e) {}
     }
 
     public void editAccount (String name, final String email) {
@@ -287,6 +293,7 @@ public class UserActivity extends AppCompatActivity {
                     auth.signOut();
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
+                    finish();
                     break;
                 case "resetPass":
                     TextView textView = (TextView) findViewById(R.id.USEmailField);

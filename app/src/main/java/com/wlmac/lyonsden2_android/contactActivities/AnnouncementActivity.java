@@ -25,12 +25,18 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.onesignal.OneSignal;
 import com.wlmac.lyonsden2_android.ContactActivity;
 import com.wlmac.lyonsden2_android.R;
 import com.wlmac.lyonsden2_android.otherClasses.LoadingLabel;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 import com.wlmac.lyonsden2_android.otherClasses.ToastView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 
 // TODO: CREATE LOADING WHEEL FOR WHEN APPROVING AND SUBMITTING THE ANNOUNCEMENT
@@ -197,6 +203,7 @@ public class AnnouncementActivity extends AppCompatActivity {
             announcement.child("location").setValue(locationField.getText().toString());
             announcement.child("creator").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+            pushNotification(titleField.getText().toString(), descriptionField.getText().toString());
             Toast.makeText(getApplicationContext(), "Announcement Posted!", Toast.LENGTH_SHORT).show();
 
             finish();
@@ -204,6 +211,40 @@ public class AnnouncementActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Submission Failed!\nNo Internet!", Toast.LENGTH_LONG).show();
         }
         loadingToast.dismiss();
+    }
+
+    public void pushNotification(final String title, final String message) {
+        final String[] userID = {""};
+        Retrieve.oneSignalIDs(new Retrieve.OneSignalHandler() {
+            @Override
+            public void handle(ArrayList<String> receivers) {
+//                ArrayList<String> formattedReceivers = new ArrayList<String>();
+//                for (int i = 0; i < receivers.size(); i++) {
+//                    formattedReceivers.add(i, "'" + receivers.get(i) + "'");
+//                }
+
+                try {
+                    OneSignal.postNotification(new JSONObject("{" +
+                                    "'headings': {'en':'" + title + "'}, " +
+                                    "'contents': {'en':'" + message + "'}, " +
+                                    "'include_player_ids':" + receivers + "}"),
+                            new OneSignal.PostNotificationResponseHandler() {
+                                @Override
+                                public void onSuccess(JSONObject response) {
+                                    Log.d("OneSignalExample", "postNotification Success: " + response.toString());
+                                }
+
+                                @Override
+                                public void onFailure(JSONObject response) {
+                                    Log.d("OneSignalExample", "postNotification Failure: " + response.toString());
+                                }
+                            });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     private void lockUnlockProposal() {

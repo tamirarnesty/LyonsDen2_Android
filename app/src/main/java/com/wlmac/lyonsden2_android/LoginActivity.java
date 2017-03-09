@@ -9,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -128,9 +131,21 @@ public class LoginActivity extends AppCompatActivity {
 
     public void logIn(View view) {
         Log.d("Login Activity:", "button pressed.");
+
         if (fieldsAreValid()) {
             Log.d("Login Activity:", "fields are valid");
-
+            emailField.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                        InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        in.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        // Must return true here to consume event
+                        return true;
+                    }
+                    return false;
+                }
+            });
             // initiate loading toast
             // loadingToast.initiate();
 
@@ -235,11 +250,20 @@ public class LoginActivity extends AppCompatActivity {
 
                             if (signUpKeyField.getText().toString().equals(signUpKeys[1])) {
                                 // store teacher password into database for announcements
-                                FirebaseDatabase.getInstance().getReference("users").child("teacherIDs").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(passField.getText().toString());
+                                isStudent = false;
+                                String password = Retrieve.encrypted(passField.getText().toString());
+                                String userId = "";
+                                try {
+                                    userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                } catch (NullPointerException e) {
+                                    Log.d("Login Activity", "User auth failure. User does not exist");
+                                }
+                                FirebaseDatabase.getInstance().getReference("users").child("teacherIDs").child(userId).setValue(password);
                             }
 
                             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                                 performIntent[0] = true;
+                                performIntent("new");
                             }
 
                             if (!task.isSuccessful()) {
@@ -265,9 +289,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
 
-            if (performIntent[0]) {
-                this.performIntent("new");
-            }
+
         } else {
             Toast.makeText(getApplicationContext(), "Sign up failed", Toast.LENGTH_LONG).show();
         }

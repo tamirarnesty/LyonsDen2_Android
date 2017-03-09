@@ -50,7 +50,7 @@
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSNameHint"
             android:textSize="16sp"
-            android:textColor="@color/whiteText"
+            android:textColor="@color/blackText"
             android:id="@+id/CourseSNameField"/>
     </LinearLayout>
 
@@ -82,7 +82,7 @@
             android:hint="@string/CourseSCodeHint"
             android:textSize="16sp"
             android:inputType="textCapCharacters"
-            android:textColor="@color/whiteText"
+            android:textColor="@color/blackText"
             android:id="@+id/CourseSCodeField"/>
     </LinearLayout>
 
@@ -114,7 +114,7 @@
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSTeacherHint"
             android:textSize="16sp"
-            android:textColor="@color/whiteText"
+            android:textColor="@color/blackText"
             android:id="@+id/CourseSTeacherField"/>
     </LinearLayout>
 
@@ -145,7 +145,7 @@
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSRoomHint"
             android:textSize="16sp"
-            android:textColor="@color/whiteText"
+            android:textColor="@color/blackText"
             android:id="@+id/CourseSRoomField"/>
     </LinearLayout>
 

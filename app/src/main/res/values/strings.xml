@@ -90,6 +90,32 @@
     <string name="IFTContactEmail">Contact Email</string>
     <string name="IFTCompleteButton">Complete Form</string>
     <string name="IFSTitle">Information Form</string>
+    <string name="IFSTeacherNote">NOTE: The information you provide will be accessed by students. Please provide accurate information. Your password will be encrypted and stored for announcement approval, so remember it. For now, refrain from changing your password or contact us directly to change it.</string>
+    <string name="IFTDepartmentPrompt">Select Department</string>
+    <string-array name="IFTDepartments">
+        <item>Administration</item>
+        <item>Arts</item>
+        <item>Business</item>
+        <item>Co-op and Leadership</item>
+        <item>Computer Science and Technology</item>
+        <item>English</item>
+        <item>Languages</item>
+        <item>Library</item>
+        <item>Mathematics</item>
+        <item>Physical Education</item>
+        <item>Science</item>
+        <item>Social Science</item>
+        <item>Special Education</item>
+        <item>Student Services</item>
+        <item>Staff</item>
+    </string-array>
+    <string name="IFSGradePrompt">Select Department</string>
+    <string-array name="IFSGrades">
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
 
     <!-- Course Screen Strings -->
     <string name="CourseSCode">Course Code</string>
