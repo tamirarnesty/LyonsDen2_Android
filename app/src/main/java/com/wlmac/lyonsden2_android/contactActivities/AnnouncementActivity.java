@@ -214,20 +214,19 @@ public class AnnouncementActivity extends AppCompatActivity {
     }
 
     public void pushNotification(final String title, final String message) {
-        final String[] userID = {""};
         Retrieve.oneSignalIDs(new Retrieve.OneSignalHandler() {
             @Override
             public void handle(ArrayList<String> receivers) {
-//                ArrayList<String> formattedReceivers = new ArrayList<String>();
-//                for (int i = 0; i < receivers.size(); i++) {
-//                    formattedReceivers.add(i, "'" + receivers.get(i) + "'");
-//                }
+                ArrayList<String> formattedReceivers = new ArrayList<String>();
+                for (int i = 0; i < receivers.size(); i++) {
+                    formattedReceivers.add(i, "'" + receivers.get(i) + "'");
+                }
 
                 try {
                     OneSignal.postNotification(new JSONObject("{" +
                                     "'headings': {'en':'" + title + "'}, " +
                                     "'contents': {'en':'" + message + "'}, " +
-                                    "'include_player_ids':" + receivers + "}"),
+                                    "'include_player_ids':" + formattedReceivers + "}"),
                             new OneSignal.PostNotificationResponseHandler() {
                                 @Override
                                 public void onSuccess(JSONObject response) {

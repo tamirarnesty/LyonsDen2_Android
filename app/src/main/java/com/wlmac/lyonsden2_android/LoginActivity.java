@@ -178,7 +178,7 @@ public class LoginActivity extends AppCompatActivity {
         return signUpKeys;
     }
 
-    private void processRequest() {
+    private void processRequest(){
         // initialize needed
         final boolean[] performIntent = {false};
         final String[] signUpKeys = this.signUpKeys;

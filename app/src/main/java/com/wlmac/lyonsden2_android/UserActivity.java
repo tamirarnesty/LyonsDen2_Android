@@ -50,6 +50,7 @@ public class UserActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
 
     private boolean editing = false;
+    private String accessLevelString = "Unavailable";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +71,12 @@ public class UserActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference("users").child("students").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists())
+                if (dataSnapshot.exists()) {
                     onContentLoad(dataSnapshot.child("name").getValue(String.class), user.getEmail(),
                             dataSnapshot.child("accessLevel").getValue(String.class));
+                     accessLevelString = dataSnapshot.child("accessLevel").getValue(String.class);
+                    instantiateComponents();
+                }
                 else Log.d("An error occured", "database directory isn't correct or database does not exist");
             }
 
@@ -84,7 +88,7 @@ public class UserActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        int textHeight = Retrieve.heightForText("Reset Password", this, 24) + 32; // Accounts for padding
+        int textHeight = Retrieve.heightForText("Reset Password", this, 24) + 50; // Accounts for padding
         extraButtonsContainer.animate().translationYBy(textHeight).setDuration(0).start();
         toggleButton.animate().translationYBy(textHeight).setDuration(0).start();
     }
@@ -96,7 +100,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
     public void toggleButtons (View view) {
-        int textHeight = Retrieve.heightForText("Reset Password", this, 24) + 32; // Accounts for padding
+        int textHeight = Retrieve.heightForText("Reset Password", this, 24) + 50; // Accounts for padding
         textHeight = (isShowingExtraButtons) ? textHeight * -1 : textHeight;
         extraButtonsContainer.animate().translationYBy(textHeight).setDuration(300).start();
         toggleButton.animate().translationYBy(textHeight).setDuration(300).start();
@@ -134,11 +138,11 @@ public class UserActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.USEmailField);
         accessLevel = (EditText) findViewById(R.id.USAccessField);
 
-//        try {
-//            displayName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-//            email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-//
-//        } catch (NullPointerException e) {}
+        try {
+            displayName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+            email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+            accessLevel.setText(accessLevelString);
+        } catch (NullPointerException e) {}
     }
 
     public void editAccount (String name, final String email) {

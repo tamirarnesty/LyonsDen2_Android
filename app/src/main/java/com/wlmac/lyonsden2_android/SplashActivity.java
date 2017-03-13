@@ -42,6 +42,7 @@ public class SplashActivity extends AppCompatActivity {
         try {
             ((TextView) findViewById(R.id.SSCopyright)).setText("Copyright Tamir Arnesty & Inal Gotov © " + Calendar.getInstance().get(Calendar.YEAR));
             ((TextView) findViewById(R.id.SSCopyright)).setTypeface(Retrieve.typeface(this));
+            findViewById(R.id.SSCopyright).bringToFront();
         } catch (NullPointerException e) {}
 
         sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);

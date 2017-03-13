@@ -118,7 +118,7 @@ public class HomeActivity extends AppCompatActivity {
             editor.apply();
             boolean isOnlineLogIn = getIntent().getBooleanExtra("isInternetAvailable", true);
             if (!isOnlineLogIn) {
-                Toast.makeText(getApplicationContext(), "Offline Log In. \nSome features unavailable", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Offline Log In.\nSome features unavailable", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(getApplicationContext(), "Successful Log In", Toast.LENGTH_LONG).show();
             }
@@ -456,7 +456,7 @@ public class HomeActivity extends AppCompatActivity {
                     ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
                     timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
                 }
-            if (check == false) {
+            if (!check) {
                 (findViewById(spares[h])).setVisibility(View.INVISIBLE);
                 for (int j = 0; j < timeTable[h].length; j++)
                     (findViewById(idBank[h][j])).setVisibility(View.VISIBLE);

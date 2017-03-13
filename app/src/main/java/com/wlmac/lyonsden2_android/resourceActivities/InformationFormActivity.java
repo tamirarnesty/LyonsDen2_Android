@@ -46,6 +46,7 @@ public class InformationFormActivity extends AppCompatActivity {
 
         instantiateComponents();
         setFonts();
+        promptNotification();
     }
 
     private void instantiateComponents () {
@@ -147,7 +148,7 @@ public class InformationFormActivity extends AppCompatActivity {
     public void studentSubmission() {
         if (fieldsAreValid()) {
             String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference user = (targetRef != null) ? targetRef.push() : FirebaseDatabase.getInstance().getReference("users").child("students").child(userID).push();
+            DatabaseReference user = (targetRef != null) ? targetRef.push() : FirebaseDatabase.getInstance().getReference("users").child("students").child(userID);
 
             user.child("name").setValue(IFSName.getText().toString());
             user.child("grade").setValue(IFSGrade.getSelectedItem().toString());
@@ -168,7 +169,9 @@ public class InformationFormActivity extends AppCompatActivity {
                         }
                     });
             finish();
-            promptNotification();
+            if (promptNotification()) {
+                performIntent();
+            }
         } else {
             Toast.makeText(getApplicationContext(), "Failed to process", Toast.LENGTH_SHORT).show();
         }
@@ -178,9 +181,9 @@ public class InformationFormActivity extends AppCompatActivity {
     public void teacherSubmission() {
         if (fieldsAreValid()) {
             String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference user = (targetRef != null) ? targetRef.push() : FirebaseDatabase.getInstance().getReference("users").child("teachers").child(userID).push();
+            DatabaseReference user = (targetRef != null) ? targetRef.push() : FirebaseDatabase.getInstance().getReference("users").child("teachers").child(userID);
 
-            user.child("name").setValue(IFSName.getText().toString());
+            user.child("name").setValue(IFTName.getText().toString());
             user.child("department").setValue(IFTDepartment.getSelectedItem().toString());
             user.child("email").setValue(IFTEmail.getText().toString());
             user.child("accessLevel").setValue("Teacher");
@@ -200,7 +203,9 @@ public class InformationFormActivity extends AppCompatActivity {
                         }
                     });
             finish();
-            promptNotification();
+            if (promptNotification()) {
+                performIntent();
+            }
         } else {
             Toast.makeText(getApplicationContext(), "Failed to process", Toast.LENGTH_SHORT).show();
         }
@@ -218,7 +223,8 @@ public class InformationFormActivity extends AppCompatActivity {
         }
     }
 
-    private void promptNotification() {
+    private boolean promptNotification() {
+        final boolean [] notificationsChosen = {false};
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setTitle("Announcement Notifications");
         alertBuilder.setMessage("Do you wish to receive notifications?").setCancelable(false)
@@ -226,18 +232,19 @@ public class InformationFormActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 OneSignal.setSubscription(true);
+                notificationsChosen[0] = true;
                 dialog.cancel();
-                performIntent();
             }
         }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 OneSignal.setSubscription(false);
+                notificationsChosen[0] = false;
                 dialog.cancel();
-                performIntent();
             }
         });
         alertBuilder.create().show();
+        return notificationsChosen[0];
     }
     private void performIntent() {
         Intent intent = new Intent(this, HomeActivity.class);
