@@ -42,6 +42,12 @@ import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 // TODO: MAKE A LOADING INDICATOR FOR WHEN CHECKING THE CLUB CODE
 // TODO: MAKE KEYBOARD GO AWAY WHEN !editing
 
+/**
+ * This activity is used for viewing User information with options to add, change or remove data.
+ *
+ * @author Ademir Gotov
+ * @version 1, 2016/08/05
+ */
 public class UserActivity extends AppCompatActivity {
     /** The drawer toggler used this activity. */
     private ActionBarDrawerToggle drawerToggle;
@@ -116,7 +122,7 @@ public class UserActivity extends AppCompatActivity {
 
         //something entirely different
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseDatabase.getInstance().getReference("users").child("students").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("users/students").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists())
@@ -286,7 +292,7 @@ public class UserActivity extends AppCompatActivity {
                     break;
                 case "signOut":
                     auth.signOut();
-                    Intent intent = new Intent(this, LoginActivity.class);
+                    Intent intent = new Intent(UserActivity.this, LoginActivity.class);
                     startActivity(intent);
                     break;
                 case "resetPass":

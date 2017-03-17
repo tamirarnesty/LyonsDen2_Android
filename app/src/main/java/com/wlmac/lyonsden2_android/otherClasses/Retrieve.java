@@ -57,15 +57,16 @@ public class Retrieve {
         ref.orderByChild("dateTime").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String[] keys = {"title", "description", "dateTime", "location", "creator"};
+                String[] keys = {"title", "description", "dateTime", "location", "creator", "key"};
                 if (dataSnapshot.exists()) {
                     target.clear();
 
                     for (DataSnapshot event : dataSnapshot.getChildren()) {
-                        target.add(new String[5]);
+                        target.add(new String[6]);
                         for (int h = 0; h < keys.length; h ++) {
                             try {
                                 if (h == 2) { target.get(target.size() - 1)[h] = convertToDate(event.child(keys[h]).getValue(String.class)); }
+                                else if (h == keys.length - 1) { target.get(target.size() - 1)[h] = event.getKey();}
                                 else { target.get(target.size() - 1)[h] = event.child(keys[h]).getValue(String.class); }
                             } catch (DatabaseException e) {
                                 target.get(target.size() - 1)[h] = event.child(keys[h]).getValue(Long.class).toString();
