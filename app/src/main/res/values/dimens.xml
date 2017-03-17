@@ -32,4 +32,6 @@
     <dimen name="ClubSDescriptionHeight">88dp</dimen>
 
     <dimen name="USTextLabelWidth">103dp</dimen>
+
+    <dimen name="CSActionSheet">250dp</dimen>
 </resources>

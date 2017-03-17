@@ -99,6 +99,7 @@ public class EventList extends LyonsList {
         intent.putExtra("announcement", line);
 
         startActivity(intent);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
     @Override

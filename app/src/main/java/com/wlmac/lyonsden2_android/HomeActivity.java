@@ -1,6 +1,7 @@
 package com.wlmac.lyonsden2_android;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -9,15 +10,14 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.google.firebase.database.FirebaseDatabase;
 import com.wlmac.lyonsden2_android.lyonsLists.ClubList;
 import com.wlmac.lyonsden2_android.lyonsLists.EventList;
+import com.onesignal.OneSignal;
 import com.wlmac.lyonsden2_android.lyonsLists.ListAdapter;
 import com.wlmac.lyonsden2_android.otherClasses.CourseDialog;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsCalendar;
@@ -45,9 +46,6 @@ import java.util.Locale;
  * @version 1, 2016/07/30
  */
 public class HomeActivity extends AppCompatActivity {
-
-
-
     public static String sharedPreferencesName = "com.wlmac.lyonsden2_android";
     /** Holds the current day's value (1 or 2) */
     private TextView dayLabel;
@@ -69,7 +67,6 @@ public class HomeActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     //containers for courses
     private RelativeLayout [] containers = new RelativeLayout[4];
-
     //date format
     SimpleDateFormat timeFormat = new SimpleDateFormat("kk:mm:ss", Locale.CANADA);
 
@@ -87,7 +84,8 @@ public class HomeActivity extends AppCompatActivity {
     private String[] lateDay;
     private long[] normalTime;
     private long[] lateTime;
-
+    private boolean isOnlineLogInShown;
+    SharedPreferences sharedPreferences;
 
     private String[][] timeTable;
 
@@ -100,6 +98,8 @@ public class HomeActivity extends AppCompatActivity {
         // Declare the associated xml layout file
         setContentView(R.layout.home_activity);
 
+        Retrieve.oneSignalStatus();
+
         // Declare time stamps for all periods in dedicated arrays
         initializeTimeStamps();
 
@@ -109,8 +109,20 @@ public class HomeActivity extends AppCompatActivity {
         initializeComponents();
         initializeTimeTable();
 
+        sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
         updatePeriods();
 
+        if (sharedPreferences.getBoolean("isOnlineLogInShown", false)) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("isOnlineLogInShown", true);
+            editor.apply();
+            boolean isOnlineLogIn = getIntent().getBooleanExtra("isInternetAvailable", true);
+            if (!isOnlineLogIn) {
+                Toast.makeText(getApplicationContext(), "Offline Log In.\nSome features unavailable", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Successful Log In", Toast.LENGTH_LONG).show();
+            }
+        }
         final Handler periodUpdater = new Handler();
         periodUpdater.postDelayed(new Runnable(){
             @Override
@@ -118,7 +130,7 @@ public class HomeActivity extends AppCompatActivity {
                 updatePeriods();
             }
         }, 60000);
-        setupDrawer(this, drawerList, rootLayout, drawerToggle);
+        Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
 
         Thread thread = createThread();
         thread.start();
@@ -131,7 +143,7 @@ public class HomeActivity extends AppCompatActivity {
 
         if (Retrieve.isInternetAvailable(this)) {
             String day = Retrieve.dayFromDictionary(getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyDayDictionary, ""), new Date());
-            if (day == "-1") {
+            if (day.equals("-1")) {
                 day = "X";
             }
             dayLabel.setText(day);
@@ -141,6 +153,9 @@ public class HomeActivity extends AppCompatActivity {
             todayIsDay.setText("No Internet Available");
         }
 
+        if (dayLabel.getText().toString().equals("X")) {
+            Toast.makeText(getApplicationContext(), "No day available.\nThere is no school today.\nIt may be a weekend.", Toast.LENGTH_LONG).show();
+        }
         isLateStart = Retrieve.isLateStartDay(getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyLateStartDictionary, ""), new Date());
 
 
@@ -164,10 +179,6 @@ public class HomeActivity extends AppCompatActivity {
             noInternet.setText(View.VISIBLE);
         }
 
-
-
-
-
         // Declare a listener for whenever an item has been clicked in the ListVew
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override//             |The ListView        |The item  |The item's   |The item's
@@ -178,8 +189,16 @@ public class HomeActivity extends AppCompatActivity {
                 intent.putExtra("tag", "announcement");
                 intent.putExtra("announcement", list);
                 startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 
     /*private void initializeContent () {
@@ -355,91 +374,14 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * The method used for a quick and easy setup of a default drawer in the current view.
-     * @param initiator The activity that is calling this method. ('this' arguement will work most of the time)
-     * @param drawerList The drawer list that is bind to the initiating activity.
-     * @param rootLayout The root layout of the initiating activity.
-     * @param drawerToggle The drawer toggle of the initiating activity.
-     */
-    public static void setupDrawer (AppCompatActivity initiator, ListView drawerList, DrawerLayout rootLayout, ActionBarDrawerToggle drawerToggle) {
-        // Declare the drawer list adapter, to fill the drawer list
-        drawerList.setAdapter(new ArrayAdapter<String>(initiator, android.R.layout.simple_selectable_list_item, HomeActivity.drawerContent) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view =super.getView(position, convertView, parent);
-                ((TextView) view.findViewById(android.R.id.text1)).setTextColor(parent.getResources().getColor(R.color.whiteText));
-                return view;
-            }
-        });
-        // Set the drawer list's item click listener
-        drawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                HomeActivity.performDrawerSegue(parent.getContext(), position); // Segue into the appropriate Activity
-            }
-        });
-        // Display the drawer indicator
-        initiator.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        initiator.getSupportActionBar().setHomeButtonEnabled(true);
-        // Enable the drawer indicator
-        drawerToggle.setDrawerIndicatorEnabled(true);
-        // Add the drawer toggler to the current layout
-        rootLayout.addDrawerListener(drawerToggle);
-    }
-
-    /**
-     * Returns a fully setup ActionBarDrawerToggle object, redy for use with a drawer.
-     * @param initiator The activity that is calling this method. ('this' arguement will work most of the time)
-     * @param rootLayout The root layout of the initiating activity.
-     */
-    public static ActionBarDrawerToggle initializeDrawerToggle (AppCompatActivity initiator, DrawerLayout rootLayout) {
-        final AppCompatActivity finalInitiator = initiator;
-        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(finalInitiator, rootLayout, R.string.drawerOpen, R.string.drawerClose) {
-            @Override
-            public void onDrawerClosed(View drawerView) {   // When the drawer is closed
-                super.onDrawerClosed(drawerView);           // Super Call
-                finalInitiator.getSupportActionBar().setTitle(finalInitiator.getTitle()); // Set the app title to the drawer's title
-                finalInitiator.invalidateOptionsMenu();                    // State that the drawer should be redrawn
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {   // When the drawer is opened
-                super.onDrawerOpened(drawerView);           // Super call
-                finalInitiator.getSupportActionBar().setTitle("Menu");     // Set the app title to the drawer's title
-                finalInitiator.invalidateOptionsMenu();                    // State that the drawer should be redrawn
-            }
-        };
-        return  drawerToggle;
-    }
-
-    public static void performDrawerSegue (Context initiator, int activity) {
-        Class target = null;
-        if (activity == 0) {
-            target = HomeActivity.class;
-        } else if (activity == 1) {
-            target = CalendarActivity.class;
-        } else if (activity == 2) {
-            target = EventList.class;
-        } else if ( activity == 3) {
-            target = ClubList.class;
-        } else if (activity == 4) {
-            target = ContactActivity.class;
-        } else if (activity == 5) {
-            target = UserActivity.class;
-        }
-        Intent intent = new Intent (initiator, target);
-        initiator.startActivity(intent);
-    }
-
     /** Instantiates all GUI components */
     private void initializeComponents () {
         dayLabel = (TextView) findViewById(R.id.HSDayLabel);
         todayIsDay = (TextView) findViewById(R.id.HSTodayIsDay);
         listView = (ListView) findViewById(R.id.HSList);
-        rootLayout = (DrawerLayout) findViewById(R.id.HDLayout);
-        drawerList = (ListView) findViewById(R.id.HDList);
-        drawerToggle = initializeDrawerToggle(this, rootLayout);
+        rootLayout = (DrawerLayout) findViewById(R.id.NDLayout);
+        drawerList = (ListView) findViewById(R.id.NDList);
+        drawerToggle = Retrieve.drawerToggle(this, rootLayout);
         noInternet = (TextView) findViewById(R.id.HSNoInternet);
 
         periods[0] = (RelativeLayout) findViewById(R.id.HSPeriod0);
@@ -513,7 +455,7 @@ public class HomeActivity extends AppCompatActivity {
                     ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
                     timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
                 }
-            if (check == false) {
+            if (!check) {
                 (findViewById(spares[h])).setVisibility(View.INVISIBLE);
                 for (int j = 0; j < timeTable[h].length; j++)
                     (findViewById(idBank[h][j])).setVisibility(View.VISIBLE);

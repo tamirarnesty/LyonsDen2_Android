@@ -42,10 +42,15 @@
     <string name="CSAnnouncementButton">Propose Announcement</string>
     <string name="CSRadioButton">Secret... Coming Soon!</string>
     <string name="CSTeacherButton">Contact a Teacher</string>
-    <string name="CSEmergencyButton">Emergency Hotline</string>
+    <string name="CSEmergencyButton">Contact</string>
     <string name="CSReport">Report a Bug</string>
     <string name="CSHelp">Help</string>
     <string name="CSLicence">Licences</string>
+    <string name="CSHelpPhoneButton">Kids Help Phone</string>
+    <string name="CSWLMCIButton">WLMCI</string>
+    <string name="CSContactLabel">Contact</string>
+    <string name="CSMessageLabel">Who would you like to talk to?</string>
+    <string name="CSCancelButton">Cancel</string>
 
     <!-- Announcement Proposal Screen Strings -->
     <string name="APSTitleLabel">Title:</string>
@@ -84,6 +89,33 @@
     <string name="IFTDepartment">Department</string>
     <string name="IFTContactEmail">Contact Email</string>
     <string name="IFTCompleteButton">Complete Form</string>
+    <string name="IFSTitle">Information Form</string>
+    <string name="IFSTeacherNote">NOTE: The information you provide will be accessed by students. Please provide accurate information. Your password will be encrypted and stored for announcement approval, so remember it. For now, refrain from changing your password or contact us directly to change it.</string>
+    <string name="IFTDepartmentPrompt">Select Department</string>
+    <string-array name="IFTDepartments">
+        <item>Administration</item>
+        <item>Arts</item>
+        <item>Business</item>
+        <item>Co-op and Leadership</item>
+        <item>Computer Science and Technology</item>
+        <item>English</item>
+        <item>Languages</item>
+        <item>Library</item>
+        <item>Mathematics</item>
+        <item>Physical Education</item>
+        <item>Science</item>
+        <item>Social Science</item>
+        <item>Special Education</item>
+        <item>Student Services</item>
+        <item>Staff</item>
+    </string-array>
+    <string name="IFSGradePrompt">Select Department</string>
+    <string-array name="IFSGrades">
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
 
     <!-- Course Screen Strings -->
     <string name="CourseSCode">Course Code</string>

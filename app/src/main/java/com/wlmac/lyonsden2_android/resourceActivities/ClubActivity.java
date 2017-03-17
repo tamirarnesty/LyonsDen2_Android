@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -70,16 +71,33 @@ public class ClubActivity extends AppCompatActivity {
         clubsEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(parent.getContext(), InfoActivity.class);
-                String[] list = new String[5];
-                list[0] = content.get(position)[0];
-                list[1] = content.get(position)[1];
-                list[2] = content.get(position)[2];
-                list[3] = content.get(position)[3];
-                list[4] = content.get(position)[4];
-                intent.putExtra("tag", "club");
-                intent.putExtra("club", list);
+//                Intent intent = new Intent(parent.getContext(), InfoActivity.class);
+//                String[] list = new String[5];
+//                list[0] = content.get(position)[0];
+//                list[1] = content.get(position)[1];
+//                list[2] = content.get(position)[2];
+//                list[3] = content.get(position)[3];
+//                list[4] = content.get(position)[4];
+//                intent.putExtra("tag", "club");
+//                intent.putExtra("club", list);
+//                startActivity(intent);
+
+                Log.d("EventList", "Opening Announcement");
+                // Event keys: title, info, date, location
+
+                Intent intent = new Intent(ClubActivity.this, InfoActivity.class);
+                String[] line = new String[5];
+                line[0] = content.get(position)[0];
+                line[1] = content.get(position)[1];
+                line[2] = content.get(position)[2];
+                line[3] = content.get(position)[3];
+                line[4] = content.get(position)[4];
+                intent.putExtra("tag", "announcement");
+                intent.putExtra("announcement", line);
+
                 startActivity(intent);
+
+                overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 
@@ -97,6 +115,12 @@ public class ClubActivity extends AppCompatActivity {
                 onEventsLoaded();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
     }
 
     @Override

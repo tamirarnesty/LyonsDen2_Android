@@ -60,6 +60,7 @@ public class UserActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
 
     private boolean editing = false;
+    private String accessLevelString = "Unavailable";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,19 +72,21 @@ public class UserActivity extends AppCompatActivity {
         extraButtonsContainer = (TableLayout) findViewById(R.id.USContainer);
         toggleButton = (Button) findViewById(R.id.USToggleButton);
         // Drawer setup
-        DrawerLayout rootLayout = (DrawerLayout) findViewById(R.id.LDLayout);
-        ListView drawerList = (ListView) findViewById(R.id.LDList);
-        drawerToggle = HomeActivity.initializeDrawerToggle(this, rootLayout);
-        HomeActivity.setupDrawer(this, drawerList, rootLayout, drawerToggle);
-
+        DrawerLayout rootLayout = (DrawerLayout) findViewById(R.id.NDLayout);
+        ListView drawerList = (ListView) findViewById(R.id.NDList);
+        drawerToggle = Retrieve.drawerToggle(this, rootLayout);
+        Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
         //something entirely different
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseDatabase.getInstance().getReference("users").child("students").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists())
+                if (dataSnapshot.exists()) {
                     onContentLoad(dataSnapshot.child("name").getValue(String.class), user.getEmail(),
                             dataSnapshot.child("accessLevel").getValue(String.class));
+                     accessLevelString = dataSnapshot.child("accessLevel").getValue(String.class);
+                    instantiateComponents();
+                }
                 else Log.d("An error occured", "database directory isn't correct or database does not exist");
             }
 
@@ -95,13 +98,19 @@ public class UserActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        int textHeight = Retrieve.heightForText("Reset Password", this, 24) + 32; // Accounts for padding
+        int textHeight = Retrieve.heightForText("Reset Password", this, 24) + 50; // Accounts for padding
         extraButtonsContainer.animate().translationYBy(textHeight).setDuration(0).start();
         toggleButton.animate().translationYBy(textHeight).setDuration(0).start();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+    }
+
     public void toggleButtons (View view) {
-        int textHeight = Retrieve.heightForText("Reset Password", this, 24) + 32; // Accounts for padding
+        int textHeight = Retrieve.heightForText("Reset Password", this, 24) + 50; // Accounts for padding
         textHeight = (isShowingExtraButtons) ? textHeight * -1 : textHeight;
         extraButtonsContainer.animate().translationYBy(textHeight).setDuration(300).start();
         toggleButton.animate().translationYBy(textHeight).setDuration(300).start();
@@ -114,11 +123,9 @@ public class UserActivity extends AppCompatActivity {
         this.email.setText(email);
         this.accessLevel.setText(accessLevel);
         sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
-        /* An instance of the root layout of this activity. */
-        DrawerLayout rootLayout = (DrawerLayout) findViewById(R.id.LDLayout);
-        /* An instance of the ListView used in this activity's navigation drawer. */
-        drawerToggle = HomeActivity.initializeDrawerToggle(this, rootLayout);
-        HomeActivity.setupDrawer(this, (ListView) findViewById(R.id.LDList), rootLayout, drawerToggle);
+//        DrawerLayout rootLayout = (DrawerLayout) findViewById(R.id.LDLayout);
+//        drawerToggle = Retrieve.drawerToggle(this, rootLayout);
+//        Retrieve.drawerSetup(this, (ListView) findViewById(R.id.LDList), rootLayout, drawerToggle);
 
         //something entirely different
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -140,6 +147,12 @@ public class UserActivity extends AppCompatActivity {
         displayName = (EditText) findViewById(R.id.USNameField);
         email = (EditText) findViewById(R.id.USEmailField);
         accessLevel = (EditText) findViewById(R.id.USAccessField);
+
+        try {
+            displayName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+            email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+            accessLevel.setText(accessLevelString);
+        } catch (NullPointerException e) {}
     }
 
     public void editAccount (String name, final String email) {
@@ -294,6 +307,7 @@ public class UserActivity extends AppCompatActivity {
                     auth.signOut();
                     Intent intent = new Intent(UserActivity.this, LoginActivity.class);
                     startActivity(intent);
+                    finish();
                     break;
                 case "resetPass":
                     TextView textView = (TextView) findViewById(R.id.USEmailField);
@@ -358,7 +372,7 @@ public class UserActivity extends AppCompatActivity {
         // Set access level user property
         if (!this.accessLevel.getText().toString().equalsIgnoreCase("club leader")) {
             // Determine which directory to access in database
-            String userKey = (this.accessLevel.getText().toString().equalsIgnoreCase("student")) ? "student" : "teacher";
+            String userKey = (this.accessLevel.getText().toString().equalsIgnoreCase("student")) ? "students" : "teachers";
             // Update property in database
             FirebaseDatabase.getInstance().getReference("users/" + userKey + "/" + uid + "/accessLevel").setValue("Club Leader");
             // Update property in UI

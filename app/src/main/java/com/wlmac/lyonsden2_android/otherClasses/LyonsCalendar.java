@@ -222,7 +222,6 @@ public class LyonsCalendar extends CaldroidFragment {
 
         // The current calendar contents that are being parsed, the top event gets chopped off once it has been parsed.
         Log.i("Calendar Background", "Commencing Parsing of Data");
-
         // Will repeat until there are events in "raw data to be parsed" (rawParseData)
         do {
             // Remove the unnecessary text before the search flag (either file header or parsed event)

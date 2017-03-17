@@ -1,27 +1,36 @@
 package com.wlmac.lyonsden2_android;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wlmac.lyonsden2_android.contactActivities.AnnouncementActivity;
-import com.wlmac.lyonsden2_android.contactActivities.MusicActivity;
 import com.wlmac.lyonsden2_android.lyonsLists.ListViewerActivity;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
-import com.wlmac.lyonsden2_android.otherClasses.ToastView;
 
 /**
  * The activity used to display the methods for contacting the school.
@@ -30,15 +39,13 @@ import com.wlmac.lyonsden2_android.otherClasses.ToastView;
  * @version 1, 2016/08/06
  */
 public class ContactActivity extends AppCompatActivity {
-    /** An instance of the root layout of this activity. */
-    private DrawerLayout rootLayout;
-    /** An instance of the ListView used in this activity's navigation drawer. */
-    private ListView drawerList;
-    /** The drawer toggler used this activity. */
     private ActionBarDrawerToggle drawerToggle;
     private RelativeLayout extraButtonsContainer;
     private Button extraButtonsToggle;
     private boolean isShowingExtraButtons = true;
+    private LinearLayout actionSheet;
+    int actionSheetHeight;
+    private RelativeLayout contentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +53,18 @@ public class ContactActivity extends AppCompatActivity {
         setContentView(R.layout.contact_activity);
         extraButtonsContainer = (RelativeLayout) findViewById(R.id.CSButtonContainer);
         extraButtonsToggle = (Button) findViewById(R.id.CSToggleButton);
-
+        actionSheet = (LinearLayout) findViewById(R.id.CSActionSheet);
+        contentView = (RelativeLayout) findViewById(R.id.CSContentView);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         if (getIntent().getBooleanExtra("afterProposal", false)) {
             Toast.makeText(this, "Submitted!", Toast.LENGTH_SHORT).show();
         }
 
-        rootLayout = (DrawerLayout) findViewById(R.id.ConDLayout);
-        drawerList = (ListView) findViewById(R.id.ConDList);
+        /* An instance of the root layout of this activity. */
+        DrawerLayout rootLayout = (DrawerLayout) findViewById(R.id.NDLayout);
+        /* An instance of the ListView used in this activity's navigation drawer. */
+        ListView drawerList = (ListView) findViewById(R.id.NDList);
         drawerToggle = Retrieve.drawerToggle(this, rootLayout);
         Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
 
@@ -65,47 +75,128 @@ public class ContactActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         int textHeight = Retrieve.heightForText("Report a Bug", this, 12) + 16; // Accounts for padding
+        int transitionHeight = Retrieve.dpFromInt(Retrieve.heightForText("Report a Bug", this, 12) + 16, getResources());
+        actionSheetHeight = (int) getResources().getDimension(R.dimen.CSActionSheet) + 60;
+        Log.d("ContactActivity", "" + textHeight);
+        Log.d("ContactActivity", "" + transitionHeight);
         extraButtonsContainer.animate().translationYBy(textHeight).setDuration(0).start();
         extraButtonsToggle.animate().translationYBy(textHeight).setDuration(0).start();
+        actionSheet.animate().translationYBy(actionSheetHeight).setDuration(0).start();
+
         extraButtonsToggle.setBackgroundResource(R.drawable.arrow_up_48dp);
         isShowingExtraButtons = true;
+
+//        ((DrawerLayout) findViewById(R.id.ConDLayout)).closeDrawer((ListView) findViewById(R.id.ConDList), false);
+        ((DrawerLayout) findViewById(R.id.NDLayout)).closeDrawer(Gravity.LEFT);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 
     private void setFonts() {
         int[] components = {R.id.CSTextView, R.id.CSAnnouncementButton, R.id.CSTeacherButton, R.id.CSRadioButton, R.id.CSEmergencyButton, R.id.CSReportButton, R.id.CSHelpButton, R.id.CSLicencesButton};
-        for (int h = 0; h < components.length; h ++)
+        for (int h = 0; h < components.length; h++)
             ((TextView) findViewById(components[h])).setTypeface(Retrieve.typeface(this));
     }
 
     /** Called when the Propose Announcement button is pressed. */
-    public void proposeAnnouncement (View view) {
+    public void proposeAnnouncement(View view) {
         // Segue into Announcement Proposal Activity
-        Intent intent = new Intent (this, AnnouncementActivity.class);
+        Intent intent = new Intent(this, AnnouncementActivity.class);
         intent.putExtra("clubKey", "no-key");
         startActivity(intent);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
     /** Called when the Propose sont for Radio button is pressed. */
-    public void proposeRadio (View view) {
+    public void proposeRadio(View view) {
         Toast.makeText(getApplicationContext(), "You're a nosy one aren't you!", Toast.LENGTH_SHORT).show();
 //        Intent intent = new Intent(this, MusicActivity.class);
 //        startActivity(intent);
     }
 
     /** Called when Contact a Teacher button is pressed. */
-    public void requestTeacherList (View view) {
+    public void requestTeacherList(View view) {
         // Segue into a teacher list.
         Intent intent = new Intent(this, ListViewerActivity.class);
         intent.putExtra("title", "Teachers");
         startActivity(intent);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
+    private boolean checkPermissions() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CALL_PHONE}, 1);
+
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    public void actionSheet(View view) {
+        if (view.getTag().toString().equals("3")) { // cancel
+            Log.d("ContactActivity", "Cancel Pressed");
+
+        } else if (view.getTag().toString().equals("1")) { // help phone
+            Log.d("ContactActivity", "Kids Help Phone Pressed");
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:1-800-668-6868"));
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                checkPermissions();
+                return;
+            } else {
+                startActivity(intent);
+            }
+        } else {
+            if (view.getTag().toString().equals("2")) { // wlmci
+                Log.d("ContactActivity", "WLMCI Pressed");
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:416-395-3330" ));
+                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    checkPermissions();
+                    return;
+                } else {
+                    startActivity(intent);
+                }
+            }
+        }
+        actionSheet.animate().translationYBy(actionSheetHeight).setDuration(300).start();
+        contentView.animate().alpha(1).setDuration(300).start();
+        contentView.setEnabled(true);
+        contentView.setClickable(true);
+        findViewById(R.id.CSAnnouncementButton).setClickable(true);
+        findViewById(R.id.CSTeacherButton).setClickable(true);
+        findViewById(R.id.CSRadioButton).setClickable(true);
+        findViewById(R.id.CSEmergencyButton).setClickable(true);
+    }
+
+
     /** Called when Emergency Hotline button is pressed. */
-    public void emergency (View view) {
-        // TODO: Implement emergency hotline
+    public void emergency(View view) {
+        if (checkPermissions()) {
+            actionSheet.animate().translationYBy(-actionSheetHeight).setDuration(300).start();
+            contentView.animate().alpha(0.5f).setDuration(300).start();
+            contentView.setEnabled(false);
+            contentView.setClickable(false);
+            findViewById(R.id.CSAnnouncementButton).setClickable(false);
+            findViewById(R.id.CSTeacherButton).setClickable(false);
+            findViewById(R.id.CSRadioButton).setClickable(false);
+            findViewById(R.id.CSEmergencyButton).setClickable(false);
+        } else {
+            Log.d("Contact Activity", "Something went wrong");
+        }
     }
 
     public void toggleButtons (View view) {
+//        int transitionHeight = Retrieve.dpFromInt(Retrieve.heightForText("Report a Bug", this, 12) + 16, getResources());
         int textHeight = Retrieve.heightForText("Report a Bug", this, 12) + 16; // Accounts for padding
         textHeight = (isShowingExtraButtons) ? textHeight * -1 : textHeight;
         extraButtonsContainer.animate().translationYBy(textHeight).setDuration(300).start();

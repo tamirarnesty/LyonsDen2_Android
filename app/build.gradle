@@ -10,7 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-        manifestPlaceholders = [onesignal_app_id: "f23c5202-a7ef-4985-b993-4b4c",
+        manifestPlaceholders = [onesignal_app_id: "f23c5202-a7ef-4985-b993-4b4cfe576b23",
                                 // Project number pulled from dashboard, local value is ignored.
                                 onesignal_google_project_number: "REMOTE"]
     }
@@ -35,8 +35,7 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:9.4.0'
     compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.onesignal:OneSignal:3.+@aar'
-    // TODO: FIGURE OUT DEPENDENCIES FOR ONESIGNAL
-    //    compile 'com.google.android.gms:play-services-gcm:3.0.0'
+    compile 'com.google.android.gms:play-services-gcm:9.4.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

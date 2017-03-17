@@ -3,11 +3,13 @@
     package="com.wlmac.lyonsden2_android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/lyons_icon"
         android:label="@string/app_name"
+        android:name=".LyonsDen"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -59,7 +61,7 @@
 
         <activity android:name=".resourceActivities.InformationFormActivity" />
         <activity android:name=".resourceActivities.TextViewerActivity" />
-        <activity android:name=".resourceActivities.GuideActivity"></activity>
+        <activity android:name=".resourceActivities.GuideActivity"/>
     </application>
 
 </manifest>
