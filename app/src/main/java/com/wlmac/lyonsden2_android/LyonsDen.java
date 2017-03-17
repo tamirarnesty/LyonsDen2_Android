@@ -1,11 +1,6 @@
 package com.wlmac.lyonsden2_android;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.Application;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.util.Log;
 
@@ -15,18 +10,19 @@ import com.onesignal.OneSignal;
 
 import org.json.JSONException;
 
-import static android.R.attr.name;
-
 /**
  * Created by sketch204 on 2017-02-24.
  */
 
 public class LyonsDen extends Application {
+    public static String keySharedPreferences = "com.wlmac.lyonsden2_android";
+    public static String keyEmail = "username";
+    public static String keyPass = "password";
+
     @Override
     public void onCreate() {
         super.onCreate();
 
-        Log.d("Lyons Den", "I CALLED MUTHERFUCKERS!!!!!!!!!!!");
         initializeOneSignal(true);
 //        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getApplicationContext());
 //

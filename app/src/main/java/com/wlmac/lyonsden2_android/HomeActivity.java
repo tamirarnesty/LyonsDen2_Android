@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.wlmac.lyonsden2_android.lyonsLists.ListAdapter;
 import com.wlmac.lyonsden2_android.otherClasses.CourseDialog;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsCalendar;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
+import com.wlmac.lyonsden2_android.otherClasses.WebCalendar;
 import com.wlmac.lyonsden2_android.resourceActivities.InfoActivity;
 
 import java.text.SimpleDateFormat;
@@ -46,7 +48,6 @@ import java.util.Locale;
  * @version 1, 2016/07/30
  */
 public class HomeActivity extends AppCompatActivity {
-    public static String sharedPreferencesName = "com.wlmac.lyonsden2_android";
     /** Holds the current day's value (1 or 2) */
     private TextView dayLabel;
     /** Declared merely because it must be set to a custom font */
@@ -109,7 +110,7 @@ public class HomeActivity extends AppCompatActivity {
         initializeComponents();
         initializeTimeTable();
 
-        sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
+        sharedPreferences = this.getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE);
         updatePeriods();
 
         if (sharedPreferences.getBoolean("isOnlineLogInShown", false)) {
@@ -141,22 +142,25 @@ public class HomeActivity extends AppCompatActivity {
         dayLabel.setTypeface(Retrieve.typeface(this));
         todayIsDay.setTypeface(Retrieve.typeface(this));
 
-        if (Retrieve.isInternetAvailable(this)) {
-            String day = Retrieve.dayFromDictionary(getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyDayDictionary, ""), new Date());
-            if (day.equals("-1")) {
-                day = "X";
+        if (getSharedPreferences(LyonsDen.keySharedPreferences, 0).getString(LyonsCalendar.keyDayDictionary, null) != null)
+            updateDay();
+        else
+            if (Retrieve.isInternetAvailable(this)) {
+                // Download cal and try again
+                Log.d("Home", "Commencing Calendar Caching!");
+                WebCalendar.downloadInto(new LyonsCalendar(), this, WebCalendar.actionCacheOnly);
+                Log.d("Home", "Download Initiated!");
+                updateDay();
+                Log.d("Home", "Updated Day Label!");
+            } else {
+                dayLabel.setText("N/A");
+                todayIsDay.setText("No Internet Available");
             }
-            dayLabel.setText(day);
-        }
-        else {
-            dayLabel.setText("N/A");
-            todayIsDay.setText("No Internet Available");
-        }
 
         if (dayLabel.getText().toString().equals("X")) {
             Toast.makeText(getApplicationContext(), "No day available.\nThere is no school today.\nIt may be a weekend.", Toast.LENGTH_LONG).show();
         }
-        isLateStart = Retrieve.isLateStartDay(getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyLateStartDictionary, ""), new Date());
+        isLateStart = Retrieve.isLateStartDay(getSharedPreferences(LyonsDen.keySharedPreferences, 0).getString(LyonsCalendar.keyLateStartDictionary, ""), new Date());
 
 
         // Declare and set the ArrayAdapter for filling the ListView with content
@@ -177,7 +181,7 @@ public class HomeActivity extends AppCompatActivity {
             noInternet.setVisibility(View.INVISIBLE);
         } else {
             listView.setVisibility(View.INVISIBLE);
-            noInternet.setText(View.VISIBLE);
+            noInternet.setVisibility(View.VISIBLE);
         }
 
         // Declare a listener for whenever an item has been clicked in the ListVew
@@ -251,6 +255,13 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void updateDay () {
+        String day = Retrieve.dayFromDictionary(getSharedPreferences(LyonsDen.keySharedPreferences, 0).getString(LyonsCalendar.keyDayDictionary, ""), new Date());
+        if (day.equals("-1"))
+            day = "X";
+        dayLabel.setText(day);
     }
 
     private int checkTimes(String time, String[] array) {
@@ -431,7 +442,7 @@ public class HomeActivity extends AppCompatActivity {
                           {R.id.HSCourseName3, R.id.HSCourseCode3, R.id.HSTeacherName3, R.id.HSRoomNumber3}};   // Period 4
         int[] spares = {R.id.HSSpare0, R.id.HSSpare1, R.id.HSSpare2, R.id.HSSpare3};
         // A nested loop that will fill up the timetable
-        SharedPreferences pref = getSharedPreferences(HomeActivity.sharedPreferencesName, 0);
+        SharedPreferences pref = getSharedPreferences(LyonsDen.keySharedPreferences, 0);
         for (int h = 0; h < timeTable.length; h ++) {
             boolean check = pref.getBoolean("Period " + (h+1), false);
                 for (int j = 0; j < timeTable[h].length; j++) {

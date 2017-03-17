@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.wlmac.lyonsden2_android.HomeActivity;
+import com.wlmac.lyonsden2_android.LyonsDen;
 import com.wlmac.lyonsden2_android.R;
 
 import java.io.IOException;
@@ -49,6 +50,7 @@ public class WebCalendar extends IntentService {
      * @see IntentService
      */
     public static void downloadInto(LyonsCalendar localCalendar, Context context, String action) {
+        Log.d("WebCalendar", "Received Request for " + action);
         targetCalendar = localCalendar;
         Intent intent = new Intent(context, WebCalendar.class);
         intent.setAction(action);
@@ -58,6 +60,7 @@ public class WebCalendar extends IntentService {
 // MARK: DOWNLOADING
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.d("WebCalendar", "Handling Request...");
         if (intent != null && !intent.getAction().equals(actionLoadOffline)) {
             String webData = "";        // The string that will hold the web data
 
@@ -103,12 +106,12 @@ public class WebCalendar extends IntentService {
                 targetCalendar.parseCalendar(webData, this);
 
             // Cache the calendar file
-            SharedPreferences.Editor cache = getSharedPreferences(HomeActivity.sharedPreferencesName, 0).edit();
+            SharedPreferences.Editor cache = getSharedPreferences(LyonsDen.keySharedPreferences, 0).edit();
             cache.putString(LyonsCalendar.keyCalendarCache, webData);
             cache.apply();
             // If the request was to load the calendar offline, from last cached file
         } else if (intent.getAction().equals(actionLoadOffline)) {      // Action 4
-            String offlineCalendar = getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyCalendarCache, null);
+            String offlineCalendar = getSharedPreferences(LyonsDen.keySharedPreferences, 0).getString(LyonsCalendar.keyCalendarCache, null);
             targetCalendar.loadEvents(targetCalendar.parseCalendar(offlineCalendar, null));
         }
     }

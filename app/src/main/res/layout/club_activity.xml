@@ -14,6 +14,7 @@
         android:id="@+id/toolbar">
     </android.support.v7.widget.Toolbar>
 
+    <!-- Title & Info COntainer -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -98,6 +99,7 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <!-- Club Leaders Label -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

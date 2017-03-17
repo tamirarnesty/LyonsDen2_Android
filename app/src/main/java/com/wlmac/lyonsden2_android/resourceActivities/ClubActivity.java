@@ -136,7 +136,7 @@ public class ClubActivity extends AppCompatActivity {
         infoView = (TextView) findViewById(R.id.ClubSDescriptionLabel);
         infoView.setText(getIntent().getStringExtra("info"));
 
-        ((TextView) findViewById(R.id.ClubSLeaderList)).setText(getIntent().getStringExtra("leaders"));
+        ((TextView) findViewById(R.id.ClubSLeaderList)).setText("Club Leads: " + getIntent().getStringExtra("leaders"));
 
         clubRef = FirebaseDatabase.getInstance().getReference("clubs").child(getIntent().getStringExtra("clubKey"));
         Log.d("Club Reference Path", clubRef.toString());
@@ -188,8 +188,8 @@ public class ClubActivity extends AppCompatActivity {
         int viewVisibility = (editing) ? View.GONE : View.VISIBLE;
         int editVisibility = (editing) ? View.VISIBLE : View.GONE;
 
-        ((LinearLayout) findViewById(R.id.ClubSViewBox)).setVisibility(viewVisibility);
-        ((LinearLayout) findViewById(R.id.ClubSEditBox)).setVisibility(editVisibility);
+        findViewById(R.id.ClubSViewBox).setVisibility(viewVisibility);
+        findViewById(R.id.ClubSEditBox).setVisibility(editVisibility);
 
         if (!editing && (!titleView.getText().toString().equals(titleField.getText().toString()) || !infoView.getText().toString().equals(infoField.getText().toString()))) {
             promptUserForApproval();

@@ -4,26 +4,20 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuInflater;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,19 +68,16 @@ public class ContactActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        int textHeight = Retrieve.heightForText("Report a Bug", this, 12) + 16; // Accounts for padding
-        int transitionHeight = Retrieve.dpFromInt(Retrieve.heightForText("Report a Bug", this, 12) + 16, getResources());
+        float transitionHeight = Retrieve.heightForText("Sign out", this, 12) + (Retrieve.dpFromInt(16, getResources())); // Accounts for padding
         actionSheetHeight = (int) getResources().getDimension(R.dimen.CSActionSheet) + 60;
-        Log.d("ContactActivity", "" + textHeight);
-        Log.d("ContactActivity", "" + transitionHeight);
-        extraButtonsContainer.animate().translationYBy(textHeight).setDuration(0).start();
-        extraButtonsToggle.animate().translationYBy(textHeight).setDuration(0).start();
+        extraButtonsContainer.animate().translationYBy(transitionHeight).setDuration(0).start();
+        extraButtonsToggle.animate().translationYBy(transitionHeight).setDuration(0).start();
         actionSheet.animate().translationYBy(actionSheetHeight).setDuration(0).start();
 
         extraButtonsToggle.setBackgroundResource(R.drawable.arrow_up_48dp);
         isShowingExtraButtons = true;
 
-//        ((DrawerLayout) findViewById(R.id.ConDLayout)).closeDrawer((ListView) findViewById(R.id.ConDList), false);
+        // Programatically Close the Drawer, for when you segue into this view by pressing back
         ((DrawerLayout) findViewById(R.id.NDLayout)).closeDrawer(Gravity.LEFT);
     }
 
@@ -114,8 +105,6 @@ public class ContactActivity extends AppCompatActivity {
     /** Called when the Propose sont for Radio button is pressed. */
     public void proposeRadio(View view) {
         Toast.makeText(getApplicationContext(), "You're a nosy one aren't you!", Toast.LENGTH_SHORT).show();
-//        Intent intent = new Intent(this, MusicActivity.class);
-//        startActivity(intent);
     }
 
     /** Called when Contact a Teacher button is pressed. */
@@ -178,7 +167,6 @@ public class ContactActivity extends AppCompatActivity {
         findViewById(R.id.CSEmergencyButton).setClickable(true);
     }
 
-
     /** Called when Emergency Hotline button is pressed. */
     public void emergency(View view) {
         if (checkPermissions()) {
@@ -196,12 +184,11 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     public void toggleButtons (View view) {
-//        int transitionHeight = Retrieve.dpFromInt(Retrieve.heightForText("Report a Bug", this, 12) + 16, getResources());
-        int textHeight = Retrieve.heightForText("Report a Bug", this, 12) + 16; // Accounts for padding
-        textHeight = (isShowingExtraButtons) ? textHeight * -1 : textHeight;
-        extraButtonsContainer.animate().translationYBy(textHeight).setDuration(300).start();
-        extraButtonsToggle.animate().translationYBy(textHeight).setDuration(300).start();
-            extraButtonsToggle.setBackgroundResource((isShowingExtraButtons) ? R.drawable.arrow_down_48dp : R.drawable.arrow_up_48dp);
+        float transitionHeight = Retrieve.heightForText("Sign out", this, 12) + (Retrieve.dpFromInt(16, getResources())); // Accounts for padding
+        transitionHeight = (isShowingExtraButtons) ? transitionHeight * -1 : transitionHeight;
+        extraButtonsContainer.animate().translationYBy(transitionHeight).setDuration(300).start();
+        extraButtonsToggle.animate().translationYBy(transitionHeight).setDuration(300).start();
+        extraButtonsToggle.setBackgroundResource((isShowingExtraButtons) ? R.drawable.arrow_down_48dp : R.drawable.arrow_up_48dp);
         isShowingExtraButtons = !isShowingExtraButtons;
     }
 

@@ -32,7 +32,7 @@ public class EventList extends LyonsList {
         loadingLabel.startCycling();
 
         Log.d("EventList", "Initializing List");
-        ((ListView) findViewById(R.id.LSClubsList)).setVisibility(View.GONE);
+        findViewById(R.id.LSClubsList).setVisibility(View.GONE);
         /* An instance of the eventList of this activity. */
         ExpandableListView eventList = (ExpandableListView) findViewById(R.id.LSEventsList);
 

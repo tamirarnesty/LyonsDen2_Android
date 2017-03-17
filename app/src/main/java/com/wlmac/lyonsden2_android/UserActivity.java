@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteBlobTooBigException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
@@ -42,9 +43,9 @@ public class UserActivity extends AppCompatActivity {
     /** The drawer toggler used this activity. */
     private ActionBarDrawerToggle drawerToggle;
     private TableLayout extraButtonsContainer;
-    private EditText displayName;
-    private EditText email;
-    private EditText accessLevel;
+    private TextView displayName;
+    private TextView email;
+    private TextView accessLevel;
     private Button toggleButton;
     private boolean isShowingExtraButtons = true;
     SharedPreferences sharedPreferences;
@@ -59,13 +60,16 @@ public class UserActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         instantiateComponents();
+        setFonts();
         extraButtonsContainer = (TableLayout) findViewById(R.id.USContainer);
         toggleButton = (Button) findViewById(R.id.USToggleButton);
+
         // Drawer setup
         DrawerLayout rootLayout = (DrawerLayout) findViewById(R.id.NDLayout);
         ListView drawerList = (ListView) findViewById(R.id.NDList);
         drawerToggle = Retrieve.drawerToggle(this, rootLayout);
         Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
+
         //something entirely different
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseDatabase.getInstance().getReference("users").child("students").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -88,7 +92,10 @@ public class UserActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        int textHeight = Retrieve.heightForText("Reset Password", this, 24) + 50; // Accounts for padding
+        float textHeight = (Retrieve.heightForText("Sign out", this, 12) + (Retrieve.dpFromInt(16, getResources()))) * 2; // Accounts for padding
+
+        Log.d("User Activity", "" + textHeight);
+
         extraButtonsContainer.animate().translationYBy(textHeight).setDuration(0).start();
         toggleButton.animate().translationYBy(textHeight).setDuration(0).start();
     }
@@ -100,7 +107,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
     public void toggleButtons (View view) {
-        int textHeight = Retrieve.heightForText("Reset Password", this, 24) + 50; // Accounts for padding
+        float textHeight = (Retrieve.heightForText("Sign out", this, 12) + (Retrieve.dpFromInt(16, getResources()))) * 2; // Accounts for padding
         textHeight = (isShowingExtraButtons) ? textHeight * -1 : textHeight;
         extraButtonsContainer.animate().translationYBy(textHeight).setDuration(300).start();
         toggleButton.animate().translationYBy(textHeight).setDuration(300).start();
@@ -112,31 +119,13 @@ public class UserActivity extends AppCompatActivity {
         this.displayName.setText(name);
         this.email.setText(email);
         this.accessLevel.setText(accessLevel);
-        sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
-//        DrawerLayout rootLayout = (DrawerLayout) findViewById(R.id.LDLayout);
-//        drawerToggle = Retrieve.drawerToggle(this, rootLayout);
-//        Retrieve.drawerSetup(this, (ListView) findViewById(R.id.LDList), rootLayout, drawerToggle);
-
-        //something entirely different
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseDatabase.getInstance().getReference("users").child("students").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists())
-                    onContentLoad(dataSnapshot.child("name").getValue(String.class), user.getEmail(),
-                            dataSnapshot.child("accessLevel").getValue(String.class));
-                else Log.d("An error occured", "database directory isn't correct or database does not exist");
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
+        sharedPreferences = this.getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE);
     }
 
     private void instantiateComponents () {
-        displayName = (EditText) findViewById(R.id.USNameField);
-        email = (EditText) findViewById(R.id.USEmailField);
-        accessLevel = (EditText) findViewById(R.id.USAccessField);
+        displayName = (TextView) findViewById(R.id.USNameField);
+        email = (TextView) findViewById(R.id.USEmailField);
+        accessLevel = (TextView) findViewById(R.id.USAccessField);
 
         try {
             displayName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
@@ -145,70 +134,63 @@ public class UserActivity extends AppCompatActivity {
         } catch (NullPointerException e) {}
     }
 
+    private void setFonts() {
+        int[] ids = {R.id.USNameLabel, R.id.USNameField, R.id.USEmailLabel, R.id.USEmailField, R.id.USAccessLabel, R.id.USAccessField,
+                    R.id.USLeaderButton, R.id.USDelete, R.id.USSignOut, R.id.USReset};
+        for (int id : ids)
+            ((TextView) findViewById(id)).setTypeface(Retrieve.typeface(this));
+    }
+
     public void editAccount (String name, final String email) {
         if (Retrieve.isInternetAvailable(this)) {
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            DatabaseReference nameDatabaseReference = FirebaseDatabase.getInstance().getReference("users").
-                    child("students").child(user.getUid()).child("name");
-            nameDatabaseReference.setValue(name);
-            //Re-authentication because it is required by firebase in order to change information inside authentication like in this case - email
-            AuthCredential credential = EmailAuthProvider.getCredential(sharedPreferences.getString("email", null),
-                    sharedPreferences.getString("password", null));
+            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+            // Update Display name in database
+            FirebaseDatabase.getInstance().getReference("users/students/" + user.getUid() + "/name").setValue(name);
+
+            Log.d("UserActivity", "email: " + sharedPreferences.getString(LyonsDen.keyEmail, ""));
+            Log.d("UserActivity", "pass: " + sharedPreferences.getString(LyonsDen.keyPass, ""));
+
+            //Re-authentication because it is required by firebase in order to change auth info like it is in this case - email
+            AuthCredential credential = EmailAuthProvider.getCredential(sharedPreferences.getString(LyonsDen.keyEmail, ""),
+                    sharedPreferences.getString(LyonsDen.keyPass, ""));
             user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
                         Log.d(email, "Re authentication is successful");
+                        Log.d(email, "Updating Email");
+                        user.updateEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d(email, "User Email address updated.");
+                                    SharedPreferences.Editor prefs = getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE).edit();
+                                    prefs.putString(LyonsDen.keyEmail, email);
+                                    prefs.apply();
+                                } else {
+                                    Log.d(email, "It did not work!");
+                                    Log.d(email, task.getException().toString());
+                                }
+                            }
+                        });
                     } else {
                         Log.d(email, "Re authentication is not working");
                         Log.d(email, task.getException().toString());
                     }
                 }
             });
-            user.updateEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Log.d(email, "User Email address updated.");
-                    } else {
-                        Log.d(email, "It did not work!");
-                        Log.d(email, task.getException().toString());
-                    }
-                }
-            });
-
-        }
-        else {
+        } else {
             Toast.makeText(UserActivity.this, "No internet connection available", Toast.LENGTH_SHORT).show();
         }
-        /*if (view.getId() == R.id.USUpdate) {
-            Log.d("User Activity", "Let's pretend that i'm actually updating your info");
-        } else if (view.getId() == R.id.USDelete) {
-            try {FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Log.d("User Activity", "User account deleted.");
-                    }
-                }
-            }); }
-            catch (NullPointerException e) {
-                Log.d("User Activity", "No user exists");
-            }
-        } else if (view.getId() == R.id.USSignOut) {
-            FirebaseAuth.getInstance().signOut();
-            try {Log.d("User Activity", "Signed out " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName()); }
-            catch (NullPointerException e) {
-                Log.d("User Activity", "No signed in user because it returned null");
-            }
-        } else {
-            Log.d("User Activity", "Let's pretend that i'm actually resetting your password");
-        } */
     }
 
     private void enterEditMode () {
         editing = !editing;
 
+        int bgResource = (editing) ? R.drawable.text_view_edit_underline : R.drawable.text_view_default;
+
+        displayName.setBackgroundResource(bgResource);
         displayName.setCursorVisible(editing);
         displayName.setFocusableInTouchMode(editing);
         displayName.setFocusable(editing);
@@ -217,6 +199,7 @@ public class UserActivity extends AppCompatActivity {
         displayName.setInputType((editing) ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_NULL);
         displayName.requestFocus();
 
+        email.setBackgroundResource(bgResource);
         email.setCursorVisible(editing);
         email.setFocusableInTouchMode(editing);
         email.setFocusable(editing);
@@ -231,17 +214,14 @@ public class UserActivity extends AppCompatActivity {
         }
 
         invalidateOptionsMenu();
-        // TODO: MAKE KEYBOARD GO AWAY WHEN !editing
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (editing) {
-            //need new icon for a button
-            getMenuInflater().inflate(R.menu.add_menu, menu);
+            getMenuInflater().inflate(R.menu.done_menu, menu);
             return true;
-        }
-        else {
+        } else {
             getMenuInflater().inflate(R.menu.edit_menu, menu);
             return true;
         }
@@ -251,14 +231,12 @@ public class UserActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.editAction)
             enterEditMode();
-        else if (item.getItemId() == R.id.addAction){
+        else if (item.getItemId() == R.id.doneAction) {
             enterEditMode();
             editAccount(displayName.getText().toString(), email.getText().toString());
             Toast.makeText(UserActivity.this, "Information Updated", Toast.LENGTH_SHORT).show();
         }
-        if (drawerToggle.onOptionsItemSelected(item))
-            return true;
-        return super.onOptionsItemSelected(item);
+        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -275,42 +253,83 @@ public class UserActivity extends AppCompatActivity {
 
     public void UAButtons (View view) {
         if (Retrieve.isInternetAvailable(this)) {
-            String s = (String) view.getTag();
-            FirebaseAuth auth = FirebaseAuth.getInstance();
-            switch (s) {
+            switch ((String) view.getTag()) {
                 case "deleteAcc":
-                    FirebaseUser user = auth.getCurrentUser();
-                    FirebaseDatabase.getInstance().getReference("users").child("students").child(user.getUid()).removeValue();
-                    user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    final LyonsAlert deleteAlert = new LyonsAlert();
+                    deleteAlert.setTitle("Are you sure?");
+                    deleteAlert.setSubtitle("Are you sure you want to delete your account?\nYou will not be able to use the app unless you create a new one");
+                    deleteAlert.hideInput();
+                    deleteAlert.configureLeftButton("Cancel", new View.OnClickListener() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(UserActivity.this, "Account deleted", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(UserActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                            } else
-                                Toast.makeText(UserActivity.this, "An error 1.1 occurred", Toast.LENGTH_SHORT).show();
+                        public void onClick(View v) {
+                            deleteAlert.dismiss();
                         }
                     });
+                    deleteAlert.configureRightButton("Yes", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            deleteAlert.dismiss();
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            FirebaseDatabase.getInstance().getReference("users").child("students").child(user.getUid()).removeValue();
+                            user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(UserActivity.this, "Account deleted", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(UserActivity.this, LoginActivity.class);
+                                        startActivity(intent);
+                                    } else
+                                        Toast.makeText(UserActivity.this, "Error 1.1 occurred", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+                    deleteAlert.show(getSupportFragmentManager(), "DeleteAccountDialog");
                     break;
                 case "signOut":
-                    auth.signOut();
+                    FirebaseAuth.getInstance().signOut();
+                    SharedPreferences.Editor prefs = getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE).edit();
+                    prefs.remove(LyonsDen.keyEmail);
+                    prefs.remove(LyonsDen.keyPass);
+                    prefs.apply();
+
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
                     finish();
                     break;
                 case "resetPass":
-                    TextView textView = (TextView) findViewById(R.id.USEmailField);
-                    String email = textView.getText().toString();
-                    auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    final String email = this.email.getText().toString();
+
+                    // Dialog goes here!
+                    final LyonsAlert resetAlert = new LyonsAlert();
+                    resetAlert.setTitle("Reset Password");
+                    resetAlert.setSubtitle("We will send an email to " + email + " with instructions on how to reset your password.");
+                    resetAlert.hideInput();
+                    resetAlert.configureLeftButton("Cancel", new View.OnClickListener() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful())
-                                Toast.makeText(UserActivity.this, "Email sent", Toast.LENGTH_SHORT).show();
-                            else
-                                Toast.makeText(UserActivity.this, "An error 1.2 occurred", Toast.LENGTH_SHORT).show();
+                        public void onClick(View v) {
+                            resetAlert.dismiss();
                         }
                     });
+                    resetAlert.configureRightButton("Ok", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful())
+                                        Toast.makeText(UserActivity.this, "Email sent", Toast.LENGTH_SHORT).show();
+                                    else {
+                                        Toast.makeText(UserActivity.this, "Error 1.2 occurred", Toast.LENGTH_SHORT).show();
+                                        Log.d("UserActivity", "Password Reset Failed!");
+                                        Log.d("UserActivity", task.getException().getMessage());
+                                    }
+                                }
+                            });
+                            resetAlert.dismiss();
+                        }
+                    });
+                    resetAlert.show(getSupportFragmentManager(), "ResetPasswordDialog");
                     break;
             }
         } else

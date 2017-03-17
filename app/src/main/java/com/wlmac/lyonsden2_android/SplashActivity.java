@@ -39,13 +39,17 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_activity);
 
+//        SharedPreferences.Editor prefs = getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE).edit();
+//        prefs.putString(LyonsDen.keyEmail, "sketchz204@gmail.com");
+//        prefs.apply();
+
         try {
             ((TextView) findViewById(R.id.SSCopyright)).setText("Copyright Tamir Arnesty & Inal Gotov © " + Calendar.getInstance().get(Calendar.YEAR));
             ((TextView) findViewById(R.id.SSCopyright)).setTypeface(Retrieve.typeface(this));
             findViewById(R.id.SSCopyright).bringToFront();
         } catch (NullPointerException e) {}
 
-        sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
+        sharedPreferences = this.getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE);
         authenticator = FirebaseAuth.getInstance();
 
         int tick = 0;
@@ -62,30 +66,54 @@ public class SplashActivity extends AppCompatActivity {
         attemptOfflineLogIn();
     }
 
+//    private void attemptOfflineLogIn() {
+//        email = sharedPreferences.getString(LyonsDen.keyEmail, "");
+//        password = sharedPreferences.getString(LyonsDen.keyPass, "");
+//
+//        Log.d("SplashActivity", "email: " + email);
+//        Log.d("SplashActivity", "pass: " + password);
+//
+//        if (Retrieve.isInternetAvailable(this)) {
+//            Log.d("Splash Screen", "internet available");
+//            attemptLogIn();
+//        } else {
+//            Log.d("Splash Screen", "internet not available");
+//            Intent intent = new Intent (SplashActivity.this, HomeActivity.class);
+//            intent.putExtra("isInternetAvailable", false);
+//            startActivity(intent);
+//            finish();
+//        }
+//    }
+
     private void attemptOfflineLogIn() {
         email = sharedPreferences.getString("username", "");
         password = sharedPreferences.getString("password", "");
 
-        if (Retrieve.isInternetAvailable(this)) {
-            Log.d("Splash Screen", "internet available");
-            attemptLogIn();
-        } else {
-            Log.d("Splash Screen", "internet not available");
-            Intent intent = new Intent (SplashActivity.this, HomeActivity.class);
-            intent.putExtra("isInternetAvailable", false);
+        if (email.equals("") || password.equals("")) {
+            Log.d("Splash Screen", "no credentials logged");
+            Intent intent = new Intent (SplashActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
+        } else {
+            if (Retrieve.isInternetAvailable(this)) {
+                Log.d("Splash Screen", "internet available");
+                attemptLogIn();
+            } else {
+                Log.d("Splash Screen", "internet not available");
+                Intent intent = new Intent (SplashActivity.this, HomeActivity.class);
+                intent.putExtra("isInternetAvailable", false);
+                startActivity(intent);
+                finish();
+            }
         }
     }
 
     private void attemptLogIn () {
-        Intent intent; // 0 = log in 1 = home
-
-
         if (email.equals("") || password.equals("")) { // log in
             Log.d("Splash Screen", "no credentials saved on device");
             performIntent[0] = true;
             performIntent[1] = false;
+            performIntents();
         } else {
             authenticator.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
@@ -106,10 +134,14 @@ public class SplashActivity extends AppCompatActivity {
                             performIntent[1] = false;
                         }
                     }
-
+                    performIntents();
                 }
             });
         }
+    }
+
+    private void performIntents() {
+        Intent intent; // 0 = log in 1 = home
 
         if (performIntent[0]) {
             Log.d("Splash Screen", "segue to log in");

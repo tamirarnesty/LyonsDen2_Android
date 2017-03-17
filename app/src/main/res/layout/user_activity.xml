@@ -25,13 +25,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin">
+            android:layout_below="@id/toolbar">
 
-            <!-- Display Name Area -->
+            <!-- Display Name Container -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,16 +38,17 @@
                 <!-- Display Name Label -->
                 <TextView
                     style="@style/UserParameterLabel"
-                    android:text="@string/USName"/>
+                    android:text="@string/USName"
+                    android:id="@+id/USNameLabel"/>
 
                 <!-- Display Name Field -->
-                <EditText
+                <TextView
                     style="@style/UserParameterField"
                     android:hint="@string/USNameHint"
                     android:id="@+id/USNameField"/>
             </LinearLayout>
 
-            <!-- Email Area -->
+            <!-- Email Container -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,16 +60,17 @@
                 <!-- Email Label -->
                 <TextView
                     style="@style/UserParameterLabel"
-                    android:text="@string/USEmail"/>
+                    android:text="@string/USEmail"
+                    android:id="@+id/USEmailLabel"/>
 
                 <!-- Email Field -->
-                <EditText
+                <TextView
                     style="@style/UserParameterField"
                     android:hint="@string/USEmailHint"
                     android:id="@+id/USEmailField"/>
             </LinearLayout>
 
-            <!-- Access Area -->
+            <!-- Access Container -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,24 +82,16 @@
                 <!-- Access Label -->
                 <TextView
                     style="@style/UserParameterLabel"
-                    android:text="@string/USAccess"/>
+                    android:text="@string/USAccess"
+                    android:id="@+id/USAccessLabel"/>
 
                 <!-- Access Field -->
-                <EditText
+                <TextView
                     style="@style/UserParameterField"
                     android:hint="@string/USAccessHint"
                     android:id="@+id/USAccessField"/>
             </LinearLayout>
 
-            <!-- Update Info Button -->
-            <!--<Button
-                style="@style/UserButton"
-                android:layout_below="@id/USAccess"
-                android:layout_marginTop="15dp"
-                android:layout_centerHorizontal="true"
-                android:text="@string/USUpdateButtonText"
-                android:id="@+id/USUpdate"/>
-            -->
             <TableLayout
                 android:id="@+id/USContainer"
                 android:layout_width="match_parent"
@@ -112,19 +102,20 @@
                     <!-- Become a leader Button -->
                     <Button
                         style="@style/ExtraButtonStyle"
+                        android:layout_weight="1"
+                        android:gravity="start|left"
                         android:text="@string/USLeaderButtonText"
-                        android:textAlignment="center"
+                        android:paddingBottom="8dp"
                         android:onClick="promptClubCode"
-                        android:textSize="12sp"
                         android:id="@+id/USLeaderButton" />
 
                     <!-- Sign out Button -->
                     <Button
                         style="@style/ExtraButtonStyle"
-                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:gravity="end|right"
                         android:text="@string/USSignOutButtonText"
                         android:tag="signOut"
-                        android:textSize="12sp"
                         android:id="@+id/USSignOut"
                         android:onClick="UAButtons" />
                 </TableRow>
@@ -132,31 +123,34 @@
                 <TableRow>
                     <!-- Delete Account Button -->
                     <Button
-                        android:textAlignment="center"
                         style="@style/ExtraButtonStyle"
+                        android:layout_weight="1"
+                        android:gravity="start|left"
                         android:text="@string/USDeleteButtonText"
                         android:tag="deleteAcc"
-                        android:textSize="12sp"
                         android:id="@+id/USDelete"
                         android:onClick="UAButtons" />
 
                     <!-- Reset Password Button -->
                     <Button
                         style="@style/ExtraButtonStyle"
+                        android:layout_weight="1"
+                        android:gravity="end|right"
                         android:text="@string/USResetPassButtonText"
                         android:tag="resetPass"
-                        android:textSize="12sp"
                         android:id="@+id/USReset"
                         android:onClick="UAButtons" />
                 </TableRow>
             </TableLayout>
+
+            <!-- Pull-up Toggle Button -->
             <Button
                 style="@style/LyonsButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/arrow_up_48dp"
                 android:layout_above="@+id/USContainer"
+                android:background="@drawable/arrow_up_48dp"
                 android:onClick="toggleButtons"
                 android:id="@+id/USToggleButton"/>
         </RelativeLayout>

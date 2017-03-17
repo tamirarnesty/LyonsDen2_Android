@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-        sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
+        sharedPreferences = this.getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE);
 
         emailField = (EditText) findViewById(R.id.LSEmailField);
         passField = (EditText) findViewById(R.id.LSPassField);
@@ -130,6 +130,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void logIn(View view) {
+        // TEMPORARY!!!!
+        SharedPreferences.Editor prefs = getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE).edit();
+        prefs.putString(LyonsDen.keyEmail, emailField.getText().toString());
+        prefs.putString(LyonsDen.keyPass, passField.getText().toString());
+        prefs.apply();
+
+
         Log.d("Login Activity:", "button pressed.");
 
         if (fieldsAreValid()) {
@@ -200,7 +207,9 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 Log.d("Login Activity", "signInWithEmail:onComplete:" + task.isSuccessful());
-                                Log.d("Login Activity", FirebaseAuth.getInstance().getCurrentUser().toString());
+                                try {   // If task is not successful
+                                    Log.d("Login Activity", FirebaseAuth.getInstance().getCurrentUser().toString());
+                                } catch (NullPointerException e) { /* Ra-ta-ta-ta-ta */ }
                                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                                     performIntent[0] = true;
                                 }

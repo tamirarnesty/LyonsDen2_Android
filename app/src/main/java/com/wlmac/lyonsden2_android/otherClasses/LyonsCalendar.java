@@ -4,6 +4,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -14,6 +16,7 @@ import com.roomorama.caldroid.CalendarHelper;
 import com.roomorama.caldroid.CellView;
 import com.wlmac.lyonsden2_android.CalendarActivity;
 import com.wlmac.lyonsden2_android.HomeActivity;
+import com.wlmac.lyonsden2_android.LyonsDen;
 import com.wlmac.lyonsden2_android.R;
 
 import java.text.ParseException;
@@ -48,6 +51,41 @@ public class LyonsCalendar extends CaldroidFragment {
     /** States whether this calendar is offline. */
     private boolean isOffline = false;
 
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        Log.d("Lyon's Calendar", "OnActivityCreated!");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        Log.d("Lyon's Calendar", "OnPause!");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.d("Lyon's Calendar", "OnResume!");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Log.d("Lyon's Calendar", "OnSaveInstanceState!");
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        Log.d("Lyon's Calendar", "OnViewStateRestored!");
+    }
 
     /**
      * Loads the events into the calendar.
@@ -258,7 +296,7 @@ public class LyonsCalendar extends CaldroidFragment {
         Event[] outputArray = new Event[events.size()];
 
         if (dayDictionary != null) {
-            SharedPreferences.Editor editor = initiator.getSharedPreferences(HomeActivity.sharedPreferencesName, 0).edit();
+            SharedPreferences.Editor editor = initiator.getSharedPreferences(LyonsDen.keySharedPreferences, 0).edit();
             editor.putString(keyDayDictionary, dayDictionary);
             editor.putString(keyLateStartDictionary, lateStartDictionary);
             editor.apply();

@@ -5,6 +5,7 @@
     <string name="editAction">Edit</string>
     <string name="addAction">Add</string>
     <string name="deleteButton">Delete</string>
+    <string name="doneAction">Done</string>
 
     <!-- Screen Titles -->
     <string name="HSTitle">Home</string>
