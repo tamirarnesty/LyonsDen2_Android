@@ -22,9 +22,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.FirebaseDatabase;
+import com.wlmac.lyonsden2_android.lyonsLists.ClubList;
+import com.wlmac.lyonsden2_android.lyonsLists.EventList;
 import com.onesignal.OneSignal;
 import com.wlmac.lyonsden2_android.lyonsLists.ListAdapter;
 import com.wlmac.lyonsden2_android.otherClasses.CourseDialog;
@@ -43,8 +44,7 @@ import java.util.Locale;
  * The activity that will be used to display the home screen. The home screen consists of a label for
  * today's day, a timetable that highlights the current period and a list of the most recent announcements.
  *
- * @author sketch204
- * @implemented Ademir Gotov
+ * @author Ademir Gotov
  * @version 1, 2016/07/30
  */
 public class HomeActivity extends AppCompatActivity {
@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
     /** The ListView that contains the announcements */
     private ListView listView;
     /** The contents of the announcement ListView */
-    private ArrayList<String> announcements = new ArrayList<>();
+    private ArrayList<String[]> announcements = new ArrayList<>();
     /** A list of item that will be displayed in the every drawer list of this program. */
     private static String[] drawerContent = {"Home", "Calendar", "Announcements", "Clubs", "Contact", "Me"};  // Just trying things out :)
     /** An instance of the root layout of this activity. */
@@ -166,12 +166,11 @@ public class HomeActivity extends AppCompatActivity {
         // Declare and set the ArrayAdapter for filling the ListView with content
         //          Type of content                      |Source|Type of ListView layout            | Data source array
         //                                               |Object|                                   |
-        final ArrayList<String[]> targetList = new ArrayList<>();
-        final ListAdapter adapter = new ListAdapter(this, targetList, false);
+        final ListAdapter adapter = new ListAdapter(this, announcements, false);
         listView.setAdapter(adapter);
 
         if (Retrieve.isInternetAvailable(HomeActivity.this)) {
-            Retrieve.eventData(this, FirebaseDatabase.getInstance().getReference("announcements"), targetList, new Retrieve.ListDataHandler() {
+            Retrieve.eventData(this, FirebaseDatabase.getInstance().getReference("announcements"), announcements, new Retrieve.ListDataHandler() {
                 @Override
                 public void handle(ArrayList<String[]> listData) {
                     adapter.notifyDataSetChanged();
@@ -190,7 +189,7 @@ public class HomeActivity extends AppCompatActivity {
             //                      |                    |clicked   |position     |ID
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(HomeActivity.this, InfoActivity.class);
-                String[] list = targetList.get(position);
+                String[] list = announcements.get(position);
                 intent.putExtra("tag", "announcement");
                 intent.putExtra("announcement", list);
                 startActivity(intent);

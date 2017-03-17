@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.database.sqlite.SQLiteBlobTooBigException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
@@ -39,6 +38,16 @@ import com.google.firebase.database.ValueEventListener;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
+// TODO: IMPLEMENT CLUB CODE CHECKER
+// TODO: MAKE A LOADING INDICATOR FOR WHEN CHECKING THE CLUB CODE
+// TODO: MAKE KEYBOARD GO AWAY WHEN !editing
+
+/**
+ * This activity is used for viewing User information with options to add, change or remove data.
+ *
+ * @author Ademir Gotov
+ * @version 1, 2016/08/05
+ */
 public class UserActivity extends AppCompatActivity {
     /** The drawer toggler used this activity. */
     private ActionBarDrawerToggle drawerToggle;
