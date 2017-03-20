@@ -21,11 +21,12 @@
     <string name="LVSTitle">Teachers</string>
 
     <!-- Login Screen Strings -->
-    <string name="LSLoginHint">Enter e-mail here</string>
-    <string name="LSPassHint">Enter password here</string>
-    <string name="LSCodeHint">Enter sign-up code here</string>
+    <string name="LSLoginHint">Enter Email</string>
+    <string name="LSPassHint">Enter Password</string>
+    <string name="LSCodeHint">Enter Sign Up Key</string>
     <string name="LSLoginButton">Login</string>
     <string name="LSSignUpButton">Sign Up</string>
+    <string name="LSMainButton">Sign Up</string>
 
     <!-- Home Screen Strings -->
     <string name="HSTodayIsDay">Today is day</string>

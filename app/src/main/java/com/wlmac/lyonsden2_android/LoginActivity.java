@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -27,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.ProviderQueryResult;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,6 +45,7 @@ import com.wlmac.lyonsden2_android.resourceActivities.InformationFormActivity;
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth authenticator;
     private FirebaseAuth.AuthStateListener authListener;
+    private Button logInButton;
     private EditText emailField;
     private EditText passField;
     private EditText signUpKeyField;
@@ -62,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
 
         sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
 
+        logInButton = (Button) findViewById(R.id.LSLogin);
         emailField = (EditText) findViewById(R.id.LSEmailField);
         passField = (EditText) findViewById(R.id.LSPassField);
         signUpKeyField = (EditText) findViewById(R.id.LSCodeField);
@@ -76,6 +81,8 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("Login Activity:", "The segmented_button.xml file seems to missing or corrupted.");
         }
 
+        logInButton.setEnabled(true);
+        emailField.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         authListener = new FirebaseAuth.AuthStateListener() {
             // Called whenever changes are made to the login state of the current user.
             @Override
@@ -100,16 +107,25 @@ public class LoginActivity extends AppCompatActivity {
             editor.putBoolean("isOnlineLogInShown", false);
             editor.apply();
         }
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().signOut();
+        }
     }
 
     // TODO: MAKE METHODS SWITCHABLE BASED ON PLATFORM VERSION (GET RID OF DEPRECATED METHOD)
     public void toggleSegmentedControl (View view) {
+
         if (view.getTag().toString().equals("signup") && !signUpSelected) { // Switch to signup
             signUpSelected = true;
+            signUpKeyField.animate().alpha(1).setDuration(300).start();
             signUpKeyField.setVisibility(View.VISIBLE);
+            logInButton.setText("Sign Up");
         } else if (view.getTag().toString().equals("login") && signUpSelected){ // Switch to login
             signUpSelected = false;
-            signUpKeyField.setVisibility(View.GONE);
+            signUpKeyField.animate().alpha(0).setDuration(300).start();
+            signUpKeyField.setVisibility(View.INVISIBLE);
+            logInButton.setText("Log In");
         } else {
             Log.d("LoginActivity", "toggleSegmentedControl() called from unknown source");
             return;
@@ -131,7 +147,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void logIn(View view) {
         Log.d("Login Activity:", "button pressed.");
-
+        Toast.makeText(getApplicationContext(), "Should be loading toast", Toast.LENGTH_LONG).show();
+        logInButton.setEnabled(false);
         if (fieldsAreValid()) {
             Log.d("Login Activity:", "fields are valid");
             emailField.setOnKeyListener(new View.OnKeyListener() {
@@ -157,6 +174,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         } else {
             Toast.makeText(getApplicationContext(), "Log in failed", Toast.LENGTH_LONG).show();
+            logInButton.setEnabled(true);
         }
 
     }
@@ -200,12 +218,16 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 Log.d("Login Activity", "signInWithEmail:onComplete:" + task.isSuccessful());
-                                Log.d("Login Activity", FirebaseAuth.getInstance().getCurrentUser().toString());
-                                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                                    performIntent[0] = true;
+                                if (task.isSuccessful()) {
+                                    Log.d("Login Activity", FirebaseAuth.getInstance().getCurrentUser().toString());
+                                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                        performIntent[0] = true;
+                                        performIntent("old");
+                                    }
                                 }
 
                                 if (!task.isSuccessful()) {
+                                    logInButton.setEnabled(true);
                                     try {
                                         throw task.getException();
                                     } catch (FirebaseAuthUserCollisionException e) {
@@ -221,20 +243,18 @@ public class LoginActivity extends AppCompatActivity {
                                         Log.d("Login Activity", "User does not exist");
                                         Toast.makeText(getApplicationContext(), "User does not exist.", Toast.LENGTH_LONG).show();
                                     } catch (Exception e) {
-                                        Log.d("Login Activity", "unknown error");
+                                        Log.d("Login Activity", task.toString());
+                                        Toast.makeText(getApplicationContext(), task.toString(), Toast.LENGTH_LONG).show();
+                                        Log.d("Login Activity", "Log in failure");
                                         Toast.makeText(getApplicationContext(), "An unknown error occurred.", Toast.LENGTH_LONG).show();
                                     }
-                                    Log.d("Login Activity", task.toString());
-                                    Toast.makeText(getApplicationContext(), task.toString(), Toast.LENGTH_LONG).show();
-                                    Log.d("Login Activity", "Log in failure");
+
                                 }
                             }
                         });
             }
         }
-        if (performIntent[0]) {
-            this.performIntent("old");
-        }
+
     }
 
     private void createNewUser(final String[] signUpKeys) {
@@ -302,7 +322,11 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent;
         // store on device
         sharedPreferences.edit().putString("password", passField.getText().toString()).apply();
-        sharedPreferences.edit().putString("uID", emailField.getText().toString()).apply();
+        sharedPreferences.edit().putString("userEmail", emailField.getText().toString()).apply();
+        String temp = sharedPreferences.getString("userEmail", "not here");
+        String temp2 = sharedPreferences.getString("password", "not here");
+        Log.d("Login Activity", "username " + temp);
+        Log.d("Login Activity", "password " + temp2);
         if (type.equals("new")) {
             intent = new Intent(LoginActivity.this, InformationFormActivity.class);
         } else {
@@ -332,9 +356,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
 
-        if (!valid) {
-            return valid;
-        }
+//        if (!valid) {
+//            return valid;
+//        }
 
         // check email format
         final String email = String.valueOf(fields[0].getText());
@@ -352,10 +376,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
 
+        logInButton.setEnabled(true);
         return valid;
     }
 
     public void resetPassword(View view) {
+        final boolean [] userExists = {true};
         Log.d("Login Activity", "Reset password requested.");
         // confirm request
         final LyonsAlert confirmRequestAlert = new LyonsAlert();
@@ -378,6 +404,7 @@ public class LoginActivity extends AppCompatActivity {
                 final LyonsAlert handleRequestAlert = new LyonsAlert();
                 handleRequestAlert.setTitle("Reset Password");
                 handleRequestAlert.setSubtitle("Enter your account email.");
+                handleRequestAlert.setEmailKeyboard();
                 handleRequestAlert.configureLeftButton("Cancel", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -387,38 +414,52 @@ public class LoginActivity extends AppCompatActivity {
                 handleRequestAlert.configureRightButton("Submit", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        FirebaseAuth.getInstance().sendPasswordResetEmail(handleRequestAlert.getInputText())
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Log.d("Login Activity", "Email sent.");
-                                            Toast.makeText(getApplicationContext(), "Email sent.", Toast.LENGTH_LONG).show();
-                                        } else if (!task.isSuccessful()) {
-                                            try {
-                                                throw task.getException();
-                                            } catch (FirebaseAuthUserCollisionException e) {
-                                                Log.d("Login Activity", "User already exists error");
-                                                Toast.makeText(getApplicationContext(), "User already exists.", Toast.LENGTH_LONG).show();
-                                            } catch (FirebaseAuthWeakPasswordException e) {
-                                                Log.d("Login Activity", "Weak password error");
-                                                Toast.makeText(getApplicationContext(), "Password entered is too weak.", Toast.LENGTH_LONG).show();
-                                            } catch (FirebaseAuthInvalidCredentialsException e) {
-                                                Log.d("Login Activity", "Username or password error");
-                                                Toast.makeText(getApplicationContext(), "Username or password is incorrect.", Toast.LENGTH_LONG).show();
-                                            } catch (FirebaseAuthInvalidUserException e) {
-                                                Log.d("Login Activity", "User does not exist");
-                                                Toast.makeText(getApplicationContext(), "User does not exist.", Toast.LENGTH_LONG).show();
-                                            } catch (Exception e) {
-                                                Log.d("Login Activity", "unknown error");
-                                                Toast.makeText(getApplicationContext(), "An unknown error occurred.", Toast.LENGTH_LONG).show();
-                                            }
-                                            Log.d("Login Activity", task.toString());
-                                            Toast.makeText(getApplicationContext(), task.toString(), Toast.LENGTH_LONG).show();
-                                            Log.d("Login Activity", "Create user failure");
-                                        }
+                        FirebaseAuth.getInstance().fetchProvidersForEmail(handleRequestAlert.getInputText()).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<ProviderQueryResult> task) {
+                                Log.d("Login Activity", "HAPPENED MAN");
+                                if (task.getResult().getProviders().isEmpty()) {
+                                    userExists[0] = false;
+                                } else {
+                                    if (!task.getResult().getProviders().isEmpty()) {
+                                        userExists[0] = true;
                                     }
-                                });
+                                }
+                                if (!task.isSuccessful()) {
+                                    Log.d("Login Activity", "not successful");
+                                    Log.d("Login Activity", String.valueOf(task.getResult().getProviders()));
+                                } else {
+                                    Log.d("Login Activity", "successful");
+                                    Log.d("Login Activity", String.valueOf(task.getResult().getProviders()));
+                                }
+                                if (userExists[0]) {
+                                    FirebaseAuth.getInstance().sendPasswordResetEmail(handleRequestAlert.getInputText())
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d("Login Activity", "Email sent.");
+                                                        Toast.makeText(getApplicationContext(), "Email sent.", Toast.LENGTH_LONG).show();
+                                                    } else if (!task.isSuccessful()) {
+                                                        try {
+                                                            throw task.getException();
+                                                        } catch (FirebaseException e) {
+                                                            Log.d("Login Activity", task.toString());
+                                                            Toast.makeText(getApplicationContext(), "Email failed to send.", Toast.LENGTH_LONG).show();
+                                                            Log.d("Login Activity", "Email failed to send.");
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                        }
+
+                                                    }
+                                                }
+                                            });
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Email is not registered to\nan account.", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+
                         handleRequestAlert.dismiss();
                     }
                 });

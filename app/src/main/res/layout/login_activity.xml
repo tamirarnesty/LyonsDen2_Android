@@ -21,7 +21,8 @@
         android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
-        android:text="@string/LSLoginButton"
+        android:text="@string/LSMainButton"
+        android:textAllCaps="true"
         android:textColor="@color/accentDark"
         android:onClick="logIn"
         android:id="@+id/LSLogin"
@@ -93,17 +94,18 @@
 
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:ems="10"
             android:id="@+id/LSEmailField"
             android:maxLines="1"
             android:textColor="@color/blackText"
-            android:hint="@string/LSLoginHint" />
+            android:hint="@string/LSLoginHint"
+            android:singleLine="true" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:ems="10"
@@ -111,17 +113,19 @@
             android:hint="@string/LSPassHint"
             android:fontFamily="sans-serif"
             android:textColor="@color/blackText"
-            android:id="@+id/LSPassField" />
+            android:id="@+id/LSPassField"
+            android:singleLine="true" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
             android:ems="10"
             android:maxLines="1"
             android:hint="@string/LSCodeHint"
             android:textColor="@color/blackText"
-            android:id="@+id/LSCodeField"/>
+            android:id="@+id/LSCodeField"
+            android:singleLine="true" />
 
     </LinearLayout>
 

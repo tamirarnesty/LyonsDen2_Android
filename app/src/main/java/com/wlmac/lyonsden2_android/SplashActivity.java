@@ -26,8 +26,8 @@ import java.util.Calendar;
  * Created by sketch204 on 16-08-09.
  */
 public class SplashActivity extends AppCompatActivity {
-    static String email = "";
-    static String password = "";
+    static String email;
+    static String password;
     final boolean[] performIntent = {false, false};
 
     SharedPreferences sharedPreferences;
@@ -45,14 +45,23 @@ public class SplashActivity extends AppCompatActivity {
             findViewById(R.id.SSCopyright).bringToFront();
         } catch (NullPointerException e) {}
 
+        Log.d("Splash Activity", HomeActivity.sharedPreferencesName);
         sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
+        if (sharedPreferences != null)
+        Log.d("Splash Activity", "exists");
         authenticator = FirebaseAuth.getInstance();
 
+        email = sharedPreferences.getString("userEmail", "");
+        password = sharedPreferences.getString("password", "");
+        Log.d("Splash Screen", "what the fuck " + sharedPreferences.getString("userEmail", ""));
+        Log.d("Splash Screen",  "what the fuck also " + sharedPreferences.getString("password", ""));
         int tick = 0;
         while (tick < 3) {
             tick ++;
             try { Thread.sleep(1000); } catch (InterruptedException e) {}
         }
+
+        attemptOfflineLogIn();
     }
 
     @Override
@@ -63,39 +72,48 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void attemptOfflineLogIn() {
-        email = sharedPreferences.getString("username", "");
-        password = sharedPreferences.getString("password", "");
 
         if (Retrieve.isInternetAvailable(this)) {
             Log.d("Splash Screen", "internet available");
             attemptLogIn();
         } else {
-            Log.d("Splash Screen", "internet not available");
+            offlineOccurrence();
+        }
+    }
+
+    private void offlineOccurrence () {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            Log.d("Splash Screen", "internet not available. going home");
             Intent intent = new Intent (SplashActivity.this, HomeActivity.class);
             intent.putExtra("isInternetAvailable", false);
             startActivity(intent);
             finish();
+        } else {
+            Log.d("Splash Screen", "internet not available. going to log in");
+            Intent intent = new Intent (SplashActivity.this, LoginActivity.class);
+            intent.putExtra("isInternetAvailable", false);
+            startActivity(intent);
+            finish();
         }
+
     }
 
     private void attemptLogIn () {
-        Intent intent; // 0 = log in 1 = home
-
-
         if (email.equals("") || password.equals("")) { // log in
+            Log.d("Splash Screen", email);
+            Log.d("Splash Screen", password);
             Log.d("Splash Screen", "no credentials saved on device");
             performIntent[0] = true;
             performIntent[1] = false;
+            performIntent();
         } else {
             authenticator.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    // In short: Will segue in any case, but will record credentials only if login is success
-
                     Log.d("Splash Screen", "signInWithEmail:onComplete:" + task.isSuccessful());
                     if (task.isSuccessful()) {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("email", email);
+                        editor.putString("userEmail", email);
                         editor.putString("password", password);
                         editor.apply();
                         performIntent[0] = false;
@@ -106,11 +124,14 @@ public class SplashActivity extends AppCompatActivity {
                             performIntent[1] = false;
                         }
                     }
-
+                    performIntent();
                 }
             });
         }
+    }
 
+    private void performIntent () {
+        Intent intent; // 0 = log in 1 = home
         if (performIntent[0]) {
             Log.d("Splash Screen", "segue to log in");
             intent = new Intent (SplashActivity.this, LoginActivity.class);

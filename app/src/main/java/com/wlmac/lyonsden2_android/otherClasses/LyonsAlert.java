@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
@@ -101,5 +102,10 @@ public class LyonsAlert extends DialogFragment {
     public void configureRightButton (String title, View.OnClickListener onClick) {
         rightButtonTitle = title;
         rightButtonOnClick = onClick;
+    }
+
+    public void setEmailKeyboard() {
+        if (inputField != null)
+            inputField.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
     }
 }
