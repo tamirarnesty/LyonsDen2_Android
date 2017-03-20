@@ -46,7 +46,6 @@ public class InformationFormActivity extends AppCompatActivity {
 
         instantiateComponents();
         setFonts();
-        promptNotification();
     }
 
     private void instantiateComponents () {
@@ -169,9 +168,7 @@ public class InformationFormActivity extends AppCompatActivity {
                         }
                     });
             finish();
-            if (promptNotification()) {
-                performIntent();
-            }
+            promptNotification();
         } else {
             Toast.makeText(getApplicationContext(), "Failed to process", Toast.LENGTH_SHORT).show();
         }
@@ -203,9 +200,7 @@ public class InformationFormActivity extends AppCompatActivity {
                         }
                     });
             finish();
-            if (promptNotification()) {
-                performIntent();
-            }
+            promptNotification();
         } else {
             Toast.makeText(getApplicationContext(), "Failed to process", Toast.LENGTH_SHORT).show();
         }
@@ -223,7 +218,7 @@ public class InformationFormActivity extends AppCompatActivity {
         }
     }
 
-    private boolean promptNotification() {
+    private void promptNotification() {
         final boolean [] notificationsChosen = {false};
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setTitle("Announcement Notifications");
@@ -233,6 +228,7 @@ public class InformationFormActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 OneSignal.setSubscription(true);
                 notificationsChosen[0] = true;
+                performIntent();
                 dialog.cancel();
             }
         }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -240,13 +236,14 @@ public class InformationFormActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 OneSignal.setSubscription(false);
                 notificationsChosen[0] = false;
+                performIntent();
                 dialog.cancel();
             }
         });
         alertBuilder.create().show();
-        return notificationsChosen[0];
     }
     private void performIntent() {
+        Retrieve.oneSignalStatus();
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();

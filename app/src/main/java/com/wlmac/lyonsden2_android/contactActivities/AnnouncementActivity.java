@@ -214,36 +214,50 @@ public class AnnouncementActivity extends AppCompatActivity {
     }
 
     public void pushNotification(final String title, final String message) {
-        Retrieve.oneSignalIDs(new Retrieve.OneSignalHandler() {
+        final String[] userID = {""};
+        OneSignal.idsAvailable(new OneSignal.IdsAvailableHandler() {
             @Override
-            public void handle(ArrayList<String> receivers) {
-                ArrayList<String> formattedReceivers = new ArrayList<String>();
-                for (int i = 0; i < receivers.size(); i++) {
-                    formattedReceivers.add(i, "'" + receivers.get(i) + "'");
-                }
+            public void idsAvailable(final String userId, String registrationId) {
+                userID[0] = userId;
+                Log.d("Propose Announcement", userId);
+            // idsAvailable completed.
+                // Begin sending
+                Retrieve.oneSignalIDs(new Retrieve.OneSignalHandler() {
+                    @Override
+                    public void handle(ArrayList<String> receivers) {
+                        ArrayList<String> formattedReceivers = new ArrayList<String>();
+                        for (int i = 0; i < receivers.size(); i++) {
+                            formattedReceivers.add(i, "'" + receivers.get(i) + "'");
+                            Log.d("RECEIVERS------------", formattedReceivers.get(i));
+                        }
 
-                try {
-                    OneSignal.postNotification(new JSONObject("{" +
-                                    "'headings': {'en':'" + title + "'}, " +
-                                    "'contents': {'en':'" + message + "'}, " +
-                                    "'include_player_ids':" + formattedReceivers + "}"),
-                            new OneSignal.PostNotificationResponseHandler() {
-                                @Override
-                                public void onSuccess(JSONObject response) {
-                                    Log.d("OneSignalExample", "postNotification Success: " + response.toString());
-                                }
+                        if (formattedReceivers.contains("'" + userId + "'")) {
+                            formattedReceivers.remove(userID[0]);
+                        }
 
-                                @Override
-                                public void onFailure(JSONObject response) {
-                                    Log.d("OneSignalExample", "postNotification Failure: " + response.toString());
-                                }
-                            });
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                        try {
+                            OneSignal.postNotification(new JSONObject("{" +
+                                            "'headings': {'en':'" + title + "'}, " +
+                                            "'contents': {'en':'" + message + "'}, " +
+                                            "'include_player_ids':" + formattedReceivers + "}"),
+                                    new OneSignal.PostNotificationResponseHandler() {
+                                        @Override
+                                        public void onSuccess(JSONObject response) {
+                                            Log.d("OneSignalExample", "postNotification Success: " + response.toString());
+                                        }
+
+                                        @Override
+                                        public void onFailure(JSONObject response) {
+                                            Log.d("OneSignalExample", "postNotification Failure: " + response.toString());
+                                        }
+                                    });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         });
-
     }
 
     private void lockUnlockProposal() {

@@ -53,8 +53,10 @@
                 style="@style/ContactButtonStyle"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
+                android:height="60dp"
                 android:onClick="proposeAnnouncement"
                 android:text="@string/CSAnnouncementButton"
+                android:textSize="17sp"
                 android:id="@+id/CSAnnouncementButton"
                 android:typeface="sans"
                 android:textAllCaps="false" />
@@ -64,8 +66,10 @@
                 style="@style/ContactButtonStyle"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
+                android:height="60dp"
                 android:onClick="requestTeacherList"
                 android:text="@string/CSTeacherButton"
+                android:textSize="17sp"
                 android:id="@+id/CSTeacherButton"
                 android:textAllCaps="false" />
 
@@ -74,8 +78,10 @@
                 style="@style/ContactButtonStyle"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
+                android:height="60dp"
                 android:onClick="proposeRadio"
                 android:text="@string/CSRadioButton"
+                android:textSize="17sp"
                 android:id="@+id/CSRadioButton"
                 android:textAllCaps="false" />
 
@@ -84,8 +90,10 @@
                 style="@style/ContactButtonStyle"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
+                android:height="60dp"
                 android:onClick="emergency"
                 android:text="@string/CSEmergencyButton"
+                android:textSize="17sp"
                 android:id="@+id/CSEmergencyButton"
                 android:textAllCaps="false" />
             </LinearLayout>
