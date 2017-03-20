@@ -22,7 +22,7 @@
 
     <color name="courseViewBackground">#e5ecf0f1</color>
     <color name="contactButtonsBackground">#49a3a3a3</color>
-    <color name="segmentedButtonUnselected">#a3a3a3</color>
+    <color name="text_view_edit">#a3a3a3</color>
 
     <color name="loadingBlanketColor">#e6ecf0f1</color>
 </resources>

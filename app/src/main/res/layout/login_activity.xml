@@ -7,13 +7,6 @@
     android:background="@color/background"
     tools:context="com.wlmac.lyonsden2_android.LoginActivity">
 
-    <android.support.v7.widget.Toolbar
-        style="@style/LyonsToolBar"
-        app:titleTextColor="@color/accent"
-        app:title="@string/HSTitle"
-        android:id="@+id/toolbar">
-    </android.support.v7.widget.Toolbar>
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,7 +39,7 @@
             android:padding="0dp"
             android:background="@drawable/segmented_button"
             android:text="@string/LSSignUpButton"
-            android:textColor="@color/segmentedButtonUnselected"
+            android:textColor="@color/text_view_edit"
             android:textSize="12sp"
             android:textAllCaps="false"
             android:tag="signup"
@@ -65,7 +58,7 @@
             android:padding="0dp"
             android:background="@drawable/segmented_button"
             android:text="@string/LSLoginButton"
-            android:textColor="@color/segmentedButtonUnselected"
+            android:textColor="@color/text_view_edit"
             android:textSize="12sp"
             android:textAllCaps="false"
             android:tag="login"

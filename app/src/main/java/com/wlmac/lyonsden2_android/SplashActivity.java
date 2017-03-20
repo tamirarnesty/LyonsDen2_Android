@@ -45,10 +45,7 @@ public class SplashActivity extends AppCompatActivity {
             findViewById(R.id.SSCopyright).bringToFront();
         } catch (NullPointerException e) {}
 
-        Log.d("Splash Activity", HomeActivity.sharedPreferencesName);
-        sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
-        if (sharedPreferences != null)
-        Log.d("Splash Activity", "exists");
+        sharedPreferences = this.getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE);
         authenticator = FirebaseAuth.getInstance();
 
         email = sharedPreferences.getString("userEmail", "");

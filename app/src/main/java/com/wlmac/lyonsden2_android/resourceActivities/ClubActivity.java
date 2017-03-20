@@ -71,17 +71,6 @@ public class ClubActivity extends AppCompatActivity {
         clubsEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(parent.getContext(), InfoActivity.class);
-//                String[] list = new String[5];
-//                list[0] = content.get(position)[0];
-//                list[1] = content.get(position)[1];
-//                list[2] = content.get(position)[2];
-//                list[3] = content.get(position)[3];
-//                list[4] = content.get(position)[4];
-//                intent.putExtra("tag", "club");
-//                intent.putExtra("club", list);
-//                startActivity(intent);
-
                 Log.d("EventList", "Opening Announcement");
                 // Event keys: title, info, date, location
 
@@ -136,9 +125,9 @@ public class ClubActivity extends AppCompatActivity {
         infoView = (TextView) findViewById(R.id.ClubSDescriptionLabel);
         infoView.setText(getIntent().getStringExtra("info"));
 
-        ((TextView) findViewById(R.id.ClubSLeaderList)).setText(getIntent().getStringExtra("leaders"));
+        ((TextView) findViewById(R.id.ClubSLeaderList)).setText("Club Leads: " + getIntent().getStringExtra("leaders"));
 
-        clubRef = FirebaseDatabase.getInstance().getReference("clubs").child(getIntent().getStringExtra("clubKey"));
+        clubRef = FirebaseDatabase.getInstance().getReference("clubs/" + getIntent().getStringExtra("clubKey"));
         Log.d("Club Reference Path", clubRef.toString());
 
         titleField = (EditText) findViewById(R.id.ClubSTitleField);
@@ -188,8 +177,8 @@ public class ClubActivity extends AppCompatActivity {
         int viewVisibility = (editing) ? View.GONE : View.VISIBLE;
         int editVisibility = (editing) ? View.VISIBLE : View.GONE;
 
-        ((LinearLayout) findViewById(R.id.ClubSViewBox)).setVisibility(viewVisibility);
-        ((LinearLayout) findViewById(R.id.ClubSEditBox)).setVisibility(editVisibility);
+        findViewById(R.id.ClubSViewBox).setVisibility(viewVisibility);
+        findViewById(R.id.ClubSEditBox).setVisibility(editVisibility);
 
         if (!editing && (!titleView.getText().toString().equals(titleField.getText().toString()) || !infoView.getText().toString().equals(infoField.getText().toString()))) {
             promptUserForApproval();

@@ -15,6 +15,7 @@
         <activity
             android:name=".SplashActivity"
             android:label="@string/app_name"
+            android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -25,43 +26,87 @@
         </activity>
         <activity
             android:name=".LoginActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:label="Login/Sign Up" />
         <activity
             android:name=".HomeActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:label="Home" />
         <activity
             android:name=".CalendarActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:label="Calendar" />
         <activity
             android:name=".lyonsLists.ClubList"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:label="Clubs" />
         <activity
             android:name=".lyonsLists.EventList"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:label="Announcements" />
         <activity
             android:name=".ContactActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:label="Contact" />
         <activity
             android:name=".contactActivities.AnnouncementActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:label="Propose Announcement" />
         <activity
             android:name=".lyonsLists.ListViewerActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:label="Teachers" />
         <activity
             android:name=".resourceActivities.InfoActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:label="Information" />
-        <activity android:name=".contactActivities.MusicActivity" />
-        <activity android:name=".resourceActivities.ClubActivity" />
-        <activity android:name=".UserActivity" />
-        <activity android:name=".resourceActivities.CourseActvity" />
+        <activity
+            android:name=".contactActivities.MusicActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:label="Music" />
+        <activity
+            android:name=".resourceActivities.ClubActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:label="Club"  />
+        <activity
+            android:name=".UserActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:label="User"  />
+        <activity
+            android:name=".resourceActivities.CourseActvity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:label="Course" />
+        <activity
+            android:name=".resourceActivities.InformationFormActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:label="Information Form" />
+        <activity
+            android:name=".resourceActivities.TextViewerActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:label="Text Viewer" />
+        <activity
+            android:name=".resourceActivities.GuideActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:label="Guide" />
 
         <service
             android:name=".otherClasses.WebCalendar"
             android:exported="false" />
-
-        <activity android:name=".resourceActivities.InformationFormActivity" />
-        <activity android:name=".resourceActivities.TextViewerActivity" />
-        <activity android:name=".resourceActivities.GuideActivity"/>
     </application>
-
 </manifest>

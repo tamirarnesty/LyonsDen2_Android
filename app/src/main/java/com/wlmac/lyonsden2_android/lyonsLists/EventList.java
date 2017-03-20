@@ -23,6 +23,7 @@ import java.util.ArrayList;
 public class EventList extends LyonsList {
     private int curExpandedCellIndex = -1;
     private ExpandableListAdapter adapter;
+    public static boolean didUpdateDataset = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,7 @@ public class EventList extends LyonsList {
         loadingLabel.startCycling();
 
         Log.d("EventList", "Initializing List");
-        ((ListView) findViewById(R.id.LSClubsList)).setVisibility(View.GONE);
+        findViewById(R.id.LSClubsList).setVisibility(View.GONE);
         /* An instance of the eventList of this activity. */
         ExpandableListView eventList = (ExpandableListView) findViewById(R.id.LSEventsList);
 
@@ -40,26 +41,7 @@ public class EventList extends LyonsList {
         adapter = new ExpandableListAdapter(this, content);
         eventList.setAdapter(adapter);
 
-        if (Retrieve.isInternetAvailable(this)) {
-            Retrieve.eventData(this, FirebaseDatabase.getInstance().getReference("announcements"), content, new Retrieve.ListDataHandler() {
-                @Override
-                public void handle(ArrayList<String[]> listData) {
-                    onEventsLoaded();
-                }
-            });
-        } else {
-            Toast.makeText(this, "No Internet Available!", Toast.LENGTH_SHORT).show();
-        }
-
-        /*eventList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Intent intent = new Intent(EventList.this, InfoActivity.class);
-                String[] list = content.get(childPosition);
-                intent.putExtra("announcement", list);
-                return true;
-            }
-        });*/
+        loadAnnouncements();
 
         eventList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -76,6 +58,29 @@ public class EventList extends LyonsList {
         });
 
         Log.d("List Activity", "We have been created now!");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (didUpdateDataset) {
+            loadAnnouncements();
+            didUpdateDataset = false;
+        }
+    }
+
+    private void loadAnnouncements () {
+        if (Retrieve.isInternetAvailable(this)) {
+            Retrieve.eventData(this, FirebaseDatabase.getInstance().getReference("announcements"), content, new Retrieve.ListDataHandler() {
+                @Override
+                public void handle(ArrayList<String[]> listData) {
+                    onEventsLoaded();
+                }
+            });
+        } else {
+            Toast.makeText(this, "No Internet Available!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void onEventsLoaded() {
@@ -96,6 +101,7 @@ public class EventList extends LyonsList {
         line[3] = content.get(curExpandedCellIndex)[3];
         line[4] = content.get(curExpandedCellIndex)[4];
         intent.putExtra("tag", "announcement");
+        intent.putExtra("initiator", "events");
         intent.putExtra("announcement", line);
 
         startActivity(intent);

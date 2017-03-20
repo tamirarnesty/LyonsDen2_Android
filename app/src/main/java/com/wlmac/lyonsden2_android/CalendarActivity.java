@@ -127,7 +127,7 @@ public class CalendarActivity extends AppCompatActivity {
             String dateLabelText = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA).format(date);
             if (dayDictionary == null) {        // If a Day Dictionary is not available then
                 // Try to load it
-                dayDictionary = getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyDayDictionary, null);
+                dayDictionary = getSharedPreferences(LyonsDen.keySharedPreferences, 0).getString(LyonsCalendar.keyDayDictionary, null);
                 if (dayDictionary != null) {    // If it worked then get the day of the selected date and
                     // Set it
                     String day = Retrieve.dayFromDictionary(dayDictionary, date);
@@ -253,6 +253,8 @@ public class CalendarActivity extends AppCompatActivity {
     private LoadingLabel loadingLabel;
     private ProgressBar loadingCircle;
 
+    private android.support.v4.app.FragmentTransaction calendarTransaction;
+    private boolean postFirstLaunch = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -280,9 +282,7 @@ public class CalendarActivity extends AppCompatActivity {
         // Pass the instantiation parameters to the UICalendar
         calendarView.setArguments(args);
         // Display the UICalendar on screen, by replacing an existing 'holder View' on screen with the UICalendar
-        android.support.v4.app.FragmentTransaction t = getSupportFragmentManager().beginTransaction();
-        t.replace(R.id.CalSCalendar, calendarView);
-        t.commit();
+        commitCalendarView();
 
     // MARK: DRAWER INITIALIZATION
 
@@ -296,7 +296,7 @@ public class CalendarActivity extends AppCompatActivity {
 
     // MARK: DAY DICTIONARY INITIALIZATION
 
-        SharedPreferences cache = getSharedPreferences(HomeActivity.sharedPreferencesName, 0);
+        SharedPreferences cache = getSharedPreferences(LyonsDen.keySharedPreferences, 0);
         dayDictionary = cache.getString(LyonsCalendar.keyDayDictionary, null);
         String downloadAction = (dayDictionary == null) ? WebCalendar.actionDownloadWithCache : WebCalendar.actionDownload;
 
@@ -310,7 +310,7 @@ public class CalendarActivity extends AppCompatActivity {
         } else {                // If internet is not available then
             String toastText = "Unable to update calendar"; // Will display this message if offline and no cache
             // If a Cached Calendar exists then use that and tell the user about it
-            if (getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyCalendarCache, null) != null) {
+            if (getSharedPreferences(LyonsDen.keySharedPreferences, 0).getString(LyonsCalendar.keyCalendarCache, null) != null) {
                 calendarView.setOffline(true);
                 showLoadingComponents();
                 toastText += "\nLoading last cached version";   // Will display that plus this message if offline but with cache
@@ -356,6 +356,28 @@ public class CalendarActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "A UI Error Occurred!\nError #" + getResources().getInteger(R.integer.CalendarViewIsNull), Toast.LENGTH_SHORT).show();
             }
         }
+
+        Log.d("CalActivity", "" + (calendarView.getView().getVisibility() == View.VISIBLE));
+        Log.d("CalActivity", "" + calendarView.getView().getAlpha());
+        Log.d("CalActivity", "" + calendarView.isAdded());
+
+        if (calendarTransaction == null) {
+            Log.d("CalActivity", "Commiting Calendar");
+//            commitCalendarView();
+//            calendarView.getView().setVisibility(View.VISIBLE);
+//            calendarView.refreshView();
+        }
+
+        if (postFirstLaunch) {
+//            calendarView.show(getSupportFragmentManager(), "");
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        calendarTransaction = null;
+        postFirstLaunch = true;
     }
 
     @Override
@@ -400,6 +422,12 @@ public class CalendarActivity extends AppCompatActivity {
             Log.d("Calendar Activity:", "The calendar_cell.xml file seems to missing or corrupted.");
         }
         calendarView.setBackgroundDrawableForDate(drawable, date);
+    }
+
+    private void commitCalendarView () {
+        calendarTransaction = getSupportFragmentManager().beginTransaction();
+        calendarTransaction.replace(R.id.CalSCalendar, calendarView);
+        calendarTransaction.commit();
     }
 
     private void showLoadingComponents () {

@@ -5,7 +5,7 @@
         <shape>
             <solid android:color="@android:color/transparent"/>
             <corners android:radius="5dp" />
-            <stroke android:width="2dp" android:color="@color/segmentedButtonUnselected"/>
+            <stroke android:width="2dp" android:color="@color/text_view_edit"/>
         </shape>
     </item>
 

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.wlmac.lyonsden2_android.HomeActivity;
+import com.wlmac.lyonsden2_android.LyonsDen;
 import com.wlmac.lyonsden2_android.R;
 
 /**
@@ -56,7 +57,7 @@ public class CourseDialog extends DialogFragment {
                     alertBuilder.setMessage("Is this a spare?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(HomeActivity.sharedPreferencesName, 0);
+                            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(LyonsDen.keySharedPreferences, 0);
                             SharedPreferences.Editor edit = sharedPreferences.edit();
                             edit.putBoolean(periodString, true);
                             edit.putString(periodString + " 0", name.getText().toString());
@@ -78,7 +79,7 @@ public class CourseDialog extends DialogFragment {
                     AlertDialog alertDialog = alertBuilder.create();
                     alertDialog.show();
                 } else {
-                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences(HomeActivity.sharedPreferencesName, 0);
+                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences(LyonsDen.keySharedPreferences, 0);
                     SharedPreferences.Editor edit = sharedPreferences.edit();
                     edit.putBoolean(periodString, false);
                     edit.putString(periodString + " 0", name.getText().toString());

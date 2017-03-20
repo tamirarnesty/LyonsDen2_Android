@@ -12,12 +12,18 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +31,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.wlmac.lyonsden2_android.lyonsLists.ListAdapter;
 import com.wlmac.lyonsden2_android.otherClasses.CourseDialog;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsCalendar;
+import com.wlmac.lyonsden2_android.otherClasses.LyonsScrollView;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
+import com.wlmac.lyonsden2_android.otherClasses.WebCalendar;
 import com.wlmac.lyonsden2_android.resourceActivities.InfoActivity;
 
 import java.text.SimpleDateFormat;
@@ -42,7 +50,8 @@ import java.util.Locale;
  * @version 1, 2016/07/30
  */
 public class HomeActivity extends AppCompatActivity {
-    public static String sharedPreferencesName = "com.wlmac.lyonsden2_android";
+    public static boolean didUpdateDataset = false;
+
     /** Holds the current day's value (1 or 2) */
     private TextView dayLabel;
     /** Declared merely because it must be set to a custom font */
@@ -59,14 +68,14 @@ public class HomeActivity extends AppCompatActivity {
     private DrawerLayout rootLayout;
     /** An instance of the ListView used in this activity's navigation drawer. */
     private ListView drawerList;
-    /** The drawer toggler used this activity. */
+    /** The drawer toggle used this activity. */
     private ActionBarDrawerToggle drawerToggle;
-    //containers for courses
+    /** Containers for courses */
     private RelativeLayout [] containers = new RelativeLayout[4];
-    //date format
+    /** Date Format */
     SimpleDateFormat timeFormat = new SimpleDateFormat("kk:mm:ss", Locale.CANADA);
 
-    //timetable selection backgrounds
+    /** Timetable selection backgrounds */
     Drawable drawableSelect;
     Drawable drawableBlack;
     Drawable drawableLeft;
@@ -81,7 +90,14 @@ public class HomeActivity extends AppCompatActivity {
     private long[] normalTime;
     private long[] lateTime;
     private boolean isOnlineLogInShown;
+    private ListAdapter adapter;
     SharedPreferences sharedPreferences;
+
+// MARK: Parallax Fields
+    /** A reference to the instance of a container that contains the Day label + Timetable as its child views. */
+    private RelativeLayout topViews;
+    private Toolbar toolbar;
+    private boolean didCalculateSpacer = false;
 
     private String[][] timeTable;
 
@@ -105,7 +121,7 @@ public class HomeActivity extends AppCompatActivity {
         initializeComponents();
         initializeTimeTable();
 
-        sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
+        sharedPreferences = this.getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE);
         updatePeriods();
 
         if (sharedPreferences.getBoolean("isOnlineLogInShown", false)) {
@@ -137,43 +153,25 @@ public class HomeActivity extends AppCompatActivity {
         dayLabel.setTypeface(Retrieve.typeface(this));
         todayIsDay.setTypeface(Retrieve.typeface(this));
 
-        if (Retrieve.isInternetAvailable(this)) {
-            String day = Retrieve.dayFromDictionary(getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyDayDictionary, ""), new Date());
-            if (day.equals("-1")) {
-                day = "X";
+        if (getSharedPreferences(LyonsDen.keySharedPreferences, 0).getString(LyonsCalendar.keyDayDictionary, null) != null)
+            updateDay();
+        else
+            if (Retrieve.isInternetAvailable(this)) {
+                // Download cal and try again
+                Log.d("Home", "Commencing Calendar Caching!");
+                WebCalendar.downloadInto(new LyonsCalendar(), this, WebCalendar.actionCacheOnly);
+                Log.d("Home", "Download Initiated!");
+                updateDay();
+                Log.d("Home", "Updated Day Label!");
+            } else {
+                dayLabel.setText("N/A");
+                todayIsDay.setText("No Internet Available");
             }
-            dayLabel.setText(day);
-        }
-        else {
-            dayLabel.setText("N/A");
-            todayIsDay.setText("No Internet Available");
-        }
 
         if (dayLabel.getText().toString().equals("X")) {
             Toast.makeText(getApplicationContext(), "No day available.\nThere is no school today.\nIt may be a weekend.", Toast.LENGTH_LONG).show();
         }
-        isLateStart = Retrieve.isLateStartDay(getSharedPreferences(HomeActivity.sharedPreferencesName, 0).getString(LyonsCalendar.keyLateStartDictionary, ""), new Date());
-
-
-        // Declare and set the ArrayAdapter for filling the ListView with content
-        //          Type of content                      |Source|Type of ListView layout            | Data source array
-        //                                               |Object|                                   |
-        final ListAdapter adapter = new ListAdapter(this, announcements, false);
-        listView.setAdapter(adapter);
-
-        if (Retrieve.isInternetAvailable(HomeActivity.this)) {
-            Retrieve.eventData(this, FirebaseDatabase.getInstance().getReference("announcements"), announcements, new Retrieve.ListDataHandler() {
-                @Override
-                public void handle(ArrayList<String[]> listData) {
-                    adapter.notifyDataSetChanged();
-                }
-            });
-            listView.setVisibility(View.VISIBLE);
-            noInternet.setVisibility(View.INVISIBLE);
-        } else {
-            listView.setVisibility(View.INVISIBLE);
-            noInternet.setText(View.VISIBLE);
-        }
+        isLateStart = Retrieve.isLateStartDay(getSharedPreferences(LyonsDen.keySharedPreferences, 0).getString(LyonsCalendar.keyLateStartDictionary, ""), new Date());
 
         // Declare a listener for whenever an item has been clicked in the ListVew
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -183,12 +181,45 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(HomeActivity.this, InfoActivity.class);
                 String[] list = announcements.get(position);
                 intent.putExtra("tag", "announcement");
+                intent.putExtra("initiator", "home");
                 intent.putExtra("announcement", list);
                 startActivity(intent);
                 overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (listView.getFirstVisiblePosition() == 0 && didCalculateSpacer) {
+                    // Get the distance from the top child to the top of the view
+                    int childTopY = (listView.getChildAt(0) != null) ? listView.getChildAt(0).getTop() : 0;
+                    /* Set the image to scroll half of the amount that of ListView */
+                    toolbar.setY(childTopY * 0.5f);
+                    topViews.setY((childTopY * 0.7f) + getSupportActionBar().getHeight());
+                }
+
+                if (!didCalculateSpacer && topViews.getHeight() != 0) {
+                    didCalculateSpacer = true;
+                    calculateSpacer();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (didUpdateDataset) {
+            loadAnnouncements();
+            didUpdateDataset = false;
+        }
     }
 
     @Override
@@ -197,11 +228,20 @@ public class HomeActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 
-    /*private void initializeContent () {
-        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(manager);
-    }*/
+    private void calculateSpacer() {
+        View listHeader = getLayoutInflater().inflate(R.layout.home_activity_list_header, null);
+        View topViewsSpacer = listHeader.findViewById(R.id.SpacerTopViews);
+        ViewGroup.LayoutParams params = topViewsSpacer.getLayoutParams();
+        params.height = topViews.getHeight();
+        topViewsSpacer.setLayoutParams(params);
+
+        listView.addHeaderView(listHeader);
+
+        adapter = new ListAdapter(this, announcements, false);
+        listView.setAdapter(adapter);
+
+        loadAnnouncements();
+    }
 
     private void initializeTimeStamps() {
         normalDay = new String[]{"00:00:00", "08:44:59", "08:45:00", "10:05:00", "10:05:01", "10:09:59", "10:10:00", "11:30:00", "11:30:01",
@@ -211,6 +251,32 @@ public class HomeActivity extends AppCompatActivity {
 
         normalTime = new long[]{31499999, 36300000, 36599999, 41400000, 45098999, 49500000, 49799999, 54300000, 86399999};
         lateTime = new long[]{35999999, 39900000, 40199999, 43800000, 46898999, 50100000, 50399999, 54300000, 86399999};
+    }
+
+    private void loadAnnouncements() {
+//        if (Retrieve.isInternetAvailable(HomeActivity.this)) {
+//            Retrieve.eventData(this, FirebaseDatabase.getInstance().getReference("announcements"), announcements, new Retrieve.ListDataHandler() {
+//                @Override
+//                public void handle(ArrayList<String[]> listData) {
+//                    adapter.notifyDataSetChanged();
+//                }
+//            });
+//            listView.setVisibility(View.VISIBLE);
+//            noInternet.setVisibility(View.INVISIBLE);
+//        } else {
+//            listView.setVisibility(View.INVISIBLE);
+//            noInternet.setVisibility(View.VISIBLE);
+//        }
+
+
+        // TEMPORARY!!!!!!!
+        for (int h = 0; h < 50; h ++) {
+            String[] tempHold = new String[4];
+            for (int j = 0; j < 4; j ++) {
+                tempHold[j] = "Something " + h;
+            }
+            announcements.add(tempHold);
+        }
     }
 
     public void updatePeriods () {
@@ -246,6 +312,13 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void updateDay () {
+        String day = Retrieve.dayFromDictionary(getSharedPreferences(LyonsDen.keySharedPreferences, 0).getString(LyonsCalendar.keyDayDictionary, ""), new Date());
+        if (day.equals("-1"))
+            day = "X";
+        dayLabel.setText(day);
     }
 
     private int checkTimes(String time, String[] array) {
@@ -380,6 +453,9 @@ public class HomeActivity extends AppCompatActivity {
         drawerToggle = Retrieve.drawerToggle(this, rootLayout);
         noInternet = (TextView) findViewById(R.id.HSNoInternet);
 
+        topViews = (RelativeLayout) findViewById(R.id.HSTopViews);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         periods[0] = (RelativeLayout) findViewById(R.id.HSPeriod0);
         periods[1] = (RelativeLayout) findViewById(R.id.HSPeriod1);
         periods[2] = (RelativeLayout) findViewById(R.id.HSPeriod2);
@@ -426,7 +502,7 @@ public class HomeActivity extends AppCompatActivity {
                           {R.id.HSCourseName3, R.id.HSCourseCode3, R.id.HSTeacherName3, R.id.HSRoomNumber3}};   // Period 4
         int[] spares = {R.id.HSSpare0, R.id.HSSpare1, R.id.HSSpare2, R.id.HSSpare3};
         // A nested loop that will fill up the timetable
-        SharedPreferences pref = getSharedPreferences(HomeActivity.sharedPreferencesName, 0);
+        SharedPreferences pref = getSharedPreferences(LyonsDen.keySharedPreferences, 0);
         for (int h = 0; h < timeTable.length; h ++) {
             boolean check = pref.getBoolean("Period " + (h+1), false);
                 for (int j = 0; j < timeTable[h].length; j++) {
@@ -506,35 +582,3 @@ public class HomeActivity extends AppCompatActivity {
         drawerToggle.onConfigurationChanged(newConfig);
     }
 }
-
-
-/*
-
-        //THIS IS TEST NOT WORKING YET AND SHOULD BE IN onCreate method
-
-        holderView = findViewById(R.id.topViews);
-
-        final View listHeader = getLayoutInflater().inflate(R.layout.list_header, null);
-        listView.addHeaderView(listHeader);
-
-
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,int totalItemCount)
-            {
-                  if (listView.getFirstVisiblePosition() == 0) {
-                    View firstChild = listView.getChildAt(0);
-                    int topY = 0;
-                    if (firstChild != null) {
-                        topY = firstChild.getTop();
-                    }
-                    holderView.setY(topY * 0.5f);
-                }
-            }
-        });
-        //LIKE YOU KNOW!
-
-*/

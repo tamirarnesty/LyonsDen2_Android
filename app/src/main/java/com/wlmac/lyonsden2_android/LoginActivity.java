@@ -15,11 +15,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
@@ -29,8 +27,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.ProviderQueryResult;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -64,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-        sharedPreferences = this.getSharedPreferences(HomeActivity.sharedPreferencesName, Context.MODE_PRIVATE);
+        sharedPreferences = this.getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE);
 
         logInButton = (Button) findViewById(R.id.LSLogin);
         emailField = (EditText) findViewById(R.id.LSEmailField);
@@ -135,10 +131,10 @@ public class LoginActivity extends AppCompatActivity {
         try {
             signUp.setLevel((signUpSelected) ? 1 : 0);
             segmentedButtons[0].setBackgroundDrawable(signUp);
-            segmentedButtons[0].setTextColor(getResources().getColor((signUpSelected) ? R.color.accent : R.color.segmentedButtonUnselected));
+            segmentedButtons[0].setTextColor(getResources().getColor((signUpSelected) ? R.color.accent : R.color.text_view_edit));
             login.setLevel((!signUpSelected) ? 1 : 0);
             segmentedButtons[1].setBackgroundDrawable(login);
-            segmentedButtons[1].setTextColor(getResources().getColor((!signUpSelected) ? R.color.accent : R.color.segmentedButtonUnselected));
+            segmentedButtons[1].setTextColor(getResources().getColor((!signUpSelected) ? R.color.accent : R.color.text_view_edit));
         } catch (NullPointerException e) {
             Log.d("Login Activity:", "The segmented_button.xml file seems to missing or corrupted.");
         }
@@ -219,8 +215,9 @@ public class LoginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 Log.d("Login Activity", "signInWithEmail:onComplete:" + task.isSuccessful());
                                 if (task.isSuccessful()) {
-                                    Log.d("Login Activity", FirebaseAuth.getInstance().getCurrentUser().toString());
-                                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                    try {   // If task is not successful
+                                        Log.d("Login Activity", FirebaseAuth.getInstance().getCurrentUser().toString());
+                                    } catch (NullPointerException e) { /* Ra-ta-ta-ta-ta */ }                                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                                         performIntent[0] = true;
                                         performIntent("old");
                                     }
