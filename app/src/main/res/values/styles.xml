@@ -126,7 +126,7 @@
 
     <style name="TimeTablePeriodParameter">
         <item name="android:textColor">@color/whiteText</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">7pt</item>
         <item name="android:maxLines">1</item>
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:layout_marginRight">5dp</item>
