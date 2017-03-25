@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.tjerkw.slideexpandable.library.ActionSlideExpandableListView;
 import com.wlmac.lyonsden2_android.R;
 import com.wlmac.lyonsden2_android.otherClasses.LoadingLabel;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
@@ -26,13 +27,14 @@ import java.util.ArrayList;
 public class LyonsList extends AppCompatActivity {
     /** An instance of the root layout of this activity. */
     protected DrawerLayout rootLayout;
-    /** An instance of the ListView used in this activity's navigation drawer. */
-    protected ListView drawerList;
     /** The drawer toggler used this activity. */
     protected ActionBarDrawerToggle drawerToggle;
     protected ArrayList<String[]> content = new ArrayList<>();
     protected LoadingLabel loadingLabel;
     protected ProgressBar loadingCircle;
+
+    protected ActionSlideExpandableListView listView;
+    protected ListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +45,10 @@ public class LyonsList extends AppCompatActivity {
 
         Log.d("LyonsList", "Initializing Drawer");
         rootLayout = (DrawerLayout) findViewById(R.id.NDLayout);
-        drawerList = (ListView) findViewById(R.id.NDList);
         drawerToggle = Retrieve.drawerToggle(this, rootLayout);
-        Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
+        Retrieve.drawerSetup(this, (ListView) findViewById(R.id.NDList), rootLayout, drawerToggle);
+
+        listView = (ActionSlideExpandableListView) findViewById(R.id.LSList);
 
         Log.d("LyonsList", "Initializing Loading Components");
         loadingLabel = new LoadingLabel((TextView) findViewById(R.id.LSLoadingLabel), this);
@@ -68,8 +71,7 @@ public class LyonsList extends AppCompatActivity {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-//        if (drawerToggle != null)
-            drawerToggle.syncState();
+        drawerToggle.syncState();
     }
 
     @Override

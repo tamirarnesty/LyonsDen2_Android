@@ -10,14 +10,6 @@
     android:paddingRight="4dp"
     android:paddingBottom="4dp">
 
-    <ImageView
-        android:layout_width="@dimen/LIDefaultImageViewSize"
-        android:layout_height="@dimen/LIDefaultImageViewSize"
-        android:layout_marginRight="4dp"
-        android:layout_marginEnd="4dp"
-        android:scaleType="fitCenter"
-        android:id="@+id/LIDImageView"/>
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"

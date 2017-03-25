@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.firebase.database.FirebaseDatabase;
-import com.wlmac.lyonsden2_android.HomeActivity;
+import com.tjerkw.slideexpandable.library.ActionSlideExpandableListView;
 import com.wlmac.lyonsden2_android.R;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 import com.wlmac.lyonsden2_android.resourceActivities.InfoActivity;
@@ -21,8 +19,6 @@ import java.util.ArrayList;
  */
 
 public class EventList extends LyonsList {
-    private int curExpandedCellIndex = -1;
-    private ExpandableListAdapter adapter;
     public static boolean didUpdateDataset = false;
 
     @Override
@@ -32,32 +28,43 @@ public class EventList extends LyonsList {
         Log.d("EventList", "Commencing Loading Label Cycling");
         loadingLabel.startCycling();
 
-        Log.d("EventList", "Initializing List");
-        findViewById(R.id.LSClubsList).setVisibility(View.GONE);
-        /* An instance of the eventList of this activity. */
-        ExpandableListView eventList = (ExpandableListView) findViewById(R.id.LSEventsList);
+        adapter = new ListAdapter(this, content, true);
 
-        Log.d("Event Parser", "Initiating Parse!");
-        adapter = new ExpandableListAdapter(this, content);
-        eventList.setAdapter(adapter);
+        listView.setItemActionListener(new ActionSlideExpandableListView.OnActionClickListener() {
+            @Override
+            public void onClick(View itemView, View clickedView, int position) {
+                Log.d("EventList", "I hear a click nearby!");
+                if (clickedView.getId() == R.id.LSIOpenButton) {
+                    Log.d("EventList", "Opening Announcement");
+                    // Event keys: title, info, date, location
 
+                    Intent intent = new Intent(EventList.this, InfoActivity.class);
+                    String[] line = new String[5];
+                    line[0] = content.get(position)[0];
+                    line[1] = content.get(position)[1];
+                    line[2] = content.get(position)[2];
+                    line[3] = content.get(position)[3];
+                    line[4] = content.get(position)[4];
+                    intent.putExtra("tag", "announcement");
+                    intent.putExtra("initiator", "events");
+                    intent.putExtra("announcement", line);
+
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
+                }
+            }
+        }, R.id.LSIOpenButton);
+
+        listView.setAdapter(adapter, R.id.LSICell, R.id.LSIExpandable);
         loadAnnouncements();
 
-        eventList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                parent.collapseGroup(curExpandedCellIndex);
-
-                if (curExpandedCellIndex != groupPosition) {
-                    parent.expandGroup(groupPosition, true);
-                    curExpandedCellIndex = groupPosition;
-                } else
-                    curExpandedCellIndex = -1;
-                return true;
-            }
-        });
-
         Log.d("List Activity", "We have been created now!");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        this.getSupportActionBar().setTitle(getResources().getString(R.string.LSTitleEvents));
     }
 
     @Override
@@ -87,30 +94,5 @@ public class EventList extends LyonsList {
         adapter.notifyDataSetChanged();
         loadingLabel.dismiss();
         loadingCircle.setVisibility(View.GONE);
-    }
-
-    public void openAnnouncement (View view) {
-        Log.d("EventList", "Opening Announcement");
-        // Event keys: title, info, date, location
-
-        Intent intent = new Intent(this, InfoActivity.class);
-        String[] line = new String[5];
-        line[0] = content.get(curExpandedCellIndex)[0];
-        line[1] = content.get(curExpandedCellIndex)[1];
-        line[2] = content.get(curExpandedCellIndex)[2];
-        line[3] = content.get(curExpandedCellIndex)[3];
-        line[4] = content.get(curExpandedCellIndex)[4];
-        intent.putExtra("tag", "announcement");
-        intent.putExtra("initiator", "events");
-        intent.putExtra("announcement", line);
-
-        startActivity(intent);
-        overridePendingTransition(R.anim.enter, R.anim.exit);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        this.getSupportActionBar().setTitle(getResources().getString(R.string.LSTitleEvents));
     }
 }

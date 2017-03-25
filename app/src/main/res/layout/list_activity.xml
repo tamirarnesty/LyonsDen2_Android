@@ -22,24 +22,7 @@
             android:id="@+id/toolbar">
         </android.support.v7.widget.Toolbar>
 
-        <ExpandableListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:groupIndicator="@null"
-            android:background="@color/background"
-            android:childDivider="@android:color/transparent"
-            android:divider="@color/listDivider"
-            android:dividerHeight="1dp"
-            android:id="@+id/LSEventsList"/>
-
-        <ListView
+        <com.tjerkw.slideexpandable.library.ActionSlideExpandableListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar"
@@ -52,7 +35,7 @@
             android:background="@color/background"
             android:divider="@color/listDivider"
             android:dividerHeight="1dp"
-            android:id="@+id/LSClubsList" />
+            android:id="@+id/LSList" />
 
         <ProgressBar
             android:layout_width="wrap_content"

@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.firebase.database.FirebaseDatabase;
@@ -24,8 +22,6 @@ import java.util.ArrayList;
 
 public class ClubList extends LyonsList {
     public static boolean contentChanged = false;
-    ListView clubList;
-    ListAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,12 +29,8 @@ public class ClubList extends LyonsList {
 
         loadingLabel.startCycling();
 
-        ((ExpandableListView) findViewById(R.id.LSEventsList)).setVisibility(View.GONE);
-        clubList = (ListView) findViewById(R.id.LSClubsList);
-
-        clubList = (ListView) findViewById(R.id.LSClubsList);
         adapter = new ListAdapter(this, content, false);
-        clubList.setAdapter(adapter);
+        listView.setAdapter(adapter);
         if (Retrieve.isInternetAvailable(this)) {
             Retrieve.clubData(this, FirebaseDatabase.getInstance().getReference("clubs"), content, new Retrieve.ListDataHandler() {
                 @Override
@@ -51,7 +43,7 @@ public class ClubList extends LyonsList {
         }
 
         // Set the click listener of this activity's eventList
-        clubList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Clubs keys: title, info, leader, clubKey

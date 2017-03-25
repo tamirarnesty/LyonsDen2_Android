@@ -11,12 +11,15 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.GestureDetector;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -252,8 +255,6 @@ public class CalendarActivity extends AppCompatActivity {
     };
     private LoadingLabel loadingLabel;
     private ProgressBar loadingCircle;
-
-    private android.support.v4.app.FragmentTransaction calendarTransaction;
     private boolean postFirstLaunch = false;
 
     @Override
@@ -268,6 +269,11 @@ public class CalendarActivity extends AppCompatActivity {
     // MARK: CALENDAR VIEW INITIALIZATION
 
         calendarView.setCaldroidListener(listener);
+
+
+//        calendarView.getView().findViewById(R.id.calendar_month_year_textview);
+
+
         // Create the medium for transferring the instantiation parameters for the UICalendar
         Bundle args = new Bundle();
         // A necessary aspect of parameter passing
@@ -282,7 +288,7 @@ public class CalendarActivity extends AppCompatActivity {
         // Pass the instantiation parameters to the UICalendar
         calendarView.setArguments(args);
         // Display the UICalendar on screen, by replacing an existing 'holder View' on screen with the UICalendar
-        commitCalendarView();
+        getSupportFragmentManager().beginTransaction().replace(R.id.CalSCalendar, calendarView).commit();
 
     // MARK: DRAWER INITIALIZATION
 
@@ -361,22 +367,15 @@ public class CalendarActivity extends AppCompatActivity {
         Log.d("CalActivity", "" + calendarView.getView().getAlpha());
         Log.d("CalActivity", "" + calendarView.isAdded());
 
-        if (calendarTransaction == null) {
-            Log.d("CalActivity", "Commiting Calendar");
-//            commitCalendarView();
-//            calendarView.getView().setVisibility(View.VISIBLE);
-//            calendarView.refreshView();
-        }
-
         if (postFirstLaunch) {
-//            calendarView.show(getSupportFragmentManager(), "");
+            calendarView.getView().setAlpha(1);
+            calendarView.getView().setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        calendarTransaction = null;
         postFirstLaunch = true;
     }
 
@@ -422,12 +421,6 @@ public class CalendarActivity extends AppCompatActivity {
             Log.d("Calendar Activity:", "The calendar_cell.xml file seems to missing or corrupted.");
         }
         calendarView.setBackgroundDrawableForDate(drawable, date);
-    }
-
-    private void commitCalendarView () {
-        calendarTransaction = getSupportFragmentManager().beginTransaction();
-        calendarTransaction.replace(R.id.CalSCalendar, calendarView);
-        calendarTransaction.commit();
     }
 
     private void showLoadingComponents () {

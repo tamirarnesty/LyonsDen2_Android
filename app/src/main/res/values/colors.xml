@@ -7,6 +7,7 @@
     <color name="timeTableBackground">#064CB2</color>
     <color name="accentDark">#022a64</color>
     <color name="whiteText">#FFFFFF</color>
+    <color name="grayText">#606060</color>
     <color name="blackText">#000000</color>
     <color name="invalidStroke">#FF0030</color>
     <color name="listViewBackground">#EDF7FF</color>
