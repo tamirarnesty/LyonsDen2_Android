@@ -15,15 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +28,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.wlmac.lyonsden2_android.lyonsLists.ListAdapter;
 import com.wlmac.lyonsden2_android.otherClasses.CourseDialog;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsCalendar;
-import com.wlmac.lyonsden2_android.otherClasses.LyonsScrollView;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 import com.wlmac.lyonsden2_android.otherClasses.WebCalendar;
 import com.wlmac.lyonsden2_android.resourceActivities.InfoActivity;
@@ -98,6 +94,8 @@ public class HomeActivity extends AppCompatActivity {
     private RelativeLayout topViews;
     private Toolbar toolbar;
     private boolean didCalculateSpacer = false;
+    private int topViewsHeight = 0;
+    private int lastOffset = 0;
 
     private String[][] timeTable;
 
@@ -178,8 +176,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override//             |The ListView        |The item  |The item's   |The item's
             //                      |                    |clicked   |position     |ID
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("Home", "You clicked on item " + (position - 1));
+
                 Intent intent = new Intent(HomeActivity.this, InfoActivity.class);
-                String[] list = announcements.get(position);
+                String[] list = announcements.get(position - 1);
                 intent.putExtra("tag", "announcement");
                 intent.putExtra("initiator", "home");
                 intent.putExtra("announcement", list);
@@ -196,12 +196,34 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (listView.getFirstVisiblePosition() == 0 && didCalculateSpacer) {
-                    // Get the distance from the top child to the top of the view
-                    int childTopY = (listView.getChildAt(0) != null) ? listView.getChildAt(0).getTop() : 0;
-                    /* Set the image to scroll half of the amount that of ListView */
-                    toolbar.setY(childTopY * 0.5f);
-                    topViews.setY((childTopY * 0.7f) + getSupportActionBar().getHeight());
+                if (didCalculateSpacer) {
+                    Log.d("Parallax!!!!!!", "      ");
+                    int childTopY = Math.abs(listView.getChildAt(0).getTop()) + (firstVisibleItem * listView.getChildAt(0).getHeight());
+                    if (firstVisibleItem != 0) {
+                        childTopY += topViewsHeight + getSupportActionBar().getHeight();
+                    }
+                    int deltaOffset = lastOffset - childTopY;
+
+                    // I know it is a very long condition :( In short its
+                    //  (((movingUp)        && (canStillMoveTopViewsUp)) ||
+                    if ((((deltaOffset < 0) && (Math.abs(toolbar.getY()) < (topViewsHeight + getSupportActionBar().getHeight()))) ||
+                    //  ((movingDown)      && (canStillMoveTopViewsDown))) &&
+                        ((deltaOffset > 0) && (toolbar.getY() + (topViews.getY() - getSupportActionBar().getHeight()) <= 0))) &&
+                    //  (listViewHasChildren)
+                        (listView.getChildAt(0) != null)) {
+
+                        toolbar.setY(-childTopY * 0.5f);
+                        topViews.setY((-childTopY * 0.5f) + getSupportActionBar().getHeight());
+                    }
+
+                    lastOffset = childTopY;
+//                    Log.d("Parallax!!!!!!", "childTopY: " + childTopY);
+//                    Log.d("Parallax!!!!!!", "topViewsY: " + topViews.getY());
+//                    Log.d("Parallax!!!!!!", "toolbar: " + toolbar.getY());
+//                    Log.d("Parallax!!!!!!", "topViewsHeight: " + topViewsHeight);
+
+                    // Keep this for future test needs, it took a long time to write
+//                    Log.d("Parallax!!!!!!", "Conditions: (((" + (deltaOffset < 0) + ") && (" + (Math.abs(toolbar.getY()) < (topViewsHeight + getSupportActionBar().getHeight())) + ")) || ((" + (deltaOffset > 0) + ") && (" + (toolbar.getY() + (topViews.getY() - getSupportActionBar().getHeight()) <= 0) + "))) && (" + (listView.getChildAt(0) != null) + ")");
                 }
 
                 if (!didCalculateSpacer && topViews.getHeight() != 0) {
@@ -235,7 +257,11 @@ public class HomeActivity extends AppCompatActivity {
         View topViewsSpacer = listHeader.findViewById(R.id.SpacerTopViews);
         ViewGroup.LayoutParams params = topViewsSpacer.getLayoutParams();
         params.height = topViews.getHeight();
+        topViewsHeight = topViews.getHeight();
         topViewsSpacer.setLayoutParams(params);
+
+        listHeader.setOnClickListener(null);
+        listHeader.setClickable(false);
 
         listView.addHeaderView(listHeader, listHeader, false);
 
@@ -261,6 +287,7 @@ public class HomeActivity extends AppCompatActivity {
 //                @Override
 //                public void handle(ArrayList<String[]> listData) {
 //                    adapter.notifyDataSetChanged();
+//                    lastOffset = (listView.getChildAt(0) != null) ? listView.getChildAt(0).getTop() : 0;
 //                }
 //            });
 //            listView.setVisibility(View.VISIBLE);
@@ -448,9 +475,9 @@ public class HomeActivity extends AppCompatActivity {
 
     /** Instantiates all GUI components */
     private void initializeComponents () {
+        listView = (ListView) findViewById(R.id.HSList);
         dayLabel = (TextView) findViewById(R.id.HSDayLabel);
         todayIsDay = (TextView) findViewById(R.id.HSTodayIsDay);
-        listView = (ListView) findViewById(R.id.HSList);
         rootLayout = (DrawerLayout) findViewById(R.id.NDLayout);
         drawerList = (ListView) findViewById(R.id.NDList);
         drawerToggle = Retrieve.drawerToggle(this, rootLayout);

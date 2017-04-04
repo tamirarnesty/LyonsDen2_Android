@@ -8,10 +8,12 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:clickable="false"
         android:id="@+id/SpacerToolbar"/>
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="296dp"
+        android:clickable="false"
         android:id="@+id/SpacerTopViews"/>
 </LinearLayout>

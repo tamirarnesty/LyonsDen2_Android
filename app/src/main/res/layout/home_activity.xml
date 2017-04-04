@@ -29,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/toolbar"
+            android:background="@color/background"
             android:id="@+id/HSTopViews">
 
             <!-- Today Is Day -->
@@ -38,7 +39,7 @@
                 android:layout_alignParentTop="true"
                 android:text="@string/HSTodayIsDay"
                 android:id="@+id/HSTodayIsDay"
-                android:textSize="11pt"
+                android:textSize="24sp"
                 android:textColor="@color/listDivider"
                 android:gravity="center" />
 
@@ -50,7 +51,7 @@
                 android:id="@+id/HSDayLabel"
                 android:layout_below="@+id/HSTodayIsDay"
                 android:textColor="@color/listDivider"
-                android:textSize="73pt"
+                android:textSize="150sp"
                 android:gravity="center" />
 
             <!-- Time Table Container -->
@@ -281,37 +282,29 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <RelativeLayout
+        <!-- Announcements Container -->
+        <ListView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/HSBottomViews">
+            android:layout_height="wrap_content"
+            android:id="@+id/HSList"
+            android:layout_gravity="center_horizontal"
+            android:divider="@color/listDivider"
+            android:dividerHeight="1dp"
+            android:layout_marginTop="1dp" />
 
-            <!-- Announcements Container -->
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/HSList"
-                android:layout_gravity="center_horizontal"
-
-                android:divider="@color/listDivider"
-                android:dividerHeight="1dp"
-                android:overScrollFooter="@color/background"
-                android:overScrollHeader="@color/background"
-                android:layout_marginTop="1dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/HSNoInternet"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginEnd="10dp"
-                android:text="@string/HSNoInternetLabel"
-                android:textSize="18sp"
-                android:visibility="invisible"
-                android:textAlignment="center"/>
-        </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/HSTopViews"
+            android:id="@+id/HSNoInternet"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/HSNoInternetLabel"
+            android:textSize="18sp"
+            android:visibility="invisible"
+            android:textAlignment="center"/>
     </RelativeLayout>
 
     <!-- Navigation drawer -->
