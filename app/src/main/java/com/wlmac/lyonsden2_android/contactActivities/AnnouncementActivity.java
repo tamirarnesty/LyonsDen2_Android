@@ -232,7 +232,7 @@ public class AnnouncementActivity extends AppCompatActivity {
                         }
 
                         if (formattedReceivers.contains("'" + userId + "'")) {
-                            formattedReceivers.remove(userID[0]);
+                            formattedReceivers.remove("'" + userId + "'");
                         }
 
                         try {

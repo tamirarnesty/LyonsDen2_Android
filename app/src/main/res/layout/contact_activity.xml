@@ -50,18 +50,18 @@
 
             <!-- Announcement Proposal Button -->
             <Button
+                android:id="@+id/CSAnnouncementButton"
                 style="@style/ContactButtonStyle"
-                android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
+                android:layout_marginStart="40dp"
                 android:height="60dp"
                 android:onClick="proposeAnnouncement"
                 android:text="@string/CSAnnouncementButton"
+                android:textAllCaps="false"
                 android:textSize="17sp"
-                android:id="@+id/CSAnnouncementButton"
-                android:typeface="sans"
-                android:textAllCaps="false" />
+                android:typeface="sans" />
 
-            <!-- Teacher List Button -->
+                <!-- Teacher List Button -->
             <Button
                 style="@style/ContactButtonStyle"
                 android:layout_marginStart="40dp"

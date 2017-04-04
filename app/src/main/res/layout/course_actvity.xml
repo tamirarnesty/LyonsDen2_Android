@@ -144,6 +144,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSRoomHint"
+            android:inputType=""
             android:textSize="16sp"
             android:textColor="@color/blackText"
             android:id="@+id/CourseSRoomField"/>

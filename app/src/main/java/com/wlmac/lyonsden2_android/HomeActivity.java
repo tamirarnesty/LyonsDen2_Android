@@ -210,6 +210,8 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+        topViews.bringToFront();
+        toolbar.bringToFront();
     }
 
     @Override
@@ -235,7 +237,7 @@ public class HomeActivity extends AppCompatActivity {
         params.height = topViews.getHeight();
         topViewsSpacer.setLayoutParams(params);
 
-        listView.addHeaderView(listHeader);
+        listView.addHeaderView(listHeader, listHeader, false);
 
         adapter = new ListAdapter(this, announcements, false);
         listView.setAdapter(adapter);
@@ -319,6 +321,7 @@ public class HomeActivity extends AppCompatActivity {
         if (day.equals("-1"))
             day = "X";
         dayLabel.setText(day);
+        sharedPreferences.edit().putString(LyonsDen.dayKey, dayLabel.getText().toString()).apply();
     }
 
     private int checkTimes(String time, String[] array) {
@@ -524,8 +527,37 @@ public class HomeActivity extends AppCompatActivity {
                         default:
                             s = "Incorrect value";
                     }
-                    ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
-                    timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
+                    if (dayLabel.getText().equals("1")) {
+                        if (j < 2) {
+                            ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
+                            timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
+                        } else {
+                            if (j == 2) {
+                                ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
+                                timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
+                            } else {
+                                if (j == 3) {
+                                    ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
+                                    timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
+                                }
+                            }
+                        }
+                    } else if (dayLabel.getText().equals("2")) {
+                        if (j < 2) {
+                            ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
+                            timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
+                        } else {
+                            if (j == 2) {
+                                ((TextView) findViewById(idBank[h][j+1])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
+                                timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
+                            } else {
+                                if (j == 3) {
+                                    ((TextView) findViewById(idBank[h][j-1])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
+                                    timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
+                                }
+                            }
+                        }
+                    }
                 }
             if (!check) {
                 (findViewById(spares[h])).setVisibility(View.INVISIBLE);
@@ -538,7 +570,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
         return timeTable;
-        // P.S. I have no clue how permanent storage works in android :)
     }
 
     public void periodClicked (int index, String name, String code, String teacher, String room) {

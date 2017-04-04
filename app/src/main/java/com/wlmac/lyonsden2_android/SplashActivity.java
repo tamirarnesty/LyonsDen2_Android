@@ -48,10 +48,8 @@ public class SplashActivity extends AppCompatActivity {
         sharedPreferences = this.getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE);
         authenticator = FirebaseAuth.getInstance();
 
-        email = sharedPreferences.getString("userEmail", "");
-        password = sharedPreferences.getString("password", "");
-        Log.d("Splash Screen", "what the fuck " + sharedPreferences.getString("userEmail", ""));
-        Log.d("Splash Screen",  "what the fuck also " + sharedPreferences.getString("password", ""));
+        email = sharedPreferences.getString(LyonsDen.keyEmail, "");
+        password = sharedPreferences.getString(LyonsDen.keyPass, "");
         int tick = 0;
         while (tick < 3) {
             tick ++;
@@ -110,8 +108,8 @@ public class SplashActivity extends AppCompatActivity {
                     Log.d("Splash Screen", "signInWithEmail:onComplete:" + task.isSuccessful());
                     if (task.isSuccessful()) {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("userEmail", email);
-                        editor.putString("password", password);
+                        editor.putString(LyonsDen.keyEmail, email);
+                        editor.putString(LyonsDen.keyPass, password);
                         editor.apply();
                         performIntent[0] = false;
                         performIntent[1] = true;

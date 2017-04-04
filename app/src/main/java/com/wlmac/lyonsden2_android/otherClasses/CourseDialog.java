@@ -60,10 +60,17 @@ public class CourseDialog extends DialogFragment {
                             SharedPreferences sharedPreferences = getActivity().getSharedPreferences(LyonsDen.keySharedPreferences, 0);
                             SharedPreferences.Editor edit = sharedPreferences.edit();
                             edit.putBoolean(periodString, true);
-                            edit.putString(periodString + " 0", name.getText().toString());
-                            edit.putString(periodString + " 1", code.getText().toString());
-                            edit.putString(periodString + " 2", teacher.getText().toString());
-                            edit.putString(periodString + " 3", room.getText().toString());
+                            if (sharedPreferences.getString(LyonsDen.dayKey, "1").equals("1")) {
+                                edit.putString(periodString + " 0", name.getText().toString());
+                                edit.putString(periodString + " 1", code.getText().toString());
+                                edit.putString(periodString + " 2", teacher.getText().toString());
+                                edit.putString(periodString + " 3", room.getText().toString());
+                            } else if (sharedPreferences.getString(LyonsDen.dayKey, "1").equals("2")) {
+                                edit.putString(periodString + " 0", name.getText().toString());
+                                edit.putString(periodString + " 1", code.getText().toString());
+                                edit.putString(periodString + " 2", teacher.getText().toString());
+                                edit.putString(periodString + " 3", room.getText().toString());
+                            }
                             edit.apply();
                             ((HomeActivity) getActivity()).updatePeriods();
                             getDialog().dismiss();

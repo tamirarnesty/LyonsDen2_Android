@@ -1,5 +1,6 @@
 package com.wlmac.lyonsden2_android;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -8,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -167,17 +169,42 @@ public class ContactActivity extends AppCompatActivity {
         findViewById(R.id.CSEmergencyButton).setClickable(true);
     }
 
+    public void dialPhone (String choice) {
+        if (choice.equals("WLMCI")) {
+            Log.d("ContactActivity", "WLMCI Pressed");
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:416-395-3330" ));
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                checkPermissions();
+                return;
+            } else {
+                startActivity(intent);
+            }
+        } else if (choice.equals("Kids Help Phone")) {
+            Log.d("ContactActivity", "Kids Help Phone Pressed");
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:1-800-668-6868"));
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                checkPermissions();
+                return;
+            } else {
+                startActivity(intent);
+            }
+        }
+    }
     /** Called when Emergency Hotline button is pressed. */
     public void emergency(View view) {
         if (checkPermissions()) {
-            actionSheet.animate().translationYBy(-actionSheetHeight).setDuration(300).start();
-            contentView.animate().alpha(0.5f).setDuration(300).start();
-            contentView.setEnabled(false);
-            contentView.setClickable(false);
-            findViewById(R.id.CSAnnouncementButton).setClickable(false);
-            findViewById(R.id.CSTeacherButton).setClickable(false);
-            findViewById(R.id.CSRadioButton).setClickable(false);
-            findViewById(R.id.CSEmergencyButton).setClickable(false);
+            final CharSequence [] callOptions = new CharSequence[]{"WLMCI", "Kids Help Phone"};
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Who would you like to contact?");
+            builder.setItems(callOptions, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialPhone((String) callOptions[which]);
+                }
+            });
+            builder.show();
         } else {
             Log.d("Contact Activity", "Something went wrong");
         }

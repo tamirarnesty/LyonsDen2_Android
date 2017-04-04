@@ -27,12 +27,14 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.ProviderQueryResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
+import com.wlmac.lyonsden2_android.otherClasses.ToastView;
 import com.wlmac.lyonsden2_android.resourceActivities.InformationFormActivity;
 
 // TODO: MAKE METHODS SWITACHBLE BASED ON PLATFORM VERSION (GET RID OF DEPRECATED METHOD)
@@ -49,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     private String[] signUpKeys = new String[2];
     private Button[] segmentedButtons = new Button[2];
     private boolean isStudent = true;
+    private ToastView loadingToast;
     /** Store data permanently on device */
     SharedPreferences sharedPreferences;
 
@@ -68,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         signUpKeyField = (EditText) findViewById(R.id.LSCodeField);
         segmentedButtons[0] = (Button) findViewById(R.id.LSSignUpButton);
         segmentedButtons[1] = (Button) findViewById(R.id.LSLoginButton);
+        loadingToast = new ToastView();
         Drawable signUp = getResources().getDrawable(R.drawable.segmented_button);
         try {
             signUp.setLevel(1);
@@ -143,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void logIn(View view) {
         Log.d("Login Activity:", "button pressed.");
-        Toast.makeText(getApplicationContext(), "Should be loading toast", Toast.LENGTH_LONG).show();
+        loadingToast.show(getFragmentManager(), "SomeDialog");
         logInButton.setEnabled(false);
         if (fieldsAreValid()) {
             Log.d("Login Activity:", "fields are valid");
@@ -318,12 +322,8 @@ public class LoginActivity extends AppCompatActivity {
     private void performIntent(String type) {
         Intent intent;
         // store on device
-        sharedPreferences.edit().putString("password", passField.getText().toString()).apply();
-        sharedPreferences.edit().putString("userEmail", emailField.getText().toString()).apply();
-        String temp = sharedPreferences.getString("userEmail", "not here");
-        String temp2 = sharedPreferences.getString("password", "not here");
-        Log.d("Login Activity", "username " + temp);
-        Log.d("Login Activity", "password " + temp2);
+        sharedPreferences.edit().putString(LyonsDen.keyPass, passField.getText().toString()).apply();
+        sharedPreferences.edit().putString(LyonsDen.keyEmail, emailField.getText().toString()).apply();
         if (type.equals("new")) {
             intent = new Intent(LoginActivity.this, InformationFormActivity.class);
         } else {
@@ -352,10 +352,6 @@ public class LoginActivity extends AppCompatActivity {
                 valid = true;
             }
         }
-
-//        if (!valid) {
-//            return valid;
-//        }
 
         // check email format
         final String email = String.valueOf(fields[0].getText());
