@@ -36,7 +36,7 @@ public class CourseDialog extends DialogFragment {
         code = (EditText) view.findViewById(R.id.CourseSCodeField);
         teacher = (EditText) view.findViewById(R.id.CourseSTeacherField);
         room = (EditText) view.findViewById(R.id.CourseSRoomField);
-        room.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+        room.setRawInputType(InputType.TYPE_CLASS_PHONE);
 
         submit = (Button) view.findViewById(R.id.USUpdate);
 
@@ -60,17 +60,10 @@ public class CourseDialog extends DialogFragment {
                             SharedPreferences sharedPreferences = getActivity().getSharedPreferences(LyonsDen.keySharedPreferences, 0);
                             SharedPreferences.Editor edit = sharedPreferences.edit();
                             edit.putBoolean(periodString, true);
-                            if (sharedPreferences.getString(LyonsDen.dayKey, "1").equals("1")) {
                                 edit.putString(periodString + " 0", name.getText().toString());
                                 edit.putString(periodString + " 1", code.getText().toString());
                                 edit.putString(periodString + " 2", teacher.getText().toString());
                                 edit.putString(periodString + " 3", room.getText().toString());
-                            } else if (sharedPreferences.getString(LyonsDen.dayKey, "1").equals("2")) {
-                                edit.putString(periodString + " 0", name.getText().toString());
-                                edit.putString(periodString + " 1", code.getText().toString());
-                                edit.putString(periodString + " 2", teacher.getText().toString());
-                                edit.putString(periodString + " 3", room.getText().toString());
-                            }
                             edit.apply();
                             ((HomeActivity) getActivity()).updatePeriods();
                             getDialog().dismiss();

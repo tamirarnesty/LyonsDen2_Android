@@ -163,18 +163,17 @@ public class LoginActivity extends AppCompatActivity {
                     return false;
                 }
             });
-            // initiate loading toast
-            // loadingToast.initiate();
 
             if (Retrieve.isInternetAvailable(this)) {
                 Log.d("Login Activity:", "to process request");
                 this.retrieveKeys();
             } else {
                 Toast.makeText(getApplicationContext(), "No internet access!", Toast.LENGTH_LONG).show();
+                loadingToast.dismiss();
             }
         } else {
-            Toast.makeText(getApplicationContext(), "Log in failed", Toast.LENGTH_LONG).show();
             logInButton.setEnabled(true);
+            loadingToast.dismiss();
         }
 
     }
@@ -206,6 +205,7 @@ public class LoginActivity extends AppCompatActivity {
                 this.createNewUser(signUpKeys);
             } else {
                 Toast.makeText(getApplicationContext(), "Incorrect sign up key", Toast.LENGTH_SHORT).show();
+                loadingToast.dismiss();
             }
         } else { // log in
             Log.d("Login Activity", "not sign up");
@@ -224,11 +224,13 @@ public class LoginActivity extends AppCompatActivity {
                                     } catch (NullPointerException e) { /* Ra-ta-ta-ta-ta */ }                                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                                         performIntent[0] = true;
                                         performIntent("old");
+                                        loadingToast.dismiss();
                                     }
                                 }
 
                                 if (!task.isSuccessful()) {
                                     logInButton.setEnabled(true);
+                                    loadingToast.dismiss();
                                     try {
                                         throw task.getException();
                                     } catch (FirebaseAuthUserCollisionException e) {
@@ -285,9 +287,12 @@ public class LoginActivity extends AppCompatActivity {
                             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                                 performIntent[0] = true;
                                 performIntent("new");
+                                loadingToast.dismiss();
                             }
 
                             if (!task.isSuccessful()) {
+                                logInButton.setEnabled(true);
+                                loadingToast.dismiss();
                                 try {
                                     throw task.getException();
                                 } catch (FirebaseAuthUserCollisionException e) {
@@ -313,6 +318,7 @@ public class LoginActivity extends AppCompatActivity {
 
         } else {
             Toast.makeText(getApplicationContext(), "Sign up failed", Toast.LENGTH_LONG).show();
+            loadingToast.dismiss();
         }
     }
 
@@ -331,7 +337,6 @@ public class LoginActivity extends AppCompatActivity {
         }
         String IFTitle = (isStudent) ? "Student Information Form" : "Teacher Information Form";
         intent.putExtra("IFTitle", IFTitle);
-        Toast.makeText(getApplicationContext(), "Segue success", Toast.LENGTH_SHORT).show();
         startActivity(intent);
         finish();
     }
@@ -340,37 +345,37 @@ public class LoginActivity extends AppCompatActivity {
      * @return boolean true if all field data is correct.
      */
     private boolean fieldsAreValid() {
-        boolean valid = true;
+        boolean [] valid = {true, true};
 
         EditText[] fields = (signUpSelected) ? new EditText[]{emailField, passField, signUpKeyField} : new EditText[]{emailField, passField};
         for (EditText field : fields) {
             if (field.getText() == null || field.getText().toString().equals("")) {
-                field.setBackgroundResource(R.drawable.text_view_invalid);
-                valid = false;
+                field.setBackgroundResource(R.drawable.text_field_bottom_border_invalid);
+                valid[0] = false;
             } else {
-                field.setBackgroundResource(R.drawable.text_view_default);
-                valid = true;
+                field.setBackgroundResource(R.drawable.text_field_bottom_border);
+                valid[0] = true;
             }
         }
 
         // check email format
         final String email = String.valueOf(fields[0].getText());
         if (email.contains("@")) {
-            valid = true;
+            valid[1] = true;
             final String domain = email.substring(email.indexOf("@") + 1);
             if (domain.contains(".")) {
-                valid = true;
+                valid[1] = true;
                 final String domain2 = domain.substring(domain.indexOf(".") +1);
                 if (domain2.contains("@") || domain2.contains(".")) {
-                    valid = false;
+                    valid[1] = false;
                     Log.d("Login Activity", "invalid email format");
                     Toast.makeText(getApplicationContext(), "Invalid email format", Toast.LENGTH_SHORT).show();
                 }
             }
         }
-
+        boolean result = (valid[0] && valid[1]);
         logInButton.setEnabled(true);
-        return valid;
+        return result;
     }
 
     public void resetPassword(View view) {

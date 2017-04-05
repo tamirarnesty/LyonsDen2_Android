@@ -8,9 +8,9 @@
     <dimen name="textSize14Details">14sp
     </dimen>      <!-- Like dateTime or location in Info View -->
     <dimen name="textSize12Button">12sp</dimen>       <!-- App-wide text size for all buttons -->
+    <dimen name="textSize15Button">15sp</dimen>        <!-- App-wide text size for all text fields -->
     <dimen name="textSize17Label">17sp</dimen>        <!-- App-wide text size for all labels -->
-    <dimen name="textSize15Field">15sp
-    </dimen>        <!-- App-wide text size for all text fields -->
+    <dimen name="textSize15Field">15sp</dimen>        <!-- App-wide text size for all text fields -->
 
     <dimen name="defaultCellSize">56dp</dimen>
     <dimen name="largeCellSize">104dp</dimen>

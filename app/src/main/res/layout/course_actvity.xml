@@ -49,6 +49,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSNameHint"
+            android:inputType="textCapWords"
             android:textSize="16sp"
             android:textColor="@color/blackText"
             android:id="@+id/CourseSNameField"/>
@@ -113,6 +114,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSTeacherHint"
+            android:inputType="textCapWords"
             android:textSize="16sp"
             android:textColor="@color/blackText"
             android:id="@+id/CourseSTeacherField"/>
@@ -144,7 +146,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSRoomHint"
-            android:inputType=""
+            android:inputType="textCapCharacters"
             android:textSize="16sp"
             android:textColor="@color/blackText"
             android:id="@+id/CourseSRoomField"/>

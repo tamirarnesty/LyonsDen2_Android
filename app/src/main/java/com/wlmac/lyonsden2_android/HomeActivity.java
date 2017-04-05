@@ -120,7 +120,6 @@ public class HomeActivity extends AppCompatActivity {
         initializeTimeTable();
 
         sharedPreferences = this.getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE);
-        updatePeriods();
 
         if (sharedPreferences.getBoolean("isOnlineLogInShown", false)) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -169,6 +168,9 @@ public class HomeActivity extends AppCompatActivity {
         if (dayLabel.getText().toString().equals("X")) {
             Toast.makeText(getApplicationContext(), "No day available.\nThere is no school today.\nIt may be a weekend.", Toast.LENGTH_LONG).show();
         }
+
+        updatePeriods();
+
         isLateStart = Retrieve.isLateStartDay(getSharedPreferences(LyonsDen.keySharedPreferences, 0).getString(LyonsCalendar.keyLateStartDictionary, ""), new Date());
 
         // Declare a listener for whenever an item has been clicked in the ListVew
@@ -347,7 +349,7 @@ public class HomeActivity extends AppCompatActivity {
         String day = Retrieve.dayFromDictionary(getSharedPreferences(LyonsDen.keySharedPreferences, 0).getString(LyonsCalendar.keyDayDictionary, ""), new Date());
         if (day.equals("-1"))
             day = "X";
-        dayLabel.setText(day);
+        dayLabel.setText("1");
         sharedPreferences.edit().putString(LyonsDen.dayKey, dayLabel.getText().toString()).apply();
     }
 
@@ -554,34 +556,25 @@ public class HomeActivity extends AppCompatActivity {
                         default:
                             s = "Incorrect value";
                     }
-                    if (dayLabel.getText().equals("1")) {
-                        if (j < 2) {
-                            ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
-                            timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
-                        } else {
-                            if (j == 2) {
-                                ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
-                                timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
-                            } else {
-                                if (j == 3) {
-                                    ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
-                                    timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
-                                }
-                            }
-                        }
-                    } else if (dayLabel.getText().equals("2")) {
-                        if (j < 2) {
-                            ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
-                            timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
-                        } else {
-                            if (j == 2) {
-                                ((TextView) findViewById(idBank[h][j+1])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
-                                timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
-                            } else {
-                                if (j == 3) {
-                                    ((TextView) findViewById(idBank[h][j-1])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
-                                    timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
-                                }
+                    if (h < 2) {
+                        ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
+                        timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
+                    } else {
+                        if (h == 2) {
+                            if (dayLabel.getText().equals("1") || dayLabel.getText().equals("X")) {
+                                // Period 3
+                                ((TextView) findViewById(idBank[2][j])).setText(pref.getString("Period " + (3) + " " + j, s));
+                                timeTable[2][j] = ((TextView) findViewById(idBank[2][j])).getText().toString();
+                                // Period 4
+                                ((TextView) findViewById(idBank[3][j])).setText(pref.getString("Period " + (4) + " " + j, s));
+                                timeTable[3][j] = ((TextView) findViewById(idBank[3][j])).getText().toString();
+                            } else if (dayLabel.getText().equals("2")) {
+                                // Period 3
+                                ((TextView) findViewById(idBank[2][j])).setText(pref.getString("Period " + (4) + " " + j, s));
+                                timeTable[2][j] = ((TextView) findViewById(idBank[3][j])).getText().toString();
+                                // Period 4
+                                ((TextView) findViewById(idBank[3][j])).setText(pref.getString("Period " + (3) + " " + j, s));
+                                timeTable[3][j] = ((TextView) findViewById(idBank[2][j])).getText().toString();
                             }
                         }
                     }

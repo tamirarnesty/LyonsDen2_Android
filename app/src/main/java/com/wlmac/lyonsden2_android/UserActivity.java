@@ -157,8 +157,8 @@ public class UserActivity extends AppCompatActivity {
             // Update Display name in database
             FirebaseDatabase.getInstance().getReference("users/students/" + user.getUid() + "/name").setValue(name);
 
-            Log.d("UserActivity", "email: " + sharedPreferences.getString(LyonsDen.keyEmail, ""));
-            Log.d("UserActivity", "pass: " + sharedPreferences.getString(LyonsDen.keyPass, ""));
+//            Log.d("UserActivity", "email: " + sharedPreferences.getString(LyonsDen.keyEmail, ""));
+//            Log.d("UserActivity", "pass: " + sharedPreferences.getString(LyonsDen.keyPass, ""));
 
             //Re-authentication because it is required by firebase in order to change auth info like it is in this case - email
             AuthCredential credential = EmailAuthProvider.getCredential(sharedPreferences.getString(LyonsDen.keyEmail, ""),
@@ -266,7 +266,7 @@ public class UserActivity extends AppCompatActivity {
                 case "deleteAcc":
                     final LyonsAlert deleteAlert = new LyonsAlert();
                     deleteAlert.setTitle("Are you sure?");
-                    deleteAlert.setSubtitle("Are you sure you want to delete your account?\nYou will not be able to use the app unless you create a new one");
+                    deleteAlert.setSubtitle("Are you sure you want to delete your account?\nAn account is required to use the app.");
                     deleteAlert.hideInput();
                     deleteAlert.configureLeftButton("Cancel", new View.OnClickListener() {
                         @Override
@@ -296,15 +296,33 @@ public class UserActivity extends AppCompatActivity {
                     deleteAlert.show(getSupportFragmentManager(), "DeleteAccountDialog");
                     break;
                 case "signOut":
-                    FirebaseAuth.getInstance().signOut();
-                    SharedPreferences.Editor prefs = getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE).edit();
-                    prefs.remove(LyonsDen.keyEmail);
-                    prefs.remove(LyonsDen.keyPass);
-                    prefs.apply();
+                    final LyonsAlert signOutAlert = new LyonsAlert();
+                    signOutAlert.setTitle("Are you sure?");
+                    signOutAlert.setSubtitle("Are you sure you want to delete your account?\nAn account is required to use the app.");
+                    signOutAlert.hideInput();
+                    signOutAlert.configureLeftButton("Cancel", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            signOutAlert.dismiss();
+                        }
+                    });
+                    signOutAlert.configureRightButton("Yes", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            signOutAlert.dismiss();
+                            FirebaseAuth.getInstance().signOut();
+                            SharedPreferences.Editor prefs = getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE).edit();
+                            prefs.remove(LyonsDen.keyEmail);
+                            prefs.remove(LyonsDen.keyPass);
+                            prefs.apply();
 
-                    Intent intent = new Intent(this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
+                            Intent intent = new Intent(UserActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                    signOutAlert.show(getSupportFragmentManager(), "DeleteAccountDialog");
+
                     break;
                 case "resetPass":
                     final String email = this.email.getText().toString();
