@@ -32,27 +32,49 @@
             android:background="@color/background"
             android:id="@+id/HSTopViews">
 
-            <!-- Today Is Day -->
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:text="@string/HSTodayIsDay"
-                android:id="@+id/HSTodayIsDay"
-                android:textSize="24sp"
-                android:textColor="@color/listDivider"
-                android:gravity="center" />
+                android:id="@+id/HSLabelContainer">
 
-            <!-- Day Label -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/HSDayLabelDefault"
-                android:id="@+id/HSDayLabel"
-                android:layout_below="@+id/HSTodayIsDay"
-                android:textColor="@color/listDivider"
-                android:textSize="150sp"
-                android:gravity="center" />
+                <!-- Today Is Day -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/HSTodayIsDay"
+                    android:id="@+id/HSTodayIsDay"
+                    android:textSize="24sp"
+                    android:textColor="@color/listDivider"
+                    android:gravity="center" />
+
+                <!-- Day Label -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/HSDayLabelDefault"
+                    android:id="@+id/HSDayLabel"
+                    android:layout_below="@+id/HSTodayIsDay"
+                    android:textColor="@color/listDivider"
+                    android:textSize="150sp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignBottom="@id/HSDayLabel"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:onClick="lateStartLabelPressed"
+
+                    android:textColor="@color/accent"
+                    android:textSize="18sp"
+                    android:text="@string/HSLateStart"
+                    android:id="@+id/HSLateStartLabel"/>
+            </RelativeLayout>
 
             <!-- Time Table Container -->
             <LinearLayout
@@ -64,7 +86,7 @@
                 android:layout_alignParentStart="true"
                 android:orientation="horizontal"
                 android:background="@color/blackText"
-                android:layout_below="@+id/HSDayLabel"
+                android:layout_below="@+id/HSLabelContainer"
                 android:id="@+id/HSCourseContainer">
 
                 <!-- Period 1 Container -->

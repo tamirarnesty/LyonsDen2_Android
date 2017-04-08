@@ -120,7 +120,7 @@ public class UserActivity extends AppCompatActivity {
         textHeight = (isShowingExtraButtons) ? textHeight * -1 : textHeight;
         extraButtonsContainer.animate().translationYBy(textHeight).setDuration(300).start();
         toggleButton.animate().translationYBy(textHeight).setDuration(300).start();
-        toggleButton.setBackgroundResource((isShowingExtraButtons) ? R.drawable.arrow_down_48dp : R.drawable.arrow_up_48dp);
+        toggleButton.setBackgroundResource((isShowingExtraButtons) ? R.drawable.ic_collapse_dark_accent_24dp : R.drawable.ic_expand_dark_accent_24dp);
         isShowingExtraButtons = !isShowingExtraButtons;
     }
 

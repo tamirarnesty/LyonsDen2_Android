@@ -7,6 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +38,10 @@ public class LyonsAlert extends DialogFragment {
     private EditText inputField;
     private boolean inputShouldBeSecure = false;
     private boolean inputShouldBeHidden = false;
+    private boolean leftButtonShouldBeHiiden = false;
+    private boolean rightButtonShouldBeHiiden = false;
+    private int titleGravity = Gravity.TOP | Gravity.START;
+    private int subtitleGravity = Gravity.TOP | Gravity.START;
 
     @NonNull
     @Override
@@ -45,7 +50,9 @@ public class LyonsAlert extends DialogFragment {
         View alertView = getActivity().getLayoutInflater().inflate(R.layout.lyons_alert_layout, null);
 
         ((TextView) alertView.findViewById(R.id.LATitle)).setText(titleToSet);
+        ((TextView) alertView.findViewById(R.id.LATitle)).setGravity(titleGravity);
         ((TextView) alertView.findViewById(R.id.LASubtitle)).setText(subtitleToSet);
+        ((TextView) alertView.findViewById(R.id.LASubtitle)).setGravity(subtitleGravity);
         ((Button) alertView.findViewById(R.id.LAButtonLeft)).setText(leftButtonTitle);
         ((Button) alertView.findViewById(R.id.LAButtonRight)).setText(rightButtonTitle);
         alertView.findViewById(R.id.LAButtonLeft).setOnClickListener(leftButtonOnClick);
@@ -57,6 +64,14 @@ public class LyonsAlert extends DialogFragment {
         }
         if (inputShouldBeHidden) {
             inputField.setVisibility(View.GONE);
+        }
+
+        if (leftButtonShouldBeHiiden) {
+            (alertView.findViewById(R.id.LAButtonLeft)).setVisibility(View.GONE);
+        }
+
+        if (rightButtonShouldBeHiiden) {
+            (alertView.findViewById(R.id.LAButtonRight)).setVisibility(View.GONE);
         }
 
         setFonts(alertView);
@@ -86,12 +101,30 @@ public class LyonsAlert extends DialogFragment {
         inputShouldBeHidden = true;
     }
 
+    public void hideLeftButton () {
+        leftButtonShouldBeHiiden = true;
+    }
+
+    public void hideRightButton () {
+        rightButtonShouldBeHiiden = true;
+    }
+
     public void setTitle(String title) {
         titleToSet = title;
     }
 
+    public void setTitle(String title, int textGravity) {
+        titleToSet = title;
+        titleGravity = textGravity;
+    }
+
     public void setSubtitle (String subtitle) {
         subtitleToSet = subtitle;
+    }
+
+    public void setSubtitle (String subtitle, int textGravity) {
+        subtitleToSet = subtitle;
+        subtitleGravity = textGravity;
     }
 
     public void configureLeftButton (String title, View.OnClickListener onClick) {

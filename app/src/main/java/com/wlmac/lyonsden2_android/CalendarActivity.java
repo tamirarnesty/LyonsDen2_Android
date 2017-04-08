@@ -270,10 +270,6 @@ public class CalendarActivity extends AppCompatActivity {
 
         calendarView.setCaldroidListener(listener);
 
-
-//        calendarView.getView().findViewById(R.id.calendar_month_year_textview);
-
-
         // Create the medium for transferring the instantiation parameters for the UICalendar
         Bundle args = new Bundle();
         // A necessary aspect of parameter passing
@@ -371,6 +367,8 @@ public class CalendarActivity extends AppCompatActivity {
             calendarView.getView().setAlpha(1);
             calendarView.getView().setVisibility(View.VISIBLE);
         }
+
+        ((TextView) calendarView.getView().findViewById(R.id.calendar_month_year_textview)).setTypeface(Retrieve.typeface(this));
     }
 
     @Override

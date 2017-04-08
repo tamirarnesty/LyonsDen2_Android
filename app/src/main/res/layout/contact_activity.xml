@@ -141,12 +141,12 @@
             <!-- Arrow Up Button-->
             <Button
                 style="@style/LyonsButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="45dp"
                 android:layout_centerHorizontal="true"
                 android:layout_above="@id/CSButtonContainer"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/arrow_up_48dp"
+                android:background="@drawable/ic_expand_dark_accent_24dp"
                 android:onClick="toggleButtons"
                 android:id="@+id/CSToggleButton"/>
         </RelativeLayout>
@@ -156,6 +156,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/CSActionSheet"
             android:orientation="vertical"
+
+            android:visibility="gone"
+
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:id="@+id/CSActionSheet"

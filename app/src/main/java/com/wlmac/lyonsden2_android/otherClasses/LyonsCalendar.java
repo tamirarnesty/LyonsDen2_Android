@@ -391,5 +391,7 @@ class LyonsAdapter extends CaldroidGridAdapter {
         if (position == getCount()) {
             setDisableDates(outOfBoundDates);
         }
+
+        cellView.setTypeface(Retrieve.typeface(context));
     }
 }

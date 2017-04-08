@@ -89,7 +89,7 @@ public class SectionedListAdapter extends ArrayAdapter {
             rowView.setOnClickListener(null);
         } else {    // If the current item is a child
             Log.d("Section List", "View is a child!");
-            rowView = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.default_list_cell, parent, false);
+            rowView = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.list_default_item, parent, false);
 
             // Declare instance of all required GUI components in the cell.
             ((TextView) rowView.findViewById(R.id.LIDTitleLabel)).setText(listContent.get(position)[0]);

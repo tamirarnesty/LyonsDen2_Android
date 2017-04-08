@@ -38,6 +38,8 @@
     <string name="HSRoomNumberDefault">Room Number</string>
     <string name="HSSpare">SPARE</string>
     <string name="HSNoInternetLabel">No Internet available, please connect to the internet!</string>
+    <string name="HSLateStart">Late Start</string>
+    <string name="HSSpecSchedule">Special Schedule</string>
 
     <!-- Contact Screen Strings -->
     <string name="CSGetInTouchWithMac">Get in touch with Mac!</string>

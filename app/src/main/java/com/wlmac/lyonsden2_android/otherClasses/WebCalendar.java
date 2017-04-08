@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.wlmac.lyonsden2_android.HomeActivity;
 import com.wlmac.lyonsden2_android.LyonsDen;
 import com.wlmac.lyonsden2_android.R;
 
@@ -50,7 +49,7 @@ public class WebCalendar extends IntentService {
      * @see IntentService
      */
     public static void downloadInto(LyonsCalendar localCalendar, Context context, String action) {
-        Log.d("WebCalendar", "Received Request for " + action);
+        Log.i("WebCalendar", "Received Request for " + action);
         targetCalendar = localCalendar;
         Intent intent = new Intent(context, WebCalendar.class);
         intent.setAction(action);
@@ -60,7 +59,7 @@ public class WebCalendar extends IntentService {
 // MARK: DOWNLOADING
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d("WebCalendar", "Handling Request...");
+        Log.i("WebCalendar", "Handling Request...");
         if (intent != null && !intent.getAction().equals(actionLoadOffline)) {
             String webData = "";        // The string that will hold the web data
 

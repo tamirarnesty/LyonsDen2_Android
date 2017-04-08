@@ -146,11 +146,11 @@
             <!-- Pull-up Toggle Button -->
             <Button
                 style="@style/LyonsButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="45dp"
                 android:layout_centerHorizontal="true"
                 android:layout_above="@+id/USContainer"
-                android:background="@drawable/arrow_up_48dp"
+                android:background="@drawable/ic_expand_dark_accent_24dp"
                 android:onClick="toggleButtons"
                 android:id="@+id/USToggleButton"/>
         </RelativeLayout>

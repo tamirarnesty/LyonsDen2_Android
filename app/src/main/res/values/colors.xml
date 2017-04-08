@@ -4,8 +4,8 @@
     <color name="navigationBar">#F1C40F</color>
     <color name="navigationText">#95A5A6</color>
     <color name="accent">#3646A0</color>
-    <color name="timeTableBackground">#064CB2</color>
     <color name="accentDark">#022a64</color>
+    <color name="timeTableBackground">#064CB2</color>
     <color name="whiteText">#FFFFFF</color>
     <color name="grayText">#606060</color>
     <color name="blackText">#000000</color>

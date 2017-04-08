@@ -38,6 +38,7 @@ public class ContactActivity extends AppCompatActivity {
     private Button extraButtonsToggle;
     private boolean isShowingExtraButtons = true;
     private LinearLayout actionSheet;
+    private boolean postFirstLaunch = false;
     int actionSheetHeight;
     private RelativeLayout contentView;
 
@@ -70,11 +71,14 @@ public class ContactActivity extends AppCompatActivity {
         super.onResume();
         float transitionHeight = Retrieve.heightForText("Sign out", this, 12) + (Retrieve.dpFromInt(16, getResources())); // Accounts for padding
         actionSheetHeight = (int) getResources().getDimension(R.dimen.CSActionSheet) + 60;
-        extraButtonsContainer.animate().translationYBy(transitionHeight).setDuration(0).start();
-        extraButtonsToggle.animate().translationYBy(transitionHeight).setDuration(0).start();
-        actionSheet.animate().translationYBy(actionSheetHeight).setDuration(0).start();
+        if (!postFirstLaunch) {
+            postFirstLaunch = true;
+            extraButtonsContainer.animate().translationYBy(transitionHeight).setDuration(0).start();
+            extraButtonsToggle.animate().translationYBy(transitionHeight).setDuration(0).start();
+            actionSheet.animate().translationYBy(actionSheetHeight).setDuration(0).start();
+        }
 
-        extraButtonsToggle.setBackgroundResource(R.drawable.arrow_up_48dp);
+        extraButtonsToggle.setBackgroundResource(R.drawable.ic_expand_dark_accent_24dp);
         isShowingExtraButtons = true;
 
         // Programatically Close the Drawer, for when you segue into this view by pressing back
@@ -188,14 +192,14 @@ public class ContactActivity extends AppCompatActivity {
         transitionHeight = (isShowingExtraButtons) ? transitionHeight * -1 : transitionHeight;
         extraButtonsContainer.animate().translationYBy(transitionHeight).setDuration(300).start();
         extraButtonsToggle.animate().translationYBy(transitionHeight).setDuration(300).start();
-        extraButtonsToggle.setBackgroundResource((isShowingExtraButtons) ? R.drawable.arrow_down_48dp : R.drawable.arrow_up_48dp);
+        extraButtonsToggle.setBackgroundResource((isShowingExtraButtons) ? R.drawable.ic_collapse_dark_accent_24dp : R.drawable.ic_expand_dark_accent_24dp);
         isShowingExtraButtons = !isShowingExtraButtons;
     }
 
     public void reportBug (View view) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("message/rfc822");
-        intent.putExtra(Intent.EXTRA_EMAIL, "TheLyonsKeeper@gmail.com");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[] {"TheLyonsKeeper@gmail.com"});
         intent.putExtra(Intent.EXTRA_SUBJECT, "Hey Keeper, I found a bug!");
         intent.putExtra(Intent.EXTRA_TEXT, "Before the bug occurred I did this:");
         try {

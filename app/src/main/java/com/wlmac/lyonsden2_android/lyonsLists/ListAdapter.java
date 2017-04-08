@@ -1,9 +1,7 @@
 package com.wlmac.lyonsden2_android.lyonsLists;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +11,6 @@ import android.widget.TextView;
 
 import com.wlmac.lyonsden2_android.R;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
-import com.wlmac.lyonsden2_android.resourceActivities.InfoActivity;
 
 import java.util.ArrayList;
 
@@ -60,7 +57,7 @@ public class ListAdapter extends ArrayAdapter {
             dateID = R.id.LSIDate;
             deleteID = -1;
         } else {
-            layout = R.layout.default_list_cell;
+            layout = R.layout.list_default_item;
             titleID = R.id.LIDTitleLabel;
             infoID = R.id.LIDInfoLabel;
             dateID = -1;
@@ -87,7 +84,7 @@ public class ListAdapter extends ArrayAdapter {
             dateID = R.id.LSIDate;
             deleteID = R.id.LIDDeleteButton;
         } else {
-            layout = R.layout.default_list_cell;
+            layout = R.layout.list_default_item;
             titleID = R.id.LIDTitleLabel;
             infoID = R.id.LIDInfoLabel;
             dateID = -1;

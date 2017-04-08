@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 import com.google.firebase.database.FirebaseDatabase;
 import com.wlmac.lyonsden2_android.lyonsLists.ListAdapter;
 import com.wlmac.lyonsden2_android.otherClasses.CourseDialog;
+import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsCalendar;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 import com.wlmac.lyonsden2_android.otherClasses.WebCalendar;
@@ -37,6 +39,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+
+// TODO: If assembly schedule than use default schdule unless provided
+// TODO: If the word schedule is included, and a schedule is provided, than show schedule and title of event
+// TODO: If the word schedule is in title, and not schedule is provided, than show
 
 /**
  * The activity that will be used to display the home screen. The home screen consists of a label for
@@ -66,10 +73,12 @@ public class HomeActivity extends AppCompatActivity {
     private ListView drawerList;
     /** The drawer toggle used this activity. */
     private ActionBarDrawerToggle drawerToggle;
+    private TextView lateStartLabel;
     /** Containers for courses */
     private RelativeLayout [] containers = new RelativeLayout[4];
     /** Date Format */
-    SimpleDateFormat timeFormat = new SimpleDateFormat("kk:mm:ss", Locale.CANADA);
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("kk:mm:ss", Locale.CANADA);
+
 
     /** Timetable selection backgrounds */
     Drawable drawableSelect;
@@ -81,6 +90,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private TextView noInternet;
     private boolean isLateStart;
+    private boolean isSpecSchedule = false;
     private String[] normalDay;
     private String[] lateDay;
     private long[] normalTime;
@@ -171,6 +181,8 @@ public class HomeActivity extends AppCompatActivity {
         }
         isLateStart = Retrieve.isLateStartDay(getSharedPreferences(LyonsDen.keySharedPreferences, 0).getString(LyonsCalendar.keyLateStartDictionary, ""), new Date());
 
+        if (isLateStart) lateStartLabel.setVisibility(View.VISIBLE);
+
         // Declare a listener for whenever an item has been clicked in the ListVew
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override//             |The ListView        |The item  |The item's   |The item's
@@ -217,13 +229,6 @@ public class HomeActivity extends AppCompatActivity {
                     }
 
                     lastOffset = childTopY;
-//                    Log.d("Parallax!!!!!!", "childTopY: " + childTopY);
-//                    Log.d("Parallax!!!!!!", "topViewsY: " + topViews.getY());
-//                    Log.d("Parallax!!!!!!", "toolbar: " + toolbar.getY());
-//                    Log.d("Parallax!!!!!!", "topViewsHeight: " + topViewsHeight);
-
-                    // Keep this for future test needs, it took a long time to write
-//                    Log.d("Parallax!!!!!!", "Conditions: (((" + (deltaOffset < 0) + ") && (" + (Math.abs(toolbar.getY()) < (topViewsHeight + getSupportActionBar().getHeight())) + ")) || ((" + (deltaOffset > 0) + ") && (" + (toolbar.getY() + (topViews.getY() - getSupportActionBar().getHeight()) <= 0) + "))) && (" + (listView.getChildAt(0) != null) + ")");
                 }
 
                 if (!didCalculateSpacer && topViews.getHeight() != 0) {
@@ -252,6 +257,28 @@ public class HomeActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+    }
+
+    public void lateStartLabelPressed(View view) {
+        LyonsAlert alert = new LyonsAlert();
+        alert.setTitle("Schedule for the Day", Gravity.CENTER_HORIZONTAL);
+        String schedule = "";
+        if (isLateStart) {
+            // Set late start schedule
+            schedule = "Period 1: 10:00 - 11:05 \n" +
+                    "Period 2: 11:10 - 12:10\n" +
+                    "Lunch: 12:10 - 1:00\n" +
+                    "Period 3: 1:00 - 2:00\n" +
+                    "Period 4: 2:05 - 3:05";
+        } else if (isSpecSchedule) {
+            // Set schedule to one read from calendar.
+        }
+
+        alert.setSubtitle(schedule, Gravity.CENTER_HORIZONTAL);
+        alert.hideLeftButton();
+        alert.hideRightButton();
+        alert.hideInput();
+        alert.show(getSupportFragmentManager(), "Late start schedule");
     }
 
     private void calculateSpacer() {
@@ -483,6 +510,7 @@ public class HomeActivity extends AppCompatActivity {
         drawerList = (ListView) findViewById(R.id.NDList);
         drawerToggle = Retrieve.drawerToggle(this, rootLayout);
         noInternet = (TextView) findViewById(R.id.HSNoInternet);
+        lateStartLabel = (TextView) findViewById(R.id.HSLateStartLabel);
 
         topViews = (RelativeLayout) findViewById(R.id.HSTopViews);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -521,7 +549,6 @@ public class HomeActivity extends AppCompatActivity {
         drawableMostRight.setLevel(5);
     }
 
-    // You will probably want to change this to set the time table to whatever it retrieved from permanent storage
     public String[][] assembleTimeTable() {
 
         // An instance of the time table that will be returned and assigned to a global variable
@@ -536,28 +563,28 @@ public class HomeActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences(LyonsDen.keySharedPreferences, 0);
         for (int h = 0; h < timeTable.length; h ++) {
             boolean check = pref.getBoolean("Period " + (h+1), false);
-                for (int j = 0; j < timeTable[h].length; j++) {
-                    // A instance of a timetable piece (made without assigning to a variable)
-                    String s;
-                    switch (j) {
-                        case 0:
-                            s = "Course Name";
-                            break;
-                        case 1:
-                            s = "Course Code";
-                            break;
-                        case 2:
-                            s = "Teacher Name";
-                            break;
-                        case 3:
-                            s = "Room Number";
-                            break;
-                        default:
-                            s = "Incorrect value";
-                    }
-                    ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
-                    timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
+            for (int j = 0; j < timeTable[h].length; j++) {
+                // A instance of a timetable piece (made without assigning to a variable)
+                String s;
+                switch (j) {
+                    case 0:
+                        s = "Course Name";
+                        break;
+                    case 1:
+                        s = "Course Code";
+                        break;
+                    case 2:
+                        s = "Teacher Name";
+                        break;
+                    case 3:
+                        s = "Room Number";
+                        break;
+                    default:
+                        s = "Incorrect value";
                 }
+                ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
+                timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
+            }
             if (!check) {
                 (findViewById(spares[h])).setVisibility(View.INVISIBLE);
                 for (int j = 0; j < timeTable[h].length; j++)
@@ -568,6 +595,7 @@ public class HomeActivity extends AppCompatActivity {
                     (findViewById(idBank[h][j])).setVisibility(View.INVISIBLE);
             }
         }
+
         return timeTable;
         // P.S. I have no clue how permanent storage works in android :)
     }

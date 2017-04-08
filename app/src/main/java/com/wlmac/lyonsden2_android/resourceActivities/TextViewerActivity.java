@@ -29,8 +29,9 @@ public class TextViewerActivity extends AppCompatActivity {
         try { is = getAssets().open(filename); } catch (IOException e) {
             Log.d("TextViewActivity", "An IOException Occurred");
             Log.d("TextViewActivity", e.getMessage());
+            Log.d("TextViewActivity", e.toString());
         }
 
-        return /*Retrieve.stringFromStream(is); */ "";
+        return Retrieve.stringFromStream(is);
     }
 }
