@@ -50,8 +50,8 @@
                     android:text="@string/USName"
                     android:id="@+id/USNameLabel"
                     android:textSize="@dimen/textSize15Field"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginEnd="30dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp"
                     />
 
                 <!-- Display Name Field -->
@@ -84,8 +84,8 @@
                     style="@style/UserParameterLabel"
                     android:text="@string/USEmail"
                     android:id="@+id/USEmailLabel"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginEnd="30dp"/>
+                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp"/>
 
                 <!-- Email Field -->
                 <TextView
@@ -118,8 +118,8 @@
                     android:text="@string/USAccess"
                     android:id="@+id/USAccessLabel"
                     android:gravity="center_horizontal"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginEnd="30dp"/>
+                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp"/>
 
                 <!-- Access Field -->
                 <TextView

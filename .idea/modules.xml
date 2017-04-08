@@ -3,10 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/subProjects/Android-SlideExpandableListView/Android-SlideExpandableListView.iml" filepath="$PROJECT_DIR$/subProjects/Android-SlideExpandableListView/Android-SlideExpandableListView.iml" />
-      <module fileurl="file://$PROJECT_DIR$/subProjects/Android-SlideExpandableListView/Android-SlideExpandableListView.iml" filepath="$PROJECT_DIR$/subProjects/Android-SlideExpandableListView/Android-SlideExpandableListView.iml" />
       <module fileurl="file://$PROJECT_DIR$/LyonsDen2_Android.iml" filepath="$PROJECT_DIR$/LyonsDen2_Android.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/subProjects/subProjects.iml" filepath="$PROJECT_DIR$/subProjects/subProjects.iml" />
       <module fileurl="file://$PROJECT_DIR$/subProjects/subProjects.iml" filepath="$PROJECT_DIR$/subProjects/subProjects.iml" />
     </modules>
   </component>

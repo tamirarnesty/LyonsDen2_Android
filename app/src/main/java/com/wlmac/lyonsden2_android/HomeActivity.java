@@ -349,7 +349,7 @@ public class HomeActivity extends AppCompatActivity {
         String day = Retrieve.dayFromDictionary(getSharedPreferences(LyonsDen.keySharedPreferences, 0).getString(LyonsCalendar.keyDayDictionary, ""), new Date());
         if (day.equals("-1"))
             day = "X";
-        dayLabel.setText("1");
+        dayLabel.setText(day);
         sharedPreferences.edit().putString(LyonsDen.dayKey, dayLabel.getText().toString()).apply();
     }
 
@@ -561,7 +561,7 @@ public class HomeActivity extends AppCompatActivity {
                         timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
                     } else {
                         if (h == 2) {
-                            if (dayLabel.getText().equals("1") || dayLabel.getText().equals("X")) {
+                            if (getDayLabel().equals("1") || getDayLabel().equals("X")) {
                                 // Period 3
                                 ((TextView) findViewById(idBank[2][j])).setText(pref.getString("Period " + (3) + " " + j, s));
                                 timeTable[2][j] = ((TextView) findViewById(idBank[2][j])).getText().toString();
@@ -592,9 +592,24 @@ public class HomeActivity extends AppCompatActivity {
         return timeTable;
     }
 
+    public String getDayLabel() {
+        return sharedPreferences.getString(LyonsDen.dayKey, "");
+    }
+
     public void periodClicked (int index, String name, String code, String teacher, String room) {
         CourseDialog courseDialog = new CourseDialog();
-        courseDialog.setPeriod("Period " + index, name, code, teacher, room);
+        if (getDayLabel().equals("1")) {
+            courseDialog.setPeriod("Period " + index, name, code, teacher, room, getDayLabel());
+        } else {
+            if (getDayLabel().equals("2")) {
+                if (index < 3)
+                    courseDialog.setPeriod("Period " + index, name, code, teacher, room, getDayLabel());
+                else if (index == 3)
+                    courseDialog.setPeriod("Period " + (index+1), name, code, teacher, room, getDayLabel());
+                else if (index == 4)
+                    courseDialog.setPeriod("Period " + (index-1), name, code, teacher, room, getDayLabel());
+            }
+        }
         courseDialog.show(getFragmentManager(), "");
 
         /*Intent intent = new Intent (this, CourseActvity.class);
