@@ -18,6 +18,8 @@ public class LyonsDen extends Application {
     public static String keySharedPreferences = "com.wlmac.lyonsden2_android";
     public static String keyEmail = "username";
     public static String keyPass = "password";
+    public static String dayKey = "dayLabel";
+    public static String sparesKey = "timeTableSpares";
 
     @Override
     public void onCreate() {

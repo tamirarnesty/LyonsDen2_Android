@@ -130,7 +130,6 @@ public class HomeActivity extends AppCompatActivity {
         initializeTimeTable();
 
         sharedPreferences = this.getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE);
-        updatePeriods();
 
         if (sharedPreferences.getBoolean("isOnlineLogInShown", false)) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -179,6 +178,9 @@ public class HomeActivity extends AppCompatActivity {
         if (dayLabel.getText().toString().equals("X")) {
             Toast.makeText(getApplicationContext(), "No day available.\nThere is no school today.\nIt may be a weekend.", Toast.LENGTH_LONG).show();
         }
+
+        updatePeriods();
+
         isLateStart = Retrieve.isLateStartDay(getSharedPreferences(LyonsDen.keySharedPreferences, 0).getString(LyonsCalendar.keyLateStartDictionary, ""), new Date());
 
         if (isLateStart) lateStartLabel.setVisibility(View.VISIBLE);
@@ -237,8 +239,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
-
-
         topViews.bringToFront();
         toolbar.bringToFront();
     }
@@ -377,6 +377,7 @@ public class HomeActivity extends AppCompatActivity {
         if (day.equals("-1"))
             day = "X";
         dayLabel.setText(day);
+        sharedPreferences.edit().putString(LyonsDen.dayKey, dayLabel.getText().toString()).apply();
     }
 
     private int checkTimes(String time, String[] array) {
@@ -549,6 +550,7 @@ public class HomeActivity extends AppCompatActivity {
         drawableMostRight.setLevel(5);
     }
 
+    // You will probably want to change this to set the time table to whatever it retrieved from permanent storage
     public String[][] assembleTimeTable() {
 
         // An instance of the time table that will be returned and assigned to a global variable
@@ -563,6 +565,48 @@ public class HomeActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences(LyonsDen.keySharedPreferences, 0);
         for (int h = 0; h < timeTable.length; h ++) {
             boolean check = pref.getBoolean("Period " + (h+1), false);
+                for (int j = 0; j < timeTable[h].length; j++) {
+                    // A instance of a timetable piece (made without assigning to a variable)
+                    String s;
+                    switch (j) {
+                        case 0:
+                            s = "Course Name";
+                            break;
+                        case 1:
+                            s = "Course Code";
+                            break;
+                        case 2:
+                            s = "Teacher Name";
+                            break;
+                        case 3:
+                            s = "Room Number";
+                            break;
+                        default:
+                            s = "Incorrect value";
+                    }
+                    if (h < 2) {
+                        ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
+                        timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
+                    } else {
+                        if (h == 2) {
+                            if (getDayLabel().equals("1") || getDayLabel().equals("X")) {
+                                // Period 3
+                                ((TextView) findViewById(idBank[2][j])).setText(pref.getString("Period " + (3) + " " + j, s));
+                                timeTable[2][j] = ((TextView) findViewById(idBank[2][j])).getText().toString();
+                                // Period 4
+                                ((TextView) findViewById(idBank[3][j])).setText(pref.getString("Period " + (4) + " " + j, s));
+                                timeTable[3][j] = ((TextView) findViewById(idBank[3][j])).getText().toString();
+                            } else if (dayLabel.getText().equals("2")) {
+                                // Period 3
+                                ((TextView) findViewById(idBank[2][j])).setText(pref.getString("Period " + (4) + " " + j, s));
+                                timeTable[2][j] = ((TextView) findViewById(idBank[3][j])).getText().toString();
+                                // Period 4
+                                ((TextView) findViewById(idBank[3][j])).setText(pref.getString("Period " + (3) + " " + j, s));
+                                timeTable[3][j] = ((TextView) findViewById(idBank[2][j])).getText().toString();
+                            }
+                        }
+                    }
+                }
             for (int j = 0; j < timeTable[h].length; j++) {
                 // A instance of a timetable piece (made without assigning to a variable)
                 String s;
@@ -597,12 +641,26 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         return timeTable;
-        // P.S. I have no clue how permanent storage works in android :)
+    }
+
+    public String getDayLabel() {
+        return sharedPreferences.getString(LyonsDen.dayKey, "");
     }
 
     public void periodClicked (int index, String name, String code, String teacher, String room) {
         CourseDialog courseDialog = new CourseDialog();
-        courseDialog.setPeriod("Period " + index, name, code, teacher, room);
+        if (getDayLabel().equals("1")) {
+            courseDialog.setPeriod("Period " + index, name, code, teacher, room, getDayLabel());
+        } else {
+            if (getDayLabel().equals("2")) {
+                if (index < 3)
+                    courseDialog.setPeriod("Period " + index, name, code, teacher, room, getDayLabel());
+                else if (index == 3)
+                    courseDialog.setPeriod("Period " + (index+1), name, code, teacher, room, getDayLabel());
+                else if (index == 4)
+                    courseDialog.setPeriod("Period " + (index-1), name, code, teacher, room, getDayLabel());
+            }
+        }
         courseDialog.show(getFragmentManager(), "");
 
         /*Intent intent = new Intent (this, CourseActvity.class);

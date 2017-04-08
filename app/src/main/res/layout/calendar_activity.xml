@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/CalSCalendar"
             android:gravity="center_horizontal"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="8dp"
             android:textColor="@color/cellEvent"
             android:id="@+id/CalSDateLabel"/>

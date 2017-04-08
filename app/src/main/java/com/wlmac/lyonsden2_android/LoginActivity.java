@@ -34,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
+import com.wlmac.lyonsden2_android.otherClasses.ToastView;
 import com.wlmac.lyonsden2_android.resourceActivities.InformationFormActivity;
 
 // TODO: MAKE METHODS SWITACHBLE BASED ON PLATFORM VERSION (GET RID OF DEPRECATED METHOD)
@@ -50,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     private String[] signUpKeys = new String[2];
     private Button[] segmentedButtons = new Button[2];
     private boolean isStudent = true;
+    private ToastView loadingToast;
     /** Store data permanently on device */
     SharedPreferences sharedPreferences;
 
@@ -69,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         signUpKeyField = (EditText) findViewById(R.id.LSCodeField);
         segmentedButtons[0] = (Button) findViewById(R.id.LSSignUpButton);
         segmentedButtons[1] = (Button) findViewById(R.id.LSLoginButton);
+        loadingToast = new ToastView();
         Drawable signUp = getResources().getDrawable(R.drawable.segmented_button);
         try {
             signUp.setLevel(1);
@@ -144,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void logIn(View view) {
         Log.d("Login Activity:", "button pressed.");
-        Toast.makeText(getApplicationContext(), "Should be loading toast", Toast.LENGTH_LONG).show();
+        loadingToast.show(getFragmentManager(), "SomeDialog");
         logInButton.setEnabled(false);
         if (fieldsAreValid()) {
             Log.d("Login Activity:", "fields are valid");
@@ -160,18 +163,17 @@ public class LoginActivity extends AppCompatActivity {
                     return false;
                 }
             });
-            // initiate loading toast
-            // loadingToast.initiate();
 
             if (Retrieve.isInternetAvailable(this)) {
                 Log.d("Login Activity:", "to process request");
                 this.retrieveKeys();
             } else {
                 Toast.makeText(getApplicationContext(), "No internet access!", Toast.LENGTH_LONG).show();
+                loadingToast.dismiss();
             }
         } else {
-            Toast.makeText(getApplicationContext(), "Log in failed", Toast.LENGTH_LONG).show();
             logInButton.setEnabled(true);
+            loadingToast.dismiss();
         }
 
     }
@@ -203,6 +205,7 @@ public class LoginActivity extends AppCompatActivity {
                 this.createNewUser(signUpKeys);
             } else {
                 Toast.makeText(getApplicationContext(), "Incorrect sign up key", Toast.LENGTH_SHORT).show();
+                loadingToast.dismiss();
             }
         } else { // log in
             Log.d("Login Activity", "not sign up");
@@ -221,11 +224,13 @@ public class LoginActivity extends AppCompatActivity {
                                     } catch (NullPointerException e) { /* Ra-ta-ta-ta-ta */ }                                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                                         performIntent[0] = true;
                                         performIntent("old");
+                                        loadingToast.dismiss();
                                     }
                                 }
 
                                 if (!task.isSuccessful()) {
                                     logInButton.setEnabled(true);
+                                    loadingToast.dismiss();
                                     try {
                                         throw task.getException();
                                     } catch (FirebaseAuthUserCollisionException e) {
@@ -282,9 +287,12 @@ public class LoginActivity extends AppCompatActivity {
                             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                                 performIntent[0] = true;
                                 performIntent("new");
+                                loadingToast.dismiss();
                             }
 
                             if (!task.isSuccessful()) {
+                                logInButton.setEnabled(true);
+                                loadingToast.dismiss();
                                 try {
                                     throw task.getException();
                                 } catch (FirebaseAuthUserCollisionException e) {
@@ -310,6 +318,7 @@ public class LoginActivity extends AppCompatActivity {
 
         } else {
             Toast.makeText(getApplicationContext(), "Sign up failed", Toast.LENGTH_LONG).show();
+            loadingToast.dismiss();
         }
     }
 
@@ -319,12 +328,8 @@ public class LoginActivity extends AppCompatActivity {
     private void performIntent(String type) {
         Intent intent;
         // store on device
-        sharedPreferences.edit().putString("password", passField.getText().toString()).apply();
-        sharedPreferences.edit().putString("userEmail", emailField.getText().toString()).apply();
-        String temp = sharedPreferences.getString("userEmail", "not here");
-        String temp2 = sharedPreferences.getString("password", "not here");
-        Log.d("Login Activity", "username " + temp);
-        Log.d("Login Activity", "password " + temp2);
+        sharedPreferences.edit().putString(LyonsDen.keyPass, passField.getText().toString()).apply();
+        sharedPreferences.edit().putString(LyonsDen.keyEmail, emailField.getText().toString()).apply();
         if (type.equals("new")) {
             intent = new Intent(LoginActivity.this, InformationFormActivity.class);
         } else {
@@ -332,7 +337,6 @@ public class LoginActivity extends AppCompatActivity {
         }
         String IFTitle = (isStudent) ? "Student Information Form" : "Teacher Information Form";
         intent.putExtra("IFTitle", IFTitle);
-        Toast.makeText(getApplicationContext(), "Segue success", Toast.LENGTH_SHORT).show();
         startActivity(intent);
         finish();
     }
@@ -341,41 +345,37 @@ public class LoginActivity extends AppCompatActivity {
      * @return boolean true if all field data is correct.
      */
     private boolean fieldsAreValid() {
-        boolean valid = true;
+        boolean [] valid = {true, true};
 
         EditText[] fields = (signUpSelected) ? new EditText[]{emailField, passField, signUpKeyField} : new EditText[]{emailField, passField};
         for (EditText field : fields) {
             if (field.getText() == null || field.getText().toString().equals("")) {
-                field.setBackgroundResource(R.drawable.text_view_invalid);
-                valid = false;
+                field.setBackgroundResource(R.drawable.text_field_bottom_border_invalid);
+                valid[0] = false;
             } else {
-                field.setBackgroundResource(R.drawable.text_view_default);
-                valid = true;
+                field.setBackgroundResource(R.drawable.text_field_bottom_border);
+                valid[0] = true;
             }
         }
-
-//        if (!valid) {
-//            return valid;
-//        }
 
         // check email format
         final String email = String.valueOf(fields[0].getText());
         if (email.contains("@")) {
-            valid = true;
+            valid[1] = true;
             final String domain = email.substring(email.indexOf("@") + 1);
             if (domain.contains(".")) {
-                valid = true;
+                valid[1] = true;
                 final String domain2 = domain.substring(domain.indexOf(".") +1);
                 if (domain2.contains("@") || domain2.contains(".")) {
-                    valid = false;
+                    valid[1] = false;
                     Log.d("Login Activity", "invalid email format");
                     Toast.makeText(getApplicationContext(), "Invalid email format", Toast.LENGTH_SHORT).show();
                 }
             }
         }
-
+        boolean result = (valid[0] && valid[1]);
         logInButton.setEnabled(true);
-        return valid;
+        return result;
     }
 
     public void resetPassword(View view) {

@@ -95,7 +95,8 @@
             android:maxLines="1"
             android:textColor="@color/blackText"
             android:hint="@string/LSLoginHint"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:background="@drawable/text_field_bottom_border"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -107,7 +108,8 @@
             android:fontFamily="sans-serif"
             android:textColor="@color/blackText"
             android:id="@+id/LSPassField"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:background="@drawable/text_field_bottom_border"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -118,7 +120,8 @@
             android:hint="@string/LSCodeHint"
             android:textColor="@color/blackText"
             android:id="@+id/LSCodeField"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:background="@drawable/text_field_bottom_border"/>
 
     </LinearLayout>
 

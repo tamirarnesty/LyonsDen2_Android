@@ -199,6 +199,7 @@ public abstract class AbstractSlideExpandableListAdapter extends WrapperListAdap
 		return (lastOpenPosition != -1) ? true : false;
 	}
 
+	// TODO: FIX CRASH HERE WHEN TRYING TO LOAD CLUBS
 	public void enableFor(View parent, int position) {
 		View more = getExpandToggleButton(parent);
 		View itemToolbar = getExpandableView(parent);

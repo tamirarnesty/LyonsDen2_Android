@@ -69,7 +69,8 @@ public class InfoActivity extends AppCompatActivity {
         else if (intent.getStringExtra("tag").equals("club"))
             this.item = intent.getStringArrayExtra("club");
 
-        FirebaseDatabase.getInstance().getReference("users/students/" + item[4] + "/name").addListenerForSingleValueEvent(new ValueEventListener() {
+        //TODO: CHANGED 4 IN ARRAY TO 3
+        FirebaseDatabase.getInstance().getReference("users/students/" + item[3] + "/name").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 onRetrieveName(dataSnapshot.getValue(String.class));
@@ -95,7 +96,8 @@ public class InfoActivity extends AppCompatActivity {
             @Override
             public void handle(boolean status) {
                 isEditAvailable = status;
-                student = isEditAvailable = key.equals(item[4]);
+                //TODO: CHANGED 4 IN ARRAY TO 3
+                student = isEditAvailable = key.equals(item[3]);
                 invalidateOptionsMenu();
             }
         });

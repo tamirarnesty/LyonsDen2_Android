@@ -34,32 +34,27 @@
         android:id="@+id/LAInput"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_gravity="end">
 
         <Button
+            android:id="@+id/LAButtonLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
+            android:layout_margin="0dp"
             android:background="@drawable/button_background"
             android:textColor="@color/whiteText"
-            android:textSize="@dimen/textSize12Button"
-            android:id="@+id/LAButtonLeft"/>
+            android:textSize="@dimen/textSize12Button"/>
 
         <Button
+            android:id="@+id/LAButtonRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
+            android:layout_margin="0dp"
             android:background="@drawable/button_background"
             android:textColor="@color/whiteText"
-            android:textSize="@dimen/textSize12Button"
-            android:id="@+id/LAButtonRight"/>
+            android:textSize="@dimen/textSize12Button" />
     </LinearLayout>
 </LinearLayout>

@@ -71,6 +71,7 @@ public class CalendarActivity extends AppCompatActivity {
     private Date lastSelectedDate;
     /** A holder for today's date. */
     private Date today = new Date();
+    private GestureDetector detector;
     /** A calendar event listener/handler. */
     private CaldroidListener listener = new CaldroidListener() {
         /**
@@ -180,7 +181,7 @@ public class CalendarActivity extends AppCompatActivity {
         }
 
         /**
-         * This ethod creates the Event View and resizes it to only hold the displayed information.
+         * This method creates the Event View and resizes it to only hold the displayed information.
          * @param event The {@link Event} associated with this {@link View}.
          */
         private View createEventView (final Event event, int index, View.OnClickListener onClick) {
@@ -323,8 +324,56 @@ public class CalendarActivity extends AppCompatActivity {
         }
 
     // MARK: UI INITIALIZATION
+        detector = new GestureDetector(this, new GestureDetector.OnGestureListener() {
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return false;
+            }
 
+            @Override
+            public void onShowPress(MotionEvent e) {
+
+            }
+
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                return false;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                return false;
+            }
+        });
+        detector.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                Toast.makeText(getApplicationContext(), "Should now switch to correct day", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            @Override
+            public boolean onDoubleTapEvent(MotionEvent e) {
+                return false;
+            }
+        });
         dateLabel = (TextView) findViewById(R.id.CalSDateLabel);
+
         eventList = (LinearLayout) findViewById(R.id.CalSEventList);
         if (!calendarView.isEmpty()) {      // If a calendar will load then, hide the components of this activity
             dateLabel.animate().setDuration(0).alpha(0);
