@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 public class EventList extends LyonsList {
     public static boolean didUpdateDataset = false;
+    protected ActionSlideExpandableListView listView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,8 @@ public class EventList extends LyonsList {
 
         Log.d("EventList", "Commencing Loading Label Cycling");
         loadingLabel.startCycling();
+        listView = (ActionSlideExpandableListView) findViewById(R.id.LSEventList);
+        (findViewById(R.id.LSClubList)).setVisibility(View.GONE);
 
         adapter = new ListAdapter(this, content, true);
 

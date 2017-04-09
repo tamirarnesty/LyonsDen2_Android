@@ -137,7 +137,7 @@ public class ListViewerActivity extends AppCompatActivity {
                         }
                         Intent intent = new Intent(Intent.ACTION_SEND);
                         intent.setType("message/rfc822");
-                        intent.putExtra(Intent.EXTRA_EMAIL, teacherInfo[2]);
+                        intent.putExtra(Intent.EXTRA_EMAIL, new String[] {teacherInfo[2]});
                         intent.putExtra(Intent.EXTRA_SUBJECT, "A question from " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                         intent.putExtra(Intent.EXTRA_TEXT, "Dear " + teacherInfo[0] + ",\n");
                         try {

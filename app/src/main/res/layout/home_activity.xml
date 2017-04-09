@@ -69,7 +69,7 @@
                     android:layout_marginEnd="15dp"
                     android:layout_marginBottom="10dp"
                     android:onClick="lateStartLabelPressed"
-
+                    android:visibility="gone"
                     android:textColor="@color/accent"
                     android:textSize="18sp"
                     android:text="@string/HSLateStart"

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.firebase.database.FirebaseDatabase;
@@ -18,16 +19,18 @@ import java.util.ArrayList;
  * Created by sketch204 on 2016-10-16.
  */
 
-// TODO: FIX LIST TO NOT SHOW SUBTITLE
-
 public class ClubList extends LyonsList {
     public static boolean contentChanged = false;
+    private ListView listView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         loadingLabel.startCycling();
+        listView = (ListView) findViewById(R.id.LSClubList);
+        (findViewById(R.id.LSEventList)).setVisibility(View.GONE);
+        (findViewById(R.id.LSEventList)).setEnabled(false);
 
         adapter = new ListAdapter(this, content, false);
         listView.setAdapter(adapter);

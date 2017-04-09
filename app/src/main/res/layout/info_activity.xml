@@ -21,19 +21,24 @@
         android:layout_below="@id/toolbar"
         android:orientation="vertical">
 
-        <TextView
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:layout_marginBottom="0dp"
+            android:background="@drawable/text_view_default"
             android:maxLines="2"
+            android:focusable="false"
+            android:clickable="false"
+            android:focusableInTouchMode="false"
+            android:enabled="false"
             android:gravity="start"
             android:padding="2dp"
             android:textColor="@color/accent"
             android:textSize="@dimen/textSize24Title"
             android:id="@+id/ISTitleLabel"/>
 
-        <TextView
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -41,6 +46,12 @@
             android:layout_marginTop="8dp"
             android:layout_margin="16dp"
             android:layout_marginBottom="0dp"
+            android:background="@drawable/text_view_default"
+            android:inputType="text|textMultiLine"
+            android:focusable="false"
+            android:clickable="false"
+            android:focusableInTouchMode="false"
+            android:enabled="false"
             android:padding="2dp"
             android:textColor="@color/accent"
             android:textSize="@dimen/textSize20Subtitle"

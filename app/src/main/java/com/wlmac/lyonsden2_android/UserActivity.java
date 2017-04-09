@@ -30,6 +30,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -52,8 +53,8 @@ public class UserActivity extends AppCompatActivity {
     /** The drawer toggler used this activity. */
     private ActionBarDrawerToggle drawerToggle;
     private TableLayout extraButtonsContainer;
-    private TextView displayName;
-    private TextView email;
+    private EditText displayName;
+    private EditText email;
     private TextView accessLevel;
     private Button toggleButton;
     private boolean isShowingExtraButtons = true;
@@ -132,8 +133,8 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void instantiateComponents () {
-        displayName = (TextView) findViewById(R.id.USNameField);
-        email = (TextView) findViewById(R.id.USEmailField);
+        displayName = (EditText) findViewById(R.id.USNameField);
+        email = (EditText) findViewById(R.id.USEmailField);
         accessLevel = (TextView) findViewById(R.id.USAccessField);
 
         try {
@@ -157,8 +158,8 @@ public class UserActivity extends AppCompatActivity {
             // Update Display name in database
             FirebaseDatabase.getInstance().getReference("users/students/" + user.getUid() + "/name").setValue(name);
 
-//            Log.d("UserActivity", "email: " + sharedPreferences.getString(LyonsDen.keyEmail, ""));
-//            Log.d("UserActivity", "pass: " + sharedPreferences.getString(LyonsDen.keyPass, ""));
+            // Update Display name in auth
+            user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(name).build());
 
             //Re-authentication because it is required by firebase in order to change auth info like it is in this case - email
             AuthCredential credential = EmailAuthProvider.getCredential(sharedPreferences.getString(LyonsDen.keyEmail, ""),
@@ -197,24 +198,16 @@ public class UserActivity extends AppCompatActivity {
     private void enterEditMode () {
         editing = !editing;
 
-        int bgResource = (editing) ? R.drawable.text_view_edit_underline : R.drawable.text_view_default;
-
-        displayName.setBackgroundResource(bgResource);
-        displayName.setCursorVisible(editing);
         displayName.setFocusableInTouchMode(editing);
         displayName.setFocusable(editing);
         displayName.setEnabled(editing);
         displayName.setClickable(editing);
-        displayName.setInputType((editing) ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_NULL);
         displayName.requestFocus();
 
-        email.setBackgroundResource(bgResource);
-        email.setCursorVisible(editing);
         email.setFocusableInTouchMode(editing);
         email.setFocusable(editing);
         email.setEnabled(editing);
         email.setClickable(editing);
-        email.setInputType((editing) ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_NULL);
 
         View view = this.getCurrentFocus();
         if (view != null) {

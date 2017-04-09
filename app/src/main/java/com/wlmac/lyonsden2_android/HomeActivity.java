@@ -40,11 +40,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-
-// TODO: If assembly schedule than use default schdule unless provided
-// TODO: If the word schedule is included, and a schedule is provided, than show schedule and title of event
-// TODO: If the word schedule is in title, and not schedule is provided, than show
-
 /**
  * The activity that will be used to display the home screen. The home screen consists of a label for
  * today's day, a timetable that highlights the current period and a list of the most recent announcements.
@@ -129,51 +124,57 @@ public class HomeActivity extends AppCompatActivity {
         initializeComponents();
         initializeTimeTable();
 
-        sharedPreferences = this.getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE);
+        sharedPreferences = this.getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE); // Initialize share preferences
 
-        if (sharedPreferences.getBoolean("isOnlineLogInShown", false)) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("isOnlineLogInShown", true);
-            editor.apply();
-            boolean isOnlineLogIn = getIntent().getBooleanExtra("isInternetAvailable", true);
-            if (!isOnlineLogIn) {
-                Toast.makeText(getApplicationContext(), "Offline Log In.\nSome features unavailable", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "Successful Log In", Toast.LENGTH_LONG).show();
-            }
+        // Set day of the day
+        if (getSharedPreferences(LyonsDen.keySharedPreferences, 0).getString(LyonsCalendar.keyDayDictionary, null) != null)
+            updateDay();
+        else if (Retrieve.isInternetAvailable(this)) {
+            // Download cal and try again
+            Log.d("Home", "Commencing Calendar Caching!");
+            WebCalendar.downloadInto(new LyonsCalendar(), this, WebCalendar.actionCacheOnly);
+            Log.d("Home", "Download Initiated!");
+            updateDay();
+            Log.d("Home", "Updated Day Label!");
+        } else {
+            dayLabel.setText("N/A");
+            todayIsDay.setText("No Internet Available");
         }
-        final Handler periodUpdater = new Handler();
-        periodUpdater.postDelayed(new Runnable(){
-            @Override
-            public void run() {
-                updatePeriods();
-            }
-        }, 60000);
-        Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
 
-        Thread thread = createThread();
-        thread.start();
+        // Initialize Period Updater only if it is a school day
+        if (getDayLabel().equals("1") || getDayLabel().equals("2")) {
+            // Initialize Period Updater
+            if (sharedPreferences.getBoolean("isOnlineLogInShown", false)) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("isOnlineLogInShown", true);
+                editor.apply();
+                boolean isOnlineLogIn = getIntent().getBooleanExtra("isInternetAvailable", true);
+                if (!isOnlineLogIn) {
+                    Toast.makeText(getApplicationContext(), "Offline Log In.\nSome features unavailable", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Successful Log In", Toast.LENGTH_LONG).show();
+                }
+            }
+            final Handler periodUpdater = new Handler();
+            periodUpdater.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    updatePeriods();
+                }
+            }, 60000);
+            Thread thread = createThread();
+            // Start period updater
+            thread.start();
+        }
+
+        // Setup drawer
+        Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
 
         // Resize the announcement ListView to fit the screen. DOES NOT WORK ATM!!!
         listView.setMinimumHeight(Retrieve.screenSize(this).y);
         // Set the custom font of the TextLabels
         dayLabel.setTypeface(Retrieve.typeface(this));
         todayIsDay.setTypeface(Retrieve.typeface(this));
-
-        if (getSharedPreferences(LyonsDen.keySharedPreferences, 0).getString(LyonsCalendar.keyDayDictionary, null) != null)
-            updateDay();
-        else
-            if (Retrieve.isInternetAvailable(this)) {
-                // Download cal and try again
-                Log.d("Home", "Commencing Calendar Caching!");
-                WebCalendar.downloadInto(new LyonsCalendar(), this, WebCalendar.actionCacheOnly);
-                Log.d("Home", "Download Initiated!");
-                updateDay();
-                Log.d("Home", "Updated Day Label!");
-            } else {
-                dayLabel.setText("N/A");
-                todayIsDay.setText("No Internet Available");
-            }
 
         if (dayLabel.getText().toString().equals("X")) {
             Toast.makeText(getApplicationContext(), "No day available.\nThere is no school today.\nIt may be a weekend.", Toast.LENGTH_LONG).show();
@@ -311,30 +312,30 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void loadAnnouncements() {
-//        if (Retrieve.isInternetAvailable(HomeActivity.this)) {
-//            Retrieve.eventData(this, FirebaseDatabase.getInstance().getReference("announcements"), announcements, new Retrieve.ListDataHandler() {
-//                @Override
-//                public void handle(ArrayList<String[]> listData) {
-//                    adapter.notifyDataSetChanged();
-//                    lastOffset = (listView.getChildAt(0) != null) ? listView.getChildAt(0).getTop() : 0;
-//                }
-//            });
-//            listView.setVisibility(View.VISIBLE);
-//            noInternet.setVisibility(View.INVISIBLE);
-//        } else {
-//            listView.setVisibility(View.INVISIBLE);
-//            noInternet.setVisibility(View.VISIBLE);
-//        }
+        if (Retrieve.isInternetAvailable(HomeActivity.this)) {
+            Retrieve.eventData(this, FirebaseDatabase.getInstance().getReference("announcements"), announcements, new Retrieve.ListDataHandler() {
+                @Override
+                public void handle(ArrayList<String[]> listData) {
+                    adapter.notifyDataSetChanged();
+                    lastOffset = (listView.getChildAt(0) != null) ? listView.getChildAt(0).getTop() : 0;
+                }
+            });
+            listView.setVisibility(View.VISIBLE);
+            noInternet.setVisibility(View.INVISIBLE);
+        } else {
+            listView.setVisibility(View.INVISIBLE);
+            noInternet.setVisibility(View.VISIBLE);
+        }
 
 
         // TEMPORARY!!!!!!!
-        for (int h = 0; h < 50; h ++) {
-            String[] tempHold = new String[4];
-            for (int j = 0; j < 4; j ++) {
-                tempHold[j] = "Something " + h;
-            }
-            announcements.add(tempHold);
-        }
+//        for (int h = 0; h < 50; h ++) {
+//            String[] tempHold = new String[4];
+//            for (int j = 0; j < 4; j ++) {
+//                tempHold[j] = "Something " + h;
+//            }
+//            announcements.add(tempHold);
+//        }
     }
 
     public void updatePeriods () {
@@ -644,7 +645,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public String getDayLabel() {
-        return sharedPreferences.getString(LyonsDen.dayKey, "");
+        return dayLabel.getText().toString();
     }
 
     public void periodClicked (int index, String name, String code, String teacher, String room) {
@@ -662,18 +663,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
         courseDialog.show(getFragmentManager(), "");
-
-        /*Intent intent = new Intent (this, CourseActvity.class);
-
-        // Each view container has a tag representing its index
-        String[] periodData = new String[5];
-        periodData[0] = "" + (index + 1);
-        for (int h = 0; h < timeTable[index].length; h++)
-            periodData[h+1] = timeTable[index][h];
-
-        intent.putExtra("periodData", periodData);
-        startActivity(intent);
-    */}
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

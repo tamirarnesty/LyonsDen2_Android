@@ -35,7 +35,24 @@
             android:background="@color/background"
             android:divider="@color/listDivider"
             android:dividerHeight="1dp"
-            android:id="@+id/LSList" />
+            android:id="@+id/LSEventList" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:background="@color/background"
+            android:divider="@color/listDivider"
+            android:dividerHeight="1dp"
+            android:id="@+id/LSClubList">
+
+        </ListView>
 
         <ProgressBar
             android:layout_width="wrap_content"

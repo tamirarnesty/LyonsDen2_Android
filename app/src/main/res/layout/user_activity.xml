@@ -55,13 +55,18 @@
                     />
 
                 <!-- Display Name Field -->
-                <TextView
+                <EditText
                     style="@style/UserParameterField"
-                    android:hint="@string/USNameHint"
-                    android:id="@+id/USNameField"
+                    android:layout_width="match_parent"
                     android:gravity="center_horizontal"
                     android:background="@drawable/text_field_bottom_border"
-                    android:layout_width="match_parent" />
+                    android:hint="@string/USNameHint"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:enabled="false"
+                    android:clickable="false"
+                    android:inputType="text"
+                    android:id="@+id/USNameField"/>
             </LinearLayout>
 
             <!-- Email Container -->
@@ -88,13 +93,18 @@
                     android:layout_marginEnd="15dp"/>
 
                 <!-- Email Field -->
-                <TextView
+                <EditText
                     style="@style/UserParameterField"
-                    android:hint="@string/USEmailHint"
-                    android:id="@+id/USEmailField"
+                    android:layout_width="match_parent"
                     android:gravity="center_horizontal"
                     android:background="@drawable/text_field_bottom_border"
-                    android:layout_width="match_parent" />
+                    android:hint="@string/USEmailHint"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:enabled="false"
+                    android:clickable="false"
+                    android:inputType="textEmailAddress"
+                    android:id="@+id/USEmailField"/>
             </LinearLayout>
 
             <!-- Access Container -->
@@ -125,10 +135,10 @@
                 <TextView
                     style="@style/UserParameterField"
                     android:hint="@string/USAccessHint"
-                    android:id="@+id/USAccessField"
                     android:gravity="center_horizontal"
                     android:background="@drawable/text_field_bottom_border"
-                    android:layout_width="match_parent" />
+                    android:layout_width="match_parent"
+                    android:id="@+id/USAccessField"/>
             </LinearLayout>
 
             <TableLayout
@@ -146,8 +156,7 @@
                         android:text="@string/USLeaderButtonText"
                         android:paddingBottom="8dp"
                         android:onClick="promptClubCode"
-                        android:id="@+id/USLeaderButton"
-                        android:textSize="@dimen/textSize15Button"/>
+                        android:id="@+id/USLeaderButton" />
 
                     <!-- Sign out Button -->
                     <Button
@@ -157,8 +166,7 @@
                         android:text="@string/USSignOutButtonText"
                         android:tag="signOut"
                         android:id="@+id/USSignOut"
-                        android:onClick="UAButtons"
-                        android:textSize="@dimen/textSize15Button"/>
+                        android:onClick="UAButtons" />
                 </TableRow>
 
                 <TableRow>
@@ -170,8 +178,7 @@
                         android:text="@string/USDeleteButtonText"
                         android:tag="deleteAcc"
                         android:id="@+id/USDelete"
-                        android:onClick="UAButtons"
-                        android:textSize="@dimen/textSize15Button"/>
+                        android:onClick="UAButtons" />
 
                     <!-- Reset Password Button -->
                     <Button
@@ -181,8 +188,7 @@
                         android:text="@string/USResetPassButtonText"
                         android:tag="resetPass"
                         android:id="@+id/USReset"
-                        android:onClick="UAButtons"
-                        android:textSize="@dimen/textSize15Button"/>
+                        android:onClick="UAButtons" />
                 </TableRow>
             </TableLayout>
 

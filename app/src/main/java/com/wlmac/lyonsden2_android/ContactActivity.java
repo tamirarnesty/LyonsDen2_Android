@@ -38,11 +38,8 @@ public class ContactActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     private RelativeLayout extraButtonsContainer;
     private Button extraButtonsToggle;
-    private boolean isShowingExtraButtons = true;
-    private LinearLayout actionSheet;
+    private boolean isShowingExtraButtons = false;
     private boolean postFirstLaunch = false;
-    int actionSheetHeight;
-    private RelativeLayout contentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +47,6 @@ public class ContactActivity extends AppCompatActivity {
         setContentView(R.layout.contact_activity);
         extraButtonsContainer = (RelativeLayout) findViewById(R.id.CSButtonContainer);
         extraButtonsToggle = (Button) findViewById(R.id.CSToggleButton);
-        actionSheet = (LinearLayout) findViewById(R.id.CSActionSheet);
-        contentView = (RelativeLayout) findViewById(R.id.CSContentView);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         if (getIntent().getBooleanExtra("afterProposal", false)) {
@@ -71,20 +66,32 @@ public class ContactActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        Log.d("ContactActivity", "OnResume is Called!!!");
+
         float transitionHeight = Retrieve.heightForText("Sign out", this, 12) + (Retrieve.dpFromInt(16, getResources())); // Accounts for padding
-        actionSheetHeight = (int) getResources().getDimension(R.dimen.CSActionSheet) + 60;
-        if (!postFirstLaunch) {
+        if (!postFirstLaunch) {// || isShowingExtraButtons) {
             postFirstLaunch = true;
             extraButtonsContainer.animate().translationYBy(transitionHeight).setDuration(0).start();
             extraButtonsToggle.animate().translationYBy(transitionHeight).setDuration(0).start();
-            actionSheet.animate().translationYBy(actionSheetHeight).setDuration(0).start();
         }
 
         extraButtonsToggle.setBackgroundResource(R.drawable.ic_expand_dark_accent_24dp);
-        isShowingExtraButtons = true;
+        isShowingExtraButtons = false;
 
         // Programatically Close the Drawer, for when you segue into this view by pressing back
         ((DrawerLayout) findViewById(R.id.NDLayout)).closeDrawer(Gravity.LEFT);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Log.d("ContactActivity", "OnPause is Called!!!");
+
+        if (isShowingExtraButtons) {
+            toggleButtons(extraButtonsToggle);
+        }
     }
 
     @Override
@@ -136,43 +143,6 @@ public class ContactActivity extends AppCompatActivity {
         }
     }
 
-    public void actionSheet(View view) {
-        if (view.getTag().toString().equals("3")) { // cancel
-            Log.d("ContactActivity", "Cancel Pressed");
-
-        } else if (view.getTag().toString().equals("1")) { // help phone
-            Log.d("ContactActivity", "Kids Help Phone Pressed");
-            Intent intent = new Intent(Intent.ACTION_CALL);
-            intent.setData(Uri.parse("tel:1-800-668-6868"));
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                checkPermissions();
-                return;
-            } else {
-                startActivity(intent);
-            }
-        } else {
-            if (view.getTag().toString().equals("2")) { // wlmci
-                Log.d("ContactActivity", "WLMCI Pressed");
-                Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:416-395-3330" ));
-                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    checkPermissions();
-                    return;
-                } else {
-                    startActivity(intent);
-                }
-            }
-        }
-        actionSheet.animate().translationYBy(actionSheetHeight).setDuration(300).start();
-        contentView.animate().alpha(1).setDuration(300).start();
-        contentView.setEnabled(true);
-        contentView.setClickable(true);
-        findViewById(R.id.CSAnnouncementButton).setClickable(true);
-        findViewById(R.id.CSTeacherButton).setClickable(true);
-        findViewById(R.id.CSRadioButton).setClickable(true);
-        findViewById(R.id.CSEmergencyButton).setClickable(true);
-    }
-
     public void dialPhone (String choice) {
         if (choice.equals("WLMCI")) {
             Log.d("ContactActivity", "WLMCI Pressed");
@@ -216,10 +186,10 @@ public class ContactActivity extends AppCompatActivity {
 
     public void toggleButtons (View view) {
         float transitionHeight = Retrieve.heightForText("Sign out", this, 12) + (Retrieve.dpFromInt(16, getResources())); // Accounts for padding
-        transitionHeight = (isShowingExtraButtons) ? transitionHeight * -1 : transitionHeight;
+        transitionHeight = (!isShowingExtraButtons) ? transitionHeight * -1 : transitionHeight;
         extraButtonsContainer.animate().translationYBy(transitionHeight).setDuration(300).start();
         extraButtonsToggle.animate().translationYBy(transitionHeight).setDuration(300).start();
-        extraButtonsToggle.setBackgroundResource((isShowingExtraButtons) ? R.drawable.ic_collapse_dark_accent_24dp : R.drawable.ic_expand_dark_accent_24dp);
+        extraButtonsToggle.setBackgroundResource((!isShowingExtraButtons) ? R.drawable.ic_collapse_dark_accent_24dp : R.drawable.ic_expand_dark_accent_24dp);
         isShowingExtraButtons = !isShowingExtraButtons;
     }
 

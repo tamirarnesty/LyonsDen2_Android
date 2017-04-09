@@ -79,6 +79,7 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
                 android:height="60dp"
+                android:visibility="gone"
                 android:onClick="proposeRadio"
                 android:text="@string/CSRadioButton"
                 android:textSize="17sp"
@@ -150,114 +151,6 @@
                 android:onClick="toggleButtons"
                 android:id="@+id/CSToggleButton"/>
         </RelativeLayout>
-
-        <!-- Action Sheet-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/CSActionSheet"
-            android:orientation="vertical"
-
-            android:visibility="gone"
-
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/CSActionSheet"
-            >
-
-            <!-- Inner Options-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:baselineAligned="false"
-                android:layout_marginBottom="7dp"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="7dp"
-                android:layout_marginEnd="7dp"
-                android:layout_marginStart="7dp"
-                android:background="@drawable/action_sheet_background">
-
-                <!-- Contact Label-->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="15dp"
-                    android:id="@+id/CSContactLabel"
-                    android:text="@string/CSContactLabel"
-                    android:textColor="@color/accent"
-                    android:textSize="16dp"
-                    android:gravity="center"
-                    />
-
-                <!-- Message Label-->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="16dp"
-                    android:id="@+id/CSMessageLabel"
-                    android:text="@string/CSMessageLabel"
-                    android:textColor="@color/accent"
-                    android:textSize="12dp"
-                    android:gravity="center"
-                    />
-
-                <!-- Kids Help Phone Button-->
-                <Button
-                    style="@style/LyonsButtonStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="15dp"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="7dp"
-                    android:layout_marginRight="7dp"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginStart="7dp"
-                    android:id="@+id/CSHelpPhoneButton"
-                    android:onClick="actionSheet"
-                    android:text="@string/CSHelpPhoneButton"
-                    android:textAllCaps="false"
-                    android:tag="1"
-                    />
-                <!-- WLMCI Button-->
-                <Button
-                    style="@style/LyonsButtonStyle"
-                    android:onClick="actionSheet"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="15dp"
-                    android:layout_marginLeft="7dp"
-                    android:layout_marginRight="7dp"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginBottom="1dp"
-                    android:id="@+id/CSWLMCIButton"
-                    android:tag="2"
-                    android:text="@string/CSWLMCIButton"
-                    />
-            </LinearLayout>
-
-            <!-- Cancel Button-->
-            <Button
-                style="@style/LyonsButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="17dp"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="7dp"
-                android:layout_marginEnd="7dp"
-                android:layout_marginStart="7dp"
-                android:layout_marginBottom="1dp"
-                android:id="@+id/CSCancelButton"
-                android:onClick="actionSheet"
-                android:text="@string/CSCancelButton"
-                android:background="@drawable/action_sheet_background"
-                android:textAllCaps="false"
-                android:tag="3"
-                />
-        </LinearLayout>
 
         <!-- End of Main Components Layout-->
     </RelativeLayout>

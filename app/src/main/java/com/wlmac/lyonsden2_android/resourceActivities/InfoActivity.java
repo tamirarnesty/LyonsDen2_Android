@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,8 +40,8 @@ public class InfoActivity extends AppCompatActivity {
     private boolean student;
     private String[] item;
     private Intent intent;
-    private TextView titleLabel;
-    private TextView infoLabel;
+    private EditText titleLabel;
+    private EditText infoLabel;
     private TextView dateLabel;
     private TextView locationLabel;
     private boolean editing;
@@ -59,8 +60,8 @@ public class InfoActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        this.titleLabel = (TextView) findViewById(R.id.ISTitleLabel);
-        this.infoLabel = (TextView) findViewById(R.id.ISDescriptionLabel);
+        this.titleLabel = (EditText) findViewById(R.id.ISTitleLabel);
+        this.infoLabel = (EditText) findViewById(R.id.ISDescriptionLabel);
         this.dateLabel = (TextView) findViewById(R.id.ISDateLabel);
         this.locationLabel = (TextView) findViewById(R.id.ISLocationLabel);
 
@@ -69,8 +70,7 @@ public class InfoActivity extends AppCompatActivity {
         else if (intent.getStringExtra("tag").equals("club"))
             this.item = intent.getStringArrayExtra("club");
 
-        //TODO: CHANGED 4 IN ARRAY TO 3
-        FirebaseDatabase.getInstance().getReference("users/students/" + item[3] + "/name").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("users/students/" + item[4] + "/name").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 onRetrieveName(dataSnapshot.getValue(String.class));
@@ -96,8 +96,7 @@ public class InfoActivity extends AppCompatActivity {
             @Override
             public void handle(boolean status) {
                 isEditAvailable = status;
-                //TODO: CHANGED 4 IN ARRAY TO 3
-                student = isEditAvailable = key.equals(item[3]);
+                student = isEditAvailable = key.equals(item[4]);
                 invalidateOptionsMenu();
             }
         });
@@ -113,12 +112,15 @@ public class InfoActivity extends AppCompatActivity {
     private void toggleEditMode() {
         editing = !editing;
 
+        Log.d("InfoActivity", "Editing: " + editing);
+
         int bgRes = (editing) ? R.drawable.text_view_edit : R.drawable.text_view_default;
         int color = (editing) ? R.color.whiteText : R.color.accent;
 
         titleLabel.setBackgroundResource(bgRes);
         titleLabel.setTextColor(getResources().getColor(color));
         titleLabel.setFocusable(editing);
+        titleLabel.setFocusableInTouchMode(editing);
         titleLabel.setClickable(editing);
         titleLabel.setFocusableInTouchMode(editing);
         titleLabel.setEnabled(editing);

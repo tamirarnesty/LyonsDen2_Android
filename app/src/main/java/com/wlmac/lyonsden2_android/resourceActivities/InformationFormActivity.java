@@ -242,9 +242,9 @@ public class InformationFormActivity extends AppCompatActivity {
         });
         alertBuilder.create().show();
     }
+
     private void performIntent() {
-        Retrieve.oneSignalStatus();
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, GuideActivity.class);
         startActivity(intent);
         finish();
     }

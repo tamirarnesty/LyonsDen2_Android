@@ -33,7 +33,6 @@ public class LyonsList extends AppCompatActivity {
     protected LoadingLabel loadingLabel;
     protected ProgressBar loadingCircle;
 
-    protected ActionSlideExpandableListView listView;
     protected ListAdapter adapter;
 
     @Override
@@ -47,8 +46,6 @@ public class LyonsList extends AppCompatActivity {
         rootLayout = (DrawerLayout) findViewById(R.id.NDLayout);
         drawerToggle = Retrieve.drawerToggle(this, rootLayout);
         Retrieve.drawerSetup(this, (ListView) findViewById(R.id.NDList), rootLayout, drawerToggle);
-
-        listView = (ActionSlideExpandableListView) findViewById(R.id.LSList);
 
         Log.d("LyonsList", "Initializing Loading Components");
         loadingLabel = new LoadingLabel((TextView) findViewById(R.id.LSLoadingLabel), this);

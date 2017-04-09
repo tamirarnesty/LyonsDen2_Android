@@ -95,7 +95,6 @@
             android:maxLines="1"
             android:textColor="@color/blackText"
             android:hint="@string/LSLoginHint"
-            android:singleLine="true"
             android:background="@drawable/text_field_bottom_border"/>
 
         <EditText
@@ -108,7 +107,6 @@
             android:fontFamily="sans-serif"
             android:textColor="@color/blackText"
             android:id="@+id/LSPassField"
-            android:singleLine="true"
             android:background="@drawable/text_field_bottom_border"/>
 
         <EditText
