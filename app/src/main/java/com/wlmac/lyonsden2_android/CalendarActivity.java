@@ -168,23 +168,19 @@ public class CalendarActivity extends AppCompatActivity {
                 dividerView.setLayoutParams(lp);
                 dividerView.setBackgroundColor(getResources().getColor(R.color.background));   // Divider color
                 // Create and add the eventView to the event list scroll view
-                eventList.addView(createEventView(eventBank[h], h, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                }));
+                eventList.addView(createEventView(eventBank[h]));
                 // And also add the divider
                 eventList.addView(dividerView);
             }
             eventList.animate().setDuration(100).alpha(1);
         }
 
+
         /**
          * This method creates the Event View and resizes it to only hold the displayed information.
          * @param event The {@link Event} associated with this {@link View}.
          */
-        private View createEventView (final Event event, int index, View.OnClickListener onClick) {
+        private View createEventView (final Event event) {
             // Create a view out of the "event_view.xml" layout file
             View eventView = getLayoutInflater().inflate(R.layout.event_layout, null);
 
@@ -324,54 +320,8 @@ public class CalendarActivity extends AppCompatActivity {
         }
 
     // MARK: UI INITIALIZATION
-        detector = new GestureDetector(this, new GestureDetector.OnGestureListener() {
-            @Override
-            public boolean onDown(MotionEvent e) {
-                return false;
-            }
+        createDoubleTapDetector();
 
-            @Override
-            public void onShowPress(MotionEvent e) {
-
-            }
-
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                return false;
-            }
-
-            @Override
-            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                return false;
-            }
-
-            @Override
-            public void onLongPress(MotionEvent e) {
-
-            }
-
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                return false;
-            }
-        });
-        detector.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
-            @Override
-            public boolean onSingleTapConfirmed(MotionEvent e) {
-                return false;
-            }
-
-            @Override
-            public boolean onDoubleTap(MotionEvent e) {
-                Toast.makeText(getApplicationContext(), "Should now switch to correct day", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-
-            @Override
-            public boolean onDoubleTapEvent(MotionEvent e) {
-                return false;
-            }
-        });
         dateLabel = (TextView) findViewById(R.id.CalSDateLabel);
 
         eventList = (LinearLayout) findViewById(R.id.CalSEventList);
@@ -418,6 +368,14 @@ public class CalendarActivity extends AppCompatActivity {
         }
 
         ((TextView) calendarView.getView().findViewById(R.id.calendar_month_year_textview)).setTypeface(Retrieve.typeface(this));
+
+        // Set double tap listener on Month Label
+        (calendarView.getView().findViewById(R.id.calendar_month_year_textview)).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return detector.onTouchEvent(event);
+            }
+        });
     }
 
     @Override
@@ -452,6 +410,70 @@ public class CalendarActivity extends AppCompatActivity {
                 }
                 dateLabel.animate().setDuration(300).alpha(1);
                 eventList.animate().setDuration(300).alpha(1);
+            }
+        });
+    }
+
+    public void createDoubleTapDetector() {
+        detector = new GestureDetector(this, new GestureDetector.OnGestureListener() {
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public void onShowPress(MotionEvent e) {
+
+            }
+
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                return false;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                return false;
+            }
+        });
+
+        detector.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                Log.d("Calendar Activity", "I Hear your tap!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Log.d("Calendar Activity", "scrollOffset: " + calendarView.getScrollOffset());
+                int scrollOffsetTempHolder = calendarView.getScrollOffset();
+
+                for (int h = 0; h < Math.abs(scrollOffsetTempHolder); h ++) {
+                    Log.d("Calendar!", "Scrolling back!!!!!!!");
+                    if (scrollOffsetTempHolder < 0) {
+                        calendarView.nextMonth();
+                    } else {
+                        calendarView.prevMonth();
+                    }
+                }
+                calendarView.setScrollOffset(0);
+                return true;
+            }
+
+            @Override
+            public boolean onDoubleTapEvent(MotionEvent e) {
+                return false;
             }
         });
     }

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.roomorama.caldroid.CaldroidFragment;
@@ -50,6 +52,9 @@ public class LyonsCalendar extends CaldroidFragment {
     private boolean isEmpty = false;
     /** States whether this calendar is offline. */
     private boolean isOffline = false;
+
+    /** Counts the amount of pages that have been scrolled. Used to returning back to the current month. */
+    private int scrollOffset = 0;
 
 
     @Override
@@ -181,6 +186,14 @@ public class LyonsCalendar extends CaldroidFragment {
         }
     }
 
+    public int getScrollOffset() {
+        return scrollOffset;
+    }
+
+    public void setScrollOffset(int newOffset) {
+        scrollOffset = newOffset;
+    }
+
     /** States whether this calendar is empty. True when no calendar is available. */
     public boolean isEmpty() {
         return isEmpty;
@@ -201,7 +214,19 @@ public class LyonsCalendar extends CaldroidFragment {
         isOffline = offline;
     }
 
-// MARK: PARSING
+    @Override
+    public void nextMonth() {
+        super.nextMonth();
+        scrollOffset ++;
+    }
+
+    @Override
+    public void prevMonth() {
+        super.prevMonth();
+        scrollOffset --;
+    }
+
+    // MARK: PARSING
     /**
      * This method is used for parsing raw text calendar data into an array of {@link Event}s.
      * @param rawCalendarData A {@link String} representation of the raw text calendar data.
@@ -357,6 +382,15 @@ public class LyonsCalendar extends CaldroidFragment {
         void assign(String input, Event event);
     }
 
+    // Override to make month label text not all caps, but just the first letter.
+    @Override
+    protected void refreshMonthTitleTextView() {
+        super.refreshMonthTitleTextView();
+        String text = getMonthTitleTextView().getText().toString().toLowerCase();
+        text = text.substring(0, 1).toUpperCase() + text.substring(1);
+        getMonthTitleTextView().setText(text);
+    }
+
     // This override is to make the calendar use the Custom CaldroidGridAdapter.
     @Override
     public CaldroidGridAdapter getNewDatesGridAdapter(int month, int year) {
@@ -393,5 +427,38 @@ class LyonsAdapter extends CaldroidGridAdapter {
         }
 
         cellView.setTypeface(Retrieve.typeface(context));
+
+//        Log.d("Calendar!!!!!!!!!", "" + cellView.getPaddingTop());
+
+        cellView.setPadding(2, 2, 2, 2);
+
+//        Log.d("Calendar!!!!!!!!!", "" + cellView.getPaddingTop());
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View cellView = super.getView(position, convertView, parent);
+
+        DateTime dateTime = this.datetimeList.get(position);
+
+        cellView.setVisibility(View.VISIBLE);
+
+        // Set color of the visibility in previous / next month
+        if (dateTime.getMonth() != month) {
+            cellView.setVisibility(View.GONE);
+            outOfBoundDates.add(dateTime);
+        }
+
+        if (position == getCount()) {
+            setDisableDates(outOfBoundDates);
+        }
+
+        ((TextView) cellView).setTypeface(Retrieve.typeface(context));
+
+//        Log.d("Calendar!!!!!!!!!", "" + cellView.getPaddingTop());
+
+        cellView.setPadding(2, 2, 2, 2);
+
+        return cellView;
     }
 }

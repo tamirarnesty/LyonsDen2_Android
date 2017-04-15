@@ -390,26 +390,45 @@ public class UserActivity extends AppCompatActivity {
      * access level, on screen access level and database club editors directory. <u>Async method.</u>
      * @param clubName The database key for the club to be modified.
      */
-    private void onCheckClubCodeStatus(String clubName) {
+    private void onCheckClubCodeStatus(final String clubName) {
         if (clubName == null) {     // If the club code was not recognized
             Toast.makeText(this, "The entered club code is incorrect", Toast.LENGTH_LONG).show();
             return;
         }
 
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         // Set access level user property
         if (!this.accessLevel.getText().toString().equalsIgnoreCase("club leader")) {
             // Determine which directory to access in database
-            String userKey = (this.accessLevel.getText().toString().equalsIgnoreCase("student")) ? "students" : "teachers";
-            // Update property in database
-            FirebaseDatabase.getInstance().getReference("users/" + userKey + "/" + uid + "/accessLevel").setValue("Club Leader");
-            // Update property in UI
-            this.accessLevel.setText("ClubLeader");
+            Retrieve.isUserTeacher(this, uid, new Retrieve.StatusHandler() {
+                @Override
+                public void handle(boolean status) {
+                    // Update property in database
+                    FirebaseDatabase.getInstance().getReference("users/" + ((status) ? "teachers" : "students") + "/" + uid + "/accessLevel").setValue("Club Leader");
+                    // Update property in UI
+                    UserActivity.this.accessLevel.setText("Club Leader");
+                }
+            });
         }
 
-        // Add user as editor in the club
-        FirebaseDatabase.getInstance().getReference("clubs/" + clubName + "/editors").push().setValue(uid);
+        // If user is not already an editor, add user as editor in the club
+        FirebaseDatabase.getInstance().getReference("clubs/" + clubName + "/editors").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot editor: dataSnapshot.getChildren()) {
+                    if (editor.getValue(String.class).equalsIgnoreCase(uid)) {
+                        return;
+                    }
+                }
+                FirebaseDatabase.getInstance().getReference("clubs/" + clubName + "/editors").push().setValue(uid);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         Toast.makeText(this, "Club Key Found!", Toast.LENGTH_SHORT).show();
     }
