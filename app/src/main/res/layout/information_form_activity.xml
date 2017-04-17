@@ -44,7 +44,7 @@
             android:textAlignment="center"
             android:textSize="15sp"
             android:maxLines="1"
-            android:inputType="textCapWords|textCapSentences" />
+            android:inputType="textCapWords" />
 
         <TextView
             android:id="@+id/IFSGradeLabel"
@@ -63,14 +63,6 @@
             android:prompt="@string/IFSGradePrompt"
             />
 
-        <!--<Button-->
-            <!--style="@style/LyonsButtonStyle"-->
-            <!--android:id="@+id/IFSSCompleteButton"-->
-            <!--android:onClick="buttonPressed"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:text="@string/IFSCompleteButton"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
     </LinearLayout>
 
     <!-- Teacher's Information Form -->
@@ -96,7 +88,7 @@
             android:textSize="15sp"
             android:textAlignment="center"
             android:maxLines="1"
-            android:inputType="textCapWords|textCapSentences" />
+            android:inputType="textCapWords" />
 
         <TextView
             android:id="@+id/IFSDepartmentLabel"
@@ -129,10 +121,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
+            android:inputType="textEmailAddress"
             android:textAlignment="center"
             android:maxLines="1" />
-
-
 
     </LinearLayout>
 
@@ -144,7 +135,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dp"
+        android:layout_above="@+id/IFNote"
+        android:layout_marginBottom="70dp"
         android:layout_centerHorizontal="true"
         android:onClick="buttonPressed"/>
     <!--android:layout_above="@+id/IFNote"-->

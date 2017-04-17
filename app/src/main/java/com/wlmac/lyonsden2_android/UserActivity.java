@@ -306,6 +306,7 @@ public class UserActivity extends AppCompatActivity {
                     final LyonsAlert signOutAlert = new LyonsAlert();
                     signOutAlert.setTitle("Are you sure?");
                     signOutAlert.setSubtitle("Are you sure you want to sing out?");
+                    signOutAlert.setSubtitle("Are you sure you want to sign out?");
                     signOutAlert.hideInput();
                     signOutAlert.configureLeftButton("Cancel", new View.OnClickListener() {
                         @Override

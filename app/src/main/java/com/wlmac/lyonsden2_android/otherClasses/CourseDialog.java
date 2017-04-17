@@ -48,12 +48,12 @@ public class CourseDialog extends DialogFragment {
         code.setText(codeString);
         teacher.setText(teacherString);
         room.setText(roomString);
-        periodInteger = (int)(periodString.charAt(periodString.length()-2));
-        if (day.equals("2") && periodInteger == 3) {
-            periodString = periodString.substring(0, periodString.length()-1) + (periodInteger +1);
-        } else if (day.equals("2") && periodInteger == 4) {
-            periodString = periodString.substring(0, periodString.length()-1) + (periodInteger -1);
-        }
+//        periodInteger = periodString.charAt(periodString.length()-1);
+//        if (day.equals("2") && periodInteger == 3) {
+//            periodString = periodString.substring(0, periodString.length()-1) + (periodInteger +1);
+//        } else if (day.equals("2") && periodInteger == 4) {
+//            periodString = periodString.substring(0, periodString.length()-1) + (periodInteger -1);
+//        }
             submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

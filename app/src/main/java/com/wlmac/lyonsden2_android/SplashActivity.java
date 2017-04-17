@@ -51,7 +51,7 @@ public class SplashActivity extends AppCompatActivity {
         email = sharedPreferences.getString(LyonsDen.keyEmail, "");
         password = sharedPreferences.getString(LyonsDen.keyPass, "");
         int tick = 0;
-        while (tick < 3) {
+        while (tick < 4) {
             tick ++;
             try { Thread.sleep(1000); } catch (InterruptedException e) {}
         }

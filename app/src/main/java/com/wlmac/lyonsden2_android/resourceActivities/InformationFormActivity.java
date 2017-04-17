@@ -168,7 +168,7 @@ public class InformationFormActivity extends AppCompatActivity {
                         }
                     });
             finish();
-            promptNotification();
+            performIntent();
         } else {
             Toast.makeText(getApplicationContext(), "Failed to process", Toast.LENGTH_SHORT).show();
         }
@@ -200,7 +200,7 @@ public class InformationFormActivity extends AppCompatActivity {
                         }
                     });
             finish();
-            promptNotification();
+            performIntent();
         } else {
             Toast.makeText(getApplicationContext(), "Failed to process", Toast.LENGTH_SHORT).show();
         }
@@ -218,33 +218,8 @@ public class InformationFormActivity extends AppCompatActivity {
         }
     }
 
-    private void promptNotification() {
-        final boolean [] notificationsChosen = {false};
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-        alertBuilder.setTitle("Announcement Notifications");
-        alertBuilder.setMessage("Do you wish to receive notifications?").setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                OneSignal.setSubscription(true);
-                notificationsChosen[0] = true;
-                performIntent();
-                dialog.cancel();
-            }
-        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                OneSignal.setSubscription(false);
-                notificationsChosen[0] = false;
-                performIntent();
-                dialog.cancel();
-            }
-        });
-        alertBuilder.create().show();
-    }
-
     private void performIntent() {
-        Intent intent = new Intent(this, GuideActivity.class);
+        Intent intent = new Intent(InformationFormActivity.this, GuideActivity.class);
         startActivity(intent);
         finish();
     }

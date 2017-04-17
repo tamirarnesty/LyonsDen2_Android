@@ -43,7 +43,7 @@ import java.util.Locale;
 /**
  * The activity that will be used to display the home screen. The home screen consists of a label for
  * today's day, a timetable that highlights the current period and a list of the most recent announcements.
- *
+ *wh
  * @author Ademir Gotov
  * @version 1, 2016/07/30
  */
@@ -665,15 +665,38 @@ public class HomeActivity extends AppCompatActivity {
         courseDialog.show(getFragmentManager(), "");
     }
 
+    public void displayHelpDialog () {
+        final LyonsAlert alert = new LyonsAlert();
+        alert.hideInput();
+        alert.hideLeftButton();
+        alert.setTitle("Home Screen Help");
+        alert.setSubtitle("The Day label provides information about the current time table schedule, whether 1 or 2." +
+                "\n\nX indicates days with no school. The time table you see below the Day label is for your personal schedule." +
+                "\n\nThe current period is outlined in white, and the course reflects your 1st, 2nd, 3rd & 4th period classes, in order from left to right." +
+                "\n\nTo input your courses, press, hold, and release the block you choose and enter the respective course for the respective period, keeping in mind the current day." +
+                "\n\nIf you have a spare, leave the information blank and press Done.", Gravity.CENTER_HORIZONTAL);
+        alert.configureRightButton("OK", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+        alert.show(getSupportFragmentManager(), "HelpDialog");
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.help_menu, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item))
             return true;
+        if (item.getItemId() == R.id.helpAction) {
+            displayHelpDialog();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

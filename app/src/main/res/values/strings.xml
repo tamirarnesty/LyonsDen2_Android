@@ -5,6 +5,7 @@
     <string name="editAction">Edit</string>
     <string name="addAction">Add</string>
     <string name="deleteButton">Delete</string>
+    <string name="helpAction">Help</string>
     <string name="doneAction">Done</string>
 
     <!-- Screen Titles -->
@@ -25,7 +26,7 @@
     <string name="LSLoginHint">Enter Email</string>
     <string name="LSPassHint">Enter Password</string>
     <string name="LSCodeHint">Enter Sign Up Key</string>
-    <string name="LSLoginButton">Login</string>
+    <string name="LSLoginButton">Log In</string>
     <string name="LSSignUpButton">Sign Up</string>
     <string name="LSMainButton">Sign Up</string>
 
@@ -49,7 +50,7 @@
     <string name="CSEmergencyButton">Contact</string>
     <string name="CSReport">Report a Bug</string>
     <string name="CSHelp">Help</string>
-    <string name="CSLicence">Licences</string>
+    <string name="CSLicence">Legal</string>
     <string name="CSHelpPhoneButton">Kids Help Phone</string>
     <string name="CSWLMCIButton">WLMCI</string>
     <string name="CSContactLabel">Contact</string>

@@ -1,6 +1,7 @@
 package com.wlmac.lyonsden2_android.resourceActivities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -8,12 +9,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.onesignal.OneSignal;
 import com.wlmac.lyonsden2_android.HomeActivity;
 import com.wlmac.lyonsden2_android.R;
 
@@ -51,13 +54,16 @@ public class GuideActivity extends AppCompatActivity {
                         public void run() {
                             try {
                                 Thread.sleep(1500);
-                            } catch (InterruptedException e) {};
+                            } catch (InterruptedException e) {
+                            }
+
 
                             GuideActivity.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     Intent intent = new Intent(GuideActivity.this, HomeActivity.class);
                                     GuideActivity.this.startActivity(intent);
+                                    promptNotification();
                                 }
                             });
                         }
@@ -71,6 +77,30 @@ public class GuideActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void promptNotification() {
+        final boolean [] notificationsChosen = {false};
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setTitle("Announcement Notifications");
+        alertBuilder.setMessage("Do you wish to receive notifications?").setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        OneSignal.setSubscription(true);
+                        notificationsChosen[0] = true;
+                        dialog.cancel();
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                OneSignal.setSubscription(false);
+                notificationsChosen[0] = false;
+                dialog.cancel();
+            }
+        });
+        alertBuilder.create().show();
+    }
+
 }
 
 class PageViewer extends ViewPager {
