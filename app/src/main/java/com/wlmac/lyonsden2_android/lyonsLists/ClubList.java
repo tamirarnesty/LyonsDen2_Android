@@ -32,7 +32,7 @@ public class ClubList extends LyonsList {
         (findViewById(R.id.LSEventList)).setVisibility(View.GONE);
         (findViewById(R.id.LSEventList)).setEnabled(false);
 
-        adapter = new ListAdapter(this, content, false);
+        adapter = new ListAdapter(this, content, false, false);
         listView.setAdapter(adapter);
         if (Retrieve.isInternetAvailable(this)) {
             Retrieve.clubData(this, FirebaseDatabase.getInstance().getReference("clubs"), content, new Retrieve.ListDataHandler() {

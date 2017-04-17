@@ -26,7 +26,7 @@ public class CourseDialog extends DialogFragment {
     private EditText name, code, teacher, room;
     private Button submit;
     private TextView period;
-    private String periodString, nameString, codeString, teacherString, roomString;
+    private String periodString = "Period", nameString, codeString, teacherString, roomString;
     private int periodInteger;
     String day = "";
     @Override

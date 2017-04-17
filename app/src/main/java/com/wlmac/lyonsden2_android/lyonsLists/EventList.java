@@ -31,7 +31,7 @@ public class EventList extends LyonsList {
         listView = (ActionSlideExpandableListView) findViewById(R.id.LSEventList);
         (findViewById(R.id.LSClubList)).setVisibility(View.GONE);
 
-        adapter = new ListAdapter(this, content, true);
+        adapter = new ListAdapter(this, content, true, true);
 
         listView.setItemActionListener(new ActionSlideExpandableListView.OnActionClickListener() {
             @Override

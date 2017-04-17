@@ -61,7 +61,7 @@ public class ClubActivity extends AppCompatActivity {
         ListView clubsEvents = (ListView) findViewById(R.id.ClubSAnnouncements);
 
         // The list adapter
-        adapter = new ListAdapter(this, content, false);
+        adapter = new ListAdapter(this, content, false, true);
         clubsEvents.setAdapter(adapter);
 
         clubsEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {

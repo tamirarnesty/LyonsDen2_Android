@@ -3,10 +3,12 @@ package com.wlmac.lyonsden2_android.otherClasses;
 import android.app.Service;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -53,44 +55,6 @@ public class LyonsCalendar extends CaldroidFragment {
     /** States whether this calendar is offline. */
     private boolean isOffline = false;
 
-    /** Counts the amount of pages that have been scrolled. Used to returning back to the current month. */
-    private int scrollOffset = 0;
-
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        Log.d("Lyon's Calendar", "OnActivityCreated!");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        Log.d("Lyon's Calendar", "OnPause!");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        Log.d("Lyon's Calendar", "OnResume!");
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        Log.d("Lyon's Calendar", "OnSaveInstanceState!");
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-
-        Log.d("Lyon's Calendar", "OnViewStateRestored!");
-    }
 
     /**
      * Loads the events into the calendar.
@@ -143,8 +107,8 @@ public class LyonsCalendar extends CaldroidFragment {
         for (int h = 0; h < events.length; h ++) {
             // Create the cell image
             Drawable drawable;
-            if ((CalendarActivity)getActivity() != null) {
-                drawable = ((CalendarActivity)getActivity()).getResources().getDrawable(R.drawable.calendar_cell);
+            if (getActivity() != null) {
+                drawable = (getActivity()).getResources().getDrawable(R.drawable.calendar_cell);
             } else {
                 drawable = getResources().getDrawable(R.drawable.calendar_cell);
                 Toast.makeText(getContext(), "A UI Error Occurred!\nError #" + getResources().getInteger(R.integer.DrawableCreationFailure), Toast.LENGTH_LONG).show();
@@ -186,14 +150,6 @@ public class LyonsCalendar extends CaldroidFragment {
         }
     }
 
-    public int getScrollOffset() {
-        return scrollOffset;
-    }
-
-    public void setScrollOffset(int newOffset) {
-        scrollOffset = newOffset;
-    }
-
     /** States whether this calendar is empty. True when no calendar is available. */
     public boolean isEmpty() {
         return isEmpty;
@@ -212,18 +168,6 @@ public class LyonsCalendar extends CaldroidFragment {
     /** Sets the 'offline' property of this calendar. Should only be true if there is no web calendar available. */
     public void setOffline(boolean offline) {
         isOffline = offline;
-    }
-
-    @Override
-    public void nextMonth() {
-        super.nextMonth();
-        scrollOffset ++;
-    }
-
-    @Override
-    public void prevMonth() {
-        super.prevMonth();
-        scrollOffset --;
     }
 
     // MARK: PARSING
@@ -425,20 +369,15 @@ class LyonsAdapter extends CaldroidGridAdapter {
         if (position == getCount()) {
             setDisableDates(outOfBoundDates);
         }
-
-        cellView.setTypeface(Retrieve.typeface(context));
-
-//        Log.d("Calendar!!!!!!!!!", "" + cellView.getPaddingTop());
-
-        cellView.setPadding(2, 2, 2, 2);
-
-//        Log.d("Calendar!!!!!!!!!", "" + cellView.getPaddingTop());
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View cellView = super.getView(position, convertView, parent);
+        View cellView = (convertView == null) ? localInflater.inflate(R.layout.calendar_cell, parent, false) : convertView;
+        TextView textView = (TextView) cellView.findViewById(R.id.CalCText);
+        textView.setTypeface(Retrieve.typeface(context));
 
+        // Get dateTime of this cell
         DateTime dateTime = this.datetimeList.get(position);
 
         cellView.setVisibility(View.VISIBLE);
@@ -453,11 +392,19 @@ class LyonsAdapter extends CaldroidGridAdapter {
             setDisableDates(outOfBoundDates);
         }
 
-        ((TextView) cellView).setTypeface(Retrieve.typeface(context));
+        // Get the padding of cell so that it can be restored later
+        int leftPadding = textView.getPaddingLeft();
+        int topPadding = textView.getPaddingTop();
+        int rightPadding = textView.getPaddingRight();
+        int bottomPadding = textView.getPaddingBottom();
 
-//        Log.d("Calendar!!!!!!!!!", "" + cellView.getPaddingTop());
+        // Get dateTime of this cell
+        setCustomResources(dateTime, textView, textView);
 
-        cellView.setPadding(2, 2, 2, 2);
+        textView.setText("" + dateTime.getDay());
+
+        // Reset the padding if the cell's background has been modified
+        textView.setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
 
         return cellView;
     }

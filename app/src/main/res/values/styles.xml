@@ -6,10 +6,15 @@
         <item name="colorAccent">@color/navigationBar</item>
         <!-- Set Action Bar Text Color -->
         <item name="actionBarTheme">@style/AppTheme.ActionBarTheme</item>
+        <item name="drawerArrowStyle">@style/LyonsArrowStyle</item>
     </style>
 
     <style name="LyonsLoader" parent="Theme.AppCompat.Dialog">
         <item name="android:divider">@android:color/transparent</item>
+    </style>
+
+    <style name="LyonsArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">#022A64</item>
     </style>
 
     <!-- Set Action Bar Text Color -->
@@ -69,12 +74,13 @@
 
     <style name="LyonsMonthName" parent="CaldroidDefaultMonthName">
         <item name="android:textColor">@color/accent</item>
+        <item name="android:layout_marginBottom">10dp</item>
     </style>
 
     <style name="LyonsGridView" parent="CaldroidDefaultGridView">
         <item name="android:horizontalSpacing">5dp</item>
         <item name="android:verticalSpacing">5dp</item>
-        <item name="android:adjustViewBounds">false</item>
+        <item name="android:adjustViewBounds">true</item>
         <item name="android:background">@color/background</item>
         <item name="android:choiceMode">singleChoice</item>
         <item name="android:listSelector">@drawable/calendar_cell_selector</item>
@@ -94,7 +100,7 @@
     <style name="LyonsArrowButton">
         <item name="android:layout_width">20dp</item>
         <item name="android:layout_height">20dp</item>
-        <item name="android:layout_margin">12dp</item>
+
     </style>
 
     <style name="LyonsRightButton" parent="LyonsArrowButton">

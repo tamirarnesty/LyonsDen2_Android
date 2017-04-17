@@ -137,7 +137,7 @@ public class HomeActivity extends AppCompatActivity {
             updateDay();
             Log.d("Home", "Updated Day Label!");
         } else {
-            dayLabel.setText("N/A");
+            dayLabel.setText("X");
             todayIsDay.setText("No Internet Available");
         }
 
@@ -211,7 +211,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (didCalculateSpacer) {
+                if (didCalculateSpacer && listView.getChildAt(0) != null) {
                     Log.d("Parallax!!!!!!", "      ");
                     int childTopY = Math.abs(listView.getChildAt(0).getTop()) + (firstVisibleItem * listView.getChildAt(0).getHeight());
                     if (firstVisibleItem != 0) {
@@ -295,7 +295,7 @@ public class HomeActivity extends AppCompatActivity {
 
         listView.addHeaderView(listHeader, listHeader, false);
 
-        adapter = new ListAdapter(this, announcements, false);
+        adapter = new ListAdapter(this, announcements, false, true);
         listView.setAdapter(adapter);
 
         loadAnnouncements();

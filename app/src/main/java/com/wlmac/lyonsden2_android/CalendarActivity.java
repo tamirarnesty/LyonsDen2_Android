@@ -455,19 +455,7 @@ public class CalendarActivity extends AppCompatActivity {
 
             @Override
             public boolean onDoubleTap(MotionEvent e) {
-                Log.d("Calendar Activity", "I Hear your tap!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                Log.d("Calendar Activity", "scrollOffset: " + calendarView.getScrollOffset());
-                int scrollOffsetTempHolder = calendarView.getScrollOffset();
-
-                for (int h = 0; h < Math.abs(scrollOffsetTempHolder); h ++) {
-                    Log.d("Calendar!", "Scrolling back!!!!!!!");
-                    if (scrollOffsetTempHolder < 0) {
-                        calendarView.nextMonth();
-                    } else {
-                        calendarView.prevMonth();
-                    }
-                }
-                calendarView.setScrollOffset(0);
+                calendarView.moveToDate(today);
                 return true;
             }
 

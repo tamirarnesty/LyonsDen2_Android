@@ -61,7 +61,6 @@ public class UserActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
 
     private boolean editing = false;
-    private String accessLevelString = "Unavailable";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,23 +79,22 @@ public class UserActivity extends AppCompatActivity {
         drawerToggle = Retrieve.drawerToggle(this, rootLayout);
         Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
 
-        //something entirely different
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseDatabase.getInstance().getReference("users").child("students").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    onContentLoad(dataSnapshot.child("name").getValue(String.class), user.getEmail(),
-                            dataSnapshot.child("accessLevel").getValue(String.class));
-                     accessLevelString = dataSnapshot.child("accessLevel").getValue(String.class);
-                    instantiateComponents();
-                }
-                else Log.d("An error occured", "database directory isn't correct or database does not exist");
-            }
+        instantiateComponents();
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            Retrieve.isUserTeacher(this, user.getUid(), new Retrieve.StatusHandler() {
+                @Override
+                public void handle(boolean status) {
+                    if (status) {
+                        findViewById(R.id.USReset).setVisibility(View.GONE);
+                        loadContentFor("teachers", user);
+                    } else {
+                        loadContentFor("students", user);
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -114,6 +112,22 @@ public class UserActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+    }
+
+    public void loadContentFor (String accessLevel, final FirebaseUser user) {
+        FirebaseDatabase.getInstance().getReference("/users/" + accessLevel + "/" + user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    onContentLoad(dataSnapshot.child("name").getValue(String.class), user.getEmail(), dataSnapshot.child("accessLevel").getValue(String.class));
+                } else {
+                    Log.d("An error occured", "database directory isn't correct or database does not exist");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
     public void toggleButtons (View view) {
@@ -140,7 +154,7 @@ public class UserActivity extends AppCompatActivity {
         try {
             displayName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
             email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-            accessLevel.setText(accessLevelString);
+            accessLevel.setText("");
         } catch (NullPointerException e) {}
     }
 
@@ -291,7 +305,7 @@ public class UserActivity extends AppCompatActivity {
                 case "signOut":
                     final LyonsAlert signOutAlert = new LyonsAlert();
                     signOutAlert.setTitle("Are you sure?");
-                    signOutAlert.setSubtitle("Are you sure you want to delete your account?\nAn account is required to use the app.");
+                    signOutAlert.setSubtitle("Are you sure you want to sing out?");
                     signOutAlert.hideInput();
                     signOutAlert.configureLeftButton("Cancel", new View.OnClickListener() {
                         @Override
@@ -314,8 +328,7 @@ public class UserActivity extends AppCompatActivity {
                             finish();
                         }
                     });
-                    signOutAlert.show(getSupportFragmentManager(), "DeleteAccountDialog");
-
+                    signOutAlert.show(getSupportFragmentManager(), "SignOutDialog");
                     break;
                 case "resetPass":
                     final String email = this.email.getText().toString();
@@ -376,7 +389,11 @@ public class UserActivity extends AppCompatActivity {
         alertDialog.configureRightButton("Submit", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkClubCode(alertDialog.getInputText());
+                if (!alertDialog.getInputText().isEmpty()) {
+                    checkClubCode(alertDialog.getInputText());
+                } else {
+                    Toast.makeText(UserActivity.this, "No Code Entered", Toast.LENGTH_SHORT).show();
+                }
                 alertDialog.dismiss();
             }
         });
@@ -438,20 +455,24 @@ public class UserActivity extends AppCompatActivity {
      * @param code The entered code to be checked.
      */
     private void checkClubCode (String code) {
-        FirebaseDatabase.getInstance().getReference("clubKeys/" + code).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    onCheckClubCodeStatus(dataSnapshot.getValue(String.class));
-                } else {
-                    onCheckClubCodeStatus(null);
+        if (Retrieve.isInternetAvailable(this)) {
+            FirebaseDatabase.getInstance().getReference("clubKeys/" + code).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        onCheckClubCodeStatus(dataSnapshot.getValue(String.class));
+                    } else {
+                        onCheckClubCodeStatus(null);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } else {
+            Toast.makeText(this, "No Internet Available!", Toast.LENGTH_SHORT).show();
+        }
     }
 }
