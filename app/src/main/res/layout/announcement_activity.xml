@@ -52,6 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
+                    android:inputType="textCapWords"
                     android:hint="@string/APSRequiredHint"
                     android:maxLines="1"
                     android:id="@+id/APSTitleField"/>
@@ -160,6 +161,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
+                    android:inputType="textCapWords"
                     android:hint="@string/APSOptionalHint"
                     android:maxLines="1"
                     android:id="@+id/APSLocationField"/>

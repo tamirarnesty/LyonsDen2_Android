@@ -203,8 +203,10 @@ public class LoginActivity extends AppCompatActivity {
         if (signUpSelected) { // sign up
             if (signUpKeyField.getText().toString().equals(signUpKeys[0]) || signUpKeyField.getText().toString().equals(signUpKeys[1])) {
                 this.createNewUser(signUpKeys);
+                signUpKeyField.setBackgroundResource(R.drawable.text_field_bottom_border);
             } else {
                 Toast.makeText(getApplicationContext(), "Incorrect sign up key", Toast.LENGTH_SHORT).show();
+                signUpKeyField.setBackgroundResource(R.drawable.text_field_bottom_border_invalid);
                 loadingToast.dismiss();
             }
         } else { // log in
@@ -326,14 +328,15 @@ public class LoginActivity extends AppCompatActivity {
      * Called when time to segue into another screen.
      */
     private void performIntent(String type) {
-        Intent intent;
+        Intent intent = null;
         // store on device
         sharedPreferences.edit().putString(LyonsDen.keyPass, passField.getText().toString()).apply();
         sharedPreferences.edit().putString(LyonsDen.keyEmail, emailField.getText().toString()).apply();
         if (type.equals("new")) {
             intent = new Intent(LoginActivity.this, InformationFormActivity.class);
         } else {
-            intent = new Intent(LoginActivity.this, HomeActivity.class);
+            if (type.equals("old"))
+                intent = new Intent(LoginActivity.this, HomeActivity.class);
         }
         String IFTitle = (isStudent) ? "Student Information Form" : "Teacher Information Form";
         intent.putExtra("IFTitle", IFTitle);

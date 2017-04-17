@@ -144,7 +144,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSRoomHint"
-            android:inputType="textCapCharacters"
+            android:inputType="text"
             android:textSize="16sp"
             android:textColor="@color/blackText"
             android:id="@+id/CourseSRoomField"/>
@@ -169,6 +169,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:enabled="false"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:text="@string/CourseSDisclaimer"
