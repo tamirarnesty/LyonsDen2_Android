@@ -2,6 +2,7 @@ package com.wlmac.lyonsden2_android.resourceActivities;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -47,6 +48,8 @@ public class ClubActivity extends AppCompatActivity {
     private EditText titleField;
     private EditText infoField;
 
+    private SwipeRefreshLayout refreshLayout;
+
     private boolean userIsLead = false;
     private boolean editing = false;
 
@@ -89,17 +92,19 @@ public class ClubActivity extends AppCompatActivity {
         checkUserForLeadership();
 
         setFonts();
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadAnnouncements();
+            }
+        });
+        refreshLayout.setColorSchemeResources(R.color.navigationBar);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Retrieve.eventData(this, clubRef.child("announcements"), content, new Retrieve.ListDataHandler() {
-            @Override
-            public void handle(ArrayList<String[]> listData) {
-                onEventsLoaded();
-            }
-        });
+        loadAnnouncements();
     }
 
     @Override
@@ -128,6 +133,8 @@ public class ClubActivity extends AppCompatActivity {
 
         titleField = (EditText) findViewById(R.id.ClubSTitleField);
         infoField = (EditText) findViewById(R.id.ClubSDescriptionField);
+
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.ClubSAnnouncementsResfresh);
     }
 
     private void setFonts() {
@@ -136,8 +143,18 @@ public class ClubActivity extends AppCompatActivity {
             ((TextView) findViewById(components[h])).setTypeface(Retrieve.typeface(this));
     }
 
+    private void loadAnnouncements () {
+        Retrieve.eventData(this, clubRef.child("announcements"), content, new Retrieve.ListDataHandler() {
+            @Override
+            public void handle(ArrayList<String[]> listData) {
+                onEventsLoaded();
+            }
+        });
+    }
+
     private void onEventsLoaded () {
         adapter.notifyDataSetChanged();
+        refreshLayout.setRefreshing(false);
     }
 
     private void checkUserForLeadership () {

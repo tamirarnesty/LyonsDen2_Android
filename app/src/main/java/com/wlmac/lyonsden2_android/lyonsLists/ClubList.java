@@ -2,6 +2,7 @@ package com.wlmac.lyonsden2_android.lyonsLists;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,21 +30,13 @@ public class ClubList extends LyonsList {
 
         loadingLabel.startCycling();
         listView = (ListView) findViewById(R.id.LSClubList);
-        (findViewById(R.id.LSEventList)).setVisibility(View.GONE);
-        (findViewById(R.id.LSEventList)).setEnabled(false);
+        refreshLayout = ((SwipeRefreshLayout) findViewById(R.id.LSClubRefresh));
+        (findViewById(R.id.LSEventRefresh)).setVisibility(View.GONE);
+        (findViewById(R.id.LSEventRefresh)).setEnabled(false);
 
         adapter = new ListAdapter(this, content, false, false);
         listView.setAdapter(adapter);
-        if (Retrieve.isInternetAvailable(this)) {
-            Retrieve.clubData(this, FirebaseDatabase.getInstance().getReference("clubs"), content, new Retrieve.ListDataHandler() {
-                @Override
-                public void handle(ArrayList<String[]> listData) {
-                    onClubsLoaded(listData);
-                }
-            });
-        } else {
-            Toast.makeText(this, "No Internet Available!", Toast.LENGTH_SHORT).show();
-        }
+        loadClubs();
 
         // Set the click listener of this activity's eventList
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -62,13 +55,34 @@ public class ClubList extends LyonsList {
                 overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
-        Log.d("List Activity", "We have been created now!");
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadClubs();
+            }
+        });
+        refreshLayout.setColorSchemeResources(R.color.navigationBar);
+    }
+
+    private void loadClubs () {
+        if (Retrieve.isInternetAvailable(this)) {
+            Retrieve.clubData(this, FirebaseDatabase.getInstance().getReference("clubs"), content, new Retrieve.ListDataHandler() {
+                @Override
+                public void handle(ArrayList<String[]> listData) {
+                    onClubsLoaded(listData);
+                }
+            });
+        } else {
+            Toast.makeText(this, "No Internet Available!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void onClubsLoaded (ArrayList<String[]> clubData) {
         adapter.notifyDataSetChanged();
         loadingLabel.dismiss();
         loadingCircle.setVisibility(View.GONE);
+        refreshLayout.setRefreshing(false);
     }
 
     @Override

@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,14 +32,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
-// TODO: IMPLEMENT CLUB CODE CHECKER
-// TODO: MAKE A LOADING INDICATOR FOR WHEN CHECKING THE CLUB CODE
+// TODO: MAKE A LOADING INDICATOR FoR WHEN CHECKING THE CLUB CODE
 // TODO: MAKE KEYBOARD GO AWAY WHEN !editing
 
 /**
@@ -100,7 +97,7 @@ public class UserActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        float textHeight = (Retrieve.heightForText("Sign out", this, 12) + (Retrieve.dpFromInt(16, getResources()))) * 2; // Accounts for padding
+        float textHeight = (Retrieve.heightForText("Sign out", this, 12) + (Retrieve.pxFromDpInt(16, getResources()))) * 2; // Accounts for padding
 
         Log.d("User Activity", "" + textHeight);
 
@@ -131,7 +128,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
     public void toggleButtons (View view) {
-        float textHeight = (Retrieve.heightForText("Sign out", this, 12) + (Retrieve.dpFromInt(16, getResources()))) * 2; // Accounts for padding
+        float textHeight = (Retrieve.heightForText("Sign out", this, 12) + (Retrieve.pxFromDpInt(16, getResources()))) * 2; // Accounts for padding
         textHeight = (isShowingExtraButtons) ? textHeight * -1 : textHeight;
         extraButtonsContainer.animate().translationYBy(textHeight).setDuration(300).start();
         toggleButton.animate().translationYBy(textHeight).setDuration(300).start();
@@ -305,7 +302,6 @@ public class UserActivity extends AppCompatActivity {
                 case "signOut":
                     final LyonsAlert signOutAlert = new LyonsAlert();
                     signOutAlert.setTitle("Are you sure?");
-                    signOutAlert.setSubtitle("Are you sure you want to sing out?");
                     signOutAlert.setSubtitle("Are you sure you want to sign out?");
                     signOutAlert.hideInput();
                     signOutAlert.configureLeftButton("Cancel", new View.OnClickListener() {

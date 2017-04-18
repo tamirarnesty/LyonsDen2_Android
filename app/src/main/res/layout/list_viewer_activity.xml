@@ -14,7 +14,7 @@
         android:id="@+id/toolbar">
     </android.support.v7.widget.Toolbar>
 
-    <ListView
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
@@ -24,10 +24,16 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
-        android:background="@color/background"
-        android:divider="@color/listDivider"
-        android:dividerHeight="1dp"
-        android:id="@+id/LVSList"/>
+        android:id="@+id/LVSListRefresh">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background"
+            android:divider="@color/listDivider"
+            android:dividerHeight="1dp"
+            android:id="@+id/LVSList"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:layout_width="wrap_content"

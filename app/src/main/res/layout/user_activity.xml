@@ -154,7 +154,6 @@
                         android:layout_weight="1"
                         android:gravity="start|left"
                         android:text="@string/USLeaderButtonText"
-                        android:textSize="@dimen/textSize13Button"
                         android:paddingBottom="8dp"
                         android:onClick="promptClubCode"
                         android:id="@+id/USLeaderButton" />
@@ -165,7 +164,6 @@
                         android:layout_weight="1"
                         android:gravity="end|right"
                         android:text="@string/USSignOutButtonText"
-                        android:textSize="@dimen/textSize13Button"
                         android:tag="signOut"
                         android:id="@+id/USSignOut"
                         android:onClick="UAButtons" />
@@ -178,7 +176,6 @@
                         android:layout_weight="1"
                         android:gravity="start|left"
                         android:text="@string/USDeleteButtonText"
-                        android:textSize="@dimen/textSize13Button"
                         android:tag="deleteAcc"
                         android:id="@+id/USDelete"
                         android:onClick="UAButtons" />
@@ -189,7 +186,6 @@
                         android:layout_weight="1"
                         android:gravity="end|right"
                         android:text="@string/USResetPassButtonText"
-                        android:textSize="@dimen/textSize13Button"
                         android:tag="resetPass"
                         android:id="@+id/USReset"
                         android:onClick="UAButtons" />

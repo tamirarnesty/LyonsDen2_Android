@@ -42,36 +42,51 @@ public class LyonsAlert extends DialogFragment {
     private boolean rightButtonShouldBeHiiden = false;
     private int titleGravity = Gravity.TOP | Gravity.START;
     private int subtitleGravity = Gravity.TOP | Gravity.START;
+    private String[] startTimes = null;
+    private String[] endTimes = null;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View alertView = getActivity().getLayoutInflater().inflate(R.layout.lyons_alert_layout, null);
+        View alertView;
 
-        ((TextView) alertView.findViewById(R.id.LATitle)).setText(titleToSet);
-        ((TextView) alertView.findViewById(R.id.LATitle)).setGravity(titleGravity);
-        ((TextView) alertView.findViewById(R.id.LASubtitle)).setText(subtitleToSet);
-        ((TextView) alertView.findViewById(R.id.LASubtitle)).setGravity(subtitleGravity);
-        ((Button) alertView.findViewById(R.id.LAButtonLeft)).setText(leftButtonTitle);
-        ((Button) alertView.findViewById(R.id.LAButtonRight)).setText(rightButtonTitle);
-        alertView.findViewById(R.id.LAButtonLeft).setOnClickListener(leftButtonOnClick);
-        alertView.findViewById(R.id.LAButtonRight).setOnClickListener(rightButtonOnClick);
+        if (startTimes == null && endTimes == null) {
+            alertView = getActivity().getLayoutInflater().inflate(R.layout.lyons_alert_layout, null);
+            ((TextView) alertView.findViewById(R.id.LATitle)).setText(titleToSet);
+            ((TextView) alertView.findViewById(R.id.LATitle)).setGravity(titleGravity);
+            ((TextView) alertView.findViewById(R.id.LASubtitle)).setText(subtitleToSet);
+            ((TextView) alertView.findViewById(R.id.LASubtitle)).setGravity(subtitleGravity);
+            ((Button) alertView.findViewById(R.id.LAButtonLeft)).setText(leftButtonTitle);
+            ((Button) alertView.findViewById(R.id.LAButtonRight)).setText(rightButtonTitle);
+            alertView.findViewById(R.id.LAButtonLeft).setOnClickListener(leftButtonOnClick);
+            alertView.findViewById(R.id.LAButtonRight).setOnClickListener(rightButtonOnClick);
 
-        inputField = (EditText) alertView.findViewById(R.id.LAInput);
-        if (inputShouldBeSecure) {
-            inputField.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        }
-        if (inputShouldBeHidden) {
-            inputField.setVisibility(View.GONE);
-        }
+            inputField = (EditText) alertView.findViewById(R.id.LAInput);
+            if (inputShouldBeSecure) {
+                inputField.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            }
+            if (inputShouldBeHidden) {
+                inputField.setVisibility(View.GONE);
+            }
 
-        if (leftButtonShouldBeHiiden) {
-            (alertView.findViewById(R.id.LAButtonLeft)).setVisibility(View.GONE);
-        }
+            if (leftButtonShouldBeHiiden) {
+                (alertView.findViewById(R.id.LAButtonLeft)).setVisibility(View.GONE);
+            }
 
-        if (rightButtonShouldBeHiiden) {
-            (alertView.findViewById(R.id.LAButtonRight)).setVisibility(View.GONE);
+            if (rightButtonShouldBeHiiden) {
+                (alertView.findViewById(R.id.LAButtonRight)).setVisibility(View.GONE);
+            }
+        } else {
+            alertView = getActivity().getLayoutInflater().inflate(R.layout.late_start_schedule_layout, null);
+            int[] startIDs = {R.id.LateSStart1, R.id.LateSStart2, R.id.LateSStartL, R.id.LateSStart3, R.id.LateSStart4};
+            int[] endIDs = {R.id.LateSEnd1, R.id.LateSEnd2, R.id.LateSEndL, R.id.LateSEnd3, R.id.LateSEnd4};
+            for (int h = 0; h < startIDs.length; h ++) {
+                ((TextView) alertView.findViewById(startIDs[h])).setText(startTimes[h]);
+            }
+            for (int h = 0; h < endIDs.length; h ++) {
+                ((TextView) alertView.findViewById(endIDs[h])).setText(endTimes[h]);
+            }
         }
 
         setFonts(alertView);
@@ -81,7 +96,17 @@ public class LyonsAlert extends DialogFragment {
     }
 
     private void setFonts(View target) {
-        int[] components = {R.id.LATitle, R.id.LASubtitle, R.id.LAButtonLeft, R.id.LAButtonRight, R.id.LAInput};
+        int[] components;
+        if (endTimes == null && startTimes == null) {
+            components = new int[] {R.id.LATitle, R.id.LASubtitle, R.id.LAButtonLeft, R.id.LAButtonRight, R.id.LAInput};
+        } else {
+            components = new int[] {R.id.LateSPerLabel1, R.id.LateSPerLabel2, R.id.LateSPerLabelL, R.id.LateSPerLabel3, R.id.LateSPerLabel4,
+                                    R.id.LateSStart1, R.id.LateSStart2, R.id.LateSStartL, R.id.LateSStart3, R.id.LateSStart4,
+                                    R.id.LateSPerSep1, R.id.LateSPerSep2, R.id.LateSPerSepL, R.id.LateSPerSep3, R.id.LateSPerSep4,
+                                    R.id.LateSEnd1, R.id.LateSEnd2, R.id.LateSEndL, R.id.LateSEnd3, R.id.LateSEnd4,
+                                    R.id.LateSTitle};
+        }
+
         for (int h = 0; h < components.length; h ++) {
             ((TextView) target.findViewById(components[h])).setTypeface(Retrieve.typeface(getContext()));
         }
@@ -140,5 +165,15 @@ public class LyonsAlert extends DialogFragment {
     public void setEmailKeyboard() {
         if (inputField != null)
             inputField.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+    }
+
+    public void setScheduleView(SchedulePopulator populator) {
+        startTimes = new String[5];
+        endTimes = new String[5];
+        populator.populateContent(startTimes, endTimes);
+    }
+
+    public interface SchedulePopulator {
+        void populateContent (String[] startTimes, String[] endTimes);
     }
 }

@@ -59,13 +59,6 @@ public class SplashActivity extends AppCompatActivity {
         attemptOfflineLogIn();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        attemptOfflineLogIn();
-    }
-
     private void attemptOfflineLogIn() {
 
         if (Retrieve.isInternetAvailable(this)) {
@@ -137,7 +130,6 @@ public class SplashActivity extends AppCompatActivity {
                 Log.d("Splash Screen", "segue to home");
                 intent = new Intent (SplashActivity.this, HomeActivity.class);
                 startActivity(intent);
-                intent.putExtra("isInternetAvailable", true);
                 finish();
             }
         }

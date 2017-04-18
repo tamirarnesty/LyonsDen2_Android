@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="@color/background">
+
+    <TextView
+        style="@style/LateSLabel"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="18sp"
+        android:layout_marginBottom="5dp"
+        android:text="@string/LateSTitle"
+        android:id="@+id/LateSTitle"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/LateSTitle"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right|end"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/LateSLabel"
+                android:text="@string/LateSPer1"
+                android:id="@+id/LateSPerLabel1"/>
+
+            <TextView
+                style="@style/LateSLabel"
+                android:text="@string/LateSPer2"
+                android:id="@+id/LateSPerLabel2"/>
+
+            <TextView
+                style="@style/LateSLabel"
+                android:text="@string/LateSLunch"
+                android:id="@+id/LateSPerLabelL"/>
+
+            <TextView
+                style="@style/LateSLabel"
+                android:text="@string/LateSPer3"
+                android:id="@+id/LateSPerLabel3"/>
+
+            <TextView
+                style="@style/LateSLabel"
+                android:text="@string/LateSPer4"
+                android:id="@+id/LateSPerLabel4"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right|end"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/LateSLabel"
+                android:id="@+id/LateSStart1"/>
+
+            <TextView
+                style="@style/LateSLabel"
+                android:id="@+id/LateSStart2"/>
+
+            <TextView
+                style="@style/LateSLabel"
+                android:id="@+id/LateSStartL"/>
+
+            <TextView
+                style="@style/LateSLabel"
+                android:id="@+id/LateSStart3"/>
+
+            <TextView
+                style="@style/LateSLabel"
+                android:id="@+id/LateSStart4"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/LateSLabel"
+                android:text="@string/LateSTimeSeparator"
+                android:id="@+id/LateSPerSep1"/>
+
+            <TextView
+                style="@style/LateSLabel"
+                android:text="@string/LateSTimeSeparator"
+                android:id="@+id/LateSPerSep2"/>
+
+            <TextView
+                style="@style/LateSLabel"
+                android:text="@string/LateSTimeSeparator"
+                android:id="@+id/LateSPerSepL"/>
+
+            <TextView
+                style="@style/LateSLabel"
+                android:text="@string/LateSTimeSeparator"
+                android:id="@+id/LateSPerSep3"/>
+
+            <TextView
+                style="@style/LateSLabel"
+                android:text="@string/LateSTimeSeparator"
+                android:id="@+id/LateSPerSep4"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left|start"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/LateSLabel"
+                android:id="@+id/LateSEnd1"/>
+
+            <TextView
+                style="@style/LateSLabel"
+                android:id="@+id/LateSEnd2"/>
+
+            <TextView
+                style="@style/LateSLabel"
+                android:id="@+id/LateSEndL"/>
+
+            <TextView
+                style="@style/LateSLabel"
+                android:id="@+id/LateSEnd3"/>
+
+            <TextView
+                style="@style/LateSLabel"
+                android:id="@+id/LateSEnd4"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

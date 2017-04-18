@@ -30,8 +30,6 @@ public class GuidePageFragment extends Fragment {
     private Drawable image;
     private int pageType;
 
-//    private OnFragmentInteractionListener mListener;
-
     public GuidePageFragment() {
         // Required empty public constructor
     }
@@ -57,18 +55,21 @@ public class GuidePageFragment extends Fragment {
         // Configure the layout to display the proper and configured page
         if (pageType == pageMain) { // Main page will be displayed
             view.findViewById(R.id.FGPFirst).setVisibility(View.GONE);  // Hide the non-main page layout
+            view.findViewById(R.id.FGPLast).setVisibility(View.GONE);  // Hide the last page layout
 
             // Configure the page
             ((ImageView) view.findViewById(R.id.FGPMainImageView)).setImageDrawable(image);
             ((TextView) view.findViewById(R.id.FGPMainText)).setText(text);
             ((TextView) view.findViewById(R.id.FGPMainText)).setTypeface(Retrieve.typeface(getContext()));
-        } else {    // A non-main page will be displayed
+        } else if (pageType == pageLast) {
             view.findViewById(R.id.FGPMain).setVisibility(View.GONE);   // Hide the main page layout
+            view.findViewById(R.id.FGPFirst).setVisibility(View.GONE);  // Hide the non-main page layout
+        }else {    // A non-main page will be displayed
+            view.findViewById(R.id.FGPMain).setVisibility(View.GONE);   // Hide the main page layout
+            view.findViewById(R.id.FGPLast).setVisibility(View.GONE);  // Hide the last page layout
 
-            if (pageType == pageSecond || pageType == pageLast) {       // If a second or last page is displayed, hdie the image view
+            if (pageType == pageSecond) {       // If a second or last page is displayed, hdie the image view
                 view.findViewById(R.id.FGPFirstImageView).setVisibility(View.GONE);
-            } if (pageType == pageLast) {       // If a last page is displayed, hide the bottom label
-                view.findViewById(R.id.FGPBottomText).setVisibility(View.GONE);
             }
 
             // Configure the page
@@ -80,36 +81,4 @@ public class GuidePageFragment extends Fragment {
 
         return view;
     }
-
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-//
-//    /**
-//     * This interface must be implemented by activities that contain this
-//     * fragment to allow an interaction in this fragment to be communicated
-//     * to the activity and potentially other fragments contained in that
-//     * activity.
-//     * <p>
-//     * See the Android Training lesson <a href=
-//     * "http://developer.android.com/training/basics/fragments/communicating.html"
-//     * >Communicating with Other Fragments</a> for more information.
-//     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
 }
