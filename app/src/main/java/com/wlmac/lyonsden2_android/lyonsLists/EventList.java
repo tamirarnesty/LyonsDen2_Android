@@ -2,6 +2,7 @@ package com.wlmac.lyonsden2_android.lyonsLists;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -29,9 +30,11 @@ public class EventList extends LyonsList {
         Log.d("EventList", "Commencing Loading Label Cycling");
         loadingLabel.startCycling();
         listView = (ActionSlideExpandableListView) findViewById(R.id.LSEventList);
-        (findViewById(R.id.LSClubList)).setVisibility(View.GONE);
+        refreshLayout = ((SwipeRefreshLayout) findViewById(R.id.LSEventRefresh));
+        (findViewById(R.id.LSClubRefresh)).setVisibility(View.GONE);
+        (findViewById(R.id.LSClubRefresh)).setEnabled(false);
 
-        adapter = new ListAdapter(this, content, true);
+        adapter = new ListAdapter(this, content, true, true);
 
         listView.setItemActionListener(new ActionSlideExpandableListView.OnActionClickListener() {
             @Override
@@ -60,6 +63,14 @@ public class EventList extends LyonsList {
 
         listView.setAdapter(adapter, R.id.LSICell, R.id.LSIExpandable);
         loadAnnouncements();
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadAnnouncements();
+            }
+        });
+        refreshLayout.setColorSchemeResources(R.color.navigationBar);
 
         Log.d("List Activity", "We have been created now!");
     }
@@ -97,5 +108,6 @@ public class EventList extends LyonsList {
         adapter.notifyDataSetChanged();
         loadingLabel.dismiss();
         loadingCircle.setVisibility(View.GONE);
+        refreshLayout.setRefreshing(false);
     }
 }

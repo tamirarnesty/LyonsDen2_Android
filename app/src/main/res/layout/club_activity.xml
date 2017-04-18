@@ -115,8 +115,7 @@
         android:textSize="@dimen/textSize14Details"
         android:id="@+id/ClubSLeaderList"/>
 
-    <!-- Clubs Announcements List -->
-    <ListView
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/ClubSLeaderList"
@@ -125,8 +124,15 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:background="@color/listViewBackground"
-        android:divider="@color/listDivider"
-        android:dividerHeight="1dp"
-        android:id="@+id/ClubSAnnouncements"/>
+        android:id="@+id/ClubSAnnouncementsResfresh">
+
+        <!-- Clubs Announcements List -->
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/listViewBackground"
+            android:divider="@color/listDivider"
+            android:dividerHeight="1dp"
+            android:id="@+id/ClubSAnnouncements"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

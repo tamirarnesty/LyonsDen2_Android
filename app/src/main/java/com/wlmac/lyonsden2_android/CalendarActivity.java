@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -19,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -234,7 +232,7 @@ public class CalendarActivity extends AppCompatActivity {
                             if ((boolean)eventView.getTag()) {
                                 Log.d("OnClickListener", "Closing Cell!");
                                 eventView.setTag(false);
-                                textView.getLayoutParams().height = Retrieve.dpFromInt(100, getResources());
+                                textView.getLayoutParams().height = Retrieve.pxFromDpInt(100, getResources());
                             } else{
                                 Log.d("OnClickListener", "Opening Cell!");
                                 eventView.setTag(true);
@@ -455,19 +453,7 @@ public class CalendarActivity extends AppCompatActivity {
 
             @Override
             public boolean onDoubleTap(MotionEvent e) {
-                Log.d("Calendar Activity", "I Hear your tap!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                Log.d("Calendar Activity", "scrollOffset: " + calendarView.getScrollOffset());
-                int scrollOffsetTempHolder = calendarView.getScrollOffset();
-
-                for (int h = 0; h < Math.abs(scrollOffsetTempHolder); h ++) {
-                    Log.d("Calendar!", "Scrolling back!!!!!!!");
-                    if (scrollOffsetTempHolder < 0) {
-                        calendarView.nextMonth();
-                    } else {
-                        calendarView.prevMonth();
-                    }
-                }
-                calendarView.setScrollOffset(0);
+                calendarView.moveToDate(today);
                 return true;
             }
 

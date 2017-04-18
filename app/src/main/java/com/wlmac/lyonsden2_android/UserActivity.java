@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,14 +32,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
-// TODO: IMPLEMENT CLUB CODE CHECKER
-// TODO: MAKE A LOADING INDICATOR FOR WHEN CHECKING THE CLUB CODE
+// TODO: MAKE A LOADING INDICATOR FoR WHEN CHECKING THE CLUB CODE
 // TODO: MAKE KEYBOARD GO AWAY WHEN !editing
 
 /**
@@ -61,7 +58,6 @@ public class UserActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
 
     private boolean editing = false;
-    private String accessLevelString = "Unavailable";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,29 +76,28 @@ public class UserActivity extends AppCompatActivity {
         drawerToggle = Retrieve.drawerToggle(this, rootLayout);
         Retrieve.drawerSetup(this, drawerList, rootLayout, drawerToggle);
 
-        //something entirely different
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseDatabase.getInstance().getReference("users").child("students").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    onContentLoad(dataSnapshot.child("name").getValue(String.class), user.getEmail(),
-                            dataSnapshot.child("accessLevel").getValue(String.class));
-                     accessLevelString = dataSnapshot.child("accessLevel").getValue(String.class);
-                    instantiateComponents();
-                }
-                else Log.d("An error occured", "database directory isn't correct or database does not exist");
-            }
+        instantiateComponents();
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            Retrieve.isUserTeacher(this, user.getUid(), new Retrieve.StatusHandler() {
+                @Override
+                public void handle(boolean status) {
+                    if (status) {
+                        findViewById(R.id.USReset).setVisibility(View.GONE);
+                        loadContentFor("teachers", user);
+                    } else {
+                        loadContentFor("students", user);
+                    }
+                }
+            });
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        float textHeight = (Retrieve.heightForText("Sign out", this, 12) + (Retrieve.dpFromInt(16, getResources()))) * 2; // Accounts for padding
+        float textHeight = (Retrieve.heightForText("Sign out", this, 12) + (Retrieve.pxFromDpInt(16, getResources()))) * 2; // Accounts for padding
 
         Log.d("User Activity", "" + textHeight);
 
@@ -116,8 +111,24 @@ public class UserActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 
+    public void loadContentFor (String accessLevel, final FirebaseUser user) {
+        FirebaseDatabase.getInstance().getReference("/users/" + accessLevel + "/" + user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    onContentLoad(dataSnapshot.child("name").getValue(String.class), user.getEmail(), dataSnapshot.child("accessLevel").getValue(String.class));
+                } else {
+                    Log.d("An error occured", "database directory isn't correct or database does not exist");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
     public void toggleButtons (View view) {
-        float textHeight = (Retrieve.heightForText("Sign out", this, 12) + (Retrieve.dpFromInt(16, getResources()))) * 2; // Accounts for padding
+        float textHeight = (Retrieve.heightForText("Sign out", this, 12) + (Retrieve.pxFromDpInt(16, getResources()))) * 2; // Accounts for padding
         textHeight = (isShowingExtraButtons) ? textHeight * -1 : textHeight;
         extraButtonsContainer.animate().translationYBy(textHeight).setDuration(300).start();
         toggleButton.animate().translationYBy(textHeight).setDuration(300).start();
@@ -140,7 +151,7 @@ public class UserActivity extends AppCompatActivity {
         try {
             displayName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
             email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-            accessLevel.setText(accessLevelString);
+            accessLevel.setText("");
         } catch (NullPointerException e) {}
     }
 
@@ -314,8 +325,7 @@ public class UserActivity extends AppCompatActivity {
                             finish();
                         }
                     });
-                    signOutAlert.show(getSupportFragmentManager(), "DeleteAccountDialog");
-
+                    signOutAlert.show(getSupportFragmentManager(), "SignOutDialog");
                     break;
                 case "resetPass":
                     final String email = this.email.getText().toString();
@@ -376,7 +386,11 @@ public class UserActivity extends AppCompatActivity {
         alertDialog.configureRightButton("Submit", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkClubCode(alertDialog.getInputText());
+                if (!alertDialog.getInputText().isEmpty()) {
+                    checkClubCode(alertDialog.getInputText());
+                } else {
+                    Toast.makeText(UserActivity.this, "No Code Entered", Toast.LENGTH_SHORT).show();
+                }
                 alertDialog.dismiss();
             }
         });
@@ -438,20 +452,24 @@ public class UserActivity extends AppCompatActivity {
      * @param code The entered code to be checked.
      */
     private void checkClubCode (String code) {
-        FirebaseDatabase.getInstance().getReference("clubKeys/" + code).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    onCheckClubCodeStatus(dataSnapshot.getValue(String.class));
-                } else {
-                    onCheckClubCodeStatus(null);
+        if (Retrieve.isInternetAvailable(this)) {
+            FirebaseDatabase.getInstance().getReference("clubKeys/" + code).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        onCheckClubCodeStatus(dataSnapshot.getValue(String.class));
+                    } else {
+                        onCheckClubCodeStatus(null);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } else {
+            Toast.makeText(this, "No Internet Available!", Toast.LENGTH_SHORT).show();
+        }
     }
 }

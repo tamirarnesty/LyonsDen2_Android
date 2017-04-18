@@ -22,37 +22,48 @@
             android:id="@+id/toolbar">
         </android.support.v7.widget.Toolbar>
 
-        <com.tjerkw.slideexpandable.library.ActionSlideExpandableListView
+        <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:background="@color/background"
-            android:divider="@color/listDivider"
-            android:dividerHeight="1dp"
-            android:id="@+id/LSEventList" />
+            android:layout_below="@id/toolbar"
+            android:id="@+id/LSEventRefresh">
 
-        <ListView
+            <com.tjerkw.slideexpandable.library.ActionSlideExpandableListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background"
+                android:divider="@color/listDivider"
+                android:dividerHeight="1dp"
+                android:id="@+id/LSEventList" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:background="@color/background"
-            android:divider="@color/listDivider"
-            android:dividerHeight="1dp"
-            android:id="@+id/LSClubList">
+            android:layout_below="@id/toolbar"
+            android:id="@+id/LSClubRefresh">
 
-        </ListView>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background"
+                android:divider="@color/listDivider"
+                android:dividerHeight="1dp"
+                android:id="@+id/LSClubList">
+            </ListView>
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <ProgressBar
             android:layout_width="wrap_content"

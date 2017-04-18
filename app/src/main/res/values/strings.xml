@@ -148,4 +148,14 @@
     <string name="Page7">Post announcements from your phone, anytime, anywhere.</string>
     <string name="Page8">You may enter the Den.</string>
     <string name="Swipe">Swipe left to continue</string>
+
+    <!-- Late Start Schedule Strings -->
+    <string name="LateSTitle">Late Start Day Schedule</string>
+    <string name="LateSPer1">Period 1:</string>
+    <string name="LateSPer2">Period 2:</string>
+    <string name="LateSLunch">Lunch:</string>
+    <string name="LateSPer3">Period 3:</string>
+    <string name="LateSPer4">Period 4:</string>
+    <string name="LateSTimeSeparator">–</string>
+
 </resources>

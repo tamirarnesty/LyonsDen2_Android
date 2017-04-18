@@ -36,6 +36,7 @@ public class ListAdapter extends ArrayAdapter {
     /** The id of the cell's delete button. Changes depending on which layout is used. */
     private final int deleteID;
     private final int dateID;
+    private boolean hasSubtitle = true;
 
 //    private boolean canEdit = false;
 //    private boolean editing = false;
@@ -45,10 +46,11 @@ public class ListAdapter extends ArrayAdapter {
      * its GUI components.
      * @param context The context that this adapter's list belongs to.
      */
-    public ListAdapter (Context context, ArrayList<String[]> content, boolean isExpandable) {
+    public ListAdapter (Context context, ArrayList<String[]> content, boolean isExpandable, boolean hasSubtitle) {
         super (context, -1, content);    // Super call
         this.content = content;
         this.onClick = null;
+        this.hasSubtitle = hasSubtitle;
 
         if (isExpandable) {
             layout = R.layout.list_expandable_item;
@@ -71,10 +73,11 @@ public class ListAdapter extends ArrayAdapter {
      * @param context The context that this adapter's list belongs to.
      * @param onClick The onItemClickListener to apply to the each row item. (To retrieve the list position of the cell, use the tag of the parent view of the button)
      */
-    public ListAdapter (Context context, ArrayList<String[]> content, boolean isExpandable, View.OnClickListener onClick) {
+    public ListAdapter (Context context, ArrayList<String[]> content, boolean isExpandable, boolean hasSubtitle, View.OnClickListener onClick) {
         super (context, -1, content);    // Super call
         this.content = content;
         this.onClick = onClick;
+        this.hasSubtitle = hasSubtitle;
 //        this.canEdit = true;
 
         if (isExpandable) {
@@ -100,8 +103,12 @@ public class ListAdapter extends ArrayAdapter {
         // Declare instance of all required GUI components in the cell.
         ((TextView) rowView.findViewById(titleID)).setText(content.get(position)[0]);
         ((TextView) rowView.findViewById(titleID)).setTypeface(Retrieve.typeface(getContext()));
-        ((TextView) rowView.findViewById(infoID)).setText(content.get(position)[1]);
-        ((TextView) rowView.findViewById(infoID)).setTypeface(Retrieve.typeface(getContext()));
+        if (hasSubtitle) {
+            ((TextView) rowView.findViewById(infoID)).setText(content.get(position)[1]);
+            ((TextView) rowView.findViewById(infoID)).setTypeface(Retrieve.typeface(getContext()));
+        } else {
+            rowView.findViewById(infoID).setVisibility(View.GONE);
+        }
 
         if (dateID != -1) {
             ((TextView) rowView.findViewById(dateID)).setText(content.get(position)[2]);

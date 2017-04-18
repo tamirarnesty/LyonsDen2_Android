@@ -1,6 +1,7 @@
 package com.wlmac.lyonsden2_android.lyonsLists;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -53,6 +54,8 @@ public class ListViewerActivity extends AppCompatActivity {
     /** The loading indicator. */
     private ProgressBar loadingCircle;
 
+    private SwipeRefreshLayout refreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +64,7 @@ public class ListViewerActivity extends AppCompatActivity {
 
         list = (ListView) findViewById(R.id.LVSList);
         this.getSupportActionBar().setTitle(getIntent().getStringExtra("title"));
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.LVSListRefresh);
 
         if (getSupportActionBar().getTitle().toString().equals("Teachers")) {
             loadingLabel = new LoadingLabel((TextView) findViewById(R.id.LVSLoadingLabel), this);
@@ -78,6 +82,14 @@ public class ListViewerActivity extends AppCompatActivity {
             adapter = new SectionedListAdapter(this, content, departments, new ArrayList<String[]>(), createTeacherOnClick());
             list.setAdapter(adapter);
             list.setAlpha(0);
+
+            refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    parseForTeachers();
+                }
+            });
+            refreshLayout.setColorSchemeResources(R.color.navigationBar);
         } else {
             findViewById(R.id.LVSLoadingWheel).setVisibility(View.GONE);
             final ArrayList<String> content = new ArrayList<>();
@@ -104,8 +116,9 @@ public class ListViewerActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-        }
 
+            refreshLayout.setEnabled(false);
+        }
     }
 
     @Override
@@ -160,6 +173,7 @@ public class ListViewerActivity extends AppCompatActivity {
         list.animate().setDuration(300).alpha(1);
         loadingLabel.dismiss();
         loadingCircle.animate().setDuration(300).alpha(0);
+        refreshLayout.setRefreshing(false);
     }
 
     /**

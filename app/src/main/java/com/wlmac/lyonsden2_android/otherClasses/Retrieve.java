@@ -295,7 +295,7 @@ public class Retrieve {
         return textView.getMeasuredHeight();
     }
 
-    public static int dpFromInt (int input, Resources resources) {
+    public static int pxFromDpInt(int input, Resources resources) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, input, resources.getDisplayMetrics());
     }
 

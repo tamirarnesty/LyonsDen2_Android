@@ -18,7 +18,6 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -69,7 +68,7 @@ public class ContactActivity extends AppCompatActivity {
 
         Log.d("ContactActivity", "OnResume is Called!!!");
 
-        float transitionHeight = Retrieve.heightForText("Sign out", this, 12) + (Retrieve.dpFromInt(16, getResources())); // Accounts for padding
+        float transitionHeight = Retrieve.heightForText("Sign out", this, 12) + (Retrieve.pxFromDpInt(16, getResources())); // Accounts for padding
         if (!postFirstLaunch) {// || isShowingExtraButtons) {
             postFirstLaunch = true;
             extraButtonsContainer.animate().translationYBy(transitionHeight).setDuration(0).start();
@@ -185,7 +184,7 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     public void toggleButtons (View view) {
-        float transitionHeight = Retrieve.heightForText("Sign out", this, 12) + (Retrieve.dpFromInt(16, getResources())); // Accounts for padding
+        float transitionHeight = Retrieve.heightForText("Sign out", this, 12) + (Retrieve.pxFromDpInt(16, getResources())); // Accounts for padding
         transitionHeight = (!isShowingExtraButtons) ? transitionHeight * -1 : transitionHeight;
         extraButtonsContainer.animate().translationYBy(transitionHeight).setDuration(300).start();
         extraButtonsToggle.animate().translationYBy(transitionHeight).setDuration(300).start();

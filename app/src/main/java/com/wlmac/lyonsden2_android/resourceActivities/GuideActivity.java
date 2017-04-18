@@ -15,12 +15,15 @@ import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.onesignal.OneSignal;
 import com.wlmac.lyonsden2_android.HomeActivity;
 import com.wlmac.lyonsden2_android.R;
 
 public class GuideActivity extends AppCompatActivity {
+    public static String keyNotif = "willPromptForNotifications";
+
     private PageViewer pager;
 
     @Override
@@ -37,70 +40,13 @@ public class GuideActivity extends AppCompatActivity {
         // Configure the page viewer
         pager = (PageViewer) findViewById(R.id.GSPager);
         pager.setAdapter(new PageViewerAdapter(getSupportFragmentManager(), drawables, texts, pageTypes, getResources()));
-
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (position == pageTypes.length - 1) {
-                    pager.setPagingEnabled(false);
-
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                Thread.sleep(1500);
-                            } catch (InterruptedException e) {
-                            }
-
-
-                            GuideActivity.this.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Intent intent = new Intent(GuideActivity.this, HomeActivity.class);
-                                    GuideActivity.this.startActivity(intent);
-                                    promptNotification();
-                                }
-                            });
-                        }
-                    }).start();
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
 
-    private void promptNotification() {
-        final boolean [] notificationsChosen = {false};
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-        alertBuilder.setTitle("Announcement Notifications");
-        alertBuilder.setMessage("Do you wish to receive notifications?").setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        OneSignal.setSubscription(true);
-                        notificationsChosen[0] = true;
-                        dialog.cancel();
-                    }
-                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                OneSignal.setSubscription(false);
-                notificationsChosen[0] = false;
-                dialog.cancel();
-            }
-        });
-        alertBuilder.create().show();
+    public void closeGuide (View view) {
+        Intent intent = new Intent(GuideActivity.this, HomeActivity.class);
+        intent.putExtra(keyNotif, true);
+        GuideActivity.this.startActivity(intent);
     }
-
 }
 
 class PageViewer extends ViewPager {

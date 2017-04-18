@@ -1,6 +1,7 @@
 package com.wlmac.lyonsden2_android;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -8,11 +9,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,12 +30,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.FirebaseDatabase;
+import com.onesignal.OneSignal;
 import com.wlmac.lyonsden2_android.lyonsLists.ListAdapter;
 import com.wlmac.lyonsden2_android.otherClasses.CourseDialog;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsCalendar;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 import com.wlmac.lyonsden2_android.otherClasses.WebCalendar;
+import com.wlmac.lyonsden2_android.resourceActivities.GuideActivity;
 import com.wlmac.lyonsden2_android.resourceActivities.InfoActivity;
 
 import java.text.SimpleDateFormat;
@@ -73,6 +79,8 @@ public class HomeActivity extends AppCompatActivity {
     private RelativeLayout [] containers = new RelativeLayout[4];
     /** Date Format */
     private SimpleDateFormat timeFormat = new SimpleDateFormat("kk:mm:ss", Locale.CANADA);
+
+    private SwipeRefreshLayout refreshLayout;
 
 
     /** Timetable selection backgrounds */
@@ -137,7 +145,7 @@ public class HomeActivity extends AppCompatActivity {
             updateDay();
             Log.d("Home", "Updated Day Label!");
         } else {
-            dayLabel.setText("N/A");
+            dayLabel.setText("X");
             todayIsDay.setText("No Internet Available");
         }
 
@@ -211,7 +219,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (didCalculateSpacer) {
+                if (didCalculateSpacer && listView.getChildAt(0) != null) {
                     Log.d("Parallax!!!!!!", "      ");
                     int childTopY = Math.abs(listView.getChildAt(0).getTop()) + (firstVisibleItem * listView.getChildAt(0).getHeight());
                     if (firstVisibleItem != 0) {
@@ -240,13 +248,26 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
-        topViews.bringToFront();
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadAnnouncements();
+            }
+        });
+        refreshLayout.setColorSchemeResources(R.color.navigationBar);
+
         toolbar.bringToFront();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        // If you must prompt for notifications, prompt!
+        if (getIntent().getBooleanExtra(GuideActivity.keyNotif, false)) {
+            promptNotification();
+        }
 
         if (didUpdateDataset) {
             loadAnnouncements();
@@ -262,23 +283,19 @@ public class HomeActivity extends AppCompatActivity {
 
     public void lateStartLabelPressed(View view) {
         LyonsAlert alert = new LyonsAlert();
-        alert.setTitle("Schedule for the Day", Gravity.CENTER_HORIZONTAL);
-        String schedule = "";
-        if (isLateStart) {
-            // Set late start schedule
-            schedule = "Period 1: 10:00 - 11:05 \n" +
-                    "Period 2: 11:10 - 12:10\n" +
-                    "Lunch: 12:10 - 1:00\n" +
-                    "Period 3: 1:00 - 2:00\n" +
-                    "Period 4: 2:05 - 3:05";
-        } else if (isSpecSchedule) {
-            // Set schedule to one read from calendar.
-        }
-
-        alert.setSubtitle(schedule, Gravity.CENTER_HORIZONTAL);
-        alert.hideLeftButton();
-        alert.hideRightButton();
-        alert.hideInput();
+        alert.setScheduleView(new LyonsAlert.SchedulePopulator() {
+            @Override
+            public void populateContent(String[] startTimes, String[] endTimes) {
+                String[] localSTimes = {"10:00", "11:10", "12:10", "1:00", "2:05"};
+                String[] localETimes = {"11:05", "12:10", "1:00", "2:00", "3:05"};
+                for (int h = 0; h < localSTimes.length; h ++) {
+                    startTimes[h] = localSTimes[h];
+                }
+                for (int h = 0; h < localETimes.length; h ++) {
+                    endTimes[h] = localETimes[h];
+                }
+            }
+        });
         alert.show(getSupportFragmentManager(), "Late start schedule");
     }
 
@@ -295,10 +312,18 @@ public class HomeActivity extends AppCompatActivity {
 
         listView.addHeaderView(listHeader, listHeader, false);
 
-        adapter = new ListAdapter(this, announcements, false);
+        adapter = new ListAdapter(this, announcements, false, true);
         listView.setAdapter(adapter);
 
         loadAnnouncements();
+
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(android.R.attr.actionBarSize, typedValue, true);
+        if (typedValue.resourceId != 0) {
+            int offset = (int)getResources().getDimension(typedValue.resourceId);
+            refreshLayout.setProgressViewOffset(true, offset, offset + Retrieve.pxFromDpInt(32, getResources()));
+            Log.d("Home Activity", "" + offset);
+        }
     }
 
     private void initializeTimeStamps() {
@@ -318,6 +343,7 @@ public class HomeActivity extends AppCompatActivity {
                 public void handle(ArrayList<String[]> listData) {
                     adapter.notifyDataSetChanged();
                     lastOffset = (listView.getChildAt(0) != null) ? listView.getChildAt(0).getTop() : 0;
+                    refreshLayout.setRefreshing(false);
                 }
             });
             listView.setVisibility(View.VISIBLE);
@@ -513,6 +539,7 @@ public class HomeActivity extends AppCompatActivity {
         drawerToggle = Retrieve.drawerToggle(this, rootLayout);
         noInternet = (TextView) findViewById(R.id.HSNoInternet);
         lateStartLabel = (TextView) findViewById(R.id.HSLateStartLabel);
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.HSListRefresh);
 
         topViews = (RelativeLayout) findViewById(R.id.HSTopViews);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -549,6 +576,29 @@ public class HomeActivity extends AppCompatActivity {
         drawableRight.setLevel(3);
         drawableMostLeft.setLevel(4);
         drawableMostRight.setLevel(5);
+    }
+
+    private void promptNotification() {
+        final boolean [] notificationsChosen = {false};
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setTitle("Announcement Notifications");
+        alertBuilder.setMessage("Do you wish to receive notifications?").setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        OneSignal.setSubscription(true);
+                        notificationsChosen[0] = true;
+                        dialog.cancel();
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                OneSignal.setSubscription(false);
+                notificationsChosen[0] = false;
+                dialog.cancel();
+            }
+        });
+        alertBuilder.create().show();
     }
 
     // You will probably want to change this to set the time table to whatever it retrieved from permanent storage
