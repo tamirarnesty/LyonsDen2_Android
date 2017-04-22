@@ -9,10 +9,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wlmac.lyonsden2_android.HomeActivity;
 import com.wlmac.lyonsden2_android.LyonsDen;
@@ -22,109 +24,122 @@ import com.wlmac.lyonsden2_android.R;
  * Created by Ademir on 1/11/2017.
  */
 
+// Shared Preferences Keys
+// Format: [periodKey][periodIndex]:[fieldIndex]
+// Where: [periodKey] - the static period key belonging in CourseDialog
+//        [periodIndex] - One of 0/1/2/3, in relation to one of the periods
+//        [fieldIndex] - One of 0/1/2/3, in relation to the field on the period
+// Example:
+// periodKey + 2 + ":" + 4 = Refers to the Room Number field of period 3
+
 public class CourseDialog extends DialogFragment {
-    private EditText name, code, teacher, room;
-    private Button submit;
-    private TextView period;
-    private String periodString, nameString, codeString, teacherString, roomString;
-    private int periodInteger;
-    String day = "";
+    public static String spareKey = "SPARE";
+    public static String periodKey = "Period ";
+
+    private EditText[] periodFields;
+    private String[] periodData;
+    private int periodIndex;
+
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = getActivity().getLayoutInflater().inflate(R.layout.course_actvity ,null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.course_actvity, null);
 
-        period = (TextView) view.findViewById(R.id.CourseSPeriodLabel);
-        name = (EditText) view.findViewById(R.id.CourseSNameField);
-        code = (EditText) view.findViewById(R.id.CourseSCodeField);
-        teacher = (EditText) view.findViewById(R.id.CourseSTeacherField);
-        room = (EditText) view.findViewById(R.id.CourseSRoomField);
-        room.setRawInputType(InputType.TYPE_CLASS_PHONE);
+        initializePeriodData();
+        configureContentView(view);
 
-        submit = (Button) view.findViewById(R.id.USUpdate);
-
-        period.setText(periodString);
-        name.setText(nameString);
-        code.setText(codeString);
-        teacher.setText(teacherString);
-        room.setText(roomString);
-//        periodInteger = periodString.charAt(periodString.length()-1);
-//        if (day.equals("2") && periodInteger == 3) {
-//            periodString = periodString.substring(0, periodString.length()-1) + (periodInteger +1);
-//        } else if (day.equals("2") && periodInteger == 4) {
-//            periodString = periodString.substring(0, periodString.length()-1) + (periodInteger -1);
-//        }
-            submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (name.getText().toString().isEmpty() && code.getText().toString().isEmpty() && teacher.getText().toString().isEmpty() && room.getText().toString().isEmpty()) {
-                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
-
-                    alertBuilder.setTitle("Hold on!");
-
-                    alertBuilder.setMessage("Is this a spare?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(LyonsDen.keySharedPreferences, 0);
-                            SharedPreferences.Editor edit = sharedPreferences.edit();
-                            edit.putBoolean(periodString, true);
-                            edit.putString(periodString + " 0", name.getText().toString());
-                            edit.putString(periodString + " 1", code.getText().toString());
-                            edit.putString(periodString + " 2", teacher.getText().toString());
-                            edit.putString(periodString + " 3", room.getText().toString());
-                            edit.apply();
-                            ((HomeActivity) getActivity()).updatePeriods();
-                            getDialog().dismiss();
-                            dialog.cancel();
-                        }
-                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-
-                    AlertDialog alertDialog = alertBuilder.create();
-                    alertDialog.show();
-                } else {
-                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences(LyonsDen.keySharedPreferences, 0);
-                    SharedPreferences.Editor edit = sharedPreferences.edit();
-                    edit.putBoolean(periodString, false);
-                    edit.putString(periodString + " 0", name.getText().toString());
-                    edit.putString(periodString + " 1", code.getText().toString());
-                    edit.putString(periodString + " 2", teacher.getText().toString());
-                    edit.putString(periodString + " 3", room.getText().toString());
-                    edit.apply();
-                    ((HomeActivity) getActivity()).updatePeriods();
-                    getDialog().dismiss();
-                }
-            }
-        });
         builder.setView(view);
         return builder.create();
     }
 
-    public void setPeriod(String period, String nameString, String codeString, String teacherString, String roomString, String dayLabel) {
-        this.periodString = period;
-        this.day = dayLabel;
-        if (nameString.equals("Course Name"))
-            this.nameString = "";
-        else
-            this.nameString = nameString;
+    private void initializePeriodData() {
+        SharedPreferences preferences = getActivity().getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE);
+        String curPeriodKey = periodKey + periodIndex;
+        periodData = new String[4];
 
-        if (codeString.equals("Course Code"))
-            this.codeString = "";
-        else
-            this.codeString = codeString;
+        for (int h = 0; h < 4; h ++) {
+            periodData[h] = preferences.getString(curPeriodKey + ":" + h, "");
+            if (periodData[h].equals(spareKey)) {
+                periodData[h] = "";
+            }
+        }
+    }
 
-        if (teacherString.equals("Teacher Name"))
-            this.teacherString = "";
-        else
-            this.teacherString = teacherString;
+    private void configureContentView(View view) {
+        periodFields = new EditText[]{(EditText) view.findViewById(R.id.CourseSNameField),
+                                      (EditText) view.findViewById(R.id.CourseSCodeField),
+                                      (EditText) view.findViewById(R.id.CourseSTeacherField),
+                                      (EditText) view.findViewById(R.id.CourseSRoomField)};
 
-        if (roomString.equals("Room Number"))
-            this.roomString = "";
-        else
-            this.roomString = roomString;
+        for (int h = 0; h < periodFields.length; h ++) {
+            periodFields[h].setText(periodData[h]);
+            periodFields[h].setTypeface(Retrieve.typeface(getActivity()));
+        }
+
+        int[] ids = {R.id.CourseSNameLabel, R.id.CourseSCodeLabel, R.id.CourseSTeacherLabel, R.id.CourseSRoomLabel, R.id.CourseSPeriodLabel, R.id.CourseSSubbmit};
+        for (int id : ids) {
+            ((TextView) view.findViewById(id)).setTypeface(Retrieve.typeface(getActivity()));
+        }
+
+        ((TextView) view.findViewById(R.id.CourseSPeriodLabel)).setText(periodKey + (periodIndex + 1));
+
+        view.findViewById(R.id.CourseSSubbmit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int emptyCounter = 0;
+
+                for (EditText field: periodFields) {
+                    if (field.getText().toString().isEmpty()) {
+                        emptyCounter ++;
+                    }
+                }
+
+                if (emptyCounter == 4) {    // Prompt for spare confirmation
+                    Toast.makeText(getActivity(), "You must fill in at least one field", Toast.LENGTH_LONG).show();
+
+                    // TEMPORARY!!!!
+                    commitChanges(true);
+                } else {
+                    commitChanges(false);
+                }
+
+                // Update Initiator Time Table
+                final HomeActivity activity = (HomeActivity) getActivity();
+                activity.repopulateTimeTable();
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (activity.getScheduleDay() > 0) {
+                            activity.updateTimeTableUI();
+                        }
+                    }
+                });
+                CourseDialog.this.dismiss();
+            }
+        });
+    }
+
+    private void commitChanges(boolean isSpare) {
+//        Log.d("Home Course Dialog", "Applying Changes");
+//        Log.d("Home Course Dialog", "Period Key: " + periodKey + periodIndex);
+                SharedPreferences.Editor editor = getActivity().getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE).edit();
+        if (isSpare) {
+//            Log.d("Home Course Dialog", "The period will be a spare!");
+            for (int h = 0; h < periodFields.length; h++) {
+                editor.putString(periodKey + periodIndex + ":" + h, spareKey);
+            }
+        } else {
+//            Log.d("Home Course Dialog", "The period will not be a spare!");
+            for (int h = 0; h < periodFields.length; h++) {
+                editor.putString(periodKey + periodIndex + ":" + h, periodFields[h].getText().toString());
+            }
+        }
+        editor.apply();
+    }
+
+    public void setPeriodIndex(int periodIndex) {
+//        Log.d("Home Course Dialog", "Setting periodIndex to: " + periodIndex);
+        this.periodIndex = periodIndex;
     }
 }

@@ -128,9 +128,7 @@ public class InfoActivity extends AppCompatActivity {
         infoLabel.setBackgroundResource(bgRes);
         infoLabel.setTextColor(getResources().getColor(color));
         infoLabel.setFocusable(editing);
-        infoLabel.setClickable(editing);
         infoLabel.setFocusableInTouchMode(editing);
-        infoLabel.setEnabled(editing);
 
         if (editing) {
             tempData[0] = item[0];

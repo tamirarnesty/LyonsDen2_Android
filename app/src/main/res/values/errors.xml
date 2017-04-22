@@ -13,4 +13,7 @@
 
     <!-- List Viewer Errors -->
     <integer name="TeacherInfoRetrievalFailure">7</integer>     <!-- Occurs if the app failed to locate the selected teacher's info -->
+
+    <!-- Home Screen Errors -->
+    <integer name="TimeParsingError">8</integer>
 </resources>

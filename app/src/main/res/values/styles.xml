@@ -127,7 +127,7 @@
         <item name="android:clickable">false</item>
         <item name="android:longClickable">true</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:background">@color/timeTableBackground</item>
+        <item name="android:background">@drawable/time_table_backgroud</item>
     </style>
 
     <style name="TimeTablePeriodParameter">

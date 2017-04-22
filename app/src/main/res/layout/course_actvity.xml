@@ -38,6 +38,7 @@
             android:gravity="end"
             android:textColor="@color/accent"
             android:textSize="16sp"
+            android:id="@+id/CourseSNameLabel"
             android:text="@string/CourseSName"/>
 
         <!-- Course Name Field -->
@@ -70,6 +71,7 @@
             android:gravity="end"
             android:textColor="@color/accent"
             android:textSize="16sp"
+            android:id="@+id/CourseSCodeLabel"
             android:text="@string/CourseSCode"/>
 
         <!-- Course Code Field -->
@@ -103,6 +105,7 @@
             android:gravity="end"
             android:textColor="@color/accent"
             android:textSize="16sp"
+            android:id="@+id/CourseSTeacherLabel"
             android:text="@string/CourseSTeacher"/>
 
         <!-- Teacher Name Field -->
@@ -135,6 +138,7 @@
             android:gravity="end"
             android:textColor="@color/accent"
             android:textSize="16sp"
+            android:id="@+id/CourseSRoomLabel"
             android:text="@string/CourseSRoom"/>
 
         <!-- Room Number Field -->
@@ -144,7 +148,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:hint="@string/CourseSRoomHint"
-            android:inputType="text"
+            android:inputType="phone"
             android:textSize="16sp"
             android:textColor="@color/blackText"
             android:id="@+id/CourseSRoomField"/>
@@ -162,7 +166,7 @@
         android:text="@string/CourseSSubmitButtonText"
         android:textColor="@color/whiteText"
         android:onClick="submitChanges"
-        android:id="@+id/USUpdate"/>
+        android:id="@+id/CourseSSubbmit"/>
 
     <!-- Disclaimer Label -->
     <TextView

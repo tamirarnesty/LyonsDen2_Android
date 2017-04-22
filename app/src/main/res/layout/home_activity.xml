@@ -45,7 +45,7 @@
                     android:layout_alignParentTop="true"
                     android:text="@string/HSTodayIsDay"
                     android:id="@+id/HSTodayIsDay"
-                    android:textSize="24sp"
+                    android:textSize="24dp"
                     android:textColor="@color/listDivider"
                     android:gravity="center" />
 
@@ -53,11 +53,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
                     android:text="@string/HSDayLabelDefault"
                     android:id="@+id/HSDayLabel"
                     android:layout_below="@+id/HSTodayIsDay"
                     android:textColor="@color/listDivider"
-                    android:textSize="150sp"
+                    android:textSize="150dp"
                     android:gravity="center" />
 
                 <TextView

@@ -184,7 +184,7 @@ public class ClubActivity extends AppCompatActivity {
         });
     }
 
-    private void enterEditMode () {
+    private void toggleEditMode() {
         editing = !editing;
 
         int viewVisibility = (editing) ? View.GONE : View.VISIBLE;
@@ -194,20 +194,26 @@ public class ClubActivity extends AppCompatActivity {
         findViewById(R.id.ClubSEditBox).setVisibility(editVisibility);
 
         if (!editing && (!titleView.getText().toString().equals(titleField.getText().toString()) || !infoView.getText().toString().equals(infoField.getText().toString()))) {
-            promptUserForApproval();
+            invalidateOptionsMenu();
+            promptUserForApproval(titleView.getText().toString(), infoView.getText().toString());
+            titleView.setText(titleField.getText());
+            infoView.setText(infoField.getText());
         } else {
+            invalidateOptionsMenu();
             titleField.setText(titleView.getText());
             infoField.setText(infoView.getText());
         }
     }
 
-    private void promptUserForApproval() {
+    private void promptUserForApproval(final String oldTitle, final String oldInfo) {
         final LyonsAlert alertDialog = new LyonsAlert();
         alertDialog.setTitle("Teacher Approval");
         alertDialog.setSubtitle("Please ask a teacher to approve your changes!");
         alertDialog.configureLeftButton("Cancel", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                titleView.setText(oldTitle);
+                infoView.setText(oldInfo);
                 alertDialog.dismiss();
             }
         });
@@ -222,12 +228,16 @@ public class ClubActivity extends AppCompatActivity {
                                 alertDialog.dismiss();
                                 commitChanges();
                             } else {
+                                titleView.setText(oldTitle);
+                                infoView.setText(oldInfo);
                                 Toast.makeText(getApplicationContext(), "Wrong Password!", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
                 } else {
                     Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_SHORT).show();
+                    titleView.setText(oldTitle);
+                    infoView.setText(oldInfo);
                 }
             }
         });
@@ -264,10 +274,13 @@ public class ClubActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.editAction)
-            enterEditMode();
-        else if (item.getItemId() == R.id.addAction)
+        if (item.getItemId() == R.id.editAction) {
+            toggleEditMode();
+        } else if (item.getItemId() == R.id.addAction) {
             proposeAnnouncement();
+        } else if (item.getItemId() == R.id.doneAction) {
+            toggleEditMode();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -275,7 +288,11 @@ public class ClubActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (userIsLead) {
-            getMenuInflater().inflate(R.menu.club_menu, menu);
+            if (!editing) {
+                getMenuInflater().inflate(R.menu.club_menu, menu);
+            } else {
+                getMenuInflater().inflate(R.menu.done_menu, menu);
+            }
             return true;
         } else {
             return super.onCreateOptionsMenu(menu);
