@@ -110,6 +110,7 @@ public class ContactActivity extends AppCompatActivity {
         // Segue into Announcement Proposal Activity
         Intent intent = new Intent(this, AnnouncementActivity.class);
         intent.putExtra("clubKey", "no-key");
+        intent.putExtra("announcementId", "contact");
         startActivity(intent);
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }

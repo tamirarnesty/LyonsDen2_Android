@@ -50,6 +50,7 @@
             android:inputType="text|textMultiLine"
             android:focusable="false"
             android:clickable="false"
+            android:fadeScrollbars="false"
             android:focusableInTouchMode="false"
             android:enabled="false"
             android:padding="2dp"

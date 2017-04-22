@@ -238,6 +238,33 @@ public class Retrieve {
         });
     }
 
+    public static void removeOneSignalIds () {
+        Log.d("OneSignalStatusChecker", "Checking Status...");
+        Retrieve.oneSignalIDs(new OneSignalHandler() {
+            @Override
+            public void handle(final ArrayList<String> receivers) {
+                OneSignal.idsAvailable(new OneSignal.IdsAvailableHandler() {
+                    @Override
+                    public void idsAvailable(String userId, String registrationId) {
+                        if (userId != null && !receivers.contains(userId)) {
+                            Log.d("OneSignalStatusChecker", "One Signal ID Does not exist.");
+                        } else {
+                            Log.d("OneSignalStatusChecker", "One Signal ID Exists.");
+                            Log.d("OneSignalStatusChecker", "Removing...");
+                            String firUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            if (firUID != null) {
+                                FirebaseDatabase.getInstance().getReference("users/notificationIDs/" + firUID).removeValue();
+                            } else {
+                                Log.d("OneSignalStatusChecker", "Removal Failed! Not authenticated with Firebase!");
+                            }
+                            Log.d("OneSignalStatusChecker", "Removed.");
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     public static boolean isInternetAvailable(Activity initiator) {
         class Check extends AsyncTask<Activity, Integer, Boolean> {
             /** The initiating activity. Used to get the proper instance of a ConnectivityManager. */

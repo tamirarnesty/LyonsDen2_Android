@@ -1,5 +1,6 @@
 package com.wlmac.lyonsden2_android.resourceActivities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -199,6 +201,14 @@ public class ClubActivity extends AppCompatActivity {
             titleField.setText(titleView.getText());
             infoField.setText(infoView.getText());
         }
+
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
+        invalidateOptionsMenu();
     }
 
     private void promptUserForApproval() {
@@ -259,6 +269,7 @@ public class ClubActivity extends AppCompatActivity {
     private void proposeAnnouncement () {
         Intent intent = new Intent(this, AnnouncementActivity.class);
         intent.putExtra("clubKey", clubRef.getKey());
+        intent.putExtra("announcementId", "clubsAnnouncement");
         startActivity(intent);
     }
 
@@ -268,6 +279,8 @@ public class ClubActivity extends AppCompatActivity {
             enterEditMode();
         else if (item.getItemId() == R.id.addAction)
             proposeAnnouncement();
+        else if (item.getItemId() == R.id.doneAction)
+            enterEditMode();
 
         return super.onOptionsItemSelected(item);
     }
@@ -275,7 +288,10 @@ public class ClubActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (userIsLead) {
-            getMenuInflater().inflate(R.menu.club_menu, menu);
+            if (editing)
+                getMenuInflater().inflate(R.menu.club_menu_editing, menu);
+            else
+                getMenuInflater().inflate(R.menu.club_menu_default, menu);
             return true;
         } else {
             return super.onCreateOptionsMenu(menu);

@@ -72,6 +72,8 @@ public class AnnouncementActivity extends AppCompatActivity {
 
     private DatabaseReference targetRef = null;
 
+    private String intentData = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +83,7 @@ public class AnnouncementActivity extends AppCompatActivity {
 
         instantiateComponents();
         setFonts();
+        intentData = getIntent().getStringExtra("announcementId");
     }
 
     @Override
@@ -203,7 +206,9 @@ public class AnnouncementActivity extends AppCompatActivity {
             announcement.child("location").setValue(locationField.getText().toString());
             announcement.child("creator").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-            pushNotification(titleField.getText().toString(), descriptionField.getText().toString());
+            if (!intentData.equals("clubsAnnouncement"))
+                pushNotification(titleField.getText().toString(), descriptionField.getText().toString());
+
             Toast.makeText(getApplicationContext(), "Announcement Posted!", Toast.LENGTH_SHORT).show();
 
             finish();
@@ -243,12 +248,12 @@ public class AnnouncementActivity extends AppCompatActivity {
                                     new OneSignal.PostNotificationResponseHandler() {
                                         @Override
                                         public void onSuccess(JSONObject response) {
-                                            Log.d("OneSignalExample", "postNotification Success: " + response.toString());
+                                            Log.d("AnnouncementActivity", "postNotification Success: " + response.toString());
                                         }
 
                                         @Override
                                         public void onFailure(JSONObject response) {
-                                            Log.d("OneSignalExample", "postNotification Failure: " + response.toString());
+                                            Log.d("AnnouncementActivity", "postNotification Failure: " + response.toString());
                                         }
                                     });
                         } catch (JSONException e) {

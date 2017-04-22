@@ -99,6 +99,7 @@ public class HomeActivity extends AppCompatActivity {
     private long[] normalTime;
     private long[] lateTime;
     private boolean isOnlineLogInShown;
+    private RelativeLayout timeTableViews;
     private ListAdapter adapter;
     SharedPreferences sharedPreferences;
 
@@ -258,6 +259,7 @@ public class HomeActivity extends AppCompatActivity {
         refreshLayout.setColorSchemeResources(R.color.navigationBar);
 
         toolbar.bringToFront();
+        topViews.bringChildToFront(timeTableViews);
     }
 
     @Override
@@ -540,7 +542,7 @@ public class HomeActivity extends AppCompatActivity {
         noInternet = (TextView) findViewById(R.id.HSNoInternet);
         lateStartLabel = (TextView) findViewById(R.id.HSLateStartLabel);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.HSListRefresh);
-
+        timeTableViews = (RelativeLayout) findViewById(R.id.HSLabelContainer);
         topViews = (RelativeLayout) findViewById(R.id.HSTopViews);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -579,7 +581,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void promptNotification() {
-        final boolean [] notificationsChosen = {false};
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setTitle("Announcement Notifications");
         alertBuilder.setMessage("Do you wish to receive notifications?").setCancelable(false)
@@ -587,14 +588,14 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         OneSignal.setSubscription(true);
-                        notificationsChosen[0] = true;
+                        sharedPreferences.edit().putBoolean("notificationSwitch", true).apply();
                         dialog.cancel();
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 OneSignal.setSubscription(false);
-                notificationsChosen[0] = false;
+                sharedPreferences.edit().putBoolean("notificationSwitch", false).apply();
                 dialog.cancel();
             }
         });
@@ -658,28 +659,28 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     }
                 }
-            for (int j = 0; j < timeTable[h].length; j++) {
-                // A instance of a timetable piece (made without assigning to a variable)
-                String s;
-                switch (j) {
-                    case 0:
-                        s = "Course Name";
-                        break;
-                    case 1:
-                        s = "Course Code";
-                        break;
-                    case 2:
-                        s = "Teacher Name";
-                        break;
-                    case 3:
-                        s = "Room Number";
-                        break;
-                    default:
-                        s = "Incorrect value";
-                }
-                ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
-                timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
-            }
+//            for (int j = 0; j < timeTable[h].length; j++) {
+//                // A instance of a timetable piece (made without assigning to a variable)
+//                String s;
+//                switch (j) {
+//                    case 0:
+//                        s = "Course Name";
+//                        break;
+//                    case 1:
+//                        s = "Course Code";
+//                        break;
+//                    case 2:
+//                        s = "Teacher Name";
+//                        break;
+//                    case 3:
+//                        s = "Room Number";
+//                        break;
+//                    default:
+//                        s = "Incorrect value";
+//                }
+//                ((TextView) findViewById(idBank[h][j])).setText(pref.getString("Period " + (h + 1) + " " + j, s));
+//                timeTable[h][j] = ((TextView) findViewById(idBank[h][j])).getText().toString();
+//            }
             if (!check) {
                 (findViewById(spares[h])).setVisibility(View.INVISIBLE);
                 for (int j = 0; j < timeTable[h].length; j++)
@@ -707,9 +708,9 @@ public class HomeActivity extends AppCompatActivity {
                 if (index < 3)
                     courseDialog.setPeriod("Period " + index, name, code, teacher, room, getDayLabel());
                 else if (index == 3)
-                    courseDialog.setPeriod("Period " + (index+1), name, code, teacher, room, getDayLabel());
+                    courseDialog.setPeriod("Period " + 4, name, code, teacher, room, getDayLabel());
                 else if (index == 4)
-                    courseDialog.setPeriod("Period " + (index-1), name, code, teacher, room, getDayLabel());
+                    courseDialog.setPeriod("Period " + 3, name, code, teacher, room, getDayLabel());
             }
         }
         courseDialog.show(getFragmentManager(), "");
