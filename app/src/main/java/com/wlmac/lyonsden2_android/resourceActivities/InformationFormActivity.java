@@ -114,10 +114,10 @@ public class InformationFormActivity extends AppCompatActivity {
 
         for (EditText field : fields) {
             if (field.getText() == null || field.getText().toString().equals("")) {
-                field.setBackgroundResource(R.drawable.text_view_invalid);
+                field.setBackgroundResource(R.drawable.text_field_bottom_border_invalid);
                 valid = false;
             } else {
-                field.setBackgroundResource(R.drawable.text_view_default);
+                field.setBackgroundResource(R.drawable.text_field_bottom_border);
                 valid = true;
             }
         }

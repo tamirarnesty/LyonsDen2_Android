@@ -85,6 +85,7 @@
     <string name="USDeleteButtonText">Delete Account</string>
     <string name="USSignOutButtonText">Sign Out</string>
     <string name="USResetPassButtonText">Reset Password</string>
+    <string name="USSwitchLabel">Allow Notifications</string>
 
     <!-- Information Activity Strings -->
     <string name="IFSName">Name</string>

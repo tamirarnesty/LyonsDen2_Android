@@ -203,6 +203,14 @@ public class ClubActivity extends AppCompatActivity {
             titleField.setText(titleView.getText());
             infoField.setText(infoView.getText());
         }
+
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
+        invalidateOptionsMenu();
     }
 
     private void promptUserForApproval(final String oldTitle, final String oldInfo) {
@@ -269,6 +277,7 @@ public class ClubActivity extends AppCompatActivity {
     private void proposeAnnouncement () {
         Intent intent = new Intent(this, AnnouncementActivity.class);
         intent.putExtra("clubKey", clubRef.getKey());
+        intent.putExtra("announcementId", "clubsAnnouncement");
         startActivity(intent);
     }
 

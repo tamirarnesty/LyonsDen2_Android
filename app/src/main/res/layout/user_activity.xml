@@ -25,8 +25,11 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/toolbar"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="15dp">
 
             <!-- Display Name Container -->
             <LinearLayout
@@ -152,7 +155,7 @@
                     <Button
                         style="@style/ExtraButtonStyle"
                         android:layout_weight="1"
-                        android:gravity="start|left"
+                        android:gravity="start"
                         android:text="@string/USLeaderButtonText"
                         android:paddingBottom="8dp"
                         android:onClick="promptClubCode"
@@ -162,7 +165,7 @@
                     <Button
                         style="@style/ExtraButtonStyle"
                         android:layout_weight="1"
-                        android:gravity="end|right"
+                        android:gravity="end"
                         android:text="@string/USSignOutButtonText"
                         android:tag="signOut"
                         android:id="@+id/USSignOut"
@@ -174,7 +177,7 @@
                     <Button
                         style="@style/ExtraButtonStyle"
                         android:layout_weight="1"
-                        android:gravity="start|left"
+                        android:gravity="start"
                         android:text="@string/USDeleteButtonText"
                         android:tag="deleteAcc"
                         android:id="@+id/USDelete"
@@ -184,7 +187,7 @@
                     <Button
                         style="@style/ExtraButtonStyle"
                         android:layout_weight="1"
-                        android:gravity="end|right"
+                        android:gravity="end"
                         android:text="@string/USResetPassButtonText"
                         android:tag="resetPass"
                         android:id="@+id/USReset"
@@ -202,6 +205,38 @@
                 android:background="@drawable/ic_expand_dark_accent_24dp"
                 android:onClick="toggleButtons"
                 android:id="@+id/USToggleButton"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_above="@+id/USToggleButton">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/accent"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <Switch
+                    android:id="@+id/USNotificationSwitch"
+                    android:layout_width="300dp"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="@string/USSwitchLabel"
+                    android:onClick="switchToggled"
+                    android:textColor="@color/accent"/>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/accent"
+                    android:layout_marginTop="10dp"
+                    />
+
+            </LinearLayout>
+
         </RelativeLayout>
     </RelativeLayout>
 

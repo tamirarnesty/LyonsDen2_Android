@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.onesignal.OneSignal;
 import com.wlmac.lyonsden2_android.otherClasses.LyonsAlert;
 import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
 
@@ -56,6 +58,8 @@ public class UserActivity extends AppCompatActivity {
     private Button toggleButton;
     private boolean isShowingExtraButtons = true;
     SharedPreferences sharedPreferences;
+    private Switch notificationSwitch;
+    private boolean switchIsChecked = false;
 
     private boolean editing = false;
 
@@ -69,6 +73,11 @@ public class UserActivity extends AppCompatActivity {
         setFonts();
         extraButtonsContainer = (TableLayout) findViewById(R.id.USContainer);
         toggleButton = (Button) findViewById(R.id.USToggleButton);
+        notificationSwitch = (Switch) findViewById(R.id.USNotificationSwitch);
+
+        sharedPreferences = this.getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE);
+        switchIsChecked = sharedPreferences.getBoolean("notificationSwitch", false);
+        notificationSwitch.setChecked(switchIsChecked);
 
         // Drawer setup
         DrawerLayout rootLayout = (DrawerLayout) findViewById(R.id.NDLayout);
@@ -92,6 +101,7 @@ public class UserActivity extends AppCompatActivity {
                 }
             });
         }
+
     }
 
     @Override
@@ -140,7 +150,7 @@ public class UserActivity extends AppCompatActivity {
         this.displayName.setText(name);
         this.email.setText(email);
         this.accessLevel.setText(accessLevel);
-        sharedPreferences = this.getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE);
+
     }
 
     private void instantiateComponents () {
@@ -206,6 +216,21 @@ public class UserActivity extends AppCompatActivity {
         }
     }
 
+    public void switchToggled(View view) {
+        if (sharedPreferences == null)
+            sharedPreferences = this.getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE);
+
+        if (notificationSwitch.isChecked()) {
+            OneSignal.setSubscription(true);
+            Retrieve.oneSignalStatus();
+            sharedPreferences.edit().putBoolean("notificationSwitch", true).apply();
+        } else if (!notificationSwitch.isChecked()) {
+            OneSignal.setSubscription(false);
+            Retrieve.removeOneSignalIds();
+            sharedPreferences.edit().putBoolean("notificationSwitch", false).apply();
+        }
+    }
+
     private void enterEditMode () {
         editing = !editing;
 
@@ -214,11 +239,13 @@ public class UserActivity extends AppCompatActivity {
         displayName.setEnabled(editing);
         displayName.setClickable(editing);
         displayName.requestFocus();
+        displayName.setBackgroundResource(R.drawable.text_field_bottom_border_editing);
 
         email.setFocusableInTouchMode(editing);
         email.setFocusable(editing);
         email.setEnabled(editing);
         email.setClickable(editing);
+        email.setBackgroundResource(R.drawable.text_field_bottom_border_editing);
 
         View view = this.getCurrentFocus();
         if (view != null) {
