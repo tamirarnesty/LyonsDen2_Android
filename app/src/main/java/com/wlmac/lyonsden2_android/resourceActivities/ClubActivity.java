@@ -1,5 +1,6 @@
 package com.wlmac.lyonsden2_android.resourceActivities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -297,11 +299,10 @@ public class ClubActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (userIsLead) {
-            if (!editing) {
-                getMenuInflater().inflate(R.menu.club_menu, menu);
-            } else {
-                getMenuInflater().inflate(R.menu.done_menu, menu);
-            }
+            if (editing)
+                getMenuInflater().inflate(R.menu.club_menu_editing, menu);
+            else
+                getMenuInflater().inflate(R.menu.club_menu_default, menu);
             return true;
         } else {
             return super.onCreateOptionsMenu(menu);

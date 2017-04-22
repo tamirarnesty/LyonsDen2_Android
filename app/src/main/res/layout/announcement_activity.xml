@@ -98,7 +98,7 @@
 
                 <!-- Date Button -->
                 <Button
-                    style="@style/LyonsButtonStyle"
+                    style="@style/LyonsButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -127,7 +127,7 @@
 
                 <!-- Time Button -->
                 <Button
-                    style="@style/LyonsButtonStyle"
+                    style="@style/LyonsButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -195,7 +195,7 @@
 
                 <!-- Approval/Unlock Button -->
                 <Button
-                    style="@style/LyonsButtonStyle"
+                    style="@style/LyonsButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -206,7 +206,7 @@
 
                 <!-- Submit Button -->
                 <Button
-                    style="@style/LyonsButtonStyle"
+                    style="@style/LyonsButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"

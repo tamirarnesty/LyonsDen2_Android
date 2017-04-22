@@ -128,7 +128,7 @@
     </LinearLayout>
 
     <Button
-        style="@style/LyonsButtonStyle"
+        style="@style/LyonsButton"
         android:id="@+id/IFCompleteButton"
         android:text="@string/IFTCompleteButton"
         android:layout_gravity="center"

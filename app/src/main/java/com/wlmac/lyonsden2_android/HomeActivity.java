@@ -370,14 +370,14 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         OneSignal.setSubscription(true);
-                        notificationsChosen[0] = true;
+                        sharedPreferences.edit().putBoolean(UserActivity.keyNotification, true).apply();
                         dialog.cancel();
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 OneSignal.setSubscription(false);
-                notificationsChosen[0] = false;
+                sharedPreferences.edit().putBoolean(UserActivity.keyNotification, false).apply();
                 dialog.cancel();
             }
         });

@@ -77,14 +77,14 @@ public class CourseDialog extends DialogFragment {
             periodFields[h].setTypeface(Retrieve.typeface(getActivity()));
         }
 
-        int[] ids = {R.id.CourseSNameLabel, R.id.CourseSCodeLabel, R.id.CourseSTeacherLabel, R.id.CourseSRoomLabel, R.id.CourseSPeriodLabel, R.id.CourseSSubbmit};
+        int[] ids = {R.id.CourseSNameLabel, R.id.CourseSCodeLabel, R.id.CourseSTeacherLabel, R.id.CourseSRoomLabel, R.id.CourseSPeriodLabel, R.id.CourseSSubmit, R.id.CourseSSpare};
         for (int id : ids) {
             ((TextView) view.findViewById(id)).setTypeface(Retrieve.typeface(getActivity()));
         }
 
         ((TextView) view.findViewById(R.id.CourseSPeriodLabel)).setText(periodKey + (periodIndex + 1));
 
-        view.findViewById(R.id.CourseSSubbmit).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.CourseSSubmit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int emptyCounter = 0;
@@ -95,42 +95,33 @@ public class CourseDialog extends DialogFragment {
                     }
                 }
 
-                if (emptyCounter == 4) {    // Prompt for spare confirmation
-                    Toast.makeText(getActivity(), "You must fill in at least one field", Toast.LENGTH_LONG).show();
-
-                    // TEMPORARY!!!!
-                    commitChanges(true);
-                } else {
+                if (emptyCounter != 4) {    // Prompt for spare confirmation
                     commitChanges(false);
+                    updateInitiator();
+                    CourseDialog.this.dismiss();
+                } else {
+                    Toast.makeText(getActivity(), "You must fill in at least one field", Toast.LENGTH_LONG).show();
                 }
+            }
+        });
 
-                // Update Initiator Time Table
-                final HomeActivity activity = (HomeActivity) getActivity();
-                activity.repopulateTimeTable();
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (activity.getScheduleDay() > 0) {
-                            activity.updateTimeTableUI();
-                        }
-                    }
-                });
+        view.findViewById(R.id.CourseSSpare).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commitChanges(true);
+                updateInitiator();
                 CourseDialog.this.dismiss();
             }
         });
     }
 
     private void commitChanges(boolean isSpare) {
-//        Log.d("Home Course Dialog", "Applying Changes");
-//        Log.d("Home Course Dialog", "Period Key: " + periodKey + periodIndex);
                 SharedPreferences.Editor editor = getActivity().getSharedPreferences(LyonsDen.keySharedPreferences, Context.MODE_PRIVATE).edit();
         if (isSpare) {
-//            Log.d("Home Course Dialog", "The period will be a spare!");
             for (int h = 0; h < periodFields.length; h++) {
                 editor.putString(periodKey + periodIndex + ":" + h, spareKey);
             }
         } else {
-//            Log.d("Home Course Dialog", "The period will not be a spare!");
             for (int h = 0; h < periodFields.length; h++) {
                 editor.putString(periodKey + periodIndex + ":" + h, periodFields[h].getText().toString());
             }
@@ -138,8 +129,21 @@ public class CourseDialog extends DialogFragment {
         editor.apply();
     }
 
+    private void updateInitiator() {
+        // Update Initiator Time Table
+        final HomeActivity activity = (HomeActivity) getActivity();
+        activity.repopulateTimeTable();
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (activity.getScheduleDay() > 0) {
+                    activity.updateTimeTableUI();
+                }
+            }
+        });
+    }
+
     public void setPeriodIndex(int periodIndex) {
-//        Log.d("Home Course Dialog", "Setting periodIndex to: " + periodIndex);
         this.periodIndex = periodIndex;
     }
 }

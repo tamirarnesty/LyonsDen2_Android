@@ -141,7 +141,7 @@
 
             <!-- Arrow Up Button-->
             <Button
-                style="@style/LyonsButtonStyle"
+                style="@style/LyonsButton"
                 android:layout_width="50dp"
                 android:layout_height="45dp"
                 android:layout_centerHorizontal="true"

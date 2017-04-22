@@ -87,7 +87,6 @@
             android:id="@+id/CourseSCodeField"/>
     </LinearLayout>
 
-
     <!-- Teacher Name Area -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -155,18 +154,24 @@
     </LinearLayout>
 
     <!-- Update Info Button -->
-    <Button
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/CourseSRoom"
         android:layout_marginTop="15dp"
         android:layout_centerHorizontal="true"
-        android:padding="5dp"
-        android:background="@drawable/button_background"
-        android:text="@string/CourseSSubmitButtonText"
-        android:textColor="@color/whiteText"
-        android:onClick="submitChanges"
-        android:id="@+id/CourseSSubbmit"/>
+        android:orientation="horizontal">
+
+        <Button
+            style="@style/LyonsFilledButton"
+            android:text="@string/CourseSSubmitButtonText"
+            android:id="@+id/CourseSSubmit"/>
+
+        <Button
+            style="@style/LyonsFilledButton"
+            android:text="@string/CourseSSpareButtonText"
+            android:id="@+id/CourseSSpare"/>
+    </LinearLayout>
 
     <!-- Disclaimer Label -->
     <TextView

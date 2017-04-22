@@ -49,6 +49,9 @@ import com.wlmac.lyonsden2_android.otherClasses.Retrieve;
  * @version 1, 2016/08/05
  */
 public class UserActivity extends AppCompatActivity {
+    public static String keyNotification = "notificationSwitch";
+
+
     /** The drawer toggler used this activity. */
     private ActionBarDrawerToggle drawerToggle;
     private TableLayout extraButtonsContainer;
